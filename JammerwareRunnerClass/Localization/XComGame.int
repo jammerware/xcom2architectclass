@@ -1,0 +1,46 @@
+;-------------------------------------------------------------
+; CLASS DEFINITION
+;-------------------------------------------------------------
++[Runner X2SoldierClassTemplate]
++DisplayName="Runner"
++ClassSummary="The runner is a mobile but offensively weak operative that supports their squad with powerful Spires."
++LeftAbilityTreeTitle="Fight"
++RightAbilityTreeTitle="Flight"
++AbilityTreeTitles[0]="Fight"
++AbilityTreeTitles[1]="Flight"
++AbilityTreeTitles[2]="XCOM"
+
+; NICKS
++RandomNickNames[0]="Lightbringer"
++RandomNickNames[1]="Wendigo"
++RandomNickNames[2]="Ziz"
+
++RandomNickNames_Male[0]="Adaro"
++RandomNickNames_Male[1]="Deus"
++RandomNickNames_Male[2]="Fenrus"
++RandomNickNames_Male[3]="Pax"
++RandomNickNames_Male[4]="Roc"
+
++RandomNickNames_Female[0]="Akka"
++RandomNickNames_Female[1]="Kami"
++RandomNicknames_Female[2]="Lux"
++RandomNicknames_Female[3]="Naga"
++RandomNicknames_Female[4]="Gray Lady"
+
+;PHOTOBOOTH
++PhotoboothSoloBLines_Male[0]="Speed and spires."
++PhotoboothSoloBLines_Female[0]="Speed and spires."
+
+; ABILITIES
+[CreateSpire X2AbilityTemplate]
+LocFriendlyName="Create Spire"
+LocLongDescription="Create a spire. Spires provide high cover and grant a small shield to any friendly unit that ends its turn adjacent to the spire."
+LocHelpText="Create a spire. Spires provide high cover and grant a small shield to any friendly unit that ends its turn adjacent to the spire."
+LocFlyOverText="Create Spire"
+LocPromotionPopupText="Spires are the focal point of most Runner abilities. They provide cover, and at high levels, confer additional benefits."
+
+;-------------------------------------------------------------
+; WEAPONS
+;-------------------------------------------------------------
+[SpireGun X2WeaponTemplate]
+FriendlyName="Spire Gun"
