@@ -49,9 +49,9 @@ static function X2AbilityTemplate AddCreateSpire()
 	Cooldown.iNumTurns = default.CREATESPIRE_COOLDOWN;
 	Template.AbilityCooldown = Cooldown;
 
-	//Template.AbilitySourceName = 'eAbilitySource_Psionic';
-	//Template.CustomFireAnim = 'HL_Pillar';
+	Template.AbilitySourceName = 'eAbilitySource_Perk';
 	Template.ActivationSpeech = 'InTheZone';
+	Template.CustomFireAnim = 'HL_SignalPoint';
 
 	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_AlwaysShow;
 	Template.Hostility = eHostility_Defensive;
@@ -64,11 +64,13 @@ static function X2AbilityTemplate AddCreateSpire()
 
 	SpireEffect = new class'X2Effect_SpawnSpire';
 	SpireEffect.BuildPersistentEffect(1, false, true, false, eGameRule_PlayerTurnBegin);	
-	SpireEffect.DestructibleArchetype = "FX_Templar_Pillar.Pillar_Destructible";
+	//SpireEffect.DestructibleArchetype = "FX_Templar_Pillar.Pillar_Destructible";
+	// TODO: figure out why i can't use the pillar archetype 
+	SpireEffect.DestructibleArchetype = "AdventPillars.Archetypes.ARC_AdventPillars_HiCov_1x1A";
 	Template.AddShooterEffect(SpireEffect);
 
 	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
-	//Template.BuildVisualizationFn = Pillar_BuildVisualization;
+	Template.BuildVisualizationFn = Spire_BuildVisualization;
 	
 	Template.SuperConcealmentLoss = class'X2AbilityTemplateManager'.default.SuperConcealmentStandardShotLoss;
 	Template.ChosenActivationIncreasePerUse = class'X2AbilityTemplateManager'.default.NonAggressiveChosenActivationIncreasePerUse;
@@ -76,7 +78,7 @@ static function X2AbilityTemplate AddCreateSpire()
 	return Template;
 }
 
-function Pillar_BuildVisualization(XComGameState VisualizeGameState)
+function Spire_BuildVisualization(XComGameState VisualizeGameState)
 {
 	local XComGameState_Destructible DestructibleState;
 	local VisualizationActionMetadata BuildTrack;
