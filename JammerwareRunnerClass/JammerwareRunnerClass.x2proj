@@ -7,6 +7,7 @@
     <SteamPublishID>0</SteamPublishID>
     <AssemblyName>JammerwareRunnerClass</AssemblyName>
     <RootNamespace>JammerwareRunnerClass</RootNamespace>
+    <ProjectGuid>{9fea04c5-c7d6-41c3-a849-8f0abd97b9e4}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Config" />
@@ -44,6 +45,9 @@
       <SubType>Content</SubType>
     </Content>
     <Content Include="Src\JammerwareRunnerClass\Classes\X2DownloadableContentInfo_JammerwareRunnerClass.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\JammerwareRunnerClass\Classes\X2Effect_Shelter.uc">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Src\JammerwareRunnerClass\Classes\X2Effect_SpawnSpire.uc">
