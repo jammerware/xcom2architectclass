@@ -1,0 +1,19 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "taskName": "build",
+            "type": "shell",
+            "command": "powershell.exe -file '${workspaceRoot}/scripts/build.ps1' -mod 'JammerwareRunnerClass' -srcDirectory '${workspaceRoot}' -sdkPath 'D:/Steam/steamapps/common/XCOM 2 War of the Chosen SDK' -gamePath 'D:/Steam/steamapps/common/XCOM 2'",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "taskName": "run",
+            "type": "shell",
+            "command": "powershell.exe -file '${workspaceRoot}/scripts/run.ps1' -gamePath 'D:/Steam/steamapps/common/XCOM 2'"
+        }
+    ]
+}
