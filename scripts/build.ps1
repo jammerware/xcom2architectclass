@@ -1,8 +1,9 @@
 Param(
-    [string]$mod,
-    [string]$srcDirectory,
-    [string]$sdkPath,
-    [string]$gamePath
+    [string]$mod, # your mod's name - this shouldn't have spaces or special characters, and it's usually the name of the first directory inside your mod's source dir
+    [string]$srcDirectory, # the path that contains your mod's .XCOM_sln
+    [string]$sdkPath, # the path to your SDK installation ending in "XCOM 2 War of the Chosen SDK"
+    [string]$gamePath, # the path to your XCOM 2 installation ending in "XCOM 2"
+    [bool]$forceFullBuild = $false # force the script to rebuild the base game's scripts, even if they're already built
 )
 
 function WriteModMetadata([string]$mod, [string]$sdkPath, [int]$publishedId, [string]$title, [string]$description) {
@@ -52,9 +53,9 @@ $modDescription = $modProperties.Description
 Write-Host "Read."
 
 # write mod metadata - used by Firaxis' "make" tooling
-Write-Host "Building mod metadata..."
+Write-Host "Writing mod metadata..."
 WriteModMetadata -mod $modNameCanonical -sdkPath $sdkPath -publishedId $modPublishedId -title $modTitle -description $modDescription
-Write-Host "Built."
+Write-Host "Written."
 
 # mirror the SDK's SrcOrig to its Src
 Write-Host "Mirroring SrcOrig to Src..."
@@ -66,10 +67,18 @@ Write-Host "Copying the mod's scripts to Src..."
 Copy-Item "$stagingPath/Src/*" "$sdkPath/Development/Src/" -Force -Recurse -WarningAction SilentlyContinue
 Write-Host "Copied."
 
-# clean existing compiled scripts
-Write-Host "Cleaning existing compiled scripts from $sdkPath/XComGame/Script..."
-Remove-Item "$sdkPath\XComGame\Script\*.u"
-Write-Host "Cleaned."
+if ($forceFullBuild) {
+    # if a full build was requested, clean all compiled scripts too
+    Write-Host "Full build requested. Cleaning all compiled scripts from $sdkPath/XComGame/Script..."
+    Remove-Item "$sdkPath\XComGame\Script\*.u"
+    Write-Host "Cleaned."
+}
+else {
+    # clean mod's compiled script
+    Write-Host "Cleaning existing mod's compiled script from $sdkPath/XComGame/Script..."
+    Remove-Item "$sdkPath\XComGame\Script\$modNameCanonical.u"
+    Write-Host "Cleaned."
+}
 
 # build the base game scripts
 Write-Host "Compiling base game scripts..."

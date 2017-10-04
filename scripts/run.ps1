@@ -1,5 +1,5 @@
 Param(
-    [string]$gamePath
+    [string]$gamePath # the path to your XCOM 2 installation ending in "XCOM 2"
 )
 
 # TODO: find out why i can't do this and i have to use the stupid batch file
