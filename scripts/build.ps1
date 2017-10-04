@@ -5,9 +5,8 @@ Param(
     [string]$gamePath
 )
 
-function BuildModMetadata([string]$mod, [string]$sdkPath, [string]$title, [string]$description)
-{
-    Set-Content "$sdkPath/XComGame/Mods/$mod/$mod.XComMod" "[mod]`npublishedFileId=0`nTitle=$title`nDescription=$description`nRequiresXPACK=true"
+function WriteModMetadata([string]$mod, [string]$sdkPath, [int]$publishedId, [string]$title, [string]$description) {
+    Set-Content "$sdkPath/XComGame/Mods/$mod/$mod.XComMod" "[mod]`npublishedFileId=$publishedId`nTitle=$title`nDescription=$description`nRequiresXPACK=true"
 }
 
 function StageDirectory ([string]$directoryName, [string]$srcDirectory, [string]$targetDirectory) {
@@ -41,13 +40,21 @@ StageDirectory "Config" $modSrcRoot $stagingPath
 StageDirectory "Content" $modSrcRoot $stagingPath
 StageDirectory "Localization" $modSrcRoot $stagingPath
 StageDirectory "Src" $modSrcRoot $stagingPath
-New-Item "$stagingPath/Classes" -ItemType Directory
 New-Item "$stagingPath/Script" -ItemType Directory
 
-# write mod metadata - used by Firaxis' make tooling
+# read mod metadata from the x2proj file
+Write-Host "Reading mod metadata from $modSrcRoot/$modNameCanonical.x2proj..."
+[xml]$x2projXml = Get-Content -Path "$modSrcRoot/$modNameCanonical.x2proj"
+$modProperties = $x2projXml.Project.PropertyGroup
+$modPublishedId = $modProperties.SteamPublishedId
+$modTitle = $modProperties.Name
+$modDescription = $modProperties.Description
+Write-Host "Read."
+
+# write mod metadata - used by Firaxis' "make" tooling
 Write-Host "Building mod metadata..."
-BuildModMetadata -mod $modNameCanonical -sdkPath $sdkPath -title $modNameCanonical -description "Ay bros"
-Write-Host "Metadata built."
+WriteModMetadata -mod $modNameCanonical -sdkPath $sdkPath -publishedId $modPublishedId -title $modTitle -description $modDescription
+Write-Host "Built."
 
 # mirror the SDK's SrcOrig to its Src
 Write-Host "Mirroring SrcOrig to Src..."
@@ -85,5 +92,5 @@ Copy-Item $stagingPath "$gamePath/XCom2-WarOfTheChosen/XComGame/Mods/" -Force -R
 Write-Host "Copied."
 
 # we made it!
-Write-Host "***SUCCESS!***"
+Write-Host "*** SUCCESS! ***"
 Write-Host "$modNameCanonical ready to run."
