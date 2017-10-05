@@ -2,8 +2,8 @@
 ; CLASS DEFINITION
 ;-------------------------------------------------------------
 +[Runner X2SoldierClassTemplate]
-+DisplayName="Runner"
-+ClassSummary="The runner is a mobile but offensively weak operative that supports their squad with powerful Spires."
++DisplayName="Spire Runner"
++ClassSummary="The spire runner is a mobile but offensively weak operative that supports their squad with powerful Spires."
 +LeftAbilityTreeTitle="Fight"
 +RightAbilityTreeTitle="Flight"
 +AbilityTreeTitles[0]="Fight"
@@ -34,8 +34,8 @@
 ; ABILITIES
 [CreateSpire X2AbilityTemplate]
 LocFriendlyName="Create Spire"
-LocLongDescription="Create a spire. Spires provide high cover."
-LocHelpText="Create a spire. Spires provide high cover."
+LocLongDescription="Create a spire. Spires provide low cover."
+LocHelpText="Create a spire. Spires provide low cover."
 LocFlyOverText="Create Spire"
 LocPromotionPopupText="Spires are the focal point of most Runner abilities. They provide cover, and at high levels, confer additional benefits."
 
@@ -46,7 +46,7 @@ LocHelpText="Allies who step on a tile adjacent to a spire gain a small shield. 
 LocFlyOverText="Shelter"
 LocPromotionPopupText="Shelter turns spires into great staging areas for engagements."
 
-[BuffMeUp X2AbilityTemplate]
+[Jammerware_JSRC_BuffMeUp X2AbilityTemplate]
 LocFriendlyName="Buff Me Up!"
 LocLongDescription="Break the game and add a shield."
 LocHelpText="Break the game and add a shield."
@@ -58,3 +58,9 @@ LocPromotionPopupText="This is a debugging ability. If you see it in the wild, s
 ;-------------------------------------------------------------
 [SpireGun X2WeaponTemplate]
 FriendlyName="Spire Gun"
+
+;-------------------------------------------------------------
+; CHARACTERS
+;-------------------------------------------------------------
+[Jammerware_JSRC_Spire X2CharacterTemplate]
+strCharacterName="Spire"

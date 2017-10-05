@@ -198,7 +198,7 @@ static function X2AbilityTemplate AddBuffMeUp()
 	local X2AbilityTrigger_PlayerInput      InputTrigger;
 	local X2Effect_PersistentStatChange StatChangeEffect;
 
-	`CREATE_X2ABILITY_TEMPLATE(Template, 'BuffMeUp');
+	`CREATE_X2ABILITY_TEMPLATE(Template, 'Jammerware_JSRC_BuffMeUp');
 
 	ActionPointCost = new class'X2AbilityCost_ActionPoints';
 	ActionPointCost.iNumPoints = 1;

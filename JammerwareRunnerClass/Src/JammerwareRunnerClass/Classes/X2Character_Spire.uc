@@ -60,7 +60,8 @@ static function X2CharacterTemplate CreateSpire()
 
 	CharTemplate.strTargetIconImage = class'UIUtilities_Image'.const.TargetIcon_Turret;
 
-    // TODO: abilities
+    // abilities
+	CharTemplate.Abilities.AddItem('Jammerware_JSRC_BuffMeUp');
 
 	CharTemplate.bDisablePodRevealMovementChecks = true;
 

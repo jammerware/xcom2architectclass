@@ -13,7 +13,7 @@ The goal of the Spire Runner class is to encourage the player's spatial awarenes
 
 **Squaddie**
 
-*Create Spire* - Summon a spire. Spires provide full cover.
+*Create Spire* - Summon a spire. Spires provide low cover.
 
 | Rank | Fight | Flight |
 | ---- | ----- | ------ |

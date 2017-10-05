@@ -13,6 +13,7 @@ function ETeam GetTeam(const out EffectAppliedData ApplyEffectParameters)
 function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, StateObjectReference NewUnitRef, XComGameState NewGameState, XComGameState_Effect NewEffectState)
 {
 	local XComGameState_Unit SpireGameState, SourceUnitGameState;
+	local GameRulesCache_Unit UnitCache;
 	
 	SpireGameState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(NewUnitRef.ObjectID));
 	`assert(SpireGameState != none);
@@ -27,6 +28,11 @@ function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, Stat
 	// spires provide low cover
 	SpireGameState.bGeneratesCover = true;
 	SpireGameState.CoverForceFlag = CoverForce_Low;
+
+	`TACTICALRULES.GetGameRulesCache_Unit(SpireGameState.GetReference(), UnitCache);
+
+	// what is happening
+	`LOG("JSRC: Spire spawned | actions? " @ UnitCache.bAnyActionsAvailable);
 }
 
 defaultproperties
