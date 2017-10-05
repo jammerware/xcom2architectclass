@@ -39,13 +39,6 @@ LocHelpText="Create a spire. Spires provide high cover."
 LocFlyOverText="Create Spire"
 LocPromotionPopupText="Spires are the focal point of most Runner abilities. They provide cover, and at high levels, confer additional benefits."
 
-[CreateSpireUnit X2AbilityTemplate]
-LocFriendlyName="Create Spire"
-LocLongDescription="Create a spire. Spires provide high cover."
-LocHelpText="Create a spire. Spires provide high cover."
-LocFlyOverText="Create Spire"
-LocPromotionPopupText="Spires are the focal point of most Runner abilities. They provide cover, and at high levels, confer additional benefits."
-
 [Shelter X2AbilityTemplate]
 LocFriendlyName="Shelter"
 LocLongDescription="Allies who step on a tile adjacent to a spire gain a small shield. Shelter doesn't stack."

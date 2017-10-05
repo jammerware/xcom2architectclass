@@ -9,8 +9,7 @@ static function array <X2DataTemplate> CreateTemplates()
 	Templates.Length = 0;
 
 	// SQUADDIE!
-	//Templates.AddItem(AddCreateSpire());
-	Templates.AddItem(AddCreateSpireUnit());
+	Templates.AddItem(AddCreateSpire());
 	
 	// CORPORAL!
 	Templates.AddItem(AddShelter());
@@ -22,95 +21,14 @@ static function array <X2DataTemplate> CreateTemplates()
 	return Templates;
 }
 
-//static function X2AbilityTemplate AddCreateSpire()
-//{
-	//local X2AbilityTemplate	Template;
-	//local X2AbilityTarget_Cursor Cursor;
-	//local X2AbilityMultiTarget_Radius RadiusMultiTarget;
-	//local X2AbilityCost_ActionPoints ActionPointCost;
-	//local X2Effect_SpawnSpire SpireEffect;
-	//local X2AbilityCooldown Cooldown;
-//
-	//`CREATE_X2ABILITY_TEMPLATE(Template, 'CreateSpire')
-//
-	//Template.AbilityToHitCalc = default.DeadEye;
-	//Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);
-	//Template.TargetingMethod = class'X2TargetingMethod_Pillar';
-//
-	//Cursor = new class'X2AbilityTarget_Cursor';
-	//Cursor.bRestrictToSquadsightRange = true;
-	//Template.AbilityTargetStyle = Cursor;
-//
-	//RadiusMultiTarget = new class'X2AbilityMultiTarget_Radius';
-	//RadiusMultiTarget.fTargetRadius = 0.25; // small amount so it just grabs one tile
-	//Template.AbilityMultiTargetStyle = RadiusMultiTarget;
-//
-	//ActionPointCost = new class'X2AbilityCost_ActionPoints';
-	//ActionPointCost.iNumPoints = 1;
-	//Template.AbilityCosts.AddItem(ActionPointCost);
-//
-	//Cooldown = new class'X2AbilityCooldown';
-	//Cooldown.iNumTurns = default.CREATESPIRE_COOLDOWN;
-	//Template.AbilityCooldown = Cooldown;
-//
-	//Template.AbilitySourceName = 'eAbilitySource_Perk';
-	//Template.ActivationSpeech = 'InTheZone';
-	//Template.CustomFireAnim = 'HL_SignalPoint';
-//
-	//Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_AlwaysShow;
-	//Template.Hostility = eHostility_Defensive;
-	//Template.IconImage = "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_Pillar";
-	//Template.AbilityConfirmSound = "TacticalUI_ActivateAbility";
-	//Template.ConcealmentRule = eConceal_Never;
-//
-	//Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
-	//Template.AddShooterEffectExclusions();
-//
-	//SpireEffect = new class'X2Effect_SpawnSpire';
-	//SpireEffect.BuildPersistentEffect(1, false, true, false, eGameRule_PlayerTurnBegin);	
-	//// TODO: figure out why i can't use the pillar archetype 
-	////SpireEffect.DestructibleArchetype = "FX_Templar_Pillar.Pillar_Destructible";
-	//SpireEffect.DestructibleArchetype = "AdventPillars.Archetypes.ARC_AdventPillars_HiCov_1x1A";
-	//Template.AddShooterEffect(SpireEffect);
-//
-	//Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
-	//Template.BuildVisualizationFn = Spire_BuildVisualization;
-	//
-	//Template.SuperConcealmentLoss = class'X2AbilityTemplateManager'.default.SuperConcealmentStandardShotLoss;
-	//Template.ChosenActivationIncreasePerUse = class'X2AbilityTemplateManager'.default.NonAggressiveChosenActivationIncreasePerUse;
-//
-	//return Template;
-//}
-//
-//function Spire_BuildVisualization(XComGameState VisualizeGameState)
-//{
-	//local XComGameState_Destructible DestructibleState;
-	//local VisualizationActionMetadata BuildTrack;
-//
-	//TypicalAbility_BuildVisualization(VisualizeGameState);
-//
-	//foreach VisualizeGameState.IterateByClassType(class'XComGameState_Destructible', DestructibleState)
-	//{
-		//break;
-	//}
-	//`assert(DestructibleState != none);
-//
-	//BuildTrack.StateObject_NewState = DestructibleState;
-	//BuildTrack.StateObject_OldState = DestructibleState;
-	//BuildTrack.VisualizeActor = `XCOMHISTORY.GetVisualizer(DestructibleState.ObjectID);
-//
-	//class'X2Action_ShowSpawnedDestructible'.static.AddToVisualizationTree(BuildTrack, VisualizeGameState.GetContext());
-//}
-
-static function X2AbilityTemplate AddCreateSpireUnit()
+static function X2AbilityTemplate AddCreateSpire()
 {
-	local X2AbilityTemplate             Template;
-	local X2AbilityCost_ActionPoints    ActionPointCost;
-	local X2AbilityTarget_Cursor        CursorTarget;
-	local X2AbilityMultiTarget_Radius   RadiusMultiTarget;
-	local X2Effect_SpawnMimicBeacon     SpawnMimicBeacon;
+	local X2AbilityTemplate Template;
+	local X2AbilityCost_ActionPoints ActionPointCost;
+	local X2AbilityTarget_Cursor CursorTarget;
+	local X2Effect_SpawnSpire SpawnSpireEffect;
 
-	`CREATE_X2ABILITY_TEMPLATE(Template, 'CreateSpireUnit');
+	`CREATE_X2ABILITY_TEMPLATE(Template, 'CreateSpire');
 
 	Template.IconImage = "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_Pillar";
 	Template.AbilitySourceName = 'eAbilitySource_Perk';
@@ -132,43 +50,33 @@ static function X2AbilityTemplate AddCreateSpireUnit()
 	Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);
 
 	CursorTarget = new class'X2AbilityTarget_Cursor';
+	CursorTarget.bRestrictToWeaponRange = true;
 	Template.AbilityTargetStyle = CursorTarget;
+	Template.TargetingMethod = class'X2TargetingMethod_Teleport';
 
-	RadiusMultiTarget = new class'X2AbilityMultiTarget_Radius';
-	RadiusMultiTarget.bUseWeaponRadius = true;
-	RadiusMultiTarget.bIgnoreBlockingCover = true; // we don't need this, the squad viewer will do the appropriate things once thrown
-	Template.AbilityMultiTargetStyle = RadiusMultiTarget;
-
-	Template.TargetingMethod = class'X2TargetingMethod_MimicBeacon';
-	Template.SkipRenderOfTargetingTemplate = true;
-
-	Template.bUseThrownGrenadeEffects = true;
-
-	SpawnMimicBeacon = new class'X2Effect_SpawnMimicBeacon';
-	SpawnMimicBeacon.BuildPersistentEffect(1, false, true, false, eGameRule_PlayerTurnBegin);
-	Template.AddShooterEffect(SpawnMimicBeacon);
-	Template.AddShooterEffect(new class'X2Effect_BreakUnitConcealment');
+	SpawnSpireEffect = new class'X2Effect_SpawnSpire';
+	SpawnSpireEffect.BuildPersistentEffect(1, true);
+	Template.AddShooterEffect(SpawnSpireEffect);
 
 	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
-	Template.BuildVisualizationFn = MimicBeacon_BuildVisualization;
+	Template.BuildVisualizationFn = SpawnSpire_BuildVisualization;
 
 	Template.ChosenActivationIncreasePerUse = class'X2AbilityTemplateManager'.default.NonAggressiveChosenActivationIncreasePerUse;
 		
 	return Template;
 }
 
-simulated function MimicBeacon_BuildVisualization(XComGameState VisualizeGameState)
+simulated function SpawnSpire_BuildVisualization(XComGameState VisualizeGameState)
 {
 	local XComGameStateHistory History;
 	local XComGameStateContext_Ability Context;
 	local StateObjectReference InteractingUnitRef;
 	local VisualizationActionMetadata EmptyTrack;
-	local VisualizationActionMetadata SourceTrack, MimicBeaconTrack;
-	local XComGameState_Unit MimicSourceUnit, SpawnedUnit;
+	local VisualizationActionMetadata SourceTrack, SpireTrack;
+	local XComGameState_Unit SpireSourceUnit, SpawnedUnit;
 	local UnitValue SpawnedUnitValue;
-	local X2Effect_SpawnMimicBeacon SpawnMimicBeaconEffect;
+	local X2Effect_SpawnSpire SpawnSpireEffect;
 	local X2Action_MimicBeaconThrow FireAction;
-	local X2Action_PlayAnimation AnimationAction;
 
 	History = `XCOMHISTORY;
 
@@ -186,39 +94,35 @@ simulated function MimicBeacon_BuildVisualization(XComGameState VisualizeGameSta
 	FireAction = X2Action_MimicBeaconThrow(class'X2Action_MimicBeaconThrow'.static.AddToVisualizationTree(SourceTrack, Context));
 	class'X2Action_EnterCover'.static.AddToVisualizationTree(SourceTrack, Context);
 
-	// Configure the visualization track for the mimic beacon
+	// Configure the visualization track for the spire
 	//******************************************************************************************
-	MimicSourceUnit = XComGameState_Unit(VisualizeGameState.GetGameStateForObjectID(InteractingUnitRef.ObjectID));
-	`assert(MimicSourceUnit != none);
-	MimicSourceUnit.GetUnitValue(class'X2Effect_SpawnUnit'.default.SpawnedUnitValueName, SpawnedUnitValue);
+	SpireSourceUnit = XComGameState_Unit(VisualizeGameState.GetGameStateForObjectID(InteractingUnitRef.ObjectID));
+	`assert(SpireSourceUnit != none);
+	SpireSourceUnit.GetUnitValue(class'X2Effect_SpawnUnit'.default.SpawnedUnitValueName, SpawnedUnitValue);
 
-	MimicBeaconTrack = EmptyTrack;
-	MimicBeaconTrack.StateObject_OldState = History.GetGameStateForObjectID(SpawnedUnitValue.fValue, eReturnType_Reference, VisualizeGameState.HistoryIndex);
-	MimicBeaconTrack.StateObject_NewState = MimicBeaconTrack.StateObject_OldState;
-	SpawnedUnit = XComGameState_Unit(MimicBeaconTrack.StateObject_NewState);
+	SpireTrack = EmptyTrack;
+	SpireTrack.StateObject_OldState = History.GetGameStateForObjectID(SpawnedUnitValue.fValue, eReturnType_Reference, VisualizeGameState.HistoryIndex);
+	SpireTrack.StateObject_NewState = SpireTrack.StateObject_OldState;
+	SpawnedUnit = XComGameState_Unit(SpireTrack.StateObject_NewState);
 	`assert(SpawnedUnit != none);
-	MimicBeaconTrack.VisualizeActor = History.GetVisualizer(SpawnedUnit.ObjectID);
+	SpireTrack.VisualizeActor = History.GetVisualizer(SpawnedUnit.ObjectID);
 
 	// Set the Throwing Unit's FireAction to reference the spawned unit
 	FireAction.MimicBeaconUnitReference = SpawnedUnit.GetReference();
 	// Set the Throwing Unit's FireAction to reference the spawned unit
-	class'X2Action_WaitForAbilityEffect'.static.AddToVisualizationTree(MimicBeaconTrack, Context);
+	class'X2Action_WaitForAbilityEffect'.static.AddToVisualizationTree(SpireTrack, Context);
 
-	// Only one target effect and it is X2Effect_SpawnMimicBeacon
-	SpawnMimicBeaconEffect = X2Effect_SpawnMimicBeacon(Context.ResultContext.ShooterEffectResults.Effects[0]);
+	// Only one target effect and it is X2Effect_SpawnSpire
+	SpawnSpireEffect = X2Effect_SpawnSpire(Context.ResultContext.ShooterEffectResults.Effects[0]);
 	
-	if( SpawnMimicBeaconEffect == none )
+	if (SpawnSpireEffect == none)
 	{
-		`RedScreenOnce("MimicBeacon_BuildVisualization: Missing X2Effect_SpawnMimicBeacon -dslonneger @gameplay");
+		`RedScreen("JSRC: Spire_BuildVisualization: Missing X2Effect_SpawnSpire");
 		return;
 	}
 
-	SpawnMimicBeaconEffect.AddSpawnVisualizationsToTracks(Context, SpawnedUnit, MimicBeaconTrack, MimicSourceUnit, SourceTrack);
-
-	class'X2Action_SyncVisualizer'.static.AddToVisualizationTree(MimicBeaconTrack, Context);
-
-	AnimationAction = X2Action_PlayAnimation(class'X2Action_PlayAnimation'.static.AddToVisualizationTree(MimicBeaconTrack, Context));
-	AnimationAction.Params.BlendTime = 0.0f;
+	SpawnSpireEffect.AddSpawnVisualizationsToTracks(Context, SpawnedUnit, SpireTrack, SpireSourceUnit, SourceTrack);
+	class'X2Action_SyncVisualizer'.static.AddToVisualizationTree(SpireTrack, Context);
 }
 
 static function X2AbilityTemplate AddShelter()

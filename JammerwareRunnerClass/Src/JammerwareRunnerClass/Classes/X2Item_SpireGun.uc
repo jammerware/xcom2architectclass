@@ -40,7 +40,7 @@ static function X2DataTemplate CreateTemplate_SpireGun_Conventional()
 
 	Template.iSoundRange = default.SPIREGUN_CONVENTIONAL_ISOUNDRANGE;
 	Template.iEnvironmentDamage = default.SPIREGUN_CONVENTIONAL_IENVIRONMENTDAMAGE;
-	//Template.iRange = 0;
+	Template.iRange = 3;
 	//Template.BaseDamage = default.HOLYBLADE_CONVENTIONAL_BASEDAMAGE;
 	//Template.Aim = default.HOLYBLADE_CONVENTIONAL_AIM;
 	//Template.CritChance = default.HOLYBLADE_CONVENTIONAL_CRITCHANCE;

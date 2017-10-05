@@ -21,3 +21,12 @@ static event OnPostTemplatesCreated()
 {
     // do stuff to existing templates if necessary
 }
+
+/// <summary>
+/// Called from XComGameState_Unit:GatherUnitAbilitiesForInit after the game has built what it believes is the full list of
+/// abilities for the unit based on character, class, equipment, et cetera. You can add or remove abilities in SetupData.
+/// </summary>
+static function FinalizeUnitAbilitiesForInit(XComGameState_Unit UnitState, out array<AbilitySetupData> SetupData, optional XComGameState StartState, optional XComGameState_Player PlayerState, optional bool bMultiplayerDisplay)
+{
+    `LOG("JSRC: finalize unit abilities");
+}
