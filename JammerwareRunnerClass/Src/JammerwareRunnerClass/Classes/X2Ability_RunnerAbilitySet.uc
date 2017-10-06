@@ -3,9 +3,18 @@ class X2Ability_RunnerAbilitySet extends X2Ability
 
 var config int CREATESPIRE_COOLDOWN;
 
+// ability names
+var name NAME_SHELTER;
+var name NAME_SHELTER_SHIELD;
+var name NAME_SOUL_OF_THE_ARCHITECT;
+
+// ability numbers
+var float RANGE_SHELTER_SHIELD;
+
 static function array <X2DataTemplate> CreateTemplates()
 {
 	local array<X2DataTemplate> Templates;
+	local int LoopIndex;
 	Templates.Length = 0;
 
 	// SQUADDIE!
@@ -13,11 +22,17 @@ static function array <X2DataTemplate> CreateTemplates()
 	
 	// CORPORAL!
 	Templates.AddItem(AddShelter());
-	Templates.AddItem(AddBuffMeUp());
+	Templates.AddItem(AddShelterShield());
 	//Templates.AddItem(AddQuicksilver());
 
 	// COLONEL!
 	Templates.AddItem(AddSoulOfTheArchitect());
+
+	`LOG("JSRC: runner ability templates created - " @ Templates.Length);
+	for (LoopIndex = 0; LoopIndex < Templates.Length; LoopIndex++)
+	{
+		`LOG("JSRC: template name" @ Templates[LoopIndex].DataName);
+	}
 
 	return Templates;
 }
@@ -130,9 +145,90 @@ static function X2AbilityTemplate AddShelter()
 {
 	local X2AbilityTemplate Template;
 
-	Template = PurePassive('Jammerware_JSRC_Ability_Shelter', "img:///UILibrary_PerkIcons.UIPerk_evervigilant");
+	Template = PurePassive(default.NAME_SHELTER, "img:///UILibrary_PerkIcons.UIPerk_evervigilant");
+	Template.AdditionalAbilities.AddItem(default.NAME_SHELTER_SHIELD);
 
 	return Template;
+}
+
+static function X2AbilityTemplate AddShelterShield()
+{
+	local X2AbilityTemplate Template;
+	local X2AbilityTrigger_EventListener Trigger;
+	local X2Effect_ShelterShield ShieldEffect;
+	local X2Condition_UnitProperty TargetCondition;
+
+	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_SHELTER_SHIELD);
+
+	// hud behavior
+	Template.AbilitySourceName = 'eAbilitySource_Perk';
+	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_NeverShow;
+	Template.IconImage = "img:///UILibrary_PerkIcons.UIPerk_adventshieldbearer_energyshield";
+	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_CORPORAL_PRIORITY;
+
+	// targeting
+	Template.AbilityTargetStyle = default.SimpleSingleTarget;
+
+	// hit chance
+	Template.AbilityToHitCalc = default.DeadEye;
+
+	// conditions
+	TargetCondition = new class'X2Condition_UnitProperty';
+	TargetCondition.ExcludeFriendlyToSource = false;
+	TargetCondition.ExcludeHostileToSource = true;
+	TargetCondition.RequireSquadmates = true;
+	TargetCondition.RequireWithinRange = true;
+	TargetCondition.WithinRange = `METERSTOUNITS(class'XComWorldData'.const.WORLD_Melee_Range_Meters);
+	Template.AbilityTargetConditions.AddItem(TargetCondition);
+
+	// triggers
+	Trigger = new class'X2AbilityTrigger_EventListener';
+	Trigger.ListenerData.EventID = 'ObjectMoved';
+	Trigger.ListenerData.Filter = eFilter_None;
+	Trigger.ListenerData.Deferral = ELD_OnStateSubmitted;
+	Trigger.ListenerData.EventFn = class'XComGameState_Ability'.static.TypicalOverwatchListener;
+	Template.AbilityTriggers.AddItem(Trigger);
+
+	// effects
+	ShieldEffect = new class'X2Effect_ShelterShield';
+	// TODO: enable config and weapon-based computation for shield strength and duration
+	ShieldEffect.BuildPersistentEffect(2, false, true, , eGameRule_PlayerTurnEnd);
+	ShieldEffect.SetDisplayInfo(ePerkBuff_Bonus, Template.LocFriendlyName, Template.GetMyLongDescription(), "img:///UILibrary_PerkIcons.UIPerk_adventshieldbearer_energyshield", true);
+	ShieldEffect.AddPersistentStatChange(eStat_ShieldHP, 3);
+	Template.AddTargetEffect(ShieldEffect);
+
+	// game state and visualization
+	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
+	Template.BuildVisualizationFn = ShelterShield_BuildVisualization;
+	Template.bShowActivation = true;
+
+	return Template;
+}
+
+simulated function ShelterShield_BuildVisualization(XComGameState VisualizeGameState)
+{
+	local XComGameStateHistory History;
+	local XComGameStateContext_Ability  Context;
+	local StateObjectReference InteractingUnitRef;
+	local VisualizationActionMetadata EmptyTrack;
+	local VisualizationActionMetadata ActionMetadata;
+	local X2Action_PlayAnimation PlayAnimationAction;
+
+	History = `XCOMHISTORY;
+
+	Context = XComGameStateContext_Ability(VisualizeGameState.GetContext());
+	InteractingUnitRef = Context.InputContext.SourceObject;
+
+	//Configure the visualization track for the shooter
+	//****************************************************************************************
+	ActionMetadata = EmptyTrack;
+	ActionMetadata.StateObject_OldState = History.GetGameStateForObjectID(InteractingUnitRef.ObjectID, eReturnType_Reference, VisualizeGameState.HistoryIndex - 1);
+	ActionMetadata.StateObject_NewState = VisualizeGameState.GetGameStateForObjectID(InteractingUnitRef.ObjectID);
+	ActionMetadata.VisualizeActor = History.GetVisualizer(InteractingUnitRef.ObjectID);
+
+	// TODO: this is busted
+	//PlayAnimationAction = X2Action_PlayAnimation(class'X2Action_PlayAnimation'.static.AddToVisualizationTree(ActionMetadata, Context, false, ActionMetadata.LastActionAdded));
+	//PlayAnimationAction.Params.AnimName = 'HL_EnergyShield';
 }
 
 static function X2AbilityTemplate AddSoulOfTheArchitect()
@@ -144,57 +240,9 @@ static function X2AbilityTemplate AddSoulOfTheArchitect()
 	return Template;
 }
 
-static function X2AbilityTemplate AddBuffMeUp() 
+defaultproperties 
 {
-	local X2AbilityTemplate                 Template;
-	local X2AbilityCost_ActionPoints        ActionPointCost;
-	local X2AbilityTarget_Single            SingleTarget;
-	local X2Condition_UnitProperty          UnitPropertyCondition;
-	local X2AbilityTrigger_PlayerInput      InputTrigger;
-	local X2Effect_PersistentStatChange StatChangeEffect;
-
-	`CREATE_X2ABILITY_TEMPLATE(Template, 'Jammerware_JSRC_BuffMeUp');
-
-	ActionPointCost = new class'X2AbilityCost_ActionPoints';
-	ActionPointCost.iNumPoints = 1;
-	Template.AbilityCosts.AddItem(ActionPointCost);
-	
-	Template.AbilityToHitCalc = default.DeadEye;
-
-	SingleTarget = new class'X2AbilityTarget_Single';
-	SingleTarget.bIncludeSelf = true;
-	Template.AbilityTargetStyle = SingleTarget;
-
-	UnitPropertyCondition = new class'X2Condition_UnitProperty';
-	UnitPropertyCondition.ExcludeDead = true;
-	Template.AbilityShooterConditions.AddItem(UnitPropertyCondition);
-
-	UnitPropertyCondition = new class'X2Condition_UnitProperty';
-	UnitPropertyCondition.ExcludeDead = true;
-	UnitPropertyCondition.ExcludeHostileToSource = true;
-	UnitPropertyCondition.ExcludeFriendlyToSource = false;
-	Template.AbilityTargetConditions.AddItem(UnitPropertyCondition);
-
-	StatChangeEffect = new class'X2Effect_PersistentStatChange';
-	StatChangeEffect.BuildPersistentEffect(1, true, false, true);
-	StatChangeEffect.AddPersistentStatChange(eStat_ShieldHP, 3);
-	Template.AddTargetEffect(StatChangeEffect);
-	
-	InputTrigger = new class'X2AbilityTrigger_PlayerInput';
-	Template.AbilityTriggers.AddItem(InputTrigger);
-
-	Template.IconImage = "img:///UILibrary_PerkIcons.UIPerk_medkit";
-	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.MEDIKIT_HEAL_PRIORITY;
-	Template.Hostility = eHostility_Defensive;
-	Template.bDisplayInUITooltip = false;
-	Template.bLimitTargetIcons = true;
-	Template.ActivationSpeech = 'HealingAlly';
-
-	Template.CustomSelfFireAnim = 'FF_FireMedkitSelf';
-	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
-	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
-
-	Template.ChosenActivationIncreasePerUse = class'X2AbilityTemplateManager'.default.NonAggressiveChosenActivationIncreasePerUse;
-
-	return Template;
+	NAME_SHELTER = "Jammerware_JSRC_Ability_Shelter"
+	NAME_SHELTER_SHIELD = "Jammerware_JSRC_Ability_ShelterShield"
+	NAME_SOUL_OF_THE_ARCHITECT = "Jammerware_JSRC_Ability_SoulOfTheArchitect"
 }

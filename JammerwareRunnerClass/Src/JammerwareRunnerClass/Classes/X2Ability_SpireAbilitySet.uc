@@ -7,42 +7,64 @@ static function array <X2DataTemplate> CreateTemplates()
 	Templates.Length = 0;
 
 	// CORPORAL!
+	Templates.AddItem(AddBuffMeUp());
 	//Templates.AddItem(AddShelter());
 	//Templates.AddItem(AddQuicksilver());
 
 	return Templates;
 }
 
-//static function X2AbilityTemplate AddShelter()
-//{
-//	local X2AbilityTemplate Template;
-//	local X2AbilityTrigger_EventListener Trigger;
-//	local X2Effect_Shelter ShelterEffect;
-//
-//	`CREATE_X2ABILITY_TEMPLATE(Template, 'Jammerware_JSRC_Ability_Shelter');
-//
-//	Template.AbilityToHitCalc = default.DeadEye;
-//	Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
-//	Template.AbilityTargetStyle = default.SelfTarget;
-//	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_NeverShow;
-//	Template.Hostility = eHostility_Neutral;
-//
-//	Trigger = new class'X2AbilityTrigger_EventListener';
-//	Trigger.ListenerData.Deferral = ELD_OnStateSubmitted;
-//	Trigger.ListenerData.EventID = 'ObjectMoved';
-//	Trigger.ListenerData.Filter = eFilter_Unit;
-//	Trigger.ListenerData.EventFn = ShelterTriggerListener;
-//	Template.AbilityTriggers.AddItem(Trigger);
-//
-//	ShelterEffect = new class'X2Effect_Shelter';
-//	ShelterEffect.BuildPersistentEffect(1, true, false);
-//	// TODO: localize
-//	ShelterEffect.SetDisplayInfo(ePerkBuff_Bonus, "Shelter", "Contact with a spire has granted this soldier an energy shield.", "img:///UILibrary_PerkIcons.UIPerk_adventshieldbearer_energyshield", true);
-//	ShelterEffect.AddPersistentStatChange(eStat_ShieldHP, 1);
-//	ShelterEffect.EffectRemovedVisualizationFn = OnShieldRemoved_BuildVisualization;
-//	Template.AddShooterEffect(ShelterEffect);
-//
-//	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
-//	
-//	return Template;
-//}
+static function X2AbilityTemplate AddBuffMeUp() 
+{
+	local X2AbilityTemplate                 Template;
+	local X2AbilityCost_ActionPoints        ActionPointCost;
+	local X2AbilityTarget_Single            SingleTarget;
+	local X2Condition_UnitProperty          UnitPropertyCondition;
+	local X2AbilityTrigger_PlayerInput      InputTrigger;
+	local X2Effect_PersistentStatChange StatChangeEffect;
+
+	`CREATE_X2ABILITY_TEMPLATE(Template, 'Jammerware_JSRC_BuffMeUp');
+
+	ActionPointCost = new class'X2AbilityCost_ActionPoints';
+	ActionPointCost.iNumPoints = 1;
+	Template.AbilityCosts.AddItem(ActionPointCost);
+	
+	Template.AbilityToHitCalc = default.DeadEye;
+
+	SingleTarget = new class'X2AbilityTarget_Single';
+	SingleTarget.bIncludeSelf = true;
+	Template.AbilityTargetStyle = SingleTarget;
+
+	UnitPropertyCondition = new class'X2Condition_UnitProperty';
+	UnitPropertyCondition.ExcludeDead = true;
+	Template.AbilityShooterConditions.AddItem(UnitPropertyCondition);
+
+	UnitPropertyCondition = new class'X2Condition_UnitProperty';
+	UnitPropertyCondition.ExcludeDead = true;
+	UnitPropertyCondition.ExcludeHostileToSource = true;
+	UnitPropertyCondition.ExcludeFriendlyToSource = false;
+	Template.AbilityTargetConditions.AddItem(UnitPropertyCondition);
+
+	StatChangeEffect = new class'X2Effect_PersistentStatChange';
+	StatChangeEffect.BuildPersistentEffect(1, true, false, true);
+	StatChangeEffect.AddPersistentStatChange(eStat_ShieldHP, 3);
+	Template.AddTargetEffect(StatChangeEffect);
+	
+	InputTrigger = new class'X2AbilityTrigger_PlayerInput';
+	Template.AbilityTriggers.AddItem(InputTrigger);
+
+	Template.IconImage = "img:///UILibrary_PerkIcons.UIPerk_medkit";
+	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.MEDIKIT_HEAL_PRIORITY;
+	Template.Hostility = eHostility_Defensive;
+	Template.bDisplayInUITooltip = false;
+	Template.bLimitTargetIcons = true;
+	Template.ActivationSpeech = 'HealingAlly';
+
+	Template.CustomSelfFireAnim = 'FF_FireMedkitSelf';
+	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
+	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
+
+	Template.ChosenActivationIncreasePerUse = class'X2AbilityTemplateManager'.default.NonAggressiveChosenActivationIncreasePerUse;
+
+	return Template;
+}
