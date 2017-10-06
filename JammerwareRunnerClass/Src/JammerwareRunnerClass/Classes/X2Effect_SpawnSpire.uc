@@ -2,6 +2,7 @@ class X2Effect_SpawnSpire extends X2Effect_SpawnUnit;
 
 function vector GetSpawnLocation(const out EffectAppliedData ApplyEffectParameters, XComGameState NewGameState)
 {
+	`LOG("JSRC: get spawn location - " @ ApplyEffectParameters.AbilityInputContext.TargetLocations[0]);
 	return ApplyEffectParameters.AbilityInputContext.TargetLocations[0];
 }
 
@@ -12,11 +13,10 @@ function ETeam GetTeam(const out EffectAppliedData ApplyEffectParameters)
 
 function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, StateObjectReference NewUnitRef, XComGameState NewGameState, XComGameState_Effect NewEffectState)
 {
-	local XComGameState_Unit SpireGameState, SourceUnitGameState;
-	local GameRulesCache_Unit UnitCache;
+	local XComGameState_Unit SpireUnitGameState, SourceUnitGameState;
 	
-	SpireGameState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(NewUnitRef.ObjectID));
-	`assert(SpireGameState != none);
+	SpireUnitGameState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(NewUnitRef.ObjectID));
+	`assert(SpireUnitGameState != none);
 
 	SourceUnitGameState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(ApplyEffectParameters.TargetStateObjectRef.ObjectID));
 	if( SourceUnitGameState == none)
@@ -25,14 +25,39 @@ function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, Stat
 	}
 	`assert(SourceUnitGameState != none);
 
+	// wire up the spire's abilities and effects based on the state of the shooting runner
+	ConfigureSpireFromSourceUnit(SourceUnitGameState, SpireUnitGameState, NewGameState);
+
 	// spires provide low cover
-	SpireGameState.bGeneratesCover = true;
-	SpireGameState.CoverForceFlag = CoverForce_Low;
+	SpireUnitGameState.bGeneratesCover = true;
+	SpireUnitGameState.CoverForceFlag = CoverForce_Low;
+}
 
-	`TACTICALRULES.GetGameRulesCache_Unit(SpireGameState.GetReference(), UnitCache);
+function ConfigureSpireFromSourceUnit(XComGameState_Unit SourceUnit, XComGameState_Unit SpireUnit, XComGameState NewGameState)
+{
+	if (GetIsUnitAffectedBy('Shelter', SourceUnit)) {
+		`LOG("JSRC: spire will be affected by shelter trigger");
+		SpireUnit.AddAffectingEffect(CreateEffectGameState(class'X2Effect_ShelterListener', NewGameState));
+		`LOG("JSRC: done?");
+	}
+}
 
-	// what is happening
-	`LOG("JSRC: Spire spawned | actions? " @ UnitCache.bAnyActionsAvailable);
+function XComGameState_Effect CreateEffectGameState(X2Effect CreateFromEffect, XComGameState GameState)
+{
+	return XComGameState_Effect(GameState.CreateNewStateObject(CreateFromEffect));
+}
+
+function bool GetIsUnitAffectedBy(name CheckEffectName, XComGameState_Unit Unit)
+{
+	local int LoopIndex;
+
+	for (LoopIndex = 0; LoopIndex < Unit.AffectedByEffectNames.Length; LoopIndex++) {
+		if (Unit.AffectedByEffectNames[LoopIndex] == CheckEffectName) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 defaultproperties

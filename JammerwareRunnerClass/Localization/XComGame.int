@@ -48,8 +48,8 @@ LocPromotionPopupText="Shelter turns spires into great staging areas for engagem
 
 [Jammerware_JSRC_BuffMeUp X2AbilityTemplate]
 LocFriendlyName="Buff Me Up!"
-LocLongDescription="Break the game and add a shield."
-LocHelpText="Break the game and add a shield."
+LocLongDescription="Break the game. Add a shield. Debug abilities."
+LocHelpText="Break the game. Add a shield. Debug abilities."
 LocFlyOverText="Buff Me Up!"
 LocPromotionPopupText="This is a debugging ability. If you see it in the wild, something has gone horribly wrong."
 
