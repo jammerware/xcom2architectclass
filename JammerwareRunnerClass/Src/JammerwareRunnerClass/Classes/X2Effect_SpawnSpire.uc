@@ -26,7 +26,7 @@ function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, Stat
 	`assert(SourceUnitGameState != none);
 
 	// wire up the spire's abilities and effects based on the state of the shooting runner
-	ConfigureSpireFromSourceUnit(SourceUnitGameState, SpireUnitGameState, NewGameState);
+	//ConfigureSpireFromSourceUnit(SourceUnitGameState, SpireUnitGameState, NewGameState);
 
 	// spires provide low cover
 	SpireUnitGameState.bGeneratesCover = true;
@@ -36,15 +36,9 @@ function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, Stat
 function ConfigureSpireFromSourceUnit(XComGameState_Unit SourceUnit, XComGameState_Unit SpireUnit, XComGameState NewGameState)
 {
 	if (GetIsUnitAffectedBy('Shelter', SourceUnit)) {
-		`LOG("JSRC: spire will be affected by shelter trigger");
-		SpireUnit.AddAffectingEffect(CreateEffectGameState(class'X2Effect_ShelterListener', NewGameState));
-		`LOG("JSRC: done?");
+		//ZombieGameState.SetUnitFloatValue(TurnedZombieName, 1, eCleanup_BeginTactical);
+		//SpireUnit.SetUnitFloatValue
 	}
-}
-
-function XComGameState_Effect CreateEffectGameState(X2Effect CreateFromEffect, XComGameState GameState)
-{
-	return XComGameState_Effect(GameState.CreateNewStateObject(CreateFromEffect));
 }
 
 function bool GetIsUnitAffectedBy(name CheckEffectName, XComGameState_Unit Unit)
@@ -62,7 +56,7 @@ function bool GetIsUnitAffectedBy(name CheckEffectName, XComGameState_Unit Unit)
 
 defaultproperties
 {
-	UnitToSpawnName="Jammerware_JSRC_Spire"
+	UnitToSpawnName="Jammerware_JSRC_Character_Spire"
 	bInfiniteDuration=true
 	EffectName="SpawnSpire"
 }

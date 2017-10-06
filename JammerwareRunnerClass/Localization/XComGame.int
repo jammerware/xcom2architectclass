@@ -31,7 +31,9 @@
 +PhotoboothSoloBLines_Male[0]="Speed and spires."
 +PhotoboothSoloBLines_Female[0]="Speed and spires."
 
-; ABILITIES
+;-------------------------------------------------------------
+; WEAPONS
+;-------------------------------------------------------------
 [CreateSpire X2AbilityTemplate]
 LocFriendlyName="Create Spire"
 LocLongDescription="Create a spire. Spires provide low cover."
@@ -39,12 +41,19 @@ LocHelpText="Create a spire. Spires provide low cover."
 LocFlyOverText="Create Spire"
 LocPromotionPopupText="Spires are the focal point of most Runner abilities. They provide cover, and at high levels, confer additional benefits."
 
-[Shelter X2AbilityTemplate]
+[Jammerware_JSRC_Ability_Shelter X2AbilityTemplate]
 LocFriendlyName="Shelter"
-LocLongDescription="Allies who step on a tile adjacent to a spire gain a small shield. Shelter doesn't stack."
-LocHelpText="Allies who step on a tile adjacent to a spire gain a small shield. Shelter doesn't stack."
+LocLongDescription="Your spires gain Shelter, which grants allies who step on a tile adjacent to the spire a small shield. Shelter doesn't stack."
+LocHelpText="Your spires gain Shelter, which grants allies who step on a tile adjacent to the spire a small shield. Shelter doesn't stack."
 LocFlyOverText="Shelter"
 LocPromotionPopupText="Shelter turns spires into great staging areas for engagements."
+
+[Jammerware_JSRC_Ability_SoulOfTheArchitect X2AbilityTemplate]
+LocFriendlyName="Soul of the Architect"
+LocLongDescription="All effects that apply to your spires also apply to you. You gain all abilities that your spires have."
+LocHelpText="All effects that apply to your spires also apply to you. You gain all abilities that your spires have."
+LocFlyOverText="Soul of the Architect"
+LocPromotionPopupText="You've become one with your spires. Or, you know. Two or three with them. Or whatever."
 
 [Jammerware_JSRC_BuffMeUp X2AbilityTemplate]
 LocFriendlyName="Buff Me Up!"
@@ -62,5 +71,5 @@ FriendlyName="Spire Gun"
 ;-------------------------------------------------------------
 ; CHARACTERS
 ;-------------------------------------------------------------
-[Jammerware_JSRC_Spire X2CharacterTemplate]
+[Jammerware_JSRC_Character_Spire X2CharacterTemplate]
 strCharacterName="Spire"

@@ -11,10 +11,9 @@ static function array<X2DataTemplate> CreateTemplates()
 
 static function X2CharacterTemplate CreateSpire()
 {
-    // TODO: this is lifted from CreateDefaultTurretTemplate in X2Character_DefaultCharacters - make sure this is set up how we want
     local X2CharacterTemplate CharTemplate;
 
-	`CREATE_X2CHARACTER_TEMPLATE(CharTemplate, 'Jammerware_JSRC_Spire');
+	`CREATE_X2CHARACTER_TEMPLATE(CharTemplate, 'Jammerware_JSRC_Character_Spire');
 	CharTemplate.BehaviorClass = class'XGAIBehavior';
     CharTemplate.strPawnArchetypes.AddItem("GameUnit_LostTowersTurret.ARC_GameUnit_LostTowersTurretM1");
 
@@ -62,6 +61,7 @@ static function X2CharacterTemplate CreateSpire()
 
     // abilities
 	CharTemplate.Abilities.AddItem('Jammerware_JSRC_BuffMeUp');
+	CharTemplate.Abilities.AddItem('Jammerware_JSRC_Ability_Shelter');
 
 	CharTemplate.bDisablePodRevealMovementChecks = true;
 

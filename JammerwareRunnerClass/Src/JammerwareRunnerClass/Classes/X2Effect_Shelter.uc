@@ -1,10 +1,6 @@
-class X2Effect_Shelter extends X2Effect_PersistentStatChange;
+class X2Effect_Shelter extends X2Effect;
 
-simulated protected function OnEffectAdded(const out EffectAppliedData ApplyEffectParameters, XComGameState_BaseObject kNewTargetState, XComGameState NewGameState, XComGameState_Effect NewEffectState)
-{
-	`LOG("JSRC: shelter added");
-}
-
-DefaultProperties {
-	EffectName = "ShelterTrigger";
+defaultproperties {
+    bInfiniteDuration=true
+	EffectName="Jammerware_JSRC_Effect_Shelter"
 }

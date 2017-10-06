@@ -19,7 +19,6 @@ static event InstallNewCampaign(XComGameState StartState)
 /// </summary>
 static event OnPostTemplatesCreated()
 {
-    // do stuff to existing templates if necessary
 }
 
 /// <summary>
@@ -28,5 +27,4 @@ static event OnPostTemplatesCreated()
 /// </summary>
 static function FinalizeUnitAbilitiesForInit(XComGameState_Unit UnitState, out array<AbilitySetupData> SetupData, optional XComGameState StartState, optional XComGameState_Player PlayerState, optional bool bMultiplayerDisplay)
 {
-    `LOG("JSRC: finalize unit abilities");
 }

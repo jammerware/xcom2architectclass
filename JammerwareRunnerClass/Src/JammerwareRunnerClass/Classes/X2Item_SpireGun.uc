@@ -53,7 +53,5 @@ static function X2DataTemplate CreateTemplate_SpireGun_Conventional()
 	Template.CanBeBuilt = false;
 	Template.bInfiniteItem = true;
 
-	`LOG("Jammerware's Runner Class: Spire Gun template created.");
-
 	return Template;
 }

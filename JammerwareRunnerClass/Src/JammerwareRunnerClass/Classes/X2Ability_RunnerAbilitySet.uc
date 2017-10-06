@@ -13,11 +13,12 @@ static function array <X2DataTemplate> CreateTemplates()
 	
 	// CORPORAL!
 	Templates.AddItem(AddShelter());
-	Templates.AddItem(AddShelterTrigger());
 	Templates.AddItem(AddBuffMeUp());
 	//Templates.AddItem(AddQuicksilver());
 
-	`LOG("Jammerware's Runner Class: Creating templates - " @ string(Templates.Length));
+	// COLONEL!
+	Templates.AddItem(AddSoulOfTheArchitect());
+
 	return Templates;
 }
 
@@ -129,64 +130,18 @@ static function X2AbilityTemplate AddShelter()
 {
 	local X2AbilityTemplate Template;
 
-	Template = PurePassive('Shelter', "img:///UILibrary_PerkIcons.UIPerk_evervigilant");
-	Template.AbilityTriggers.AddItem(default.UnitPostBeginPlayTrigger);
-	Template.AdditionalAbilities.AddItem('ShelterTrigger');
+	Template = PurePassive('Jammerware_JSRC_Ability_Shelter', "img:///UILibrary_PerkIcons.UIPerk_evervigilant");
 
 	return Template;
 }
 
-static function X2AbilityTemplate AddShelterTrigger()
+static function X2AbilityTemplate AddSoulOfTheArchitect()
 {
 	local X2AbilityTemplate Template;
-	local X2AbilityTrigger_EventListener Trigger;
-	local X2Effect_Shelter ShelterEffect;
 
-	`CREATE_X2ABILITY_TEMPLATE(Template, 'ShelterTrigger');
+	Template = PurePassive('Jammerware_JSRC_Ability_SoulOfTheArchitect', "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_Pillar");
 
-	Template.AbilityToHitCalc = default.DeadEye;
-	Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
-	Template.AbilityTargetStyle = default.SelfTarget;
-	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_NeverShow;
-	Template.Hostility = eHostility_Neutral;
-
-	Trigger = new class'X2AbilityTrigger_EventListener';
-	Trigger.ListenerData.Deferral = ELD_OnStateSubmitted;
-	Trigger.ListenerData.EventID = 'ObjectMoved';
-	Trigger.ListenerData.Filter = eFilter_Unit;
-	Trigger.ListenerData.EventFn = ShelterTriggerListener;
-	Template.AbilityTriggers.AddItem(Trigger);
-
-	ShelterEffect = new class'X2Effect_Shelter';
-	ShelterEffect.BuildPersistentEffect(1, true, false);
-	// TODO: localize
-	ShelterEffect.SetDisplayInfo(ePerkBuff_Bonus, "Shelter", "Contact with a spire has granted an energy shield.", "img:///UILibrary_PerkIcons.UIPerk_adventshieldbearer_energyshield", true);
-	ShelterEffect.AddPersistentStatChange(eStat_ShieldHP, 1);
-	ShelterEffect.EffectRemovedVisualizationFn = OnShieldRemoved_BuildVisualization;
-	Template.AddShooterEffect(ShelterEffect);
-
-	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
-	
 	return Template;
-}
-
-static function EventListenerReturn ShelterTriggerListener(Object EventData, Object EventSource, XComGameState GameState, Name EventID, Object CallbackData)
-{
-	`LOG("JSRC: event data" @ EventData);
-	`LOG("JSRC: event src" @ EventSource);
-
-	return ELR_NoInterrupt;
-}
-
-static function OnShieldRemoved_BuildVisualization(XComGameState VisualizeGameState, out VisualizationActionMetadata ActionMetadata, const name EffectApplyResult)
-{
-	local X2Action_PlaySoundAndFlyOver SoundAndFlyOver;
-
-	if (XGUnit(ActionMetadata.VisualizeActor).IsAlive())
-	{
-		SoundAndFlyOver = X2Action_PlaySoundAndFlyOver(class'X2Action_PlaySoundAndFlyOver'.static.AddToVisualizationTree(ActionMetadata, VisualizeGameState.GetContext(), false, ActionMetadata.LastActionAdded));
-		SoundAndFlyOver.SetSoundAndFlyOverParameters(None, class'XLocalizedData'.default.ShieldRemovedMsg, '', eColor_Bad, , 0.75, true);
-	}
 }
 
 static function X2AbilityTemplate AddBuffMeUp() 
