@@ -27,4 +27,6 @@ static event OnPostTemplatesCreated()
 /// </summary>
 static function FinalizeUnitAbilitiesForInit(XComGameState_Unit UnitState, out array<AbilitySetupData> SetupData, optional XComGameState StartState, optional XComGameState_Player PlayerState, optional bool bMultiplayerDisplay)
 {
+    // TODO: need to put some kind of marker on the spire so we know which runner made it, then get that runner, then configure abilities
+    // here using Jammerware_SpireSharedAbilitiesService
 }

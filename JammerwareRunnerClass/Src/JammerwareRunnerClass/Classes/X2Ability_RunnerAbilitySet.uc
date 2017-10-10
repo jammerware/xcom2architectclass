@@ -14,7 +14,6 @@ var float RANGE_SHELTER_SHIELD;
 static function array <X2DataTemplate> CreateTemplates()
 {
 	local array<X2DataTemplate> Templates;
-	local int LoopIndex;
 	Templates.Length = 0;
 
 	// SQUADDIE!
@@ -27,12 +26,6 @@ static function array <X2DataTemplate> CreateTemplates()
 
 	// COLONEL!
 	Templates.AddItem(AddSoulOfTheArchitect());
-
-	`LOG("JSRC: runner ability templates created - " @ Templates.Length);
-	for (LoopIndex = 0; LoopIndex < Templates.Length; LoopIndex++)
-	{
-		`LOG("JSRC: template name" @ Templates[LoopIndex].DataName);
-	}
 
 	return Templates;
 }
@@ -66,7 +59,6 @@ static function X2AbilityTemplate AddCreateSpire()
 	Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);
 
 	CursorTarget = new class'X2AbilityTarget_Cursor';
-	CursorTarget.bRestrictToWeaponRange = true;
 	Template.AbilityTargetStyle = CursorTarget;
 	Template.TargetingMethod = class'X2TargetingMethod_Teleport';
 
@@ -156,7 +148,7 @@ static function X2AbilityTemplate AddShelterShield()
 	local X2AbilityTemplate Template;
 	local X2AbilityTrigger_EventListener Trigger;
 	local X2Effect_ShelterShield ShieldEffect;
-	local X2Condition_UnitProperty TargetCondition;
+	local X2Condition_ApplyShelterShield TargetCondition;
 
 	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_SHELTER_SHIELD);
 
@@ -173,7 +165,7 @@ static function X2AbilityTemplate AddShelterShield()
 	Template.AbilityToHitCalc = default.DeadEye;
 
 	// conditions
-	TargetCondition = new class'X2Condition_UnitProperty';
+	TargetCondition = new class'X2Condition_ApplyShelterShield';
 	TargetCondition.ExcludeFriendlyToSource = false;
 	TargetCondition.ExcludeHostileToSource = true;
 	TargetCondition.RequireSquadmates = true;
@@ -192,52 +184,36 @@ static function X2AbilityTemplate AddShelterShield()
 	// effects
 	ShieldEffect = new class'X2Effect_ShelterShield';
 	// TODO: enable config and weapon-based computation for shield strength and duration
-	ShieldEffect.BuildPersistentEffect(2, false, true, , eGameRule_PlayerTurnEnd);
+	ShieldEffect.BuildPersistentEffect(2, false, true, , eGameRule_PlayerTurnBegin);
 	ShieldEffect.SetDisplayInfo(ePerkBuff_Bonus, Template.LocFriendlyName, Template.GetMyLongDescription(), "img:///UILibrary_PerkIcons.UIPerk_adventshieldbearer_energyshield", true);
 	ShieldEffect.AddPersistentStatChange(eStat_ShieldHP, 3);
 	Template.AddTargetEffect(ShieldEffect);
 
 	// game state and visualization
 	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
-	Template.BuildVisualizationFn = ShelterShield_BuildVisualization;
+	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
 	Template.bShowActivation = true;
 
 	return Template;
-}
-
-simulated function ShelterShield_BuildVisualization(XComGameState VisualizeGameState)
-{
-	local XComGameStateHistory History;
-	local XComGameStateContext_Ability  Context;
-	local StateObjectReference InteractingUnitRef;
-	local VisualizationActionMetadata EmptyTrack;
-	local VisualizationActionMetadata ActionMetadata;
-	local X2Action_PlayAnimation PlayAnimationAction;
-
-	History = `XCOMHISTORY;
-
-	Context = XComGameStateContext_Ability(VisualizeGameState.GetContext());
-	InteractingUnitRef = Context.InputContext.SourceObject;
-
-	//Configure the visualization track for the shooter
-	//****************************************************************************************
-	ActionMetadata = EmptyTrack;
-	ActionMetadata.StateObject_OldState = History.GetGameStateForObjectID(InteractingUnitRef.ObjectID, eReturnType_Reference, VisualizeGameState.HistoryIndex - 1);
-	ActionMetadata.StateObject_NewState = VisualizeGameState.GetGameStateForObjectID(InteractingUnitRef.ObjectID);
-	ActionMetadata.VisualizeActor = History.GetVisualizer(InteractingUnitRef.ObjectID);
-
-	// TODO: this is busted
-	//PlayAnimationAction = X2Action_PlayAnimation(class'X2Action_PlayAnimation'.static.AddToVisualizationTree(ActionMetadata, Context, false, ActionMetadata.LastActionAdded));
-	//PlayAnimationAction.Params.AnimName = 'HL_EnergyShield';
 }
 
 static function X2AbilityTemplate AddSoulOfTheArchitect()
 {
 	local X2AbilityTemplate Template;
 
-	Template = PurePassive('Jammerware_JSRC_Ability_SoulOfTheArchitect', "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_Pillar");
+	Template = PurePassive(default.NAME_SOUL_OF_THE_ARCHITECT, "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_Pillar");
 
 	return Template;
+}
+
+// these are the abilities that are granted to the spire if the runner has them
+static function array<name> GetSpireSharedAbilities()
+{
+	local array<name> SpireAbilities;
+
+	SpireAbilities.AddItem(default.NAME_SHELTER);
+
+	return SpireAbilities;
 }
 
 defaultproperties 

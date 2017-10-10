@@ -33,14 +33,12 @@ static function X2DataTemplate CreateTemplate_SpireGun_Conventional()
 	Template.GameArchetype = "WP_PsiAmp_CV.WP_PsiAmp_CV";
 	Template.Tier = 0;
 
-	Template.iRadius = 1;
-	Template.NumUpgradeSlots = 1;
+	Template.NumUpgradeSlots = 0;
 	Template.InfiniteAmmo = true;
 	Template.iPhysicsImpulse = 5;
 
 	Template.iSoundRange = default.SPIREGUN_CONVENTIONAL_ISOUNDRANGE;
 	Template.iEnvironmentDamage = default.SPIREGUN_CONVENTIONAL_IENVIRONMENTDAMAGE;
-	Template.iRange = 3;
 	//Template.BaseDamage = default.HOLYBLADE_CONVENTIONAL_BASEDAMAGE;
 	//Template.Aim = default.HOLYBLADE_CONVENTIONAL_AIM;
 	//Template.CritChance = default.HOLYBLADE_CONVENTIONAL_CRITCHANCE;

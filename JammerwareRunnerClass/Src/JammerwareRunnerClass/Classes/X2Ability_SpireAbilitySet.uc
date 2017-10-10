@@ -8,8 +8,6 @@ static function array <X2DataTemplate> CreateTemplates()
 
 	// CORPORAL!
 	Templates.AddItem(AddBuffMeUp());
-	//Templates.AddItem(AddShelter());
-	//Templates.AddItem(AddQuicksilver());
 
 	return Templates;
 }

@@ -1,5 +1,7 @@
 class X2Character_Spire extends X2Character config(JammerwareRunnerClass);
 
+var name NAME_CHARACTER_SPIRE;
+
 static function array<X2DataTemplate> CreateTemplates()
 {
     local array<X2DataTemplate> Templates;
@@ -13,9 +15,10 @@ static function X2CharacterTemplate CreateSpire()
 {
     local X2CharacterTemplate CharTemplate;
 
-	`CREATE_X2CHARACTER_TEMPLATE(CharTemplate, 'Jammerware_JSRC_Character_Spire');
+	`CREATE_X2CHARACTER_TEMPLATE(CharTemplate, default.NAME_CHARACTER_SPIRE);
 	CharTemplate.BehaviorClass = class'XGAIBehavior';
     CharTemplate.strPawnArchetypes.AddItem("GameUnit_LostTowersTurret.ARC_GameUnit_LostTowersTurretM1");
+	CharTemplate.DefaultLoadout='LostTowersTurretM1_Loadout';
 
 	// Traversal Rules
 	CharTemplate.bCanUse_eTraversal_Normal = true;
@@ -49,7 +52,7 @@ static function X2CharacterTemplate CreateSpire()
 	CharTemplate.bIsAfraidOfFire = false;
 
 	CharTemplate.bAllowSpawnFromATT = false;
-	CharTemplate.bSkipDefaultAbilities = false;
+	CharTemplate.bSkipDefaultAbilities = true;
 	CharTemplate.bBlocksPathingWhenDead = true;
 
 	CharTemplate.ImmuneTypes.AddItem('Fire');
@@ -66,4 +69,9 @@ static function X2CharacterTemplate CreateSpire()
 	CharTemplate.bDisablePodRevealMovementChecks = true;
 
     return CharTemplate;
+}
+
+defaultproperties
+{
+	NAME_CHARACTER_SPIRE=Jammerware_JSRC_Character_Spire
 }
