@@ -32,7 +32,7 @@
 +PhotoboothSoloBLines_Female[0]="Speed and spires."
 
 ;-------------------------------------------------------------
-; WEAPONS
+; ABILITIES
 ;-------------------------------------------------------------
 [CreateSpire X2AbilityTemplate]
 LocFriendlyName="Create Spire"
@@ -48,12 +48,26 @@ LocHelpText="Your spires gain Shelter, which grants allies who step on a tile ad
 LocFlyOverText="Shelter"
 LocPromotionPopupText="Shelter turns spires into great staging areas for engagements."
 
-[Jammerware_JSRC_Ability_ShelterShield X2AbilityTemplate]
+[Jammerware_JSRC_Ability_SpireShelter X2AbilityTemplate]
 LocFriendlyName="Shelter"
-LocLongDescription="Contact with a spire has granted this soldier a shield."
-LocHelpText="Contact with a spire has granted this soldier a shield."
+LocLongDescription="Contact with spire has granted this soldier a shield."
+LocHelpText="Contact with spire has granted this soldier a shield."
 LocFlyOverText="Shelter"
 LocPromotionPopupText="Sick move!"
+
+[Jammerware_JSRC_Ability_Quicksilver X2AbilityTemplate]
+LocFriendlyName="Quicksilver"
+LocLongDescription="Your spires gain Quicksilver, which grants allies who start their turn adjacent to the spire extra mobility this turn."
+LocHelpText="Your spires gain Quicksilver, which grants allies who start their turn adjacent to the spire extra mobility this turn."
+LocFlyOverText="Quicksilver"
+LocPromotionPopupText="Quicksilver contributes powerful utility to your team, enabling deep strikes from rangers and templars or rapid repositioning from a sharpshooter."
+
+[Jammerware_JSRC_Ability_SpireQuicksilver X2AbilityTemplate]
+LocFriendlyName="Quicksilver"
+LocLongDescription="Contact with a spire has granted this soldier extra mobility."
+LocHelpText="Contact with a spire has granted this soldier extra mobility."
+LocFlyOverText="Quicksilver"
+LocPromotionPopupText="LIGHTNING!"
 
 [Jammerware_JSRC_Ability_SoulOfTheArchitect X2AbilityTemplate]
 LocFriendlyName="Soul of the Architect"
@@ -61,13 +75,6 @@ LocLongDescription="All effects that apply to your spires also apply to you. You
 LocHelpText="All effects that apply to your spires also apply to you. You gain all abilities that your spires have."
 LocFlyOverText="Soul of the Architect"
 LocPromotionPopupText="You've become one with your spires. Or, you know. Two or three with them. Or whatever."
-
-[Jammerware_JSRC_BuffMeUp X2AbilityTemplate]
-LocFriendlyName="Buff Me Up!"
-LocLongDescription="Break the game. Add a shield. Debug abilities."
-LocHelpText="Break the game. Add a shield. Debug abilities."
-LocFlyOverText="Buff Me Up!"
-LocPromotionPopupText="This is a debugging ability. If you see it in the wild, something has gone horribly wrong."
 
 ;-------------------------------------------------------------
 ; WEAPONS

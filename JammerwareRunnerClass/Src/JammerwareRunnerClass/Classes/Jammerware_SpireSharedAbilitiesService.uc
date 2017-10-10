@@ -1,27 +1,19 @@
 class Jammerware_SpireSharedAbilitiesService extends Object;
 
-function ConfigureSpireAbilitiesFromSourceUnit(XComGameState_Unit SourceUnit, out array<AbilitySetupData> SetupData)
+function ConfigureSpireAbilitiesFromSourceUnit(XComGameState_Unit SpireUnit, XComGameState_Unit SourceUnit, XComGameState NewGameState)
 {
-    local int LoopIndex;
 	local Jammerware_GameStateEffectsService EffectsService;
-	local array<name> SpireSharedAbilities;
 	local X2AbilityTemplate SharedAbilityTemplate;
-	local AbilitySetupData SharedAbilitySetupData;
+	local X2AbilityTemplateManager TemplateManager;
 
 	EffectsService = new class'Jammerware_GameStateEffectsService';
-	SpireSharedAbilities = class'X2Ability_RunnerAbilitySet'.static.GetSpireSharedAbilities();
+	TemplateManager = class'X2AbilityTemplateManager'.static.GetAbilityTemplateManager();
 
-	for (LoopIndex = 0; LoopIndex < SpireSharedAbilities.Length; LoopIndex++)
+	// TODO: eventually some kind of associative array would be better here
+	if (EffectsService.IsUnitAffectedByEffect(SourceUnit, class'X2Ability_RunnerAbilitySet'.default.NAME_SHELTER))
 	{
-		if (EffectsService.IsUnitAffectedByEffect(SourceUnit, SpireSharedAbilities[LoopIndex])) 
-		{
-			SharedAbilityTemplate = class'X2AbilityTemplateManager'.static.GetAbilityTemplateManager().FindAbilityTemplate(SpireSharedAbilities[LoopIndex]);
-			if (SharedAbilityTemplate != none)
-			{
-				SharedAbilitySetupData.Template = SharedAbilityTemplate;
-				SharedAbilitySetupData.TemplateName = SharedAbilityTemplate.DataName;
-				SetupData.AddItem(SharedAbilitySetupData);
-			}
-		}
+		SharedAbilityTemplate = TemplateManager.FindAbilityTemplate(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_SHELTER);
+		`LOG("JSRC: initing" @ SharedAbilityTemplate.DataName @ "for" @ SpireUnit.GetMyTemplate().DataName);
+		`TACTICALRULES.InitAbilityForUnit(SharedAbilityTemplate, SpireUnit, NewGameState);	
 	}
 }

@@ -4,8 +4,8 @@ class X2Ability_RunnerAbilitySet extends X2Ability
 var config int CREATESPIRE_COOLDOWN;
 
 // ability names
+var name NAME_QUICKSILVER;
 var name NAME_SHELTER;
-var name NAME_SHELTER_SHIELD;
 var name NAME_SOUL_OF_THE_ARCHITECT;
 
 // ability numbers
@@ -21,8 +21,7 @@ static function array <X2DataTemplate> CreateTemplates()
 	
 	// CORPORAL!
 	Templates.AddItem(AddShelter());
-	Templates.AddItem(AddShelterShield());
-	//Templates.AddItem(AddQuicksilver());
+	Templates.AddItem(AddQuicksilver());
 
 	// COLONEL!
 	Templates.AddItem(AddSoulOfTheArchitect());
@@ -135,66 +134,12 @@ simulated function SpawnSpire_BuildVisualization(XComGameState VisualizeGameStat
 
 static function X2AbilityTemplate AddShelter()
 {
-	local X2AbilityTemplate Template;
-
-	Template = PurePassive(default.NAME_SHELTER, "img:///UILibrary_PerkIcons.UIPerk_evervigilant");
-	Template.AdditionalAbilities.AddItem(default.NAME_SHELTER_SHIELD);
-
-	return Template;
+	return PurePassive(default.NAME_SHELTER, "img:///UILibrary_PerkIcons.UIPerk_adventshieldbearer_energyshield");
 }
 
-static function X2AbilityTemplate AddShelterShield()
+static function X2AbilityTemplate AddQuicksilver()
 {
-	local X2AbilityTemplate Template;
-	local X2AbilityTrigger_EventListener Trigger;
-	local X2Effect_ShelterShield ShieldEffect;
-	local X2Condition_ApplyShelterShield TargetCondition;
-
-	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_SHELTER_SHIELD);
-
-	// hud behavior
-	Template.AbilitySourceName = 'eAbilitySource_Perk';
-	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_NeverShow;
-	Template.IconImage = "img:///UILibrary_PerkIcons.UIPerk_adventshieldbearer_energyshield";
-	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_CORPORAL_PRIORITY;
-
-	// targeting
-	Template.AbilityTargetStyle = default.SimpleSingleTarget;
-
-	// hit chance
-	Template.AbilityToHitCalc = default.DeadEye;
-
-	// conditions
-	TargetCondition = new class'X2Condition_ApplyShelterShield';
-	TargetCondition.ExcludeFriendlyToSource = false;
-	TargetCondition.ExcludeHostileToSource = true;
-	TargetCondition.RequireSquadmates = true;
-	TargetCondition.RequireWithinRange = true;
-	TargetCondition.WithinRange = `METERSTOUNITS(class'XComWorldData'.const.WORLD_Melee_Range_Meters);
-	Template.AbilityTargetConditions.AddItem(TargetCondition);
-
-	// triggers
-	Trigger = new class'X2AbilityTrigger_EventListener';
-	Trigger.ListenerData.EventID = 'ObjectMoved';
-	Trigger.ListenerData.Filter = eFilter_None;
-	Trigger.ListenerData.Deferral = ELD_OnStateSubmitted;
-	Trigger.ListenerData.EventFn = class'XComGameState_Ability'.static.TypicalOverwatchListener;
-	Template.AbilityTriggers.AddItem(Trigger);
-
-	// effects
-	ShieldEffect = new class'X2Effect_ShelterShield';
-	// TODO: enable config and weapon-based computation for shield strength and duration
-	ShieldEffect.BuildPersistentEffect(2, false, true, , eGameRule_PlayerTurnBegin);
-	ShieldEffect.SetDisplayInfo(ePerkBuff_Bonus, Template.LocFriendlyName, Template.GetMyLongDescription(), "img:///UILibrary_PerkIcons.UIPerk_adventshieldbearer_energyshield", true);
-	ShieldEffect.AddPersistentStatChange(eStat_ShieldHP, 3);
-	Template.AddTargetEffect(ShieldEffect);
-
-	// game state and visualization
-	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
-	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
-	Template.bShowActivation = true;
-
-	return Template;
+	return PurePassive(default.NAME_QUICKSILVER, "img:///UILibrary_PerkIcons.UIPerk_escape");
 }
 
 static function X2AbilityTemplate AddSoulOfTheArchitect()
@@ -202,6 +147,7 @@ static function X2AbilityTemplate AddSoulOfTheArchitect()
 	local X2AbilityTemplate Template;
 
 	Template = PurePassive(default.NAME_SOUL_OF_THE_ARCHITECT, "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_Pillar");
+	Template.AdditionalAbilities.AddItem(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_SHELTER);
 
 	return Template;
 }
@@ -218,7 +164,7 @@ static function array<name> GetSpireSharedAbilities()
 
 defaultproperties 
 {
-	NAME_SHELTER = "Jammerware_JSRC_Ability_Shelter"
-	NAME_SHELTER_SHIELD = "Jammerware_JSRC_Ability_ShelterShield"
-	NAME_SOUL_OF_THE_ARCHITECT = "Jammerware_JSRC_Ability_SoulOfTheArchitect"
+	NAME_QUICKSILVER = Jammerware_JSRC_Ability_Quicksilver
+	NAME_SHELTER = Jammerware_JSRC_Ability_Shelter
+	NAME_SOUL_OF_THE_ARCHITECT = Jammerware_JSRC_Ability_SoulOfTheArchitect
 }

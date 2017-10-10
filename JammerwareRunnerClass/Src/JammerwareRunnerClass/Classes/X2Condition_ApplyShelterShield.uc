@@ -1,6 +1,6 @@
 class X2Condition_ApplyShelterShield extends X2Condition_UnitProperty;
 
-// the ability "Shelter" can appear both on the runner and on his/her spires. if a spire is the source of the ability,
+// the passive ability that triggers the shield can appear both on the runner and on his/her spires. if a spire is the source of the ability,
 // we can go ahead and accept the trigger, because the spires get their abilities from the runner. if the source is the runner,
 // the runner has to have "Soul of the Architect" if we're going to let the trigger fire.
 event name CallAbilityMeetsCondition(XComGameState_Ability kAbility, XComGameState_BaseObject kTarget)

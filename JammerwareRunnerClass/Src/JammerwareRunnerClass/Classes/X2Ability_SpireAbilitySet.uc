@@ -1,68 +1,127 @@
 class X2Ability_SpireAbilitySet extends X2Ability
 	config(JammerwareRunnerClass);
 
+var name NAME_SPIRE_SHELTER;
+var name NAME_SPIRE_QUICKSILVER;
+
 static function array <X2DataTemplate> CreateTemplates()
 {
 	local array<X2DataTemplate> Templates;
 	Templates.Length = 0;
 
 	// CORPORAL!
-	Templates.AddItem(AddBuffMeUp());
+	Templates.AddItem(AddSpireShelter());
+	Templates.AddItem(AddSpireQuicksilver());
 
 	return Templates;
 }
 
-static function X2AbilityTemplate AddBuffMeUp() 
+static function X2AbilityTemplate AddSpireShelter()
 {
-	local X2AbilityTemplate                 Template;
-	local X2AbilityCost_ActionPoints        ActionPointCost;
-	local X2AbilityTarget_Single            SingleTarget;
-	local X2Condition_UnitProperty          UnitPropertyCondition;
-	local X2AbilityTrigger_PlayerInput      InputTrigger;
-	local X2Effect_PersistentStatChange StatChangeEffect;
+	local X2AbilityTemplate Template;
+	local X2AbilityTrigger_EventListener Trigger;
+	local X2Effect_ShelterShield ShieldEffect;
+	local X2Condition_ApplyShelterShield TargetCondition;
 
-	`CREATE_X2ABILITY_TEMPLATE(Template, 'Jammerware_JSRC_BuffMeUp');
+	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_SPIRE_SHELTER);
 
-	ActionPointCost = new class'X2AbilityCost_ActionPoints';
-	ActionPointCost.iNumPoints = 1;
-	Template.AbilityCosts.AddItem(ActionPointCost);
-	
+	// hud behavior
+	Template.AbilitySourceName = 'eAbilitySource_Perk';
+	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_NeverShow;
+	Template.IconImage = "img:///UILibrary_PerkIcons.UIPerk_adventshieldbearer_energyshield";
+	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_CORPORAL_PRIORITY;
+
+	// targeting
+	Template.AbilityTargetStyle = default.SimpleSingleTarget;
+
+	// hit chance
 	Template.AbilityToHitCalc = default.DeadEye;
 
-	SingleTarget = new class'X2AbilityTarget_Single';
-	SingleTarget.bIncludeSelf = true;
-	Template.AbilityTargetStyle = SingleTarget;
+	// conditions
+	TargetCondition = new class'X2Condition_ApplyShelterShield';
+	TargetCondition.ExcludeFriendlyToSource = false;
+	TargetCondition.ExcludeHostileToSource = true;
+	TargetCondition.RequireSquadmates = true;
+	TargetCondition.RequireWithinRange = true;
+	TargetCondition.WithinRange = `METERSTOUNITS(class'XComWorldData'.const.WORLD_Melee_Range_Meters);
+	Template.AbilityTargetConditions.AddItem(TargetCondition);
 
-	UnitPropertyCondition = new class'X2Condition_UnitProperty';
-	UnitPropertyCondition.ExcludeDead = true;
-	Template.AbilityShooterConditions.AddItem(UnitPropertyCondition);
+	// triggers
+	Trigger = new class'X2AbilityTrigger_EventListener';
+	Trigger.ListenerData.EventID = 'ObjectMoved';
+	Trigger.ListenerData.Filter = eFilter_None;
+	Trigger.ListenerData.Deferral = ELD_OnStateSubmitted;
+	Trigger.ListenerData.EventFn = class'XComGameState_Ability'.static.TypicalOverwatchListener;
+	Template.AbilityTriggers.AddItem(Trigger);
 
-	UnitPropertyCondition = new class'X2Condition_UnitProperty';
-	UnitPropertyCondition.ExcludeDead = true;
-	UnitPropertyCondition.ExcludeHostileToSource = true;
-	UnitPropertyCondition.ExcludeFriendlyToSource = false;
-	Template.AbilityTargetConditions.AddItem(UnitPropertyCondition);
+	// effects
+	ShieldEffect = new class'X2Effect_ShelterShield';
+	// TODO: enable config and weapon-based computation for shield strength and duration
+	ShieldEffect.BuildPersistentEffect(2, false, true, , eGameRule_PlayerTurnBegin);
+	ShieldEffect.SetDisplayInfo(ePerkBuff_Bonus, Template.LocFriendlyName, Template.GetMyLongDescription(), "img:///UILibrary_PerkIcons.UIPerk_adventshieldbearer_energyshield", true);
+	ShieldEffect.AddPersistentStatChange(eStat_ShieldHP, 3);
+	Template.AddTargetEffect(ShieldEffect);
 
-	StatChangeEffect = new class'X2Effect_PersistentStatChange';
-	StatChangeEffect.BuildPersistentEffect(1, true, false, true);
-	StatChangeEffect.AddPersistentStatChange(eStat_ShieldHP, 3);
-	Template.AddTargetEffect(StatChangeEffect);
-	
-	InputTrigger = new class'X2AbilityTrigger_PlayerInput';
-	Template.AbilityTriggers.AddItem(InputTrigger);
-
-	Template.IconImage = "img:///UILibrary_PerkIcons.UIPerk_medkit";
-	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.MEDIKIT_HEAL_PRIORITY;
-	Template.Hostility = eHostility_Defensive;
-	Template.bDisplayInUITooltip = false;
-	Template.bLimitTargetIcons = true;
-	Template.ActivationSpeech = 'HealingAlly';
-
-	Template.CustomSelfFireAnim = 'FF_FireMedkitSelf';
+	// game state and visualization
 	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
 	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
-
-	Template.ChosenActivationIncreasePerUse = class'X2AbilityTemplateManager'.default.NonAggressiveChosenActivationIncreasePerUse;
+	Template.bShowActivation = true;
 
 	return Template;
+}
+
+static function X2AbilityTemplate AddSpireQuicksilver()
+{
+	local X2AbilityTemplate Template;
+	local X2AbilityTrigger_EventListener Trigger;
+	local X2Effect_QuicksilverMobility MobilityEffect;
+	local X2Condition_UnitEffects TargetCondition;
+
+	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_SPIRE_QUICKSILVER);
+
+	// hud behavior
+	Template.AbilitySourceName = 'eAbilitySource_Perk';
+	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_NeverShow;
+	Template.IconImage = "img:///UILibrary_PerkIcons.UIPerk_escape";
+	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_CORPORAL_PRIORITY;
+
+	// targeting
+	Template.AbilityTargetStyle = default.SimpleSingleTarget;
+
+	// hit chance
+	Template.AbilityToHitCalc = default.DeadEye;
+
+	// conditions
+	TargetCondition = new class'X2Condition_UnitEffects';
+	TargetCondition.AddExcludeEffect(class'X2Effect_QuicksilverMobility'.default.EffectName, 'AA_DuplicateEffectIgnored');
+	Template.AbilityTargetConditions.AddItem(TargetCondition);
+
+	// triggers
+	Trigger = new class'X2AbilityTrigger_EventListener';
+	Trigger.ListenerData.EventID = 'PlayerTurnBegun';
+	Trigger.ListenerData.Filter = eFilter_None;
+	Trigger.ListenerData.Deferral = ELD_OnStateSubmitted;
+	Trigger.ListenerData.EventFn = class'XComGameState_Ability'.static.TypicalOverwatchListener;
+	Template.AbilityTriggers.AddItem(Trigger);
+
+	// effects
+	MobilityEffect = new class'X2Effect_QuicksilverMobility';
+	// TODO: enable config and weapon-based computation for mobility amount
+	MobilityEffect.BuildPersistentEffect(1);
+	MobilityEffect.SetDisplayInfo(ePerkBuff_Bonus, Template.LocFriendlyName, Template.GetMyLongDescription(), "img:///UILibrary_PerkIcons.UIPerk_escape", true);
+	MobilityEffect.AddPersistentStatChange(eStat_Mobility, 1);
+	Template.AddTargetEffect(MobilityEffect);
+
+	// game state and visualization
+	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
+	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
+	Template.bShowActivation = true;
+
+	return Template;
+}
+
+defaultproperties
+{
+	NAME_SPIRE_QUICKSILVER=Jammerware_JSRC_Ability_SpireQuicksilver
+	NAME_SPIRE_SHELTER=Jammerware_JSRC_Ability_SpireShelter
 }
