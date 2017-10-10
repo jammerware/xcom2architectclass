@@ -4,6 +4,7 @@ class X2Ability_RunnerAbilitySet extends X2Ability
 var config int CREATESPIRE_COOLDOWN;
 
 // ability names
+var name NAME_LIGHTNINGROD;
 var name NAME_QUICKSILVER;
 var name NAME_SHELTER;
 var name NAME_SOUL_OF_THE_ARCHITECT;
@@ -20,6 +21,7 @@ static function array <X2DataTemplate> CreateTemplates()
 	Templates.AddItem(AddCreateSpire());
 	
 	// CORPORAL!
+	Templates.AddItem(AddLightningRod());
 	Templates.AddItem(AddShelter());
 	Templates.AddItem(AddQuicksilver());
 
@@ -44,7 +46,7 @@ static function X2AbilityTemplate AddCreateSpire()
 	Template.Hostility = eHostility_Neutral;
 	Template.bDisplayInUITacticalText = false;
 
-	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.STANDARD_GRENADE_PRIORITY;
+	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_SQUADDIE_PRIORITY;
 
 	ActionPointCost = new class'X2AbilityCost_ActionPoints';
 	ActionPointCost.iNumPoints = 1;
@@ -132,6 +134,11 @@ simulated function SpawnSpire_BuildVisualization(XComGameState VisualizeGameStat
 	class'X2Action_SyncVisualizer'.static.AddToVisualizationTree(SpireTrack, Context);
 }
 
+static function X2AbilityTemplate AddLightningRod()
+{
+	return PurePassive(default.NAME_LIGHTNINGROD, "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_volt");
+}
+
 static function X2AbilityTemplate AddShelter()
 {
 	return PurePassive(default.NAME_SHELTER, "img:///UILibrary_PerkIcons.UIPerk_adventshieldbearer_energyshield");
@@ -147,7 +154,9 @@ static function X2AbilityTemplate AddSoulOfTheArchitect()
 	local X2AbilityTemplate Template;
 
 	Template = PurePassive(default.NAME_SOUL_OF_THE_ARCHITECT, "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_Pillar");
+	Template.AdditionalAbilities.AddItem(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_LIGHTNINGROD);
 	Template.AdditionalAbilities.AddItem(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_SHELTER);
+	Template.AdditionalAbilities.AddItem(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_QUICKSILVER);
 
 	return Template;
 }
@@ -164,6 +173,7 @@ static function array<name> GetSpireSharedAbilities()
 
 defaultproperties 
 {
+	NAME_LIGHTNINGROD = Jammerware_JSRC_Ability_LightningRod
 	NAME_QUICKSILVER = Jammerware_JSRC_Ability_Quicksilver
 	NAME_SHELTER = Jammerware_JSRC_Ability_Shelter
 	NAME_SOUL_OF_THE_ARCHITECT = Jammerware_JSRC_Ability_SoulOfTheArchitect

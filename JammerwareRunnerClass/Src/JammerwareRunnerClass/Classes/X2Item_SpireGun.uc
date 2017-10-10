@@ -1,7 +1,6 @@
 class X2Item_SpireGun extends X2Item config(GameData_WeaponData);
 
 var config WeaponDamageValue SPIREGUN_CONVENTIONAL_ABILITYDAMAGE;
-
 var config int SPIREGUN_CONVENTIONAL_ISOUNDRANGE;
 var config int SPIREGUN_CONVENTIONAL_IENVIRONMENTDAMAGE;
 
@@ -37,9 +36,10 @@ static function X2DataTemplate CreateTemplate_SpireGun_Conventional()
 	Template.InfiniteAmmo = true;
 	Template.iPhysicsImpulse = 5;
 
+	Template.BaseDamage = default.SPIREGUN_CONVENTIONAL_ABILITYDAMAGE;
 	Template.iSoundRange = default.SPIREGUN_CONVENTIONAL_ISOUNDRANGE;
 	Template.iEnvironmentDamage = default.SPIREGUN_CONVENTIONAL_IENVIRONMENTDAMAGE;
-	//Template.BaseDamage = default.HOLYBLADE_CONVENTIONAL_BASEDAMAGE;
+	
 	//Template.Aim = default.HOLYBLADE_CONVENTIONAL_AIM;
 	//Template.CritChance = default.HOLYBLADE_CONVENTIONAL_CRITCHANCE;
 	//Template.iSoundRange = default.HOLYBLADE_CONVENTIONAL_ISOUNDRANGE;

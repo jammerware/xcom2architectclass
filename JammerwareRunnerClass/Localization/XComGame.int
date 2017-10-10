@@ -41,6 +41,20 @@ LocHelpText="Create a spire. Spires provide high cover."
 LocFlyOverText="Create Spire"
 LocPromotionPopupText="Spires are the focal point of most Runner abilities. They provide cover, and at high levels, confer additional benefits."
 
+[Jammerware_JSRC_Ability_LightningRod X2AbilityTemplate]
+LocFriendlyName="Lightning Rod"
+LocLongDescription="Your spires gain Lightning Rod, an ability which deals moderate damage in a radius around the spire. Robotic units take extra damage from Lightning Rod and have a 50% chance to be stunned."
+LocHelpText="Your spires gain Lightning Rod, an ability which deals moderate damage in a radius around the spire. Robotic units take extra damage from Lightning Rod and have a 50% chance to be stunned."
+LocFlyOverText="Lightning Rod"
+LocPromotionPopupText="1.05 patch save us!"
+
+[Jammerware_JSRC_Ability_SpireLightningRod X2AbilityTemplate]
+LocFriendlyName="Lightning Rod"
+LocLongDescription="Deal moderate damage in a radius around the spire. Robotic units take extra damage from Lightning Rod and have a 50% chance to be stunned."
+LocHelpText="Deal moderate damage in a radius around the spire. Robotic units take extra damage from Lightning Rod and have a 50% chance to be stunned."
+LocFlyOverText="Lightning Rod"
+LocPromotionPopupText="LIGHTNING!"
+
 [Jammerware_JSRC_Ability_Shelter X2AbilityTemplate]
 LocFriendlyName="Shelter"
 LocLongDescription="Your spires gain Shelter, which grants allies who step on a tile adjacent to the spire a small shield. Shelter doesn't stack."

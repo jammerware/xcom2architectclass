@@ -1,6 +1,7 @@
 class X2Ability_SpireAbilitySet extends X2Ability
 	config(JammerwareRunnerClass);
 
+var name NAME_SPIRE_LIGHTNINGROD;
 var name NAME_SPIRE_SHELTER;
 var name NAME_SPIRE_QUICKSILVER;
 
@@ -10,10 +11,67 @@ static function array <X2DataTemplate> CreateTemplates()
 	Templates.Length = 0;
 
 	// CORPORAL!
+	Templates.AddItem(AddSpireLightningRod());
 	Templates.AddItem(AddSpireShelter());
 	Templates.AddItem(AddSpireQuicksilver());
 
 	return Templates;
+}
+
+static function X2AbilityTemplate AddSpireLightningRod()
+{
+	local X2AbilityTemplate Template;
+	local X2AbilityCost_ActionPoints ActionPointCost;
+	local X2AbilityTarget_Cursor TargetStyle;
+	local X2AbilityMultiTarget_Radius MultiTargetStyle;
+	local X2Effect_ApplyWeaponDamage WeaponDamageEffect;
+
+	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_SPIRE_LIGHTNINGROD);
+
+	// hud behavior
+	Template.AbilitySourceName = 'eAbilitySource_Perk';
+	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_AlwaysShow;
+	Template.IconImage = "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_volt";
+	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_CORPORAL_PRIORITY;
+
+	// cost
+	ActionPointCost = new class'X2AbilityCost_ActionPoints';
+	ActionPointCost.iNumPoints = 1;
+	ActionPointCost.bConsumeAllPoints = true;
+	Template.AbilityCosts.AddItem(ActionPointCost);
+
+	// targeting
+	TargetStyle = new class'X2AbilityTarget_Cursor';
+	TargetStyle.FixedAbilityRange = 0;
+	Template.AbilityTargetStyle = TargetStyle;
+
+	MultiTargetStyle = new class'X2AbilityMultiTarget_Radius';
+	MultiTargetStyle.fTargetRadius = 5;
+	MultiTargetStyle.bIgnoreBlockingCover = true;
+	Template.AbilityMultiTargetStyle = MultiTargetStyle;
+	
+	Template.TargetingMethod = class'X2TargetingMethod_LightningRod';
+
+	// hit chance
+	Template.AbilityToHitCalc = default.DeadEye;
+
+	// conditions
+	Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
+
+	// triggering
+	Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);
+	
+	// effects
+	WeaponDamageEffect = new class'X2Effect_ApplyWeaponDamage';
+	WeaponDamageEffect.bExplosiveDamage = true;
+	Template.AddMultiTargetEffect(WeaponDamageEffect);
+
+	// game state and visualization
+	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
+	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
+	Template.bShowActivation = true;
+
+	return Template;
 }
 
 static function X2AbilityTemplate AddSpireShelter()
@@ -72,11 +130,11 @@ static function X2AbilityTemplate AddSpireShelter()
 
 static function X2AbilityTemplate AddSpireQuicksilver()
 {
-	local X2AbilityTemplate				Template;
-	local X2AbilityCost_ActionPoints	ActionPointCost;
-	local X2Effect_GrantActionPoints	ActionPointEffect;
-	local X2Condition_UnitProperty      TargetCondition;
-	local X2AbilityCooldown             Cooldown;
+	local X2AbilityTemplate Template;
+	local X2AbilityCost_ActionPoints ActionPointCost;
+	local X2Effect_GrantActionPoints ActionPointEffect;
+	local X2Condition_UnitProperty TargetCondition;
+	local X2AbilityCooldown Cooldown;
 
 	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_SPIRE_QUICKSILVER);
 
@@ -140,6 +198,7 @@ static function X2AbilityTemplate AddSpireQuicksilver()
 
 defaultproperties
 {
+	NAME_SPIRE_LIGHTNINGROD=Jammerware_JSRC_Ability_SpireLightningRod
 	NAME_SPIRE_QUICKSILVER=Jammerware_JSRC_Ability_SpireQuicksilver
 	NAME_SPIRE_SHELTER=Jammerware_JSRC_Ability_SpireShelter
 }

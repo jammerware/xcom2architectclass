@@ -23,4 +23,11 @@ function ConfigureSpireAbilitiesFromSourceUnit(XComGameState_Unit SpireUnit, XCo
 		`LOG("JSRC: initing" @ SharedAbilityTemplate.DataName @ "for" @ SpireUnit.GetMyTemplate().DataName);
 		`TACTICALRULES.InitAbilityForUnit(SharedAbilityTemplate, SpireUnit, NewGameState);
 	}
+
+	if (EffectsService.IsUnitAffectedByEffect(SourceUnit, class'X2Ability_RunnerAbilitySet'.default.NAME_LIGHTNINGROD))
+	{
+		SharedAbilityTemplate = TemplateManager.FindAbilityTemplate(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_LIGHTNINGROD);
+		`LOG("JSRC: initing" @ SharedAbilityTemplate.DataName @ "for" @ SpireUnit.GetMyTemplate().DataName);
+		`TACTICALRULES.InitAbilityForUnit(SharedAbilityTemplate, SpireUnit, NewGameState);
+	}
 }
