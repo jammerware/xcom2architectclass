@@ -139,7 +139,7 @@ static function X2AbilityTemplate AddShelter()
 
 static function X2AbilityTemplate AddQuicksilver()
 {
-	return PurePassive(default.NAME_QUICKSILVER, "img:///UILibrary_PerkIcons.UIPerk_escape");
+	return PurePassive(default.NAME_QUICKSILVER, "img:///UILibrary_PerkIcons.UIPerk_runandgun");
 }
 
 static function X2AbilityTemplate AddSoulOfTheArchitect()

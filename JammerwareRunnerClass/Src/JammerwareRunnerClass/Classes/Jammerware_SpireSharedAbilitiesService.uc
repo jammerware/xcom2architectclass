@@ -14,6 +14,13 @@ function ConfigureSpireAbilitiesFromSourceUnit(XComGameState_Unit SpireUnit, XCo
 	{
 		SharedAbilityTemplate = TemplateManager.FindAbilityTemplate(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_SHELTER);
 		`LOG("JSRC: initing" @ SharedAbilityTemplate.DataName @ "for" @ SpireUnit.GetMyTemplate().DataName);
-		`TACTICALRULES.InitAbilityForUnit(SharedAbilityTemplate, SpireUnit, NewGameState);	
+		`TACTICALRULES.InitAbilityForUnit(SharedAbilityTemplate, SpireUnit, NewGameState);
+	}
+
+	if (EffectsService.IsUnitAffectedByEffect(SourceUnit, class'X2Ability_RunnerAbilitySet'.default.NAME_QUICKSILVER))
+	{
+		SharedAbilityTemplate = TemplateManager.FindAbilityTemplate(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_QUICKSILVER);
+		`LOG("JSRC: initing" @ SharedAbilityTemplate.DataName @ "for" @ SpireUnit.GetMyTemplate().DataName);
+		`TACTICALRULES.InitAbilityForUnit(SharedAbilityTemplate, SpireUnit, NewGameState);
 	}
 }

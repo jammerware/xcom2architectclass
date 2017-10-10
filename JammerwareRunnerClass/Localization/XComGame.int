@@ -36,8 +36,8 @@
 ;-------------------------------------------------------------
 [CreateSpire X2AbilityTemplate]
 LocFriendlyName="Create Spire"
-LocLongDescription="Create a spire. Spires provide low cover."
-LocHelpText="Create a spire. Spires provide low cover."
+LocLongDescription="Create a spire. Spires provide high cover."
+LocHelpText="Create a spire. Spires provide high cover."
 LocFlyOverText="Create Spire"
 LocPromotionPopupText="Spires are the focal point of most Runner abilities. They provide cover, and at high levels, confer additional benefits."
 
@@ -57,15 +57,15 @@ LocPromotionPopupText="Sick move!"
 
 [Jammerware_JSRC_Ability_Quicksilver X2AbilityTemplate]
 LocFriendlyName="Quicksilver"
-LocLongDescription="Your spires gain Quicksilver, which grants allies who start their turn adjacent to the spire extra mobility this turn."
-LocHelpText="Your spires gain Quicksilver, which grants allies who start their turn adjacent to the spire extra mobility this turn."
+LocLongDescription="Your spires gain Quicksilver, an ability which grants an adjacent squadmate an extra action."
+LocHelpText="Your spires gain Quicksilver, an ability which grants an adjacent squadmate an extra action."
 LocFlyOverText="Quicksilver"
 LocPromotionPopupText="Quicksilver contributes powerful utility to your team, enabling deep strikes from rangers and templars or rapid repositioning from a sharpshooter."
 
 [Jammerware_JSRC_Ability_SpireQuicksilver X2AbilityTemplate]
 LocFriendlyName="Quicksilver"
-LocLongDescription="Contact with a spire has granted this soldier extra mobility."
-LocHelpText="Contact with a spire has granted this soldier extra mobility."
+LocLongDescription="Grant a bonus action immediately to an adjacent squadmate."
+LocHelpText="Grant a bonus action immediately to an adjacent squadmate."
 LocFlyOverText="Quicksilver"
 LocPromotionPopupText="LIGHTNING!"
 

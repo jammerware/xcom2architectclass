@@ -32,7 +32,7 @@ function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, Stat
 	
 	// spires provide low cover
 	SpireUnitGameState.bGeneratesCover = true;
-	SpireUnitGameState.CoverForceFlag = CoverForce_Low;
+	SpireUnitGameState.CoverForceFlag = CoverForce_High;
 
 	// where'd it spawn?
 	`LOG("JSRC: spawned at - " @ `XWORLD.GetPositionFromTileCoordinates( SpireUnitGameState.TileLocation ));

@@ -72,50 +72,68 @@ static function X2AbilityTemplate AddSpireShelter()
 
 static function X2AbilityTemplate AddSpireQuicksilver()
 {
-	local X2AbilityTemplate Template;
-	local X2AbilityTrigger_EventListener Trigger;
-	local X2Effect_QuicksilverMobility MobilityEffect;
-	local X2Condition_UnitEffects TargetCondition;
+	local X2AbilityTemplate				Template;
+	local X2AbilityCost_ActionPoints	ActionPointCost;
+	local X2Effect_GrantActionPoints	ActionPointEffect;
+	local X2Condition_UnitProperty      TargetCondition;
+	local X2AbilityCooldown             Cooldown;
 
 	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_SPIRE_QUICKSILVER);
 
-	// hud behavior
+	// Icon Properties
+	Template.DisplayTargetHitChance = true;
 	Template.AbilitySourceName = 'eAbilitySource_Perk';
-	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_NeverShow;
-	Template.IconImage = "img:///UILibrary_PerkIcons.UIPerk_escape";
-	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_CORPORAL_PRIORITY;
+	Template.IconImage = "img:///UILibrary_PerkIcons.UIPerk_runandgun";
+	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_SERGEANT_PRIORITY;
+	Template.Hostility = eHostility_Defensive;
+	Template.bLimitTargetIcons = true;
+	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_AlwaysShow;	
+	
+	Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);
 
-	// targeting
-	Template.AbilityTargetStyle = default.SimpleSingleTarget;
+	ActionPointCost = new class'X2AbilityCost_ActionPoints';
+	ActionPointCost.iNumPoints = 1;
+	ActionPointCost.bConsumeAllPoints = true;
+	Template.AbilityCosts.AddItem(ActionPointCost);
 
-	// hit chance
+	Cooldown = new class'X2AbilityCooldown';
+	Cooldown.iNumTurns = 3;
+	Template.AbilityCooldown = Cooldown;
+
 	Template.AbilityToHitCalc = default.DeadEye;
 
-	// conditions
-	TargetCondition = new class'X2Condition_UnitEffects';
-	TargetCondition.AddExcludeEffect(class'X2Effect_QuicksilverMobility'.default.EffectName, 'AA_DuplicateEffectIgnored');
+	Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
+	Template.AddShooterEffectExclusions();
+
+	TargetCondition = new class'X2Condition_UnitProperty';
+	TargetCondition.ExcludeHostileToSource = true;
+	TargetCondition.ExcludeFriendlyToSource = false;
+	TargetCondition.RequireSquadmates = true;
+	TargetCondition.FailOnNonUnits = true;
+	TargetCondition.ExcludeDead = true;
+	TargetCondition.ExcludeRobotic = true;
+	TargetCondition.ExcludeUnableToAct = true;
+	TargetCondition.RequireWithinRange = true;
+	TargetCondition.WithinRange = `METERSTOUNITS(class'XComWorldData'.const.WORLD_Melee_Range_Meters);
 	Template.AbilityTargetConditions.AddItem(TargetCondition);
+	Template.AbilityTargetConditions.AddItem(default.GameplayVisibilityCondition);
 
-	// triggers
-	Trigger = new class'X2AbilityTrigger_EventListener';
-	Trigger.ListenerData.EventID = 'PlayerTurnBegun';
-	Trigger.ListenerData.Filter = eFilter_None;
-	Trigger.ListenerData.Deferral = ELD_OnStateSubmitted;
-	Trigger.ListenerData.EventFn = class'XComGameState_Ability'.static.TypicalOverwatchListener;
-	Template.AbilityTriggers.AddItem(Trigger);
+	ActionPointEffect = new class'X2Effect_GrantActionPoints';
+	ActionPointEffect.NumActionPoints = 1;
+	ActionPointEffect.PointType = class'X2CharacterTemplateManager'.default.StandardActionPoint;
+	ActionPointEffect.bSelectUnit = true;
+	Template.AddTargetEffect(ActionPointEffect);
 
-	// effects
-	MobilityEffect = new class'X2Effect_QuicksilverMobility';
-	// TODO: enable config and weapon-based computation for mobility amount
-	MobilityEffect.BuildPersistentEffect(1);
-	MobilityEffect.SetDisplayInfo(ePerkBuff_Bonus, Template.LocFriendlyName, Template.GetMyLongDescription(), "img:///UILibrary_PerkIcons.UIPerk_escape", true);
-	MobilityEffect.AddPersistentStatChange(eStat_Mobility, 1);
-	Template.AddTargetEffect(MobilityEffect);
+	Template.AbilityTargetStyle = default.SimpleSingleTarget;
 
-	// game state and visualization
+	Template.bShowActivation = true;
 	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
 	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
-	Template.bShowActivation = true;
+
+	Template.SuperConcealmentLoss = class'X2AbilityTemplateManager'.default.SuperConcealmentStandardShotLoss;
+	Template.ChosenActivationIncreasePerUse = class'X2AbilityTemplateManager'.default.NonAggressiveChosenActivationIncreasePerUse;
+	Template.LostSpawnIncreasePerUse = class'X2AbilityTemplateManager'.default.StandardShotLostSpawnIncreasePerUse;
+	Template.AbilityConfirmSound = "TacticalUI_ActivateAbility";
 
 	return Template;
 }
