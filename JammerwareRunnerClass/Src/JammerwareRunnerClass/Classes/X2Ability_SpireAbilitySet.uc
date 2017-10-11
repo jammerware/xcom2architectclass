@@ -24,9 +24,13 @@ static function X2AbilityTemplate AddSpireLightningRod()
 	local X2AbilityCost_ActionPoints ActionPointCost;
 	local X2AbilityTarget_Cursor TargetStyle;
 	local X2AbilityMultiTarget_Radius MultiTargetStyle;
-	local X2Effect_ApplyWeaponDamage WeaponDamageEffect;
+	local X2Effect_LightningRodDamage DamageEffect;
 
+	// general properties
 	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_SPIRE_LIGHTNINGROD);
+	Template.Hostility = eHostility_Offensive;
+	// need to source it to the slot because this ability can be on runner or spire
+	Template.DefaultSourceItemSlot = eInvSlot_PrimaryWeapon;
 
 	// hud behavior
 	Template.AbilitySourceName = 'eAbilitySource_Perk';
@@ -40,8 +44,9 @@ static function X2AbilityTemplate AddSpireLightningRod()
 	ActionPointCost.bConsumeAllPoints = true;
 	Template.AbilityCosts.AddItem(ActionPointCost);
 
-	// targeting
+	// targeting style (how targets are determined by game rules)
 	TargetStyle = new class'X2AbilityTarget_Cursor';
+	TargetStyle.bRestrictToWeaponRange = false;
 	TargetStyle.FixedAbilityRange = 0;
 	Template.AbilityTargetStyle = TargetStyle;
 
@@ -50,6 +55,7 @@ static function X2AbilityTemplate AddSpireLightningRod()
 	MultiTargetStyle.bIgnoreBlockingCover = true;
 	Template.AbilityMultiTargetStyle = MultiTargetStyle;
 	
+	// targeting method (how the player chooses a target)
 	Template.TargetingMethod = class'X2TargetingMethod_LightningRod';
 
 	// hit chance
@@ -62,9 +68,11 @@ static function X2AbilityTemplate AddSpireLightningRod()
 	Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);
 	
 	// effects
-	WeaponDamageEffect = new class'X2Effect_ApplyWeaponDamage';
-	WeaponDamageEffect.bExplosiveDamage = true;
-	Template.AddMultiTargetEffect(WeaponDamageEffect);
+	DamageEffect = new class'X2Effect_LightningRodDamage';
+	DamageEffect.bExplosiveDamage = true;
+	DamageEffect.bIgnoreBaseDamage = true;
+	DamageEffect.DamageTag = 'LightningRod';
+	Template.AddMultiTargetEffect(DamageEffect);
 
 	// game state and visualization
 	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;

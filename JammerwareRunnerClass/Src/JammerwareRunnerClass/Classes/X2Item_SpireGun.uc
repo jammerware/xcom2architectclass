@@ -1,6 +1,6 @@
 class X2Item_SpireGun extends X2Item config(GameData_WeaponData);
 
-var config WeaponDamageValue SPIREGUN_CONVENTIONAL_ABILITYDAMAGE;
+var config array <WeaponDamageValue> SPIREGUN_CONVENTIONAL_ABILITYDAMAGE;
 var config int SPIREGUN_CONVENTIONAL_ISOUNDRANGE;
 var config int SPIREGUN_CONVENTIONAL_IENVIRONMENTDAMAGE;
 
@@ -36,16 +36,11 @@ static function X2DataTemplate CreateTemplate_SpireGun_Conventional()
 	Template.InfiniteAmmo = true;
 	Template.iPhysicsImpulse = 5;
 
-	Template.BaseDamage = default.SPIREGUN_CONVENTIONAL_ABILITYDAMAGE;
+	Template.ExtraDamage = default.SPIREGUN_CONVENTIONAL_ABILITYDAMAGE;
+	`LOG("JSRC: config damage length" @ default.SPIREGUN_CONVENTIONAL_ABILITYDAMAGE.Length);
+	`LOG("JSRC: spire gun wireup" @ Template.ExtraDamage.Length);
 	Template.iSoundRange = default.SPIREGUN_CONVENTIONAL_ISOUNDRANGE;
 	Template.iEnvironmentDamage = default.SPIREGUN_CONVENTIONAL_IENVIRONMENTDAMAGE;
-	
-	//Template.Aim = default.HOLYBLADE_CONVENTIONAL_AIM;
-	//Template.CritChance = default.HOLYBLADE_CONVENTIONAL_CRITCHANCE;
-	//Template.iSoundRange = default.HOLYBLADE_CONVENTIONAL_ISOUNDRANGE;
-	//Template.iEnvironmentDamage = default.HOLYBLADE_CONVENTIONAL_IENVIRONMENTDAMAGE;
-	//Template.BaseDamage.DamageType = 'Melee';
-	//Template.DamageTypeTemplateName = 'Melee';
 
 	Template.StartingItem = true;
 	Template.CanBeBuilt = false;
