@@ -14,7 +14,7 @@ function RegisterForEvents(XComGameState_Effect EffectGameState)
 	EventMgr.RegisterForEvent(EffectObj, 'ShieldsExpended', EffectGameState.OnShieldsExpended, ELD_OnStateSubmitted, , UnitState);
 }
 
-DefaultProperties 
+defaultproperties 
 {
 	DuplicateResponse=eDupe_Refresh
 	EffectName=Jammerware_JSRC_Effect_ShelterShield

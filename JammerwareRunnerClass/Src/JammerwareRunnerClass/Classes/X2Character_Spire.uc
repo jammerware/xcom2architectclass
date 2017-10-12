@@ -37,6 +37,7 @@ static function X2CharacterTemplate CreateSpire()
 	CharTemplate.bCanUse_eTraversal_BreakWall = false;
 	CharTemplate.bAppearanceDefinesPawn = false;
 	CharTemplate.bCanTakeCover = false;
+	CharTemplate.bBlocksPathingWhenDead = false;
 
 	CharTemplate.bIsAlien = false;
 	CharTemplate.bIsAdvent = false;

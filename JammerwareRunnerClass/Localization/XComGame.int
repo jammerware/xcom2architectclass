@@ -90,6 +90,13 @@ LocHelpText="Destroy an adjacent spire. You gain one action point, and the coold
 LocFlyOverText="Reclaim"
 LocPromotionPopupText="If you clean up after yourself, you'll be handsomely rewarded."
 
+[Jammerware_JSRC_Ability_Headstone X2AbilityTemplate]
+LocFriendlyName="Headstone"
+LocLongDescription="Summon a spire on a tile occupied by the corpse of an enemy."
+LocHelpText="Summon a spire on a tile occupied by the corpse of an enemy."
+LocFlyOverText="Headstone"
+LocPromotionPopupText="Rest in peace."
+
 [Jammerware_JSRC_Ability_SoulOfTheArchitect X2AbilityTemplate]
 LocFriendlyName="Soul of the Architect"
 LocLongDescription="All effects that apply to your spires also apply to you. You gain all abilities that your spires have."

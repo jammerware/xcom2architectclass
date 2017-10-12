@@ -5,6 +5,7 @@ var config int CREATESPIRE_COOLDOWN;
 
 // ability names
 var name NAME_CREATE_SPIRE;
+var name NAME_HEADSTONE;
 var name NAME_LIGHTNINGROD;
 var name NAME_QUICKSILVER;
 var name NAME_RECLAIM;
@@ -29,6 +30,9 @@ static function array <X2DataTemplate> CreateTemplates()
 
 	// SERGEANT!
 	Templates.AddItem(AddReclaim());
+
+	// LIEUTENANT!
+	Templates.AddItem(AddHeadstone());
 
 	// COLONEL!
 	Templates.AddItem(AddSoulOfTheArchitect());
@@ -128,7 +132,6 @@ simulated function SpawnSpire_BuildVisualization(XComGameState VisualizeGameStat
 
 	// Set the Throwing Unit's FireAction to reference the spawned unit
 	FireAction.MimicBeaconUnitReference = SpawnedUnit.GetReference();
-	// Set the Throwing Unit's FireAction to reference the spawned unit
 	class'X2Action_WaitForAbilityEffect'.static.AddToVisualizationTree(SpireTrack, Context);
 
 	// Only one target effect and it is X2Effect_SpawnSpire
@@ -136,8 +139,13 @@ simulated function SpawnSpire_BuildVisualization(XComGameState VisualizeGameStat
 	
 	if (SpawnSpireEffect == none)
 	{
-		`RedScreen("JSRC: Spire_BuildVisualization: Missing X2Effect_SpawnSpire");
-		return;
+		SpawnSpireEffect = X2Effect_SpawnSpire(Context.ResultContext.TargetEffectResults.Effects[0]);
+
+		if (SpawnSpireEffect == none)
+		{
+			`RedScreen("JSRC: Spire_BuildVisualization: Missing X2Effect_SpawnSpire");
+			return;
+		}
 	}
 
 	SpawnSpireEffect.AddSpawnVisualizationsToTracks(Context, SpawnedUnit, SpireTrack, SpireSourceUnit, SourceTrack);
@@ -166,7 +174,7 @@ static function X2AbilityTemplate AddReclaim()
 	local X2AbilityCooldown Cooldown;
 	local X2Condition_UnitProperty RangeCondition;
 	local X2Condition_UnitType UnitTypeCondition;
-	local X2Effect_KillUnit KillSpireEffect;
+	local X2Effect_ReclaimSpire ReclaimSpireEffect;
 	local X2Effect_GrantActionPoints GrantAPEffect;
 	local X2Effect_ReduceCooldowns CreateSpireCooldownResetEffect;
 
@@ -216,8 +224,8 @@ static function X2AbilityTemplate AddReclaim()
 	Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);
 	
 	// effects
-	KillSpireEffect = new class'X2Effect_KillUnit';
-	Template.AddTargetEffect(KillSpireEffect);
+	ReclaimSpireEffect = new class'X2Effect_ReclaimSpire';
+	Template.AddTargetEffect(ReclaimSpireEffect);
 
 	GrantAPEffect = new class'X2Effect_GrantActionPoints';
 	GrantAPEffect.NumActionPoints = 1;
@@ -238,6 +246,71 @@ static function X2AbilityTemplate AddReclaim()
 	return Template;
 }
 
+static function X2AbilityTemplate AddHeadstone()
+{
+	local X2AbilityTemplate Template;
+	local X2AbilityCost_ActionPoints ActionPointCost;
+	local X2AbilityCooldown Cooldown;
+	local X2Condition_UnitProperty DeadEnemiesCondition;
+	local X2Effect_SpawnSpire SpawnSpireEffect;
+
+	// general properties
+	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_HEADSTONE);
+	Template.Hostility = eHostility_Neutral;
+
+	// hud behavior
+	Template.IconImage = "img:///UILibrary_PerkIcons.UIPerk_poisonspit";
+	Template.AbilitySourceName = 'eAbilitySource_Perk';
+	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_AlwaysShow;
+	Template.bDisplayInUITacticalText = false;
+	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_LIEUTENANT_PRIORITY;
+	Template.bLimitTargetIcons = true;
+
+	// cost
+	ActionPointCost = new class'X2AbilityCost_ActionPoints';
+	ActionPointCost.iNumPoints = 1;
+	ActionPointCost.bConsumeAllPoints = false;
+	Template.AbilityCosts.AddItem(ActionPointCost);
+
+	// Cooldown
+	Cooldown = new class'X2AbilityCooldown';
+	Cooldown.iNumTurns = 6;
+	Template.AbilityCooldown = Cooldown;
+
+	// targeting style (how targets are determined by game rules)
+	Template.AbilityTargetStyle = default.SimpleSingleTarget;
+
+	// hit chance
+	Template.AbilityToHitCalc = default.DeadEye;
+
+	// conditions
+	Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
+	Template.AbilityTargetConditions.AddItem(default.GameplayVisibilityCondition);
+
+	DeadEnemiesCondition = new class 'X2Condition_UnitProperty';
+	DeadEnemiesCondition.ExcludeAlive = true;
+	DeadEnemiesCondition.ExcludeDead = false;
+	DeadEnemiesCondition.ExcludeHostileToSource = false;
+	Template.AbilityTargetConditions.AddItem(DeadEnemiesCondition);
+
+	// triggering
+	Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);
+	
+	// effects
+	SpawnSpireEffect = new class'X2Effect_SpawnSpire';
+	SpawnSpireEffect.BuildPersistentEffect(1, true, true);
+	SpawnSpireEffect.bClearTileBlockedByTargetUnitFlag = true;
+	SpawnSpireEffect.bSpawnOnTargetUnitLocation = true;
+	Template.AddShooterEffect(SpawnSpireEffect);
+	
+	// game state and visualization
+	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
+	Template.BuildVisualizationFn = SpawnSpire_BuildVisualization;
+	Template.bShowActivation = true;
+
+	return Template;
+}
+
 static function X2AbilityTemplate AddSoulOfTheArchitect()
 {
 	local X2AbilityTemplate Template;
@@ -250,19 +323,10 @@ static function X2AbilityTemplate AddSoulOfTheArchitect()
 	return Template;
 }
 
-// these are the abilities that are granted to the spire if the runner has them
-static function array<name> GetSpireSharedAbilities()
-{
-	local array<name> SpireAbilities;
-
-	SpireAbilities.AddItem(default.NAME_SHELTER);
-
-	return SpireAbilities;
-}
-
 defaultproperties 
 {
 	NAME_CREATE_SPIRE=Jammerware_JSRC_Ability_CreateSpire
+	NAME_HEADSTONE=Jammerware_JSRC_Ability_Headstone
 	NAME_LIGHTNINGROD=Jammerware_JSRC_Ability_LightningRod
 	NAME_QUICKSILVER=Jammerware_JSRC_Ability_Quicksilver
 	NAME_RECLAIM=Jammerware_JSRC_Ability_Reclaim
