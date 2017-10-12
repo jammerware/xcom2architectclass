@@ -24,7 +24,7 @@ static function X2AbilityTemplate AddSpireLightningRod()
 	local X2AbilityCost_ActionPoints ActionPointCost;
 	local X2AbilityTarget_Cursor TargetStyle;
 	local X2AbilityMultiTarget_Radius MultiTargetStyle;
-	local X2Effect_LightningRodDamage DamageEffect;
+	local X2Effect_ApplyWeaponDamage DamageEffect;
 
 	// general properties
 	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_SPIRE_LIGHTNINGROD);
@@ -68,7 +68,7 @@ static function X2AbilityTemplate AddSpireLightningRod()
 	Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);
 	
 	// effects
-	DamageEffect = new class'X2Effect_LightningRodDamage';
+	DamageEffect = new class'X2Effect_ApplyWeaponDamage';
 	DamageEffect.bExplosiveDamage = true;
 	DamageEffect.bIgnoreBaseDamage = true;
 	DamageEffect.DamageTag = 'LightningRod';
