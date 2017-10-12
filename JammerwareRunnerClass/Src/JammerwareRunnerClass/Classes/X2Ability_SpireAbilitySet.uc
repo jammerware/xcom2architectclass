@@ -87,7 +87,8 @@ static function X2AbilityTemplate AddSpireShelter()
 	local X2AbilityTemplate Template;
 	local X2AbilityTrigger_EventListener Trigger;
 	local X2Effect_ShelterShield ShieldEffect;
-	local X2Condition_ApplyShelterShield TargetCondition;
+	local X2Condition_UnitEffects EffectsCondition;
+	local X2Condition_UnitProperty PropertyCondition;
 
 	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_SPIRE_SHELTER);
 
@@ -104,13 +105,17 @@ static function X2AbilityTemplate AddSpireShelter()
 	Template.AbilityToHitCalc = default.DeadEye;
 
 	// conditions
-	TargetCondition = new class'X2Condition_ApplyShelterShield';
-	TargetCondition.ExcludeFriendlyToSource = false;
-	TargetCondition.ExcludeHostileToSource = true;
-	TargetCondition.RequireSquadmates = true;
-	TargetCondition.RequireWithinRange = true;
-	TargetCondition.WithinRange = `METERSTOUNITS(class'XComWorldData'.const.WORLD_Melee_Range_Meters);
-	Template.AbilityTargetConditions.AddItem(TargetCondition);
+	EffectsCondition = new class'X2Condition_UnitEffects';
+	EffectsCondition.AddExcludeEffect(class'X2Effect_ShelterShield'.default.EffectName, 'AA_DuplicateEffectIgnored');
+	Template.AbilityTargetConditions.AddItem(EffectsCondition);
+
+	PropertyCondition = new class'X2Condition_UnitProperty';
+	PropertyCondition.ExcludeFriendlyToSource = false;
+	PropertyCondition.ExcludeHostileToSource = true;
+	PropertyCondition.RequireSquadmates = true;
+	PropertyCondition.RequireWithinRange = true;
+	PropertyCondition.WithinRange = `METERSTOUNITS(class'XComWorldData'.const.WORLD_Melee_Range_Meters);
+	Template.AbilityTargetConditions.AddItem(PropertyCondition);
 
 	// triggers
 	Trigger = new class'X2AbilityTrigger_EventListener';
