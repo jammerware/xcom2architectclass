@@ -83,6 +83,13 @@ LocHelpText="Grant a bonus action immediately to an adjacent squadmate."
 LocFlyOverText="Quicksilver"
 LocPromotionPopupText="LIGHTNING!"
 
+[Jammerware_JSRC_Ability_Reclaim X2AbilityTemplate]
+LocFriendlyName="Reclaim"
+LocLongDescription="Destroy an adjacent spire. You gain one action point, and the cooldown of Create Spire resets."
+LocHelpText="Destroy an adjacent spire. You gain one action point, and the cooldown of Create Spire resets."
+LocFlyOverText="Reclaim"
+LocPromotionPopupText="If you clean up after yourself, you'll be handsomely rewarded."
+
 [Jammerware_JSRC_Ability_SoulOfTheArchitect X2AbilityTemplate]
 LocFriendlyName="Soul of the Architect"
 LocLongDescription="All effects that apply to your spires also apply to you. You gain all abilities that your spires have."

@@ -1,6 +1,7 @@
 class X2Character_Spire extends X2Character config(JammerwareRunnerClass);
 
 var name NAME_CHARACTER_SPIRE;
+var name NAME_CHARACTERGROUP_SPIRE;
 
 static function array<X2DataTemplate> CreateTemplates()
 {
@@ -16,6 +17,7 @@ static function X2CharacterTemplate CreateSpire()
     local X2CharacterTemplate CharTemplate;
 
 	`CREATE_X2CHARACTER_TEMPLATE(CharTemplate, default.NAME_CHARACTER_SPIRE);
+	CharTemplate.CharacterGroupName = default.NAME_CHARACTERGROUP_SPIRE;
 	CharTemplate.BehaviorClass = class'XGAIBehavior';
     CharTemplate.strPawnArchetypes.AddItem("GameUnit_LostTowersTurret.ARC_GameUnit_LostTowersTurretM1");
 	CharTemplate.DefaultLoadout='Jammerware_JSRC_Loadout_Spire_Conventional';
@@ -69,4 +71,5 @@ static function X2CharacterTemplate CreateSpire()
 defaultproperties
 {
 	NAME_CHARACTER_SPIRE=Jammerware_JSRC_Character_Spire
+	NAME_CHARACTERGROUP_SPIRE=Jammerware_JSRC_CharacterGroup_Spire
 }

@@ -7,6 +7,7 @@ var config int CREATESPIRE_COOLDOWN;
 var name NAME_CREATE_SPIRE;
 var name NAME_LIGHTNINGROD;
 var name NAME_QUICKSILVER;
+var name NAME_RECLAIM;
 var name NAME_SHELTER;
 var name NAME_SOUL_OF_THE_ARCHITECT;
 
@@ -26,6 +27,9 @@ static function array <X2DataTemplate> CreateTemplates()
 	Templates.AddItem(AddShelter());
 	Templates.AddItem(AddQuicksilver());
 
+	// SERGEANT!
+	Templates.AddItem(AddReclaim());
+
 	// COLONEL!
 	Templates.AddItem(AddSoulOfTheArchitect());
 
@@ -36,6 +40,7 @@ static function X2AbilityTemplate AddCreateSpire()
 {
 	local X2AbilityTemplate Template;
 	local X2AbilityCost_ActionPoints ActionPointCost;
+	local X2AbilityCooldown Cooldown;
 	local X2AbilityTarget_Cursor CursorTarget;
 	local X2Effect_SpawnSpire SpawnSpireEffect;
 
@@ -53,6 +58,10 @@ static function X2AbilityTemplate AddCreateSpire()
 	ActionPointCost.iNumPoints = 1;
 	ActionPointCost.bConsumeAllPoints = false;
 	Template.AbilityCosts.AddItem(ActionPointCost);
+
+	Cooldown = new class'X2AbilityCooldown';
+	Cooldown.iNumTurns = default.CREATESPIRE_COOLDOWN;
+	Template.AbilityCooldown = Cooldown;
 
 	Template.AbilityToHitCalc = default.DeadEye;
 	Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
@@ -150,6 +159,85 @@ static function X2AbilityTemplate AddQuicksilver()
 	return PurePassive(default.NAME_QUICKSILVER, "img:///UILibrary_PerkIcons.UIPerk_runandgun");
 }
 
+static function X2AbilityTemplate AddReclaim()
+{
+	local X2AbilityTemplate Template;
+	local X2AbilityCost_ActionPoints ActionPointCost;
+	local X2AbilityCooldown Cooldown;
+	local X2Condition_UnitProperty RangeCondition;
+	local X2Condition_UnitType UnitTypeCondition;
+	local X2Effect_KillUnit KillSpireEffect;
+	local X2Effect_GrantActionPoints GrantAPEffect;
+	local X2Effect_ReduceCooldowns CreateSpireCooldownResetEffect;
+
+	// general properties
+	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_RECLAIM);
+	Template.Hostility = eHostility_Neutral;
+
+	// hud behavior
+	Template.IconImage = "img:///UILibrary_XPACK_Common.PerkIcons.str_holotargeting";
+	Template.AbilitySourceName = 'eAbilitySource_Perk';
+	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_AlwaysShow;
+	Template.bDisplayInUITacticalText = false;
+	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_SERGEANT_PRIORITY;
+	Template.bLimitTargetIcons = true;
+
+	// cost
+	ActionPointCost = new class'X2AbilityCost_ActionPoints';
+	ActionPointCost.iNumPoints = 1;
+	ActionPointCost.bConsumeAllPoints = false;
+	Template.AbilityCosts.AddItem(ActionPointCost);
+
+	// Cooldown
+	Cooldown = new class'X2AbilityCooldown';
+	Cooldown.iNumTurns = 5;
+	Template.AbilityCooldown = Cooldown;
+
+	// targeting style (how targets are determined by game rules)
+	Template.AbilityTargetStyle = default.SimpleSingleTarget;
+
+	// hit chance
+	Template.AbilityToHitCalc = default.DeadEye;
+
+	// conditions
+	Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
+
+	UnitTypeCondition = new class'X2Condition_UnitType';
+	UnitTypeCondition.IncludeTypes.AddItem(class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE);
+	Template.AbilityTargetConditions.AddItem(UnitTypeCondition);
+
+	RangeCondition = new class'X2Condition_UnitProperty';
+	RangeCondition.ExcludeFriendlyToSource = false;
+	RangeCondition.RequireWithinRange = true;
+	RangeCondition.WithinRange = `METERSTOUNITS(class'XComWorldData'.const.WORLD_Melee_Range_Meters);
+	Template.AbilityTargetConditions.AddItem(RangeCondition);
+
+	// triggering
+	Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);
+	
+	// effects
+	KillSpireEffect = new class'X2Effect_KillUnit';
+	Template.AddTargetEffect(KillSpireEffect);
+
+	GrantAPEffect = new class'X2Effect_GrantActionPoints';
+	GrantAPEffect.NumActionPoints = 1;
+	GrantAPEffect.PointType = class'X2CharacterTemplateManager'.default.StandardActionPoint;
+	GrantAPEffect.bSelectUnit = true;
+	Template.AddShooterEffect(GrantAPEffect);
+
+	CreateSpireCooldownResetEffect = new class 'X2Effect_ReduceCooldowns';
+	CreateSpireCooldownResetEffect.ReduceAll = true;
+	CreateSpireCooldownResetEffect.AbilitiesToTick.AddItem(default.NAME_CREATE_SPIRE);
+	Template.AddShooterEffect(CreateSpireCooldownResetEffect);
+	
+	// game state and visualization
+	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
+	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
+	Template.bShowActivation = true;
+
+	return Template;
+}
+
 static function X2AbilityTemplate AddSoulOfTheArchitect()
 {
 	local X2AbilityTemplate Template;
@@ -177,6 +265,7 @@ defaultproperties
 	NAME_CREATE_SPIRE=Jammerware_JSRC_Ability_CreateSpire
 	NAME_LIGHTNINGROD=Jammerware_JSRC_Ability_LightningRod
 	NAME_QUICKSILVER=Jammerware_JSRC_Ability_Quicksilver
+	NAME_RECLAIM=Jammerware_JSRC_Ability_Reclaim
 	NAME_SHELTER=Jammerware_JSRC_Ability_Shelter
 	NAME_SOUL_OF_THE_ARCHITECT=Jammerware_JSRC_Ability_SoulOfTheArchitect
 }
