@@ -15,15 +15,13 @@ function Init(AvailableAction InAction, int NewTargetIndex)
 
 	super.Init(InAction, NewTargetIndex);
 
+	AbilityTemplate = Ability.GetMyTemplate();
 	History = `XCOMHISTORY;
 
 	AssociatedPlayerState = XComGameState_Player(History.GetGameStateForObjectID(UnitState.ControllingPlayer.ObjectID));
 	`assert(AssociatedPlayerState != none);
 
-	// determine our targeting range
-	AbilityTemplate = Ability.GetMyTemplate();
-
-	// lock the cursor to that range
+	// lock the cursor to pbaoe range
 	Cursor = `Cursor;
 	Cursor.m_fMaxChainedDistance = `METERSTOUNITS(0.0001);
 

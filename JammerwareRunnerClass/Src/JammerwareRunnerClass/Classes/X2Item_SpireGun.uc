@@ -1,5 +1,8 @@
 class X2Item_SpireGun extends X2Item config(GameData_WeaponData);
 
+var name NAME_SPIREGUN_CONVENTIONAL;
+var name NAME_SPIREGUN_WEAPONCAT;
+
 var config array <WeaponDamageValue> SPIREGUN_CONVENTIONAL_ABILITYDAMAGE;
 var config int SPIREGUN_CONVENTIONAL_ISOUNDRANGE;
 var config int SPIREGUN_CONVENTIONAL_IENVIRONMENTDAMAGE;
@@ -17,15 +20,15 @@ static function X2DataTemplate CreateTemplate_SpireGun_Conventional()
 {
 	local X2WeaponTemplate Template;
 
-	`CREATE_X2TEMPLATE(class'X2WeaponTemplate', Template, 'SpireGun');
+	`CREATE_X2TEMPLATE(class'X2WeaponTemplate', Template, default.NAME_SPIREGUN_CONVENTIONAL);
 	Template.WeaponPanelImage = "_PsiAmp";
 
 	Template.ItemCat = 'weapon';
-	Template.WeaponCat = 'spiregun';
+	Template.WeaponCat = default.NAME_SPIREGUN_WEAPONCAT;
 	Template.WeaponTech = 'conventional';
 	Template.strImage = "img:///UILibrary_Common.ConvSecondaryWeapons.PsiAmp";
 	Template.EquipSound = "Psi_Amp_Equip";
-	Template.InventorySlot = eInvSlot_PrimaryWeapon;
+	Template.InventorySlot = eInvSlot_SecondaryWeapon;
 	Template.StowedLocation = eSlot_RightBack;
 
 	// This all the resources; sounds, animations, models, physics, the works.
@@ -37,8 +40,6 @@ static function X2DataTemplate CreateTemplate_SpireGun_Conventional()
 	Template.iPhysicsImpulse = 5;
 
 	Template.ExtraDamage = default.SPIREGUN_CONVENTIONAL_ABILITYDAMAGE;
-	`LOG("JSRC: config damage length" @ default.SPIREGUN_CONVENTIONAL_ABILITYDAMAGE.Length);
-	`LOG("JSRC: spire gun wireup" @ Template.ExtraDamage.Length);
 	Template.iSoundRange = default.SPIREGUN_CONVENTIONAL_ISOUNDRANGE;
 	Template.iEnvironmentDamage = default.SPIREGUN_CONVENTIONAL_IENVIRONMENTDAMAGE;
 
@@ -47,4 +48,10 @@ static function X2DataTemplate CreateTemplate_SpireGun_Conventional()
 	Template.bInfiniteItem = true;
 
 	return Template;
+}
+
+defaultproperties
+{
+	NAME_SPIREGUN_WEAPONCAT=spiregun
+	NAME_SPIREGUN_CONVENTIONAL=Jammerware_JSRC_Item_SpireGun_Conventional
 }

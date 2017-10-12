@@ -30,7 +30,7 @@ static function X2AbilityTemplate AddSpireLightningRod()
 	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_SPIRE_LIGHTNINGROD);
 	Template.Hostility = eHostility_Offensive;
 	// need to source it to the slot because this ability can be on runner or spire
-	Template.DefaultSourceItemSlot = eInvSlot_PrimaryWeapon;
+	Template.DefaultSourceItemSlot = eInvSlot_SecondaryWeapon;
 
 	// hud behavior
 	Template.AbilitySourceName = 'eAbilitySource_Perk';

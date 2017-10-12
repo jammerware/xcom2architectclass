@@ -1,7 +1,5 @@
 class X2Effect_SpawnSpire extends X2Effect_SpawnUnit;
 
-var name UNITVALUE_SPIRECREATOR;
-
 function vector GetSpawnLocation(const out EffectAppliedData ApplyEffectParameters, XComGameState NewGameState)
 {
 	`LOG("JSRC: get spawn location - " @ ApplyEffectParameters.AbilityInputContext.TargetLocations[0]);
@@ -17,10 +15,12 @@ function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, Stat
 {
 	local XComGameState_Unit SourceUnitGameState, SpireUnitGameState;
 	local Jammerware_SpireSharedAbilitiesService SpireSharedAbilitiesService;
+	local Jammerware_SpireRegistrationService SpireRegistrationService;
 	
 	SourceUnitGameState = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(ApplyEffectParameters.TargetStateObjectRef.ObjectID));
 	SpireUnitGameState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(NewUnitRef.ObjectID));
 	SpireSharedAbilitiesService = new class'Jammerware_SpireSharedAbilitiesService';
+	SpireRegistrationService = new class'Jammerware_SpireRegistrationService';
 
 	// DANGER, WILL ROBINSON
 	// i'm super unsure of this implementation, especially because it results in using the dreaded InitAbilityForUnit method, which is indicated as
@@ -28,7 +28,7 @@ function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, Stat
 	SpireSharedAbilitiesService.ConfigureSpireAbilitiesFromSourceUnit(SpireUnitGameState, SourceUnitGameState, NewGameState);
 	
 	// not positive this is right. we need to track somewhere the soldier who created the spire, so we're putting it as a unit value on the spire for now
-	SpireUnitGameState.SetUnitFloatValue(default.UNITVALUE_SPIRECREATOR, SourceUnitGameState.ObjectID, eCleanup_BeginTactical);
+	SpireRegistrationService.RegisterSpireToRunner(SpireUnitGameState, SourceUnitGameState);
 	
 	// spires provide low cover
 	SpireUnitGameState.bGeneratesCover = true;
@@ -43,5 +43,4 @@ defaultproperties
 	UnitToSpawnName=Jammerware_JSRC_Character_Spire
 	bInfiniteDuration=true
 	EffectName="SpawnSpire"
-	UNITVALUE_SPIRECREATOR=Jammerware_JSRC_UnitValue_SpireCreatorUnitID
 }

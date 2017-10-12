@@ -10,6 +10,7 @@ function ConfigureSpireAbilitiesFromSourceUnit(XComGameState_Unit SpireUnit, XCo
 	TemplateManager = class'X2AbilityTemplateManager'.static.GetAbilityTemplateManager();
 
 	// TODO: eventually some kind of associative array would be better here
+	// note that some abilities need to be registered to an item, like lightning rod
 	if (EffectsService.IsUnitAffectedByEffect(SourceUnit, class'X2Ability_RunnerAbilitySet'.default.NAME_SHELTER))
 	{
 		SharedAbilityTemplate = TemplateManager.FindAbilityTemplate(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_SHELTER);
@@ -28,6 +29,6 @@ function ConfigureSpireAbilitiesFromSourceUnit(XComGameState_Unit SpireUnit, XCo
 	{
 		SharedAbilityTemplate = TemplateManager.FindAbilityTemplate(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_LIGHTNINGROD);
 		`LOG("JSRC: initing" @ SharedAbilityTemplate.DataName @ "for" @ SpireUnit.GetMyTemplate().DataName);
-		`TACTICALRULES.InitAbilityForUnit(SharedAbilityTemplate, SpireUnit, NewGameState);
+		`TACTICALRULES.InitAbilityForUnit(SharedAbilityTemplate, SpireUnit, NewGameState, SourceUnit.GetSecondaryWeapon().GetReference());
 	}
 }

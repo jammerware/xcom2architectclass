@@ -2,12 +2,12 @@
 A mod for XCOM 2: War of the Chosen that adds the Spire Runner class.
 
 ## Design
-The goal of the Spire Runner class is to encourage the player's spatial awareness of the battlefield and to create a unit with extremely low offensive potential offset by powerful support abilities.
+The goal of the Spire Runner class is to encourage the player's spatial awareness of the battlefield and to create a unit with low offensive potential offset by powerful support abilities.
 
 ### Allowed Weapons
-**Primary**: Spire Gun
+**Primary**: Assault Rifle
 
-**Secondary**: Pistol
+**Secondary**: Spire Gun
 
 ### Perks
 

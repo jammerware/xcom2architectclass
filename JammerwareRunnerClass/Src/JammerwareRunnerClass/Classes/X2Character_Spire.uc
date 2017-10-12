@@ -18,7 +18,7 @@ static function X2CharacterTemplate CreateSpire()
 	`CREATE_X2CHARACTER_TEMPLATE(CharTemplate, default.NAME_CHARACTER_SPIRE);
 	CharTemplate.BehaviorClass = class'XGAIBehavior';
     CharTemplate.strPawnArchetypes.AddItem("GameUnit_LostTowersTurret.ARC_GameUnit_LostTowersTurretM1");
-	CharTemplate.DefaultLoadout='LostTowersTurretM1_Loadout';
+	CharTemplate.DefaultLoadout='Jammerware_JSRC_Loadout_Spire_Conventional';
 
 	// Traversal Rules
 	CharTemplate.bCanUse_eTraversal_Normal = true;
@@ -61,9 +61,6 @@ static function X2CharacterTemplate CreateSpire()
 	CharTemplate.ImmuneTypes.AddItem('Panic');
 
 	CharTemplate.strTargetIconImage = class'UIUtilities_Image'.const.TargetIcon_Turret;
-
-    // abilities
-
 	CharTemplate.bDisablePodRevealMovementChecks = true;
 
     return CharTemplate;

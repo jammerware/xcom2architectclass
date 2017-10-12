@@ -93,8 +93,14 @@ LocPromotionPopupText="You've become one with your spires. Or, you know. Two or 
 ;-------------------------------------------------------------
 ; WEAPONS
 ;-------------------------------------------------------------
-[SpireGun X2WeaponTemplate]
+[Jammerware_JSRC_Item_SpireGun_Conventional X2WeaponTemplate]
 FriendlyName="Spire Gun"
+
+[Jammerware_JSRC_Item_SpireGun_Magnetic X2WeaponTemplate]
+FriendlyName="Spire Gun MkII"
+
+[Jammerware_JSRC_Item_SpireGun_Beam X2WeaponTemplate]
+FriendlyName="Spire Gun MkIII"
 
 ;-------------------------------------------------------------
 ; CHARACTERS

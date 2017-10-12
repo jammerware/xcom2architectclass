@@ -1,124 +1,5 @@
 class X2Effect_LightningRodDamage extends X2Effect_ApplyWeaponDamage;
 
-// TODO: this is extending apply weapon damage for logging right now. should we do something like check if the ability source is
-// a spire and then go get its runner's gun?
-
-simulated protected function OnEffectAdded(const out EffectAppliedData ApplyEffectParameters, XComGameState_BaseObject kNewTargetState, XComGameState NewGameState, XComGameState_Effect NewEffectState)
-{
-    local Damageable kNewTargetDamageableState;
-	local int iDamage, iMitigated, NewRupture, NewShred, TotalToKill; 
-	local XComGameState_Unit TargetUnit, SourceUnit;
-	local XComGameState_Item SourceWeapon;
-	local array<X2WeaponUpgradeTemplate> WeaponUpgradeTemplates;
-	local X2WeaponUpgradeTemplate WeaponUpgradeTemplate;
-	local array<Name> AppliedDamageTypes;
-	local int bAmmoBypassesShields, bFullyImmune;
-	local bool bDoesDamageIgnoreShields;
-	local XComGameStateHistory History;
-	local StateObjectReference EffectRef;
-	local XComGameState_Effect EffectState;
-	local array<DamageModifierInfo> SpecialDamageMessages;
-	local DamageResult ZeroDamageResult;
-
-    `LOG("JSRC: lightning rod damage applied to " @ XComGameState_Unit(kNewTargetState).GetMyTemplate().DataName);
-
-	kNewTargetDamageableState = Damageable(kNewTargetState);
-	if( kNewTargetDamageableState != none )
-	{
-		AppliedDamageTypes = DamageTypes;
-		iDamage = CalculateDamageAmount(ApplyEffectParameters, iMitigated, NewRupture, NewShred, AppliedDamageTypes, bAmmoBypassesShields, bFullyImmune, SpecialDamageMessages, NewGameState);
-		bDoesDamageIgnoreShields = (bAmmoBypassesShields > 0) || bBypassShields;
-
-		if ((iDamage == 0) && (iMitigated == 0) && (NewRupture == 0) && (NewShred == 0))
-		{
-            `LOG("JSRC: no damage :(");
-			// No damage is being dealt
-			if (SpecialDamageMessages.Length > 0 || bFullyImmune != 0)
-			{
-				TargetUnit = XComGameState_Unit(kNewTargetState);
-				if (TargetUnit != none)
-				{
-					ZeroDamageResult.bImmuneToAllDamage = bFullyImmune != 0;
-					ZeroDamageResult.Context = NewGameState.GetContext();
-					ZeroDamageResult.SourceEffect = ApplyEffectParameters;
-					ZeroDamageResult.SpecialDamageFactors = SpecialDamageMessages;
-					TargetUnit.DamageResults.AddItem(ZeroDamageResult);
-				}
-			}
-			return;
-		}
-
-		if (bAllowFreeKill)
-		{
-			//  check to see if the damage ought to kill them and if not, roll for a free kill
-			TargetUnit = XComGameState_Unit(kNewTargetState);
-			if (TargetUnit != none)
-			{
-				TotalToKill = TargetUnit.GetCurrentStat(eStat_HP) + TargetUnit.GetCurrentStat(eStat_ShieldHP);
-				if (TotalToKill > iDamage)
-				{
-					History = `XCOMHISTORY;
-					//  check weapon upgrades for a free kill
-					SourceWeapon = XComGameState_Item(History.GetGameStateForObjectID(ApplyEffectParameters.ItemStateObjectRef.ObjectID));
-					if (SourceWeapon != none)
-					{
-						WeaponUpgradeTemplates = SourceWeapon.GetMyWeaponUpgradeTemplates();
-						foreach WeaponUpgradeTemplates(WeaponUpgradeTemplate)
-						{
-							if (WeaponUpgradeTemplate.FreeKillFn != none && WeaponUpgradeTemplate.FreeKillFn(WeaponUpgradeTemplate, TargetUnit))
-							{
-								TargetUnit.TakeEffectDamage(self, TotalToKill, 0, NewShred, ApplyEffectParameters, NewGameState, false, false, true, AppliedDamageTypes, SpecialDamageMessages);
-								if (TargetUnit.IsAlive())
-								{
-									`RedScreen("Somehow free kill upgrade failed to kill the target! -jbouscher @gameplay");
-								}
-								else
-								{
-									TargetUnit.DamageResults[TargetUnit.DamageResults.Length - 1].bFreeKill = true;
-								}
-								return;
-							}
-						}
-					}
-					//  check source unit effects for a free kill
-					SourceUnit = XComGameState_Unit(NewGameState.GetGameStateForObjectID(ApplyEffectParameters.SourceStateObjectRef.ObjectID));
-					if (SourceUnit == none)
-						SourceUnit = XComGameState_Unit(History.GetGameStateForObjectID(ApplyEffectParameters.SourceStateObjectRef.ObjectID));
-
-					foreach SourceUnit.AffectedByEffects(EffectRef)
-					{
-						EffectState = XComGameState_Effect(History.GetGameStateForObjectID(EffectRef.ObjectID));
-						if (EffectState != none)
-						{
-							if (EffectState.GetX2Effect().FreeKillOnDamage(SourceUnit, TargetUnit, NewGameState, TotalToKill, ApplyEffectParameters))
-							{
-								TargetUnit.TakeEffectDamage(self, TotalToKill, 0, NewShred, ApplyEffectParameters, NewGameState, false, false, true, AppliedDamageTypes, SpecialDamageMessages);
-								if (TargetUnit.IsAlive())
-								{
-									`RedScreen("Somehow free kill effect failed to kill the target! -jbouscher @gameplay");
-								}
-								else
-								{
-									TargetUnit.DamageResults[TargetUnit.DamageResults.Length - 1].bFreeKill = true;
-									TargetUnit.DamageResults[TargetUnit.DamageResults.Length - 1].FreeKillAbilityName = EffectState.ApplyEffectParameters.AbilityInputContext.AbilityTemplateName;
-								}
-								return;
-							}
-						}
-					}
-				}
-			}
-		}
-		
-		if (NewRupture > 0)
-		{
-			kNewTargetDamageableState.AddRupturedValue(NewRupture);
-		}
-
-		kNewTargetDamageableState.TakeEffectDamage(self, iDamage, iMitigated, NewShred, ApplyEffectParameters, NewGameState, false, true, bDoesDamageIgnoreShields, AppliedDamageTypes, SpecialDamageMessages);
-	}
-}
-
 simulated function int CalculateDamageAmount(const out EffectAppliedData ApplyEffectParameters, out int ArmorMitigation, out int NewRupture, out int NewShred, out array<Name> AppliedDamageTypes, out int bAmmoIgnoresShields, out int bFullyImmune, out array<DamageModifierInfo> SpecialDamageMessages, optional XComGameState NewGameState)
 {
 	local int TotalDamage, WeaponDamage, DamageSpread, ArmorPiercing, EffectDmg, CritDamage;
@@ -162,10 +43,7 @@ simulated function int CalculateDamageAmount(const out EffectAppliedData ApplyEf
 	kTarget = Damageable(History.GetGameStateForObjectID(ApplyEffectParameters.TargetStateObjectRef.ObjectID));
 	kDestructibleActorTarget = XComDestructibleActor(History.GetVisualizer(ApplyEffectParameters.TargetStateObjectRef.ObjectID));
 	kAbility = XComGameState_Ability(History.GetGameStateForObjectID(ApplyEffectParameters.AbilityStateObjectRef.ObjectID));
-	if (kAbility != none && kAbility.SourceAmmo.ObjectID > 0)
-		kSourceItem = XComGameState_Item(History.GetGameStateForObjectID(kAbility.SourceAmmo.ObjectID));		
-	else
-		kSourceItem = XComGameState_Item(History.GetGameStateForObjectID(ApplyEffectParameters.ItemStateObjectRef.ObjectID));		
+	kSourceItem = XComGameState_Item(History.GetGameStateForObjectID(ApplyEffectParameters.ItemStateObjectRef.ObjectID));
 
 	if( bAlwaysKillsCivilians )
 	{
@@ -177,8 +55,6 @@ simulated function int CalculateDamageAmount(const out EffectAppliedData ApplyEf
 			return TargetUnit.GetCurrentStat(eStat_HP) + TargetUnit.GetCurrentStat(eStat_ShieldHP);
 		}
 	}
-
-	`log("===" $ GetFuncName() $ "===", true, 'XCom_HitRolls');
 
 	if (kSourceItem != none)
 	{
@@ -193,9 +69,7 @@ simulated function int CalculateDamageAmount(const out EffectAppliedData ApplyEf
 		}
 		if (DamageTag != '')
 		{
-            `LOG("JSRC: damage tag" @ DamageTag);
 			kSourceItem.GetWeaponDamageValue(XComGameState_BaseObject(kTarget), DamageTag, ExtraDamageValue);
-            `LOG("JSRC: damage extra" @ ExtraDamageValue.Damage);
 			if (ExtraDamageValue.Damage > 0) bHadAnyDamage = true;
 
 			bWasImmune = bWasImmune && ModifyDamageValue(ExtraDamageValue, kTarget, AppliedDamageTypes);
@@ -265,9 +139,6 @@ simulated function int CalculateDamageAmount(const out EffectAppliedData ApplyEf
 	NewRupture = BaseDamageValue.Rupture + ExtraDamageValue.Rupture + BonusEffectDamageValue.Rupture + AmmoDamageValue.Rupture + UpgradeDamageValue.Rupture;
 	NewShred = BaseDamageValue.Shred + ExtraDamageValue.Shred + BonusEffectDamageValue.Shred + AmmoDamageValue.Shred + UpgradeDamageValue.Shred;
 	RuptureCap = WeaponDamage;
-
-    `LOG("JSRC: base damage value" @ BaseDamagevalue.Damage);
-    `LOG("JSRC: weapon damage" @ BaseDamagevalue.Damage);
 
 	`log(`ShowVar(bIgnoreBaseDamage) @ `ShowVar(DamageTag), true, 'XCom_HitRolls');
 	`log("Weapon damage:" @ WeaponDamage @ "Potential spread:" @ DamageSpread, true, 'XCom_HitRolls');
