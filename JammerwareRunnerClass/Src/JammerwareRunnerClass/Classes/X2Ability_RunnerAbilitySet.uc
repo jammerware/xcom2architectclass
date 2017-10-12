@@ -4,6 +4,7 @@ class X2Ability_RunnerAbilitySet extends X2Ability
 var config int CREATESPIRE_COOLDOWN;
 
 // ability names
+var name NAME_CREATE_SPIRE;
 var name NAME_LIGHTNINGROD;
 var name NAME_QUICKSILVER;
 var name NAME_SHELTER;
@@ -38,7 +39,7 @@ static function X2AbilityTemplate AddCreateSpire()
 	local X2AbilityTarget_Cursor CursorTarget;
 	local X2Effect_SpawnSpire SpawnSpireEffect;
 
-	`CREATE_X2ABILITY_TEMPLATE(Template, 'CreateSpire');
+	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_CREATE_SPIRE);
 
 	Template.IconImage = "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_Pillar";
 	Template.AbilitySourceName = 'eAbilitySource_Perk';
@@ -173,8 +174,9 @@ static function array<name> GetSpireSharedAbilities()
 
 defaultproperties 
 {
-	NAME_LIGHTNINGROD = Jammerware_JSRC_Ability_LightningRod
-	NAME_QUICKSILVER = Jammerware_JSRC_Ability_Quicksilver
-	NAME_SHELTER = Jammerware_JSRC_Ability_Shelter
-	NAME_SOUL_OF_THE_ARCHITECT = Jammerware_JSRC_Ability_SoulOfTheArchitect
+	NAME_CREATE_SPIRE=Jammerware_JSRC_Ability_CreateSpire
+	NAME_LIGHTNINGROD=Jammerware_JSRC_Ability_LightningRod
+	NAME_QUICKSILVER=Jammerware_JSRC_Ability_Quicksilver
+	NAME_SHELTER=Jammerware_JSRC_Ability_Shelter
+	NAME_SOUL_OF_THE_ARCHITECT=Jammerware_JSRC_Ability_SoulOfTheArchitect
 }

@@ -34,7 +34,7 @@
 ;-------------------------------------------------------------
 ; ABILITIES
 ;-------------------------------------------------------------
-[CreateSpire X2AbilityTemplate]
+[Jammerware_JSRC_Ability_CreateSpire X2AbilityTemplate]
 LocFriendlyName="Create Spire"
 LocLongDescription="Create a spire. Spires provide high cover."
 LocHelpText="Create a spire. Spires provide high cover."

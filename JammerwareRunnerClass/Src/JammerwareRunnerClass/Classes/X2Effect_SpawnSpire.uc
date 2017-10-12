@@ -22,13 +22,13 @@ function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, Stat
 	SpireSharedAbilitiesService = new class'Jammerware_SpireSharedAbilitiesService';
 	SpireRegistrationService = new class'Jammerware_SpireRegistrationService';
 
+	// not positive this is right. we need to track somewhere the soldier who created the spire, so we're putting it as a unit value on the spire for now
+	SpireRegistrationService.RegisterSpireToRunner(SpireUnitGameState, SourceUnitGameState);
+
 	// DANGER, WILL ROBINSON
 	// i'm super unsure of this implementation, especially because it results in using the dreaded InitAbilityForUnit method, which is indicated as
 	// pretty dangerous by Firaxis. if the soldier who spawns the spire has certain abilities, the spire gets them too
 	SpireSharedAbilitiesService.ConfigureSpireAbilitiesFromSourceUnit(SpireUnitGameState, SourceUnitGameState, NewGameState);
-	
-	// not positive this is right. we need to track somewhere the soldier who created the spire, so we're putting it as a unit value on the spire for now
-	SpireRegistrationService.RegisterSpireToRunner(SpireUnitGameState, SourceUnitGameState);
 	
 	// spires provide low cover
 	SpireUnitGameState.bGeneratesCover = true;
