@@ -26,3 +26,21 @@ static function LogUnitAbilities(XComGameState_Unit Unit)
         `LOG(" - " @ AbilityState.GetMyTemplate().DataName);
     }
 }
+
+static function LogUnitFValue(XComGameState_Unit Unit, name UnitValueName)
+{
+    local UnitValue UnitValue;
+    Unit.GetUnitValue(UnitValueName, UnitValue);
+
+    `LOG("JSRC: Unit " @ GetUnitLogName(Unit) @ "has value for" @ UnitValueName @ ":" @ UnitValue.fValue);
+}
+
+static function LogUnitLocation(XComGameState_Unit Unit)
+{
+    `LOG("JSRC: unit" @ Unit.GetMyTemplateName() @ Unit.GetReference().ObjectID @ "is located at" @ `XWORLD.GetPositionFromTileCoordinates(Unit.TileLocation));
+}
+
+static function string GetUnitLogName(XComGameState_Unit Unit)
+{
+    return "" @ Unit.GetMyTemplateName() @ "(" @ Unit.GetReference().ObjectID @ ")";
+}

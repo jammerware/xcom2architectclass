@@ -12,9 +12,6 @@ var name NAME_RECLAIM;
 var name NAME_SHELTER;
 var name NAME_SOUL_OF_THE_ARCHITECT;
 
-// ability numbers
-var float RANGE_SHELTER_SHIELD;
-
 static function array <X2DataTemplate> CreateTemplates()
 {
 	local array<X2DataTemplate> Templates;
@@ -94,62 +91,58 @@ simulated function SpawnSpire_BuildVisualization(XComGameState VisualizeGameStat
 	local XComGameStateHistory History;
 	local XComGameStateContext_Ability Context;
 	local StateObjectReference InteractingUnitRef;
+
 	local VisualizationActionMetadata EmptyTrack;
-	local VisualizationActionMetadata SourceTrack, SpireTrack;
-	local XComGameState_Unit SpireSourceUnit, SpawnedUnit;
+	local VisualizationActionMetadata ShooterTrack, SpawnedUnitTrack;
+	local XComGameState_Unit ShooterUnit, SpawnedUnit;
+
 	local UnitValue SpawnedUnitValue;
 	local X2Effect_SpawnSpire SpawnSpireEffect;
-	local X2Action_MimicBeaconThrow FireAction;
 
 	History = `XCOMHISTORY;
-
 	Context = XComGameStateContext_Ability(VisualizeGameState.GetContext());
 	InteractingUnitRef = Context.InputContext.SourceObject;
 
-	//Configure the visualization track for the shooter
+	// Configure the visualization track for the shooter
 	//****************************************************************************************
-	SourceTrack = EmptyTrack;
-	SourceTrack.StateObject_OldState = History.GetGameStateForObjectID(InteractingUnitRef.ObjectID, eReturnType_Reference, VisualizeGameState.HistoryIndex - 1);
-	SourceTrack.StateObject_NewState = VisualizeGameState.GetGameStateForObjectID(InteractingUnitRef.ObjectID);
-	SourceTrack.VisualizeActor = History.GetVisualizer(InteractingUnitRef.ObjectID);
+	ShooterTrack = EmptyTrack;
+	ShooterTrack.StateObject_OldState = History.GetGameStateForObjectID(InteractingUnitRef.ObjectID, eReturnType_Reference, VisualizeGameState.HistoryIndex - 1);
+	ShooterTrack.StateObject_NewState = VisualizeGameState.GetGameStateForObjectID(InteractingUnitRef.ObjectID);
+	ShooterTrack.VisualizeActor = History.GetVisualizer(InteractingUnitRef.ObjectID);
 
-	class'X2Action_ExitCover'.static.AddToVisualizationTree(SourceTrack, Context);
-	FireAction = X2Action_MimicBeaconThrow(class'X2Action_MimicBeaconThrow'.static.AddToVisualizationTree(SourceTrack, Context));
-	class'X2Action_EnterCover'.static.AddToVisualizationTree(SourceTrack, Context);
+	// find the shooter and the ID of the spire
+	ShooterUnit = XComGameState_Unit(ShooterTrack.StateObject_NewState);
+	ShooterUnit.GetUnitValue(class'X2Effect_SpawnUnit'.default.SpawnedUnitValueName, SpawnedUnitValue);
+	`LOG("JSRC: visualizing spire " @ SpawnedUnitValue.fValue);
 
 	// Configure the visualization track for the spire
-	//******************************************************************************************
-	SpireSourceUnit = XComGameState_Unit(VisualizeGameState.GetGameStateForObjectID(InteractingUnitRef.ObjectID));
-	`assert(SpireSourceUnit != none);
-	SpireSourceUnit.GetUnitValue(class'X2Effect_SpawnUnit'.default.SpawnedUnitValueName, SpawnedUnitValue);
-
-	SpireTrack = EmptyTrack;
-	SpireTrack.StateObject_OldState = History.GetGameStateForObjectID(SpawnedUnitValue.fValue, eReturnType_Reference, VisualizeGameState.HistoryIndex);
-	SpireTrack.StateObject_NewState = SpireTrack.StateObject_OldState;
-	SpawnedUnit = XComGameState_Unit(SpireTrack.StateObject_NewState);
+	//****************************************************************************************
+	SpawnedUnitTrack = EmptyTrack;
+	SpawnedUnitTrack.StateObject_OldState = History.GetGameStateForObjectID(int(SpawnedUnitValue.fValue), eReturnType_Reference, VisualizeGameState.HistoryIndex);
+	SpawnedUnitTrack.StateObject_NewState = SpawnedUnitTrack.StateObject_OldState;
+	SpawnedUnit = XComGameState_Unit(SpawnedUnitTrack.StateObject_NewState);
 	`assert(SpawnedUnit != none);
-	SpireTrack.VisualizeActor = History.GetVisualizer(SpawnedUnit.ObjectID);
+	SpawnedUnitTrack.VisualizeActor = History.GetVisualizer(SpawnedUnit.ObjectID);
+	`LOG("SPIRE UNIT FROM VISUALIZER");
+	class'Jammerware_DebugUtils'.static.LogUnitLocation(SpawnedUnit);
 
-	// Set the Throwing Unit's FireAction to reference the spawned unit
-	FireAction.MimicBeaconUnitReference = SpawnedUnit.GetReference();
-	class'X2Action_WaitForAbilityEffect'.static.AddToVisualizationTree(SpireTrack, Context);
-
-	// Only one target effect and it is X2Effect_SpawnSpire
+	// Only one shooter effect and it is X2Effect_SpawnSpire
 	SpawnSpireEffect = X2Effect_SpawnSpire(Context.ResultContext.ShooterEffectResults.Effects[0]);
-	
-	if (SpawnSpireEffect == none)
-	{
-		SpawnSpireEffect = X2Effect_SpawnSpire(Context.ResultContext.TargetEffectResults.Effects[0]);
 
-		if (SpawnSpireEffect == none)
-		{
-			`RedScreen("JSRC: Spire_BuildVisualization: Missing X2Effect_SpawnSpire");
-			return;
-		}
+	if( SpawnSpireEffect == none )
+	{
+		`RedScreen("SpawnSpire_BuildVisualization: Missing X2Effect_SpawnSpire");
+		return;
 	}
 
-	SpawnSpireEffect.AddSpawnVisualizationsToTracks(Context, SpawnedUnit, SpireTrack, SpireSourceUnit, SourceTrack);
-	class'X2Action_SyncVisualizer'.static.AddToVisualizationTree(SpireTrack, Context);
+	// Build the tracks
+	class'X2Action_ExitCover'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
+	class'X2Action_AbilityPerkStart'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
+
+	SpawnSpireEffect.AddSpawnVisualizationsToTracks(Context, SpawnedUnit, SpawnedUnitTrack, ShooterUnit, ShooterTrack);
+
+	class'X2Action_AbilityPerkEnd'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
+	class'X2Action_EnterCover'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
 }
 
 static function X2AbilityTemplate AddLightningRod()
@@ -300,15 +293,76 @@ static function X2AbilityTemplate AddHeadstone()
 	SpawnSpireEffect = new class'X2Effect_SpawnSpire';
 	SpawnSpireEffect.BuildPersistentEffect(1, true, true);
 	SpawnSpireEffect.bClearTileBlockedByTargetUnitFlag = true;
-	SpawnSpireEffect.bSpawnOnTargetUnitLocation = true;
-	Template.AddShooterEffect(SpawnSpireEffect);
+	Template.AddTargetEffect(SpawnSpireEffect);
 	
 	// game state and visualization
 	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
-	Template.BuildVisualizationFn = SpawnSpire_BuildVisualization;
+	Template.BuildVisualizationFn = Headstone_BuildVisualization;
 	Template.bShowActivation = true;
 
 	return Template;
+}
+
+static function Headstone_BuildVisualization(XComGameState VisualizeGameState)
+{
+	local XComGameStateHistory History;
+	local XComGameStateContext_Ability Context;
+	local StateObjectReference InteractingUnitRef;
+
+	local VisualizationActionMetadata EmptyTrack;
+	local VisualizationActionMetadata ShooterTrack, DeadUnitTrack, SpawnedUnitTrack;
+	local XComGameState_Unit SpawnedUnit, DeadUnit;
+
+	local UnitValue SpawnedUnitValue;
+	local X2Effect_SpawnSpire SpawnSpireEffect;
+
+	History = `XCOMHISTORY;
+
+	Context = XComGameStateContext_Ability(VisualizeGameState.GetContext());
+	InteractingUnitRef = Context.InputContext.SourceObject;
+
+	// Configure the visualization track for the shooter
+	//****************************************************************************************
+	ShooterTrack = EmptyTrack;
+	ShooterTrack.StateObject_OldState = History.GetGameStateForObjectID(InteractingUnitRef.ObjectID, eReturnType_Reference, VisualizeGameState.HistoryIndex - 1);
+	ShooterTrack.StateObject_NewState = VisualizeGameState.GetGameStateForObjectID(InteractingUnitRef.ObjectID);
+	ShooterTrack.VisualizeActor = History.GetVisualizer(InteractingUnitRef.ObjectID);
+
+	// Configure the visualization track for the dead guy
+	//******************************************************************************************
+	DeadUnitTrack.StateObject_OldState = History.GetGameStateForObjectID(Context.InputContext.PrimaryTarget.ObjectID, eReturnType_Reference, VisualizeGameState.HistoryIndex);
+	DeadUnitTrack.StateObject_NewState = DeadUnitTrack.StateObject_OldState;
+	DeadUnit = XComGameState_Unit(VisualizeGameState.GetGameStateForObjectID(Context.InputContext.PrimaryTarget.ObjectID));
+	`assert(DeadUnit != none);
+	DeadUnitTrack.VisualizeActor = History.GetVisualizer(DeadUnit.ObjectID);
+
+	// Get the ObjectID for the SpawnedUnit created from the DeadUnit
+	DeadUnit.GetUnitValue(class'X2Effect_SpawnUnit'.default.SpawnedUnitValueName, SpawnedUnitValue);
+
+	SpawnedUnitTrack = EmptyTrack;
+	SpawnedUnitTrack.StateObject_OldState = History.GetGameStateForObjectID(SpawnedUnitValue.fValue, eReturnType_Reference, VisualizeGameState.HistoryIndex);
+	SpawnedUnitTrack.StateObject_NewState = SpawnedUnitTrack.StateObject_OldState;
+	SpawnedUnit = XComGameState_Unit(SpawnedUnitTrack.StateObject_NewState);
+	`assert(SpawnedUnit != none);
+	SpawnedUnitTrack.VisualizeActor = History.GetVisualizer(SpawnedUnit.ObjectID);
+
+	// Only one target effect and it is X2Effect_SpawnSpire
+	SpawnSpireEffect = X2Effect_SpawnSpire(Context.ResultContext.TargetEffectResults.Effects[0]);
+
+	if( SpawnSpireEffect == none )
+	{
+		`RedScreenOnce("Headstone_BuildVisualization: Missing X2Effect_SpawnSpire");
+		return;
+	}
+
+	// Build the tracks
+	class'X2Action_ExitCover'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
+	class'X2Action_AbilityPerkStart'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
+
+	SpawnSpireEffect.AddSpawnVisualizationsToTracks(Context, SpawnedUnit, SpawnedUnitTrack, DeadUnit, DeadUnitTrack);
+
+	class'X2Action_AbilityPerkEnd'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
+	class'X2Action_EnterCover'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
 }
 
 static function X2AbilityTemplate AddSoulOfTheArchitect()

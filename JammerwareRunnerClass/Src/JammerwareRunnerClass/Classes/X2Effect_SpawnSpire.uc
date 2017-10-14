@@ -2,24 +2,96 @@ class X2Effect_SpawnSpire extends X2Effect_SpawnUnit;
 
 var bool bSpawnOnTargetUnitLocation;
 
+function TriggerSpawnEvent(const out EffectAppliedData ApplyEffectParameters, XComGameState_Unit EffectTargetUnit, XComGameState NewGameState, XComGameState_Effect EffectGameState)
+{
+	local XComGameState_Unit SourceUnitState, TargetUnitState, SpawnedUnit, CopiedUnit, ModifiedEffectTargetUnit;
+	local XComGameStateHistory History;
+	local XComAISpawnManager SpawnManager;
+	local StateObjectReference NewUnitRef;
+	local XComWorldData World;
+	local XComGameState_AIGroup GroupState;
+
+	History = `XCOMHISTORY;
+	SpawnManager = `SPAWNMGR;
+	World = `XWORLD;
+
+	TargetUnitState = XComGameState_Unit(History.GetGameStateForObjectID(ApplyEffectParameters.TargetStateObjectRef.ObjectID));
+	if( TargetUnitState == none )
+	{
+		`RedScreen("TargetUnitState in X2Effect_SpawnUnit::TriggerSpawnEvent does not exist. @dslonneger");
+		return;
+	}
+	SourceUnitState = XComGameState_Unit(History.GetGameStateForObjectID(ApplyEffectParameters.SourceStateObjectRef.ObjectID));
+
+	if( bClearTileBlockedByTargetUnitFlag )
+	{
+		World.ClearTileBlockedByUnitFlag(TargetUnitState);
+	}
+
+	if( bCopyTargetAppearance )
+	{
+		CopiedUnit = TargetUnitState;
+	}
+	else if ( bCopySourceAppearance )
+	{
+		CopiedUnit = SourceUnitState;
+	}
+
+	// Spawn the new unit
+	NewUnitRef = SpawnManager.CreateUnit(
+		GetSpawnLocation(ApplyEffectParameters, NewGameState), 
+		GetUnitToSpawnName(ApplyEffectParameters), 
+		GetTeam(ApplyEffectParameters), 
+		false, 
+		false, 
+		NewGameState, 
+		CopiedUnit, 
+		, 
+		, 
+		bCopyReanimatedFromUnit,
+		(SourceUnitState != None && (bAddToSourceGroup || SourceUnitState.IsMine()) ) ? SourceUnitState.GetGroupMembership(NewGameState).ObjectID : -1,
+		bCopyReanimatedStatsFromUnit);
+
+	SpawnedUnit = XComGameState_Unit(NewGameState.GetGameStateForObjectID(NewUnitRef.ObjectID));
+	SpawnedUnit.bTriggerRevealAI = !bSetProcessedScamperAs;
+	`LOG("JSRC: spawned unit out of the spawn manager");
+	class'Jammerware_DebugUtils'.static.LogUnitLocation(SpawnedUnit);
+
+	// Don't allow scamper
+	GroupState = SpawnedUnit.GetGroupMembership(NewGameState);
+	if( GroupState != None )
+	{
+		GroupState = XComGameState_AIGroup(NewGameState.ModifyStateObject(class'XComGameState_AIGroup', GroupState.ObjectID));
+		GroupState.bProcessedScamper = bSetProcessedScamperAs;
+	}
+
+	ModifiedEffectTargetUnit = XComGameState_Unit(NewGameState.ModifyStateObject(class'XComGameState_Unit', EffectTargetUnit.ObjectID));
+	ModifiedEffectTargetUnit.SetUnitFloatValue('SpawnedUnitValue', NewUnitRef.ObjectID, eCleanup_Never);
+	ModifiedEffectTargetUnit.SetUnitFloatValue('SpawnedThisTurnUnitValue', NewUnitRef.ObjectID, eCleanup_BeginTurn);
+
+	EffectGameState.CreatedObjectReference = SpawnedUnit.GetReference();
+
+	OnSpawnComplete(ApplyEffectParameters, NewUnitRef, NewGameState, EffectGameState);
+}
+
 function vector GetSpawnLocation(const out EffectAppliedData ApplyEffectParameters, XComGameState NewGameState)
 {
 	local vector SpawnLocation;
-	local XComGameState_Unit TargetUnitGameState;
+	local XComGameState_Unit SourceUnitGameState, TargetUnitGameState;
 
-	if (bSpawnOnTargetUnitLocation) 
+	SourceUnitGameState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(ApplyEffectParameters.SourceStateObjectRef.ObjectID));
+	TargetUnitGameState = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(ApplyEffectParameters.TargetStateObjectRef.ObjectID));
+
+	if (SourceUnitGameState.GetReference().ObjectID != TargetUnitGameState.GetReference().ObjectID)
 	{
-		SpawnLocation = ApplyEffectParameters.AbilityInputContext.TargetLocations[0];
+		SpawnLocation = `XWorld.GetPositionFromTileCoordinates(TargetUnitGameState.TileLocation);
 	}
 	else
 	{
-		TargetUnitGameState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(ApplyEffectParameters.TargetStateObjectRef.ObjectID));
-		SpawnLocation = `XWorld.GetPositionFromTileCoordinates(TargetUnitGameState.TileLocation);
+		SpawnLocation = ApplyEffectParameters.AbilityInputContext.TargetLocations[0];
 	}
 	
-	`LOG("JSRC: requested location - " @ ApplyEffectParameters.AbilityInputContext.TargetLocations[0]);
-	`LOG("JSRC: locations length - " @ ApplyEffectParameters.AbilityInputContext.TargetLocations.Length);
-	`LOG("JSRC: resulting location - " @ SpawnLocation);
+	`LOG("JSRC: resulting location -" @ SpawnLocation);
 	return SpawnLocation;
 }
 
@@ -40,21 +112,10 @@ function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, Stat
 	SpireUnitGameState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(NewUnitRef.ObjectID));
 	TargetUnitGameState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(ApplyEffectParameters.TargetStateObjectRef.ObjectID));
 
-	`LOG("JSRC: ---spawn complete---");
-	`LOG("JSRC: source unit id" @ ApplyEffectParameters.SourceStateObjectRef.ObjectID);
-	`LOG("JSRC: source template" @ SourceUnitGameState.GetMyTemplateName());
-	`LOG("JSRC: target unit id" @ ApplyEffectParameters.TargetStateObjectRef.ObjectID);
-	`LOG("JSRC: target template" @ TargetUnitGameState.GetMyTemplateName());
-	`LOG("JSRC: new unit id" @ NewUnitRef.ObjectID);
-	`LOG("JSRC: new unit template" @ SpireUnitGameState.GetMyTemplateName());
-	`LOG("JSRC: ---end spawn complete---");
-
-	// if spawnspire was cast on a target (like it is when Headstone is used), remove that unit from play
+	// if spawnspire was cast on a unit (like it is when Headstone is used), remove that unit from play
 	if (ApplyEffectParameters.SourceStateObjectRef.ObjectID != ApplyEffectParameters.TargetStateObjectRef.ObjectID)
 	{
-		`LOG("JSRC: cleaning up existing unit for headstone");
 		`XEVENTMGR.TriggerEvent('UnitRemovedFromPlay', TargetUnitGameState, TargetUnitGameState, NewGameState);
-		`LOG("JSRC: done");
 	}
 
 	// TODO: look at X2Effect_SpawnPsiZombie to track relationship between runner and spire. this'll let us have a buff on the spire indicating the relationship if we want
@@ -70,8 +131,8 @@ function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, Stat
 	SpireUnitGameState.bGeneratesCover = true;
 	SpireUnitGameState.CoverForceFlag = CoverForce_High;
 
-	// where'd it spawn?
-	`LOG("JSRC: spawned at - " @ `XWORLD.GetPositionFromTileCoordinates( SpireUnitGameState.TileLocation ));
+	`LOG("JSRC: end of OnEffectApplied for the spire");
+	class'Jammerware_DebugUtils'.static.LogUnitLocation(SpireUnitGameState);
 }
 
 defaultproperties

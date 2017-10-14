@@ -2,11 +2,11 @@ class Jammerware_GameStateEffectsService extends Object;
 
 function bool IsUnitAffectedByEffect(XComGameState_Unit Unit, name EffectName)
 {
-    local int LoopIndex;
+    local name UnitEffect;
 
-    for (LoopIndex = 0; LoopIndex < Unit.AffectedByEffectNames.Length; LoopIndex++)
+    foreach Unit.AffectedByEffectNames(UnitEffect)
     {
-        if (Unit.AffectedByEffectNames[LoopIndex] == EffectName) {
+        if (UnitEffect == EffectName) {
             return true;
         }
     }
