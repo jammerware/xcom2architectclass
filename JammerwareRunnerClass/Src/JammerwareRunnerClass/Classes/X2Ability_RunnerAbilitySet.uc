@@ -118,15 +118,16 @@ simulated function SpawnSpire_BuildVisualization(XComGameState VisualizeGameStat
 	// Configure the visualization track for the spire
 	//****************************************************************************************
 	SpawnedUnitTrack = EmptyTrack;
-	SpawnedUnitTrack.StateObject_OldState = History.GetGameStateForObjectID(int(SpawnedUnitValue.fValue), eReturnType_Reference, VisualizeGameState.HistoryIndex);
-	SpawnedUnitTrack.StateObject_NewState = SpawnedUnitTrack.StateObject_OldState;
+	SpawnedUnitTrack.StateObject_OldState = VisualizeGameState.GetGameStateForObjectID(int(SpawnedUnitValue.fValue));
+	SpawnedUnitTrack.StateObject_NewState = VisualizeGameState.GetGameStateForObjectID(int(SpawnedUnitValue.fValue));
 	SpawnedUnit = XComGameState_Unit(SpawnedUnitTrack.StateObject_NewState);
 	`assert(SpawnedUnit != none);
 	SpawnedUnitTrack.VisualizeActor = History.GetVisualizer(SpawnedUnit.ObjectID);
 	`LOG("SPIRE UNIT FROM VISUALIZER");
 	class'Jammerware_DebugUtils'.static.LogUnitLocation(SpawnedUnit);
 
-	// Only one shooter effect and it is X2Effect_SpawnSpire
+	// Only one target effect and it is X2Effect_SpawnSpire
+	`LOG("JSRC: shooter effect results" @ Context.ResultContext.ShooterEffectResults.Effects[0]);
 	SpawnSpireEffect = X2Effect_SpawnSpire(Context.ResultContext.ShooterEffectResults.Effects[0]);
 
 	if( SpawnSpireEffect == none )

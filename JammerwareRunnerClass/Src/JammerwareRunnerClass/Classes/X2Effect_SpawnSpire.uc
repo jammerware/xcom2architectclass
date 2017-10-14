@@ -49,7 +49,7 @@ function TriggerSpawnEvent(const out EffectAppliedData ApplyEffectParameters, XC
 		, 
 		, 
 		bCopyReanimatedFromUnit,
-		(SourceUnitState != None && (bAddToSourceGroup || SourceUnitState.IsMine()) ) ? SourceUnitState.GetGroupMembership(NewGameState).ObjectID : -1,
+		-1,
 		bCopyReanimatedStatsFromUnit);
 
 	SpawnedUnit = XComGameState_Unit(NewGameState.GetGameStateForObjectID(NewUnitRef.ObjectID));
