@@ -97,6 +97,13 @@ LocHelpText="Summon a spire on a tile occupied by the corpse of an enemy."
 LocFlyOverText="Headstone"
 LocPromotionPopupText="Rest in peace."
 
+[Jammerware_JSRC_Ability_TargetingArray X2AbilityTemplate]
+LocFriendlyName="Targeting Array"
+LocLongDescription="Your <Ability:WeaponName/> shots gain an additional 30% accuracy when you're adjacent to a spire."
+LocHelpText="Your <Ability:WeaponName/> shots gain an additional 30% accuracy when you're adjacent to a spire."
+LocFlyOverText="Targeting Array"
+LocPromotionPopupText="You wonder if maybe the spire is helping you somehow."
+
 [Jammerware_JSRC_Ability_SoulOfTheArchitect X2AbilityTemplate]
 LocFriendlyName="Soul of the Architect"
 LocLongDescription="All effects that apply to your spires also apply to you. You gain all abilities that your spires have."
@@ -108,7 +115,7 @@ LocPromotionPopupText="You've become one with your spires. Or, you know. Two or 
 ; WEAPONS
 ;-------------------------------------------------------------
 [Jammerware_JSRC_Item_SpireGun_Conventional X2WeaponTemplate]
-FriendlyName="Spire Gun"
+FriendlyName="Spire Gun MKI"
 
 [Jammerware_JSRC_Item_SpireGun_Magnetic X2WeaponTemplate]
 FriendlyName="Spire Gun MkII"

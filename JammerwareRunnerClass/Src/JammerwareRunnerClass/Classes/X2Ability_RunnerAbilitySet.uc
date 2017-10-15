@@ -11,6 +11,12 @@ var name NAME_QUICKSILVER;
 var name NAME_RECLAIM;
 var name NAME_SHELTER;
 var name NAME_SOUL_OF_THE_ARCHITECT;
+var name NAME_TARGETING_ARRAY;
+var name NAME_TARGETING_ARRAY_TRIGGERED;
+
+// effect localizations
+var localized string TargetingArrayTriggeredFriendlyName;
+var localized string TargetingArrayTriggeredFriendlyDesc;
 
 static function array <X2DataTemplate> CreateTemplates()
 {
@@ -30,6 +36,8 @@ static function array <X2DataTemplate> CreateTemplates()
 
 	// LIEUTENANT!
 	Templates.AddItem(AddHeadstone());
+	Templates.AddItem(AddTargetingArray());
+	Templates.AddItem(AddTargetingArrayTriggered());
 
 	// COLONEL!
 	Templates.AddItem(AddSoulOfTheArchitect());
@@ -393,6 +401,74 @@ static function Headstone_BuildVisualization(XComGameState VisualizeGameState)
 	class'X2Action_EnterCover'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
 }
 
+static function X2AbilityTemplate AddTargetingArray()
+{
+	local X2AbilityTemplate Template;
+
+	// targeting array is x-classable
+	Template = PurePassive(default.NAME_TARGETING_ARRAY, "img:///UILibrary_PerkIcons.UIPerk_Ambush", true);
+	Template.AdditionalAbilities.AddItem(default.NAME_TARGETING_ARRAY_TRIGGERED);
+
+	return Template;
+}
+
+static function X2AbilityTemplate AddTargetingArrayTriggered()
+{
+	local X2AbilityTemplate Template;
+	local X2Condition_UnitEffects EffectsCondition;
+	local X2Condition_UnitProperty PropertyCondition;
+	local X2AbilityTrigger_EventListener Trigger;
+	local X2Effect_TargetingArray TargetingArrayEffect;
+
+	// hud behavior
+	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_TARGETING_ARRAY_TRIGGERED);
+	Template.IconImage = "img:///UILibrary_PerkIcons.UIPerk_Ambush";
+	Template.AbilitySourceName = 'eAbilitySource_Perk';
+	Template.eAbilityIconBehaviorHUD = EAbilityIconBehavior_NeverShow;
+	Template.Hostility = eHostility_Neutral;
+
+	// targeting
+	Template.AbilityTargetStyle = default.SelfTarget;
+
+	// hit chance
+	Template.AbilityToHitCalc = default.DeadEye;
+
+	// conditions
+	EffectsCondition = new class'X2Condition_UnitEffects';
+	EffectsCondition.AddExcludeEffect(class'X2Effect_TargetingArray'.default.EffectName, 'AA_DuplicateEffectIgnored');
+	Template.AbilityTargetConditions.AddItem(EffectsCondition);
+
+	PropertyCondition = new class'X2Condition_UnitProperty';
+	PropertyCondition.ExcludeFriendlyToSource = false;
+	PropertyCondition.ExcludeHostileToSource = true;
+	PropertyCondition.RequireSquadmates = true;
+	PropertyCondition.RequireWithinRange = true;
+	PropertyCondition.WithinRange = `METERSTOUNITS(class'XComWorldData'.const.WORLD_Melee_Range_Meters);
+	Template.AbilityTargetConditions.AddItem(PropertyCondition);
+
+	// triggers
+	Trigger = new class'X2AbilityTrigger_EventListener';
+	Trigger.ListenerData.EventID = 'ObjectMoved';
+	Trigger.ListenerData.Filter = eFilter_None;
+	Trigger.ListenerData.Deferral = ELD_OnStateSubmitted;
+	Trigger.ListenerData.EventFn = class'XComGameState_Ability'.static.TypicalOverwatchListener;
+	Template.AbilityTriggers.AddItem(Trigger);
+
+	// effects
+	TargetingArrayEffect = new class'X2Effect_TargetingArray';
+	// TODO: enable config and weapon-based computation for shield strength and duration
+	TargetingArrayEffect.BuildPersistentEffect(1, true);
+	TargetingArrayEffect.SetDisplayInfo(ePerkBuff_Bonus, default.TargetingArrayTriggeredFriendlyName, default.TargetingArrayTriggeredFriendlyDesc, Template.IconImage);
+	Template.AddTargetEffect(TargetingArrayEffect);
+
+	// game state and visualization
+	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
+	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
+	Template.bShowActivation = true;
+
+	return Template;
+}
+
 static function X2AbilityTemplate AddSoulOfTheArchitect()
 {
 	local X2AbilityTemplate Template;
@@ -414,4 +490,6 @@ defaultproperties
 	NAME_RECLAIM=Jammerware_JSRC_Ability_Reclaim
 	NAME_SHELTER=Jammerware_JSRC_Ability_Shelter
 	NAME_SOUL_OF_THE_ARCHITECT=Jammerware_JSRC_Ability_SoulOfTheArchitect
+	NAME_TARGETING_ARRAY=Jammerware_JSRC_Ability_TargetingArray
+	NAME_TARGETING_ARRAY_TRIGGERED=Jammerware_JSRC_Ability_TargetingArray_Triggered
 }

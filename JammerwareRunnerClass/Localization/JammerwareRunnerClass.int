@@ -1,0 +1,6 @@
+;-------------------------------------------------------------
+; EFFECTS
+;-------------------------------------------------------------
+[X2Ability_RunnerAbilitySet]
++TargetingArrayTriggeredFriendlyName="Targeting Array Active"
++TargetingArrayTriggeredFriendlyDesc="The nearby spire's targeting array is active, enhancing the accuracy of your shots."
