@@ -416,7 +416,6 @@ static function X2AbilityTemplate AddTargetingArrayTriggered()
 {
 	local X2AbilityTemplate Template;
 	local X2Condition_UnitEffects EffectsCondition;
-	local X2Condition_UnitProperty PropertyCondition;
 	local X2AbilityTrigger_EventListener Trigger;
 	local X2Effect_TargetingArray TargetingArrayEffect;
 
@@ -437,26 +436,18 @@ static function X2AbilityTemplate AddTargetingArrayTriggered()
 	EffectsCondition = new class'X2Condition_UnitEffects';
 	EffectsCondition.AddExcludeEffect(class'X2Effect_TargetingArray'.default.EffectName, 'AA_DuplicateEffectIgnored');
 	Template.AbilityTargetConditions.AddItem(EffectsCondition);
-
-	PropertyCondition = new class'X2Condition_UnitProperty';
-	PropertyCondition.ExcludeFriendlyToSource = false;
-	PropertyCondition.ExcludeHostileToSource = true;
-	PropertyCondition.RequireSquadmates = true;
-	PropertyCondition.RequireWithinRange = true;
-	PropertyCondition.WithinRange = `METERSTOUNITS(class'XComWorldData'.const.WORLD_Melee_Range_Meters);
-	Template.AbilityTargetConditions.AddItem(PropertyCondition);
+	Template.AbilityTargetConditions.AddItem(new class'X2Condition_SpireProximityCondition');
 
 	// triggers
 	Trigger = new class'X2AbilityTrigger_EventListener';
 	Trigger.ListenerData.EventID = 'ObjectMoved';
 	Trigger.ListenerData.Filter = eFilter_None;
 	Trigger.ListenerData.Deferral = ELD_OnStateSubmitted;
-	Trigger.ListenerData.EventFn = class'XComGameState_Ability'.static.TypicalOverwatchListener;
+	Trigger.ListenerData.EventFn = class'XComGameState_Ability'.static.AbilityTriggerEventListener_Self;
 	Template.AbilityTriggers.AddItem(Trigger);
 
 	// effects
 	TargetingArrayEffect = new class'X2Effect_TargetingArray';
-	// TODO: enable config and weapon-based computation for shield strength and duration
 	TargetingArrayEffect.BuildPersistentEffect(1, true);
 	TargetingArrayEffect.SetDisplayInfo(ePerkBuff_Bonus, default.TargetingArrayTriggeredFriendlyName, default.TargetingArrayTriggeredFriendlyDesc, Template.IconImage);
 	Template.AddTargetEffect(TargetingArrayEffect);
