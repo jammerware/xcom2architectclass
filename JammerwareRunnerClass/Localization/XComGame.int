@@ -57,8 +57,8 @@ LocPromotionPopupText="LIGHTNING!"
 
 [Jammerware_JSRC_Ability_Shelter X2AbilityTemplate]
 LocFriendlyName="Shelter"
-LocLongDescription="Your spires gain Shelter, which grants allies who step on a tile adjacent to the spire a small shield. Shelter doesn't stack."
-LocHelpText="Your spires gain Shelter, which grants allies who step on a tile adjacent to the spire a small shield. Shelter doesn't stack."
+LocLongDescription="Your spires gain Shelter, which grants allies who end their turn adjacent to the spire a small shield. Shelter doesn't stack."
+LocHelpText="Your spires gain Shelter, which grants allies who end their turn adjacent to the spire a small shield. Shelter doesn't stack."
 LocFlyOverText="Shelter"
 LocPromotionPopupText="Shelter turns spires into great staging areas for engagements."
 

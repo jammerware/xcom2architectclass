@@ -2,7 +2,6 @@ class X2Ability_SpireAbilitySet extends X2Ability
 	config(JammerwareRunnerClass);
 
 var name NAME_SPIRE_LIGHTNINGROD;
-var name NAME_SPIRE_SHELTER;
 var name NAME_SPIRE_QUICKSILVER;
 
 static function array <X2DataTemplate> CreateTemplates()
@@ -12,7 +11,7 @@ static function array <X2DataTemplate> CreateTemplates()
 
 	// CORPORAL!
 	Templates.AddItem(AddSpireLightningRod());
-	Templates.AddItem(AddSpireShelter());
+	Templates.AddItem(class'X2Ability_SpireShelter'.static.CreateSpireShelter());
 	Templates.AddItem(AddSpireQuicksilver());
 
 	return Templates;
@@ -73,65 +72,6 @@ static function X2AbilityTemplate AddSpireLightningRod()
 	DamageEffect.bIgnoreBaseDamage = true;
 	DamageEffect.DamageTag = 'LightningRod';
 	Template.AddMultiTargetEffect(DamageEffect);
-
-	// game state and visualization
-	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
-	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
-	Template.bShowActivation = true;
-
-	return Template;
-}
-
-static function X2AbilityTemplate AddSpireShelter()
-{
-	local X2AbilityTemplate Template;
-	local X2AbilityTrigger_EventListener Trigger;
-	local X2Effect_ShelterShield ShieldEffect;
-	local X2Condition_UnitEffects EffectsCondition;
-	local X2Condition_UnitProperty PropertyCondition;
-
-	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_SPIRE_SHELTER);
-
-	// hud behavior
-	Template.AbilitySourceName = 'eAbilitySource_Perk';
-	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_NeverShow;
-	Template.IconImage = "img:///UILibrary_PerkIcons.UIPerk_adventshieldbearer_energyshield";
-	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_CORPORAL_PRIORITY;
-
-	// targeting
-	Template.AbilityTargetStyle = default.SimpleSingleTarget;
-
-	// hit chance
-	Template.AbilityToHitCalc = default.DeadEye;
-
-	// conditions
-	EffectsCondition = new class'X2Condition_UnitEffects';
-	EffectsCondition.AddExcludeEffect(class'X2Effect_ShelterShield'.default.EffectName, 'AA_DuplicateEffectIgnored');
-	Template.AbilityTargetConditions.AddItem(EffectsCondition);
-
-	PropertyCondition = new class'X2Condition_UnitProperty';
-	PropertyCondition.ExcludeFriendlyToSource = false;
-	PropertyCondition.ExcludeHostileToSource = true;
-	PropertyCondition.RequireSquadmates = true;
-	PropertyCondition.RequireWithinRange = true;
-	PropertyCondition.WithinRange = `METERSTOUNITS(class'XComWorldData'.const.WORLD_Melee_Range_Meters);
-	Template.AbilityTargetConditions.AddItem(PropertyCondition);
-
-	// triggers
-	Trigger = new class'X2AbilityTrigger_EventListener';
-	Trigger.ListenerData.EventID = 'ObjectMoved';
-	Trigger.ListenerData.Filter = eFilter_None;
-	Trigger.ListenerData.Deferral = ELD_OnStateSubmitted;
-	Trigger.ListenerData.EventFn = class'XComGameState_Ability'.static.TypicalOverwatchListener;
-	Template.AbilityTriggers.AddItem(Trigger);
-
-	// effects
-	ShieldEffect = new class'X2Effect_ShelterShield';
-	// TODO: enable config and weapon-based computation for shield strength and duration
-	ShieldEffect.BuildPersistentEffect(2, false, true, , eGameRule_PlayerTurnBegin);
-	ShieldEffect.SetDisplayInfo(ePerkBuff_Bonus, Template.LocFriendlyName, Template.GetMyLongDescription(), "img:///UILibrary_PerkIcons.UIPerk_adventshieldbearer_energyshield", true);
-	ShieldEffect.AddPersistentStatChange(eStat_ShieldHP, 3);
-	Template.AddTargetEffect(ShieldEffect);
 
 	// game state and visualization
 	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
@@ -213,5 +153,4 @@ defaultproperties
 {
 	NAME_SPIRE_LIGHTNINGROD=Jammerware_JSRC_Ability_SpireLightningRod
 	NAME_SPIRE_QUICKSILVER=Jammerware_JSRC_Ability_SpireQuicksilver
-	NAME_SPIRE_SHELTER=Jammerware_JSRC_Ability_SpireShelter
 }

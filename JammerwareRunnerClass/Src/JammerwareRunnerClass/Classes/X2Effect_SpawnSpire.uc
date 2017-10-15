@@ -57,11 +57,6 @@ function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, Stat
 	// spires provide high cover
 	SpireUnitGameState.bGeneratesCover = true;
 	SpireUnitGameState.CoverForceFlag = CoverForce_High;
-
-	`LOG("JSRC: Effect history frame -" @ `XCOMHISTORY.GetCurrentHistoryIndex());
-	`LOG("JSRC: new game state frame -" @ NewGameState.HistoryIndex);
-	`LOG("JSRC: end of OnEffectApplied for the spire");
-	class'Jammerware_DebugUtils'.static.LogUnitLocation(SpireUnitGameState);
 }
 
 defaultproperties
