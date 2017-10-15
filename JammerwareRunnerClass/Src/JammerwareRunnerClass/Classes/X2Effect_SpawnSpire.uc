@@ -1,79 +1,5 @@
 class X2Effect_SpawnSpire extends X2Effect_SpawnUnit;
 
-var bool bSpawnOnTargetUnitLocation;
-
-function TriggerSpawnEvent(const out EffectAppliedData ApplyEffectParameters, XComGameState_Unit EffectTargetUnit, XComGameState NewGameState, XComGameState_Effect EffectGameState)
-{
-	local XComGameState_Unit SourceUnitState, TargetUnitState, SpawnedUnit, CopiedUnit, ModifiedEffectTargetUnit;
-	local XComGameStateHistory History;
-	local XComAISpawnManager SpawnManager;
-	local StateObjectReference NewUnitRef;
-	local XComWorldData World;
-	local XComGameState_AIGroup GroupState;
-
-	History = `XCOMHISTORY;
-	SpawnManager = `SPAWNMGR;
-	World = `XWORLD;
-
-	TargetUnitState = XComGameState_Unit(History.GetGameStateForObjectID(ApplyEffectParameters.TargetStateObjectRef.ObjectID));
-	if( TargetUnitState == none )
-	{
-		`RedScreen("TargetUnitState in X2Effect_SpawnUnit::TriggerSpawnEvent does not exist. @dslonneger");
-		return;
-	}
-	SourceUnitState = XComGameState_Unit(History.GetGameStateForObjectID(ApplyEffectParameters.SourceStateObjectRef.ObjectID));
-
-	if( bClearTileBlockedByTargetUnitFlag )
-	{
-		World.ClearTileBlockedByUnitFlag(TargetUnitState);
-	}
-
-	if( bCopyTargetAppearance )
-	{
-		CopiedUnit = TargetUnitState;
-	}
-	else if ( bCopySourceAppearance )
-	{
-		CopiedUnit = SourceUnitState;
-	}
-
-	// Spawn the new unit
-	NewUnitRef = SpawnManager.CreateUnit(
-		GetSpawnLocation(ApplyEffectParameters, NewGameState), 
-		GetUnitToSpawnName(ApplyEffectParameters), 
-		GetTeam(ApplyEffectParameters), 
-		false, 
-		false, 
-		NewGameState, 
-		CopiedUnit, 
-		, 
-		, 
-		bCopyReanimatedFromUnit,
-		-1,
-		bCopyReanimatedStatsFromUnit);
-
-	SpawnedUnit = XComGameState_Unit(NewGameState.GetGameStateForObjectID(NewUnitRef.ObjectID));
-	SpawnedUnit.bTriggerRevealAI = !bSetProcessedScamperAs;
-	`LOG("JSRC: spawned unit out of the spawn manager");
-	class'Jammerware_DebugUtils'.static.LogUnitLocation(SpawnedUnit);
-
-	// Don't allow scamper
-	GroupState = SpawnedUnit.GetGroupMembership(NewGameState);
-	if( GroupState != None )
-	{
-		GroupState = XComGameState_AIGroup(NewGameState.ModifyStateObject(class'XComGameState_AIGroup', GroupState.ObjectID));
-		GroupState.bProcessedScamper = bSetProcessedScamperAs;
-	}
-
-	ModifiedEffectTargetUnit = XComGameState_Unit(NewGameState.ModifyStateObject(class'XComGameState_Unit', EffectTargetUnit.ObjectID));
-	ModifiedEffectTargetUnit.SetUnitFloatValue('SpawnedUnitValue', NewUnitRef.ObjectID, eCleanup_Never);
-	ModifiedEffectTargetUnit.SetUnitFloatValue('SpawnedThisTurnUnitValue', NewUnitRef.ObjectID, eCleanup_BeginTurn);
-
-	EffectGameState.CreatedObjectReference = SpawnedUnit.GetReference();
-
-	OnSpawnComplete(ApplyEffectParameters, NewUnitRef, NewGameState, EffectGameState);
-}
-
 function vector GetSpawnLocation(const out EffectAppliedData ApplyEffectParameters, XComGameState NewGameState)
 {
 	local vector SpawnLocation;
@@ -84,14 +10,15 @@ function vector GetSpawnLocation(const out EffectAppliedData ApplyEffectParamete
 
 	if (SourceUnitGameState.GetReference().ObjectID != TargetUnitGameState.GetReference().ObjectID)
 	{
+		// if this effect is cast on a target (like it is when Headstone is used), use the location of the target unit
 		SpawnLocation = `XWorld.GetPositionFromTileCoordinates(TargetUnitGameState.TileLocation);
 	}
 	else
 	{
+		// otherwise, use user input location
 		SpawnLocation = ApplyEffectParameters.AbilityInputContext.TargetLocations[0];
 	}
 	
-	`LOG("JSRC: resulting location -" @ SpawnLocation);
 	return SpawnLocation;
 }
 
@@ -131,6 +58,8 @@ function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, Stat
 	SpireUnitGameState.bGeneratesCover = true;
 	SpireUnitGameState.CoverForceFlag = CoverForce_High;
 
+	`LOG("JSRC: Effect history frame -" @ `XCOMHISTORY.GetCurrentHistoryIndex());
+	`LOG("JSRC: new game state frame -" @ NewGameState.HistoryIndex);
 	`LOG("JSRC: end of OnEffectApplied for the spire");
 	class'Jammerware_DebugUtils'.static.LogUnitLocation(SpireUnitGameState);
 }
@@ -139,6 +68,5 @@ defaultproperties
 {
 	UnitToSpawnName=Jammerware_JSRC_Character_Spire
 	bInfiniteDuration=true
-	bSpawnOnTargetUnitLocation=false
 	EffectName="SpawnSpire"
 }
