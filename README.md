@@ -33,3 +33,5 @@ The goal of the Spire Runner class is to encourage the player's spatial awarenes
 *Call Lightning* - Your spires gain *Call Lightning*, an ability that deals heavy damage to enemies in a line between the source and a target spire.
 
 *Commence Run* - This turn, you gain extra mobility, and your detection radius is reduced by 30%. At the end of the turn, you return to the tile on which you began, and a spire appears on the one you ended. Insanely long cooldown.
+
+*Zap* - Your spires gain *Zap*, an ability that deals a small amount of damage to a target visible to the squad.

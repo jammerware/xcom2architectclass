@@ -25,7 +25,7 @@ static function X2DataTemplate CreateSpawnSpire()
 	// costs
 	ActionPointCost = new class'X2AbilityCost_ActionPoints';
 	ActionPointCost.iNumPoints = 1;
-	ActionPointCost.bConsumeAllPoints = false;
+	ActionPointCost.bConsumeAllPoints = true;
 	Template.AbilityCosts.AddItem(ActionPointCost);
 
 	// cooldown
@@ -44,7 +44,7 @@ static function X2DataTemplate CreateSpawnSpire()
 
 	// targeting
 	CursorTarget = new class'X2AbilityTarget_Cursor';
-	CursorTarget.FixedAbilityRange = class'XComWorldData'.const.WORLD_Melee_Range_Meters;
+	CursorTarget.FixedAbilityRange = 5 * class'XComWorldData'.const.WORLD_Melee_Range_Meters;
 	Template.AbilityTargetStyle = CursorTarget;
 	Template.TargetingMethod = class'X2TargetingMethod_SpawnSpire';
 

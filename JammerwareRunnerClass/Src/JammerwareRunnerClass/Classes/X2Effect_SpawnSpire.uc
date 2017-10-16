@@ -63,5 +63,5 @@ defaultproperties
 {
 	UnitToSpawnName=Jammerware_JSRC_Character_Spire
 	bInfiniteDuration=true
-	EffectName="SpawnSpire"
+	EffectName=Jammerware_JSRC_Effect_SpawnSpire
 }
