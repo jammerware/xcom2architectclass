@@ -34,7 +34,7 @@
 ;-------------------------------------------------------------
 ; ABILITIES
 ;-------------------------------------------------------------
-[Jammerware_JSRC_Ability_CreateSpire X2AbilityTemplate]
+[Jammerware_JSRC_Ability_SpawnSpire X2AbilityTemplate]
 LocFriendlyName="Create Spire"
 LocLongDescription="Create a spire. Spires provide high cover."
 LocHelpText="Create a spire. Spires provide high cover."
@@ -103,6 +103,13 @@ LocLongDescription="Your <Ability:WeaponName/> shots gain an additional 30% accu
 LocHelpText="Your <Ability:WeaponName/> shots gain an additional 30% accuracy when you're adjacent to a spire."
 LocFlyOverText="Targeting Array"
 LocPromotionPopupText="You wonder if maybe the spire is helping you somehow."
+
+[Jammerware_JSRC_Ability_Unity X2AbilityTemplate]
+LocFriendlyName="Unity"
+LocLongDescription="You can use Create Spire on tiles adjacent to allies."
+LocHelpText="You can use Create Spire on tiles adjacent to allies."
+LocFlyOverText="Unity"
+LocPromotionPopupText="The bond of XCOM runs deep."
 
 [Jammerware_JSRC_Ability_SoulOfTheArchitect X2AbilityTemplate]
 LocFriendlyName="Soul of the Architect"

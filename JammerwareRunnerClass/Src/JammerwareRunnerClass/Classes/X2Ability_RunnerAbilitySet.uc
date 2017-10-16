@@ -1,10 +1,7 @@
 class X2Ability_RunnerAbilitySet extends X2Ability
 	config(JammerwareRunnerClass);
 
-var config int CREATESPIRE_COOLDOWN;
-
 // ability names
-var name NAME_CREATE_SPIRE;
 var name NAME_HEADSTONE;
 var name NAME_LIGHTNINGROD;
 var name NAME_QUICKSILVER;
@@ -13,6 +10,7 @@ var name NAME_SHELTER;
 var name NAME_SOUL_OF_THE_ARCHITECT;
 var name NAME_TARGETING_ARRAY;
 var name NAME_TARGETING_ARRAY_TRIGGERED;
+var name NAME_UNITY;
 
 // effect localizations
 var localized string TargetingArrayTriggeredFriendlyName;
@@ -21,164 +19,32 @@ var localized string TargetingArrayTriggeredFriendlyDesc;
 static function array <X2DataTemplate> CreateTemplates()
 {
 	local array<X2DataTemplate> Templates;
-	Templates.Length = 0;
 
 	// SQUADDIE!
-	Templates.AddItem(AddCreateSpire());
+	Templates.AddItem(class'X2Ability_SpawnSpire'.static.CreateSpawnSpire());
 	
 	// CORPORAL!
 	Templates.AddItem(AddLightningRod());
 	Templates.AddItem(AddShelter());
-	Templates.AddItem(AddQuicksilver());
 
 	// SERGEANT!
 	Templates.AddItem(AddReclaim());
 
 	// LIEUTENANT!
-	Templates.AddItem(AddHeadstone());
 	Templates.AddItem(AddTargetingArray());
 	Templates.AddItem(AddTargetingArrayTriggered());
 
+	// CAPTAIN!
+	Templates.AddItem(AddHeadstone());
+	Templates.AddItem(AddQuicksilver());
+
+	// MAJOR!
+
 	// COLONEL!
+	Templates.AddItem(CreateUnity());
 	Templates.AddItem(AddSoulOfTheArchitect());
 
 	return Templates;
-}
-
-static function X2AbilityTemplate AddCreateSpire()
-{
-	local X2AbilityTemplate Template;
-	local X2AbilityCost_ActionPoints ActionPointCost;
-	local X2AbilityCooldown Cooldown;
-	local X2AbilityTarget_Cursor CursorTarget;
-	local X2Effect_SpawnSpire SpawnSpireEffect;
-
-	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_CREATE_SPIRE);
-
-	Template.IconImage = "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_Pillar";
-	Template.AbilitySourceName = 'eAbilitySource_Perk';
-	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_AlwaysShow;
-	Template.Hostility = eHostility_Neutral;
-	Template.bDisplayInUITacticalText = false;
-
-	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_SQUADDIE_PRIORITY;
-
-	ActionPointCost = new class'X2AbilityCost_ActionPoints';
-	ActionPointCost.iNumPoints = 1;
-	ActionPointCost.bConsumeAllPoints = false;
-	Template.AbilityCosts.AddItem(ActionPointCost);
-
-	Cooldown = new class'X2AbilityCooldown';
-	Cooldown.iNumTurns = default.CREATESPIRE_COOLDOWN;
-	Template.AbilityCooldown = Cooldown;
-
-	Template.AbilityToHitCalc = default.DeadEye;
-	Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
-	Template.AddShooterEffectExclusions();
-
-	Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);
-
-	CursorTarget = new class'X2AbilityTarget_Cursor';
-	Template.AbilityTargetStyle = CursorTarget;
-	Template.TargetingMethod = class'X2TargetingMethod_Teleport';
-
-	SpawnSpireEffect = new class'X2Effect_SpawnSpire';
-	SpawnSpireEffect.BuildPersistentEffect(1, true);
-	Template.AddShooterEffect(SpawnSpireEffect);
-
-	Template.BuildNewGameStateFn = SpawnSpire_BuildGameState;
-	Template.BuildVisualizationFn = SpawnSpire_BuildVisualization;
-
-	Template.ChosenActivationIncreasePerUse = class'X2AbilityTemplateManager'.default.NonAggressiveChosenActivationIncreasePerUse;
-		
-	return Template;
-}
-
-// i had to build my own gamestate building function, because TypicalAbility_BuildGameState was changing the position of 
-// the spire. no idea why. it's on my list.
-static simulated function XComGameState SpawnSpire_BuildGameState(XComGameStateContext Context)
-{
-	local Jammerware_SpireRegistrationService SpireRegistrationService;
-	local XComGameState NewGameState;
-	local XComGameState_Unit ShooterState, SpireState;
-	local XComGameStateContext_Ability AbilityContext;
-	local vector NewLocation;
-	local TTile NewTileLocation;
-	local XComWorldData World;
-
-	World = `XWORLD;
-	SpireRegistrationService = new class'Jammerware_SpireRegistrationService';
-
-	//Build the new game state frame
-	NewGameState = TypicalAbility_BuildGameState(Context);
-
-	AbilityContext = XComGameStateContext_Ability(NewGameState.GetContext());	
-	ShooterState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(AbilityContext.InputContext.SourceObject.ObjectID));
-	SpireState = SpireRegistrationService.GetLastSpireFromRunner(ShooterState, NewGameState);
-
-	// we're going to modify the spire state's position
-	SpireState = XComGameState_Unit(NewGameState.ModifyStateObject(class'XComGameState_Unit', SpireState.ObjectID));
-	
-	// Set the spire's location
-	NewLocation = AbilityContext.InputContext.TargetLocations[0];
-	NewTileLocation = World.GetTileCoordinatesFromPosition(NewLocation);
-	SpireState.SetVisibilityLocation(NewTileLocation);
-
-	//Return the game state we maded
-	return NewGameState;
-}
-
-simulated function SpawnSpire_BuildVisualization(XComGameState VisualizeGameState)
-{
-	local XComGameStateHistory History;
-	local XComGameStateContext_Ability Context;
-	local StateObjectReference InteractingUnitRef;
-	local Jammerware_SpireRegistrationService SpireRegistrationService;
-	local VisualizationActionMetadata EmptyTrack;
-	local VisualizationActionMetadata ShooterTrack, SpawnedUnitTrack;
-	local XComGameState_Unit ShooterUnit, SpawnedUnit;
-	local X2Effect_SpawnSpire SpawnSpireEffect;
-
-	History = `XCOMHISTORY;
-	Context = XComGameStateContext_Ability(VisualizeGameState.GetContext());
-	InteractingUnitRef = Context.InputContext.SourceObject;
-	SpireRegistrationService = new class'Jammerware_SpireRegistrationService';
-
-	// find the shooter and the spire
-	ShooterUnit = XComGameState_Unit(VisualizeGameState.GetGameStateForObjectID(InteractingUnitRef.ObjectID));
-	SpawnedUnit = SpireRegistrationService.GetLastSpireFromRunner(ShooterUnit, VisualizeGameState);
-
-	// Configure the visualization track for the shooter
-	//****************************************************************************************
-	ShooterTrack = EmptyTrack;
-	ShooterTrack.StateObject_OldState = History.GetGameStateForObjectID(InteractingUnitRef.ObjectID, eReturnType_Reference, VisualizeGameState.HistoryIndex - 1);
-	ShooterTrack.StateObject_NewState = ShooterUnit;
-	ShooterTrack.VisualizeActor = History.GetVisualizer(InteractingUnitRef.ObjectID);
-
-	// Configure the visualization track for the spire
-	//****************************************************************************************
-	SpawnedUnitTrack = EmptyTrack;
-	SpawnedUnitTrack.StateObject_OldState = SpawnedUnit;
-	SpawnedUnitTrack.StateObject_NewState = SpawnedUnit;
-	SpawnedUnitTrack.VisualizeActor = History.GetVisualizer(SpawnedUnit.ObjectID);
-
-	// Only one target effect and it is X2Effect_SpawnSpire
-	SpawnSpireEffect = X2Effect_SpawnSpire(Context.ResultContext.ShooterEffectResults.Effects[0]);
-
-	if( SpawnSpireEffect == none )
-	{
-		`RedScreen("SpawnSpire_BuildVisualization: Missing X2Effect_SpawnSpire");
-		return;
-	}
-
-	// Build the tracks
-	class'X2Action_ExitCover'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
-	class'X2Action_AbilityPerkStart'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
-
-	SpawnSpireEffect.AddSpawnVisualizationsToTracks(Context, SpawnedUnit, SpawnedUnitTrack, none);
-
-	class'X2Action_AbilityPerkEnd'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
-	class'X2Action_EnterCover'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
 }
 
 static function X2AbilityTemplate AddLightningRod()
@@ -264,7 +130,7 @@ static function X2AbilityTemplate AddReclaim()
 
 	CreateSpireCooldownResetEffect = new class 'X2Effect_ReduceCooldowns';
 	CreateSpireCooldownResetEffect.ReduceAll = true;
-	CreateSpireCooldownResetEffect.AbilitiesToTick.AddItem(default.NAME_CREATE_SPIRE);
+	CreateSpireCooldownResetEffect.AbilitiesToTick.AddItem(class'X2Ability_SpawnSpire'.default.NAME_SPAWN_SPIRE);
 	Template.AddShooterEffect(CreateSpireCooldownResetEffect);
 	
 	// game state and visualization
@@ -460,6 +326,11 @@ static function X2AbilityTemplate AddTargetingArrayTriggered()
 	return Template;
 }
 
+static function X2AbilityTemplate CreateUnity()
+{
+	return PurePassive(default.NAME_UNITY, "img:///UILibrary_PerkIcons.UIPerk_aethershift");
+}
+
 static function X2AbilityTemplate AddSoulOfTheArchitect()
 {
 	local X2AbilityTemplate Template;
@@ -474,7 +345,6 @@ static function X2AbilityTemplate AddSoulOfTheArchitect()
 
 defaultproperties 
 {
-	NAME_CREATE_SPIRE=Jammerware_JSRC_Ability_CreateSpire
 	NAME_HEADSTONE=Jammerware_JSRC_Ability_Headstone
 	NAME_LIGHTNINGROD=Jammerware_JSRC_Ability_LightningRod
 	NAME_QUICKSILVER=Jammerware_JSRC_Ability_Quicksilver
@@ -483,4 +353,5 @@ defaultproperties
 	NAME_SOUL_OF_THE_ARCHITECT=Jammerware_JSRC_Ability_SoulOfTheArchitect
 	NAME_TARGETING_ARRAY=Jammerware_JSRC_Ability_TargetingArray
 	NAME_TARGETING_ARRAY_TRIGGERED=Jammerware_JSRC_Ability_TargetingArray_Triggered
+	NAME_UNITY=Jammerware_JSRC_Ability_Unity
 }
