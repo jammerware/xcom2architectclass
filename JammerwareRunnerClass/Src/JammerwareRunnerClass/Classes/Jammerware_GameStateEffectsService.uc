@@ -6,9 +6,7 @@ function bool IsUnitAffectedByEffect(XComGameState_Unit Unit, name EffectName)
 
     foreach Unit.AffectedByEffectNames(UnitEffect)
     {
-        if (UnitEffect == EffectName) {
-            return true;
-        }
+        if (UnitEffect == EffectName) return true;
     }
 
     return false;

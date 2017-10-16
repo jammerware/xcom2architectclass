@@ -63,7 +63,7 @@ static function X2AbilityTemplate CreateSpireShelter()
 
 static function EventListenerReturn Shelter_ProximityListener(Object EventData, Object EventSource, XComGameState GameState, Name EventID, Object CallbackData)
 {
-    local Jammerware_UnitProximityService UnitProximityService;
+    local Jammerware_ProximityService ProximityService;
     local XComGameStateHistory History;
     local XComGameState_Unit UnitState;
     local XComGameState_Unit SpireState;
@@ -72,7 +72,7 @@ static function EventListenerReturn Shelter_ProximityListener(Object EventData, 
     local array<XComGameState_Unit> SpireStates;
 
     History = `XCOMHISTORY;
-    UnitProximityService = new class'Jammerware_UnitProximityService';
+    ProximityService = new class'Jammerware_ProximityService';
     AbilityState = XComGameState_Ability(CallbackData);
 
     if (AbilityState == none)
@@ -96,7 +96,7 @@ static function EventListenerReturn Shelter_ProximityListener(Object EventData, 
     {
         foreach SpireStates(SpireState)
         {
-            if (UnitProximityService.AreAdjacent(UnitState, SpireState))
+            if (ProximityService.AreAdjacent(UnitState, SpireState))
             {
                 AbilityState.AbilityTriggerAgainstSingleTarget(UnitState.GetReference(), false);
                 continue;
