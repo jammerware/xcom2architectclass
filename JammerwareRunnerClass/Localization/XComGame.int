@@ -64,8 +64,8 @@ LocPromotionPopupText="Shelter turns spires into great staging areas for engagem
 
 [Jammerware_JSRC_Ability_SpireShelter X2AbilityTemplate]
 LocFriendlyName="Shelter"
-LocLongDescription="Contact with spire has granted this soldier a shield."
-LocHelpText="Contact with spire has granted this soldier a shield."
+LocLongDescription="Contact with a spire has granted this soldier a shield."
+LocHelpText="Contact with a spire has granted this soldier a shield."
 LocFlyOverText="Shelter"
 LocPromotionPopupText="Sick move!"
 

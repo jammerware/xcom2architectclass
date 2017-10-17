@@ -6,20 +6,20 @@ var private XComActionIconManager IconManager;
 
 // shooter state info - unless this is preserved during init, we can't get to it in validation
 var private bool bShooterHasUnity;
+var private float AbilityRangeUnits;
 var private XComGameState GameState;
 var private XComGameState_Unit ShooterState;
 
 function Init(AvailableAction InAction, int NewTargetIndex)
 {
 	local XComGameStateHistory History;
-	local float TargetingRange;
+	local float TargetingRangeUnits;
 	local Jammerware_GameStateEffectsService GameStateEffectsService;
 
 	super.Init(InAction, NewTargetIndex);
 
 	// this initialization is pretty much from X2TargetingMethod_Teleport
 	InvalidTileActor = `BATTLE.Spawn(class'X2Actor_InvalidTarget');
-	//ExplosionEmitter.SetHidden(true);
 
 	IconManager = `PRES.GetActionIconMgr();
 	IconManager.UpdateCursorLocation(true);
@@ -28,23 +28,24 @@ function Init(AvailableAction InAction, int NewTargetIndex)
 	History = `XCOMHISTORY;
 	GameState = History.GetGameStateFromHistory(History.GetCurrentHistoryIndex());
     ShooterState = XComGameState_Unit(History.GetGameStateForObjectID(Ability.OwnerStateObject.ObjectID));
+	AbilityRangeUnits = `METERSTOUNITS(Ability.GetAbilityCursorRangeMeters());
 	GameStateEffectsService = new class'Jammerware_GameStateEffectsService';
 
-	// determine our targeting range
+	// determine our targeting range (the range in which the cursor can potentially produce legal targets)
 	if (!GameStateEffectsService.IsUnitAffectedByEffect(ShooterState, class'X2Ability_RunnerAbilitySet'.default.NAME_UNITY))
 	{
-		TargetingRange = Ability.GetAbilityCursorRangeMeters();
+		TargetingRangeUnits = AbilityRangeUnits;
 	}
 	else 
 	{
 		// caching this on startup to make validation faster if the runner doesn't have unity
 		bShooterHasUnity = true;
-		TargetingRange = -1;
+		TargetingRangeUnits = -1;
 	}
 
 	// lock the cursor to that range
 	Cursor = `Cursor;
-	Cursor.m_fMaxChainedDistance = `METERSTOUNITS(TargetingRange);
+	Cursor.m_fMaxChainedDistance = TargetingRangeUnits;
 }
 
 function Canceled()
@@ -108,7 +109,7 @@ simulated protected function DrawInvalidTile()
 function name ValidateTargetLocations(const array<Vector> TargetLocations)
 {
 	local name AbilityAvailability;
-	local TTile TargetTile;
+	local TTile ShooterTile, TargetTile;
 	local XComWorldData World;
 	local bool bFoundFloorTile;
 	local Jammerware_ProximityService ProximityService;
@@ -130,8 +131,12 @@ function name ValidateTargetLocations(const array<Vector> TargetLocations)
 			// assuming here for performance that the cursor has been locked to legal range in init, so we only
 			// bother to do this check if the runner has unity
 			ProximityService = new class'Jammerware_ProximityService';
+			ShooterState.GetKeystoneVisibilityLocation(ShooterTile);
 
-			if (!ProximityService.IsTileAdjacentToAlly(TargetTile, self.GameState, self.ShooterState))
+			if (
+				ProximityService.GetUnitDistanceBetween(ShooterTile, TargetTile) > AbilityRangeUnits && 
+				!ProximityService.IsTileAdjacentToAlly(TargetTile, self.GameState, self.ShooterState)
+			)
 			{
 				AbilityAvailability = 'AA_NotInRange';
 			}
