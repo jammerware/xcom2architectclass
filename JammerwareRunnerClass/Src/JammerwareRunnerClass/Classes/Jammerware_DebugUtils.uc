@@ -42,5 +42,5 @@ static function LogUnitLocation(XComGameState_Unit Unit)
 
 static function string GetUnitLogName(XComGameState_Unit Unit)
 {
-    return "" @ Unit.GetMyTemplateName() @ "(" @ Unit.GetReference().ObjectID @ ")";
+    return Unit.GetMyTemplateName() @ "(" @ Unit.GetReference().ObjectID @ ")";
 }

@@ -29,6 +29,7 @@ static function array <X2DataTemplate> CreateTemplates()
 
 	// SERGEANT!
 	Templates.AddItem(AddReclaim());
+	Templates.AddItem(class'X2Ability_TransmatLink'.static.CreateTransmatLink());
 
 	// LIEUTENANT!
 	Templates.AddItem(AddTargetingArray());

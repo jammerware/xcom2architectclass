@@ -11,18 +11,12 @@ function bool AreAdjacent(XComGameState_Unit UnitA, XComGameState_Unit UnitB)
 function bool IsTileAdjacentToAlly(TTile Tile, XComGameState GameState, XComGameState_Unit UnitGameState)
 {
     local XComGameState_Unit IterateUnitState;
-    local TTile IterateUnitTile;
 
     foreach GameState.IterateByClassType(class'XComGameState_Unit', IterateUnitState)
     {
-        if (IterateUnitState.GetTeam() == UnitGameState.GetTeam())
+        if (IterateUnitState.GetTeam() == UnitGameState.GetTeam() && AreTilesAdjacent(Tile, GetTileLocation(IterateUnitState)))
         {
-            IterateUnitState.GetKeystoneVisibilityLocation(IterateUnitTile);
-
-            if (AreTilesAdjacent(Tile, IterateUnitTile))
-            {
-                return true;
-            }
+            return true;
         }
     }
 
@@ -47,4 +41,11 @@ public function float GetUnitDistanceBetween(TTile TileA, TTile TileB)
     LocA = World.GetPositionFromTileCoordinates(TileA);
 	LocB = World.GetPositionFromTileCoordinates(TileB);
 	return VSize(LocA - LocB);
+}
+
+public function TTile GetTileLocation(XComGameState_Unit UnitState)
+{
+    local TTile UnitTile;
+    UnitState.GetKeystoneVisibilityLocation(UnitTile);
+    return UnitTile;
 }
