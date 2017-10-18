@@ -4,11 +4,19 @@ var name NAME_RAILGUN_CONVENTIONAL;
 var name NAME_RAILGUN_MAGNETIC;
 var name NAME_RAILGUN_BEAM;
 
+var config WeaponDamageValue RAILGUN_BASEDAMAGE_CONVENTIONAL;
+var config WeaponDamageValue RAILGUN_BASEDAMAGE_MAGNETIC;
+var config WeaponDamageValue RAILGUN_BASEDAMAGE_BEAM;
+
+var config int RAILGUN_IENVIRONMENTDAMAGE;
+var config int RAILGUN_ISOUNDRANGE;
+var config array<int> RAILGUN_RANGE;
+
 static function array<X2DataTemplate> CreateTemplates()
 {
     local array<X2DataTemplate> Templates;
 
-    Templates.Add(CreateRailgunConventional());
+    Templates.AddItem(CreateRailgunConventional());
 
     return Templates;
 }
@@ -24,14 +32,13 @@ static function X2DataTemplate CreateRailgunConventional()
 	Template.WeaponCat = 'rifle';
 	Template.WeaponTech = 'magnetic';
 	Template.strImage = "img:///UILibrary_Common.AlienWeapons.AdventTurret";
-	Template.RemoveTemplateAvailablility(Template.BITFIELD_GAMEAREA_Multiplayer); //invalidates multiplayer availability
 
-	Template.RangeAccuracy = default.FLAT_CONVENTIONAL_RANGE;
-	Template.BaseDamage = default.XCOMTURRETM1_WPN_BASEDAMAGE;
+	Template.RangeAccuracy = default.RAILGUN_RANGE;
+	Template.BaseDamage = default.RAILGUN_BASEDAMAGE_CONVENTIONAL;
 	Template.iClipSize = 1;
 	Template.InfiniteAmmo = true;
-	Template.iSoundRange = default.ASSAULTRIFLE_MAGNETIC_ISOUNDRANGE;
-	Template.iEnvironmentDamage = default.ASSAULTRIFLE_MAGNETIC_IENVIRONMENTDAMAGE;
+	Template.iSoundRange = default.RAILGUN_ISOUNDRANGE;
+	Template.iEnvironmentDamage = default.RAILGUN_IENVIRONMENTDAMAGE;
 
 	Template.InventorySlot = eInvSlot_PrimaryWeapon;
 	Template.Abilities.AddItem('StandardShot');
@@ -43,7 +50,7 @@ static function X2DataTemplate CreateRailgunConventional()
 	Template.CanBeBuilt = false;
 	Template.TradingPostValue = 30;
 
-	Template.DamageTypeTemplateName = 'Projectile_MagAdvent';
+	Template.DamageTypeTemplateName = 'Electrical';
 
 	return Template;
 }
