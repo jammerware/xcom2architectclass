@@ -3,14 +3,15 @@ class Jammerware_SpireSharedAbilitiesService extends Object;
 function ConfigureSpireAbilitiesFromSourceUnit(XComGameState_Unit SpireUnit, XComGameState_Unit SourceUnit, XComGameState NewGameState)
 {
 	// TODO: eventually some kind of associative array would be better here
-	// note that some abilities need to be registered to an item, like lightning rod
+	// note that some abilities need to be registered to an item, like shelter
 	InitSpireAbilityFromRunnerAbility
 	(
 		SourceUnit, 
 		SpireUnit, 
 		class'X2Ability_RunnerAbilitySet'.default.NAME_SHELTER, 
 		class'X2Ability_SpireShelter'.default.NAME_SPIRE_SHELTER,
-		NewGameState
+		NewGameState,
+		SourceUnit.GetSecondaryWeapon().GetReference()
 	);
 	InitSpireAbilityFromRunnerAbility
 	(

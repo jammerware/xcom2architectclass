@@ -53,10 +53,11 @@ function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, Stat
 	// i'm super unsure of this implementation, especially because it results in using the dreaded InitAbilityForUnit method, which is indicated as
 	// pretty dangerous by Firaxis. if the soldier who spawns the spire has certain abilities, the spire gets them too
 	SpireSharedAbilitiesService.ConfigureSpireAbilitiesFromSourceUnit(SpireUnitGameState, SourceUnitGameState, NewGameState);
-	
-	// spires provide high cover
+
+	// set the cover state of the spire
 	SpireUnitGameState.bGeneratesCover = true;
 	SpireUnitGameState.CoverForceFlag = CoverForce_High;
+	SpireUnitGameState.SyncVisualizer();
 }
 
 defaultproperties

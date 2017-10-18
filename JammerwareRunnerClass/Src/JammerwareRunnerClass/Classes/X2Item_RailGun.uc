@@ -27,7 +27,7 @@ static function X2DataTemplate CreateRailgunConventional()
 
 	`CREATE_X2TEMPLATE(class'X2WeaponTemplate', Template, 'Jammerware_JSRC_Item_Railgun_Conventional');
 
-	Template.WeaponPanelImage = "_ConventionalRifle";                       // used by the UI. Probably determines iconview of the weapon.
+	Template.WeaponPanelImage = "_ConventionalRifle";
 	Template.ItemCat = 'weapon';
 	Template.WeaponCat = 'rifle';
 	Template.WeaponTech = 'magnetic';
@@ -41,7 +41,7 @@ static function X2DataTemplate CreateRailgunConventional()
 	Template.iEnvironmentDamage = default.RAILGUN_IENVIRONMENTDAMAGE;
 
 	Template.InventorySlot = eInvSlot_PrimaryWeapon;
-	Template.Abilities.AddItem('StandardShot');
+	//Template.Abilities.AddItem('StandardShot');
 
 	// This all the resources; sounds, animations, models, physics, the works.
 	Template.GameArchetype = "WP_Turret_MG.WP_Turret_MG";

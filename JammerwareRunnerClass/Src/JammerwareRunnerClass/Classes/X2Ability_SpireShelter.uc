@@ -50,7 +50,6 @@ static function X2AbilityTemplate CreateSpireShelter()
 	// TODO: enable config and weapon-based computation for shield strength and duration
 	ShieldEffect.BuildPersistentEffect(2, false, true, , eGameRule_PlayerTurnBegin);
 	ShieldEffect.SetDisplayInfo(ePerkBuff_Bonus, Template.LocFriendlyName, Template.GetMyLongDescription(), "img:///UILibrary_PerkIcons.UIPerk_adventshieldbearer_energyshield", true);
-	ShieldEffect.AddPersistentStatChange(eStat_ShieldHP, 3);
 	Template.AddTargetEffect(ShieldEffect);
 
 	// game state and visualization

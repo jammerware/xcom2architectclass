@@ -1,7 +1,7 @@
 ;-------------------------------------------------------------
 ; CLASS DEFINITION
 ;-------------------------------------------------------------
-+[Runner X2SoldierClassTemplate]
+[Runner X2SoldierClassTemplate]
 +DisplayName="Spire Runner"
 +ClassSummary="The spire runner is a mobile but offensively weak operative that supports their squad with powerful Spires."
 +LeftAbilityTreeTitle="Fight"
@@ -36,8 +36,8 @@
 ;-------------------------------------------------------------
 [Jammerware_JSRC_Ability_SpawnSpire X2AbilityTemplate]
 LocFriendlyName="Create Spire"
-LocLongDescription="Create a spire. Spires provide high cover."
-LocHelpText="Create a spire. Spires provide high cover."
+LocLongDescription="Create a spire. Spires provide high cover and have railguns that deal minor electrical damage."
+LocHelpText="Create a spire. Spires provide high cover and have railguns that deal minor electrical damage."
 LocFlyOverText="Create Spire"
 LocPromotionPopupText="Spires are the focal point of most Runner abilities. They provide cover, and at high levels, confer additional benefits."
 
@@ -60,7 +60,7 @@ LocFriendlyName="Shelter"
 LocLongDescription="Your spires gain Shelter, which grants allies who end their turn adjacent to the spire a small shield. Shelter doesn't stack."
 LocHelpText="Your spires gain Shelter, which grants allies who end their turn adjacent to the spire a small shield. Shelter doesn't stack."
 LocFlyOverText="Shelter"
-LocPromotionPopupText="Shelter turns spires into great staging areas for engagements."
+LocPromotionPopupText="<Bullet/> Shelter's shield effect lasts for two turns, but it's refreshed when the shielded soldier ends their turn adjacent to a spire with Shelter.\n<Bullet/> The strength of the shield increases as the runner's spire gun is upgraded."
 
 [Jammerware_JSRC_Ability_SpireShelter X2AbilityTemplate]
 LocFriendlyName="Shelter"

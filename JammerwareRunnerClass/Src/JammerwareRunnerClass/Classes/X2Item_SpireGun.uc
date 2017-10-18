@@ -1,11 +1,14 @@
 class X2Item_SpireGun extends X2Item config(GameData_WeaponData);
 
-var name NAME_SPIREGUN_CONVENTIONAL;
 var name NAME_SPIREGUN_WEAPONCAT;
 
+var name NAME_SPIREGUN_CONVENTIONAL;
 var config array <WeaponDamageValue> SPIREGUN_CONVENTIONAL_ABILITYDAMAGE;
 var config int SPIREGUN_CONVENTIONAL_ISOUNDRANGE;
 var config int SPIREGUN_CONVENTIONAL_IENVIRONMENTDAMAGE;
+
+var name NAME_SPIREGUN_MAGNETIC;
+var name NAME_SPIREGUN_BEAM;
 
 static function array<X2DataTemplate> CreateTemplates()
 {
@@ -42,7 +45,7 @@ static function X2DataTemplate CreateTemplate_SpireGun_Conventional()
 	Template.ExtraDamage = default.SPIREGUN_CONVENTIONAL_ABILITYDAMAGE;
 	Template.iSoundRange = default.SPIREGUN_CONVENTIONAL_ISOUNDRANGE;
 	Template.iEnvironmentDamage = default.SPIREGUN_CONVENTIONAL_IENVIRONMENTDAMAGE;
-
+	
 	Template.StartingItem = true;
 	Template.CanBeBuilt = false;
 	Template.bInfiniteItem = true;
@@ -54,4 +57,6 @@ defaultproperties
 {
 	NAME_SPIREGUN_WEAPONCAT=spiregun
 	NAME_SPIREGUN_CONVENTIONAL=Jammerware_JSRC_Item_SpireGun_Conventional
+	NAME_SPIREGUN_MAGNETIC=Jammerware_JSRC_Item_SpireGun_Magnetic
+	NAME_SPIREGUN_BEAM=Jammerware_JSRC_Item_SpireGun_Beam
 }

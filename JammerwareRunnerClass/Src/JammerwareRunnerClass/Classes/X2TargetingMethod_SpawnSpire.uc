@@ -145,3 +145,8 @@ function name ValidateTargetLocations(const array<Vector> TargetLocations)
 
 	return AbilityAvailability;
 }
+
+function int GetTargetIndex()
+{
+	return 0;
+}

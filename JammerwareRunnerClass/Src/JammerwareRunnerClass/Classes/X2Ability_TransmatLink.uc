@@ -149,6 +149,10 @@ simulated function TransmatLink_BuildVisualization(XComGameState VisualizeGameSt
 	class'X2Action_AbilityPerkStart'.static.AddToVisualizationTree(SourceTrack, Context, false, SourceTrack.LastActionAdded);
     class'X2Action_ShowSpawnedUnit'.static.AddToVisualizationTree(TargetTrack, Context);
 	class'X2Action_AbilityPerkEnd'.static.AddToVisualizationTree(SourceTrack, Context, false, SourceTrack.LastActionAdded);
+
+	// sync the visualizers - i think this makes sure the units will appear in the right place on the board - not tested CREATE_X2ABILITY_TEMPLATE
+	SourceUnit.SyncVisualizer();
+	TargetUnit.SyncVisualizer();
 }
 
 defaultproperties
