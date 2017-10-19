@@ -39,3 +39,8 @@ The goal of the Spire Runner class is to encourage the player's spatial awarenes
 *Recall* - Teleport to a space adjacent to a spire. Long cooldown.
 
 *Zap* - Your spires gain *Zap*, an ability that deals a small amount of damage to a target visible to the squad. (some kind of arc-soul like trait?)
+
+## Acknowledgments
+- J.T.S.
+- Robojumper™, BountyGiver, and all of the members of the XCOM 2 Modding Discord for their patience and help.
+- Lucubration for their awesome Infantry class mod that taught me a lot about how class mods work
