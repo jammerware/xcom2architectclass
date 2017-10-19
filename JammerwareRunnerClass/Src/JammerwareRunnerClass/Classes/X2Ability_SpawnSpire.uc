@@ -87,6 +87,7 @@ static simulated function XComGameState SpawnSpire_BuildGameState(XComGameStateC
 	SpireState = XComGameState_Unit(NewGameState.ModifyStateObject(class'XComGameState_Unit', SpireState.ObjectID));
 	
 	// Set the spire's location
+	`LOG("JSRC: GAME STATE - ability context input locations" @ AbilityContext.InputContext.TargetLocations.Length);
 	NewLocation = AbilityContext.InputContext.TargetLocations[0];
 	NewTileLocation = World.GetTileCoordinatesFromPosition(NewLocation);
 	SpireState.SetVisibilityLocation(NewTileLocation);

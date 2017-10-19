@@ -58,7 +58,7 @@ function Canceled()
 function Update(float DeltaTime)
 {
 	local vector NewTargetLocation;
-	local array<vector> TargetLocations;
+	local array<vector> PossibleTargetLocations;
 	local array<TTile> Tiles;
 	local XComWorldData World;
 	local TTile TargetTile;
@@ -67,17 +67,16 @@ function Update(float DeltaTime)
 
 	if( NewTargetLocation != CachedTargetLocation )
 	{
-		TargetLocations.AddItem(Cursor.GetCursorFeetLocation());
-		if (ValidateTargetLocations(TargetLocations) == 'AA_Success')
+		PossibleTargetLocations.AddItem(Cursor.GetCursorFeetLocation());
+		if (ValidateTargetLocations(PossibleTargetLocations) == 'AA_Success')
 		{
 			// The current tile the cursor is on is a valid tile
 			// Show the ExplosionEmitter
-			//ExplosionEmitter.ParticleSystemComponent.ActivateSystem();
 			InvalidTileActor.SetHidden(true);
 
 			World = `XWORLD;
 		
-			TargetTile = World.GetTileCoordinatesFromPosition(TargetLocations[0]);
+			TargetTile = World.GetTileCoordinatesFromPosition(PossibleTargetLocations[0]);
 			Tiles.AddItem(TargetTile);
 			DrawAOETiles(Tiles);
 			IconManager.UpdateCursorLocation(, true);
@@ -114,32 +113,28 @@ function name ValidateTargetLocations(const array<Vector> TargetLocations)
 	local bool bFoundFloorTile;
 	local Jammerware_ProximityService ProximityService;
 
-	AbilityAvailability = super.ValidateTargetLocations(TargetLocations);
-	if( AbilityAvailability == 'AA_Success' )
-	{
-		// There is only one target location and visible by squadsight
-		World = `XWORLD;
+	AbilityAvailability = 'AA_Success';
+	World = `XWORLD;
 		
-		`assert(TargetLocations.Length == 1);
-		bFoundFloorTile = World.GetFloorTileForPosition(TargetLocations[0], TargetTile);
-		if (bFoundFloorTile && !World.CanUnitsEnterTile(TargetTile))
-		{
-			AbilityAvailability = 'AA_TileIsBlocked';
-		}
-		else if (self.bShooterHasUnity)
-		{
-			// assuming here for performance that the cursor has been locked to legal range in init, so we only
-			// bother to do this check if the runner has unity
-			ProximityService = new class'Jammerware_ProximityService';
-			ShooterState.GetKeystoneVisibilityLocation(ShooterTile);
+	`assert(TargetLocations.Length == 1);
+	bFoundFloorTile = World.GetFloorTileForPosition(TargetLocations[0], TargetTile);
+	if (bFoundFloorTile && !World.CanUnitsEnterTile(TargetTile))
+	{
+		AbilityAvailability = 'AA_TileIsBlocked';
+	}
+	else if (self.bShooterHasUnity)
+	{
+		// assuming here for performance that the cursor has been locked to legal range in init, so we only
+		// bother to do this check if the runner has unity
+		ProximityService = new class'Jammerware_ProximityService';
+		ShooterState.GetKeystoneVisibilityLocation(ShooterTile);
 
-			if (
-				ProximityService.GetUnitDistanceBetween(ShooterTile, TargetTile) > AbilityRangeUnits && 
-				!ProximityService.IsTileAdjacentToAlly(TargetTile, self.GameState, self.ShooterState)
-			)
-			{
-				AbilityAvailability = 'AA_NotInRange';
-			}
+		if (
+			ProximityService.GetUnitDistanceBetween(ShooterTile, TargetTile) > AbilityRangeUnits && 
+			!ProximityService.IsTileAdjacentToAlly(TargetTile, self.GameState, self.ShooterState)
+		)
+		{
+			AbilityAvailability = 'AA_NotInRange';
 		}
 	}
 
