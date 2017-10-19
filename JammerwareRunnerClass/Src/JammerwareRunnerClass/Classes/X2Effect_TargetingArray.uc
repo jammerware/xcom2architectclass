@@ -5,7 +5,7 @@ function GetToHitModifiers(XComGameState_Effect EffectState, XComGameState_Unit 
 	local ShotModifierInfo AccuracyInfo;
 
 	AccuracyInfo.ModType = eHit_Success;
-	AccuracyInfo.Value = 30;
+	AccuracyInfo.Value = 20;
 	AccuracyInfo.Reason = FriendlyName;
 	ShotModifiers.AddItem(AccuracyInfo);
 }

@@ -87,7 +87,7 @@ static function X2DataTemplate CreateTemplate_SpireGun_Magnetic()
 	Template.iEnvironmentDamage = default.SPIREGUN_IENVIRONMENTDAMAGE;
 	
 	// upgradey stuff
-	Template.CreatorTemplateName = 'Jammerware_JSRC_Item_SpireGun_Magnetic_Schematic';
+	Template.CreatorTemplateName = class'X2Item_SpireGunSchematics'.default.NAME_SPIREGUN_SCHEMATIC_MAGNETIC;
 	Template.BaseItem = default.NAME_SPIREGUN_CONVENTIONAL;
 
 	Template.StartingItem = false;
@@ -125,7 +125,7 @@ static function X2DataTemplate CreateTemplate_SpireGun_Beam()
 	Template.iEnvironmentDamage = default.SPIREGUN_IENVIRONMENTDAMAGE;
 	
 	// upgradey stuff
-	Template.CreatorTemplateName = 'Jammerware_JSRC_Item_SpireGun_Beam_Schematic';
+	Template.CreatorTemplateName = class'X2Item_SpireGunSchematics'.default.NAME_SPIREGUN_SCHEMATIC_BEAM;
 	Template.BaseItem = default.NAME_SPIREGUN_MAGNETIC;
 
 	Template.StartingItem = false;

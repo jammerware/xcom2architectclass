@@ -14,7 +14,7 @@ event name CallMeetsCondition(XComGameState_BaseObject kTarget)
     foreach History.IterateByClassType(class'XComGameState_Unit', SpireState)
 	{
 		if(
-            SpireState.GetMyTemplateName() == class'X2Character_Spire'.default.NAME_CHARACTER_SPIRE &&
+            SpireState.GetMyTemplate().CharacterGroupName == class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE &&
             SpireState.GetTeam() == TargetState.GetTeam() &&
             ProximityService.AreAdjacent(SpireState, TargetState)
         )

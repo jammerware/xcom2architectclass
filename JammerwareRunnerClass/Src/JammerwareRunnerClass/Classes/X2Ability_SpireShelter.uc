@@ -81,7 +81,7 @@ static function EventListenerReturn Shelter_ProximityListener(Object EventData, 
 
     foreach History.IterateByClassType(class'XComGameState_Unit', UnitState)
 	{
-		if(UnitState.GetMyTemplateName() == class'X2Character_Spire'.default.NAME_CHARACTER_SPIRE)
+		if(UnitState.GetMyTemplate().CharacterGroupName == class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE)
 		{
             SpireStates.AddItem(UnitState);
 		}

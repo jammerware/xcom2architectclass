@@ -87,7 +87,6 @@ static simulated function XComGameState SpawnSpire_BuildGameState(XComGameStateC
 	SpireState = XComGameState_Unit(NewGameState.ModifyStateObject(class'XComGameState_Unit', SpireState.ObjectID));
 	
 	// Set the spire's location
-	`LOG("JSRC: GAME STATE - ability context input locations" @ AbilityContext.InputContext.TargetLocations.Length);
 	NewLocation = AbilityContext.InputContext.TargetLocations[0];
 	NewTileLocation = World.GetTileCoordinatesFromPosition(NewLocation);
 	SpireState.SetVisibilityLocation(NewTileLocation);
@@ -147,6 +146,9 @@ simulated function SpawnSpire_BuildVisualization(XComGameState VisualizeGameStat
 
 	class'X2Action_AbilityPerkEnd'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
 	class'X2Action_EnterCover'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
+
+	// doing this here (to update the unit's cover status) and not in the effect apply seems to fix an intermittent crash
+	SpawnedUnit.SyncVisualizer();
 }
 
 defaultproperties

@@ -22,6 +22,25 @@ function vector GetSpawnLocation(const out EffectAppliedData ApplyEffectParamete
 	return SpawnLocation;
 }
 
+function name GetUnitToSpawnName(const out EffectAppliedData ApplyEffectParameters)
+{
+	local XComGameStateHistory History;
+	local XComGameState_Item SourceWeaponState;
+	local name SourceWeaponTemplateName;
+	
+	History = `XCOMHISTORY;
+	SourceWeaponState = XComGameState_Item(History.GetGameStateForObjectID(ApplyEffectParameters.ItemStateObjectRef.ObjectID));
+	SourceWeaponTemplateName = SourceWeaponState.GetMyTemplateName();
+
+	// i'd love to somehow attach the name of the spire to summon to each individual weapon in config, but stuck with this for now
+	switch (SourceWeaponTemplateName) 
+	{
+		case class'X2Item_SpireGun'.default.NAME_SPIREGUN_MAGNETIC: return class'X2Character_Spire'.default.NAME_CHARACTER_SPIRE_MAGNETIC;
+		case class'X2Item_SpireGun'.default.NAME_SPIREGUN_BEAM: return class'X2Character_Spire'.default.NAME_CHARACTER_SPIRE_BEAM;
+		default: return class'X2Character_Spire'.default.NAME_CHARACTER_SPIRE_CONVENTIONAL;
+	}
+}
+
 function ETeam GetTeam(const out EffectAppliedData ApplyEffectParameters)
 {
 	return GetSourceUnitsTeam(ApplyEffectParameters);
@@ -32,7 +51,7 @@ function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, Stat
 	local XComGameState_Unit SourceUnitGameState, SpireUnitGameState, TargetUnitGameState;
 	local Jammerware_SpireSharedAbilitiesService SpireSharedAbilitiesService;
 	local Jammerware_SpireRegistrationService SpireRegistrationService;
-	
+
 	SpireSharedAbilitiesService = new class'Jammerware_SpireSharedAbilitiesService';
 	SpireRegistrationService = new class'Jammerware_SpireRegistrationService';
 	SourceUnitGameState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(ApplyEffectParameters.SourceStateObjectRef.ObjectID));
@@ -57,12 +76,10 @@ function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, Stat
 	// set the cover state of the spire
 	SpireUnitGameState.bGeneratesCover = true;
 	SpireUnitGameState.CoverForceFlag = CoverForce_High;
-	SpireUnitGameState.SyncVisualizer();
 }
 
 defaultproperties
 {
-	UnitToSpawnName=Jammerware_JSRC_Character_Spire
 	bInfiniteDuration=true
 	EffectName=Jammerware_JSRC_Effect_SpawnSpire
 }
