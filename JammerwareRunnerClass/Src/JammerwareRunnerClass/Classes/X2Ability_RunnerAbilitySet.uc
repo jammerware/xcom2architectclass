@@ -12,6 +12,10 @@ var name NAME_TARGETING_ARRAY;
 var name NAME_TARGETING_ARRAY_TRIGGERED;
 var name NAME_UNITY;
 
+// config/balance
+var config int HEADSTONE_COOLDOWN;
+var config int RECLAIM_COOLDOWN;
+
 // effect localizations
 var localized string TargetingArrayTriggeredFriendlyName;
 var localized string TargetingArrayTriggeredFriendlyDesc;
@@ -94,7 +98,7 @@ static function X2AbilityTemplate AddReclaim()
 
 	// Cooldown
 	Cooldown = new class'X2AbilityCooldown';
-	Cooldown.iNumTurns = 5;
+	Cooldown.iNumTurns = default.RECLAIM_COOLDOWN;
 	Template.AbilityCooldown = Cooldown;
 
 	// targeting style (how targets are determined by game rules)
@@ -170,7 +174,7 @@ static function X2AbilityTemplate AddHeadstone()
 
 	// Cooldown
 	Cooldown = new class'X2AbilityCooldown';
-	Cooldown.iNumTurns = 6;
+	Cooldown.iNumTurns = default.HEADSTONE_COOLDOWN;
 	Template.AbilityCooldown = Cooldown;
 
 	// targeting style (how targets are determined by game rules)
