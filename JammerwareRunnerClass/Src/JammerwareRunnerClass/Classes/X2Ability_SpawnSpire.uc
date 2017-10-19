@@ -91,7 +91,7 @@ static simulated function XComGameState SpawnSpire_BuildGameState(XComGameStateC
 	NewTileLocation = World.GetTileCoordinatesFromPosition(NewLocation);
 	SpireState.SetVisibilityLocation(NewTileLocation);
 
-	//Return the game state we maded
+	// Return the game state we maded
 	return NewGameState;
 }
 
@@ -148,7 +148,7 @@ simulated function SpawnSpire_BuildVisualization(XComGameState VisualizeGameStat
 	class'X2Action_EnterCover'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
 
 	// doing this here (to update the unit's cover status) and not in the effect apply seems to fix an intermittent crash
-	SpawnedUnit.SyncVisualizer();
+	//SpawnedUnit.SyncVisualizer();
 }
 
 defaultproperties
