@@ -39,7 +39,7 @@ LocFriendlyName="Create Spire"
 LocLongDescription="Create a spire. Spires provide high cover and have railguns that deal minor electrical damage."
 LocHelpText="Create a spire. Spires provide high cover and have railguns that deal minor electrical damage."
 LocFlyOverText="Create Spire"
-LocPromotionPopupText="Spires are the focal point of most Runner abilities. They provide cover, and at high levels, confer additional benefits."
+LocPromotionPopupText="'These would look so much cooler if they looked like the Templar pillar.'\n\nSpires are the focal point of most Runner abilities. They provide cover, and confer additional benefits as the runner is promoted.\n <Bullet/> Range: 6 tiles\n<Bullet\> Cooldown: 3 turns\n<Bullet/> Ends your turn"
 
 [Jammerware_JSRC_Ability_LightningRod X2AbilityTemplate]
 LocFriendlyName="Lightning Rod"
@@ -60,21 +60,21 @@ LocFriendlyName="Shelter"
 LocLongDescription="Your spires gain Shelter, which grants allies who end their turn adjacent to the spire a small shield. Shelter doesn't stack."
 LocHelpText="Your spires gain Shelter, which grants allies who end their turn adjacent to the spire a small shield. Shelter doesn't stack."
 LocFlyOverText="Shelter"
-LocPromotionPopupText="<Bullet/> Shelter's shield effect lasts for two turns, but it's refreshed when the shielded soldier ends their turn adjacent to a spire with Shelter.\n<Bullet/> The strength of the shield increases as the runner's spire gun is upgraded."
+LocPromotionPopupText="'What do you actually need? Food, clothing and shelter. Everything else is entertainment.'\n-Aloe Blacc\n\n<Bullet/> Shelter's shield effect lasts for two turns, but it's refreshed when the shielded soldier ends their turn adjacent to a spire with Shelter.\n<Bullet/> The strength of the shield increases as the runner's spire gun is upgraded.\n<Bullet/> Passive"
 
 [Jammerware_JSRC_Ability_SpireShelter X2AbilityTemplate]
 LocFriendlyName="Shelter"
 LocLongDescription="Contact with a spire has granted this soldier a shield."
 LocHelpText="Contact with a spire has granted this soldier a shield."
 LocFlyOverText="Shelter"
-LocPromotionPopupText="Sick move!"
+LocPromotionPopupText="The shield lasts for two turns."
 
 [Jammerware_JSRC_Ability_Quicksilver X2AbilityTemplate]
 LocFriendlyName="Quicksilver"
-LocLongDescription="Your spires gain Quicksilver, an ability which grants an adjacent squadmate an extra action."
-LocHelpText="Your spires gain Quicksilver, an ability which grants an adjacent squadmate an extra action."
+LocLongDescription="Your spires gain Quicksilver, an ability which grants an adjacent squadmate an extra action once per mission."
+LocHelpText="Your spires gain Quicksilver, an ability which grants an adjacent squadmate an extra action once per mission."
 LocFlyOverText="Quicksilver"
-LocPromotionPopupText="Quicksilver contributes powerful utility to your team, enabling deep strikes from rangers and templars or rapid repositioning from a sharpshooter."
+LocPromotionPopupText="'A personal favorite of Prompto Argentum.'\n\nQuicksilver contributes powerful utility to your team, enabling deep strikes from rangers and templars or rapid repositioning from a sharpshooter.\n\n<Bullet/> Each spire can use Quicksilver a single time.\n<Bullet/> The action point is granted instantly, and it can be given to any adjacent squadmate - even if they've used all of their action points for the turn.\n<Bullet/> Each spire can use Quicksilver once."
 
 [Jammerware_JSRC_Ability_SpireQuicksilver X2AbilityTemplate]
 LocFriendlyName="Quicksilver"
@@ -95,35 +95,35 @@ LocFriendlyName="Reclaim"
 LocLongDescription="Destroy an adjacent spire. You gain one action point, and the cooldown of Create Spire resets."
 LocHelpText="Destroy an adjacent spire. You gain one action point, and the cooldown of Create Spire resets."
 LocFlyOverText="Reclaim"
-LocPromotionPopupText="If you clean up after yourself, you'll be handsomely rewarded."
+LocPromotionPopupText="'Reduce. Reuse. Recycle.'\n\n<Bullet/> Reclaim doesn't end your turn, so you can approach a spire, reclaim it, and then place another in the same turn.\n<Bullet/> Cooldown: 5 turns"
 
 [Jammerware_JSRC_Ability_Headstone X2AbilityTemplate]
 LocFriendlyName="Headstone"
 LocLongDescription="Summon a spire on a tile occupied by the corpse of an enemy."
 LocHelpText="Summon a spire on a tile occupied by the corpse of an enemy."
 LocFlyOverText="Headstone"
-LocPromotionPopupText="Rest in peace."
+LocPromotionPopupText="'Rest in peace.'\n\n<Bullet/> Headstone doesn't share a cooldown with Create Spire, so it grants additional Spire throughput.\n<Bullet/> Headstone can target any organic enemy corpse in visual range of the soldier.\n<Bullet/> Cooldown: 6 turns\n<Bullet/>Doesn't end your turn"
 
 [Jammerware_JSRC_Ability_TargetingArray X2AbilityTemplate]
 LocFriendlyName="Targeting Array"
-LocLongDescription="Your <Ability:WeaponName/> shots gain an additional 30% accuracy when you're adjacent to a spire."
-LocHelpText="Your <Ability:WeaponName/> shots gain an additional 30% accuracy when you're adjacent to a spire."
+LocLongDescription="Your <Ability:WeaponName/> shots gain an additional 20% accuracy when you're adjacent to a spire."
+LocHelpText="Your <Ability:WeaponName/> shots gain an additional 20% accuracy when you're adjacent to a spire."
 LocFlyOverText="Targeting Array"
-LocPromotionPopupText="You wonder if maybe the spire is helping you somehow."
+LocPromotionPopupText="'If only it were small enough to fit on a gun...'\n\n<Bullet/> Passive"
 
 [Jammerware_JSRC_Ability_Unity X2AbilityTemplate]
 LocFriendlyName="Unity"
 LocLongDescription="You can use Create Spire on tiles adjacent to allies."
 LocHelpText="You can use Create Spire on tiles adjacent to allies."
 LocFlyOverText="Unity"
-LocPromotionPopupText="The bond of XCOM runs deep."
+LocPromotionPopupText="'You sense this will have a MASSive EFFECT on your tactical engagements.'\n\nYou can still place spires around you in the same range as you could without Unity - it just adds the tiles adjacent to your visible squadmates as additional options.\n\n<Bullet/> Passive"
 
 [Jammerware_JSRC_Ability_SoulOfTheArchitect X2AbilityTemplate]
 LocFriendlyName="Soul of the Architect"
 LocLongDescription="All effects that apply to your spires also apply to you. You gain all abilities that your spires have."
 LocHelpText="All effects that apply to your spires also apply to you. You gain all abilities that your spires have."
 LocFlyOverText="Soul of the Architect"
-LocPromotionPopupText="You've become one with your spires. Or, you know. Two or three with them. Or whatever."
+LocPromotionPopupText="'You've become one with your spires. Or, you know. Two or three with them. Or whatever.'"
 
 ;-------------------------------------------------------------
 ; WEAPONS
