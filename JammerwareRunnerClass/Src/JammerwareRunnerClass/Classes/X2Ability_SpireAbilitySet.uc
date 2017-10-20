@@ -85,34 +85,48 @@ static function X2AbilityTemplate AddSpireQuicksilver()
 {
 	local X2AbilityTemplate Template;
 	local X2AbilityCost_ActionPoints ActionPointCost;
+	local X2AbilityCost_Charges ChargeCost;
 	local X2Effect_GrantActionPoints ActionPointEffect;
 	local X2Condition_UnitProperty TargetCondition;
 	local X2AbilityCooldown Cooldown;
 
 	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_SPIRE_QUICKSILVER);
 
-	// Icon Properties
+	// hud behavior
 	Template.DisplayTargetHitChance = true;
 	Template.AbilitySourceName = 'eAbilitySource_Perk';
 	Template.IconImage = "img:///UILibrary_PerkIcons.UIPerk_runandgun";
 	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_SERGEANT_PRIORITY;
-	Template.Hostility = eHostility_Defensive;
+	Template.Hostility = eHostility_Neutral;
 	Template.bLimitTargetIcons = true;
 	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_AlwaysShow;	
 	
+	// triggering
 	Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);
 
+	// targeting
+	Template.AbilityToHitCalc = default.DeadEye;
+	Template.AbilityTargetStyle = default.SimpleSingleTarget;
+
+	// charges
+	Template.AbilityCharges =  new class'X2AbilityCharges_Quicksilver';
+
+	// costs
 	ActionPointCost = new class'X2AbilityCost_ActionPoints';
 	ActionPointCost.iNumPoints = 1;
 	ActionPointCost.bConsumeAllPoints = true;
 	Template.AbilityCosts.AddItem(ActionPointCost);
 
+	ChargeCost = new class'X2AbilityCost_Charges';
+	ChargeCost.NumCharges = 1;
+	Template.AbilityCosts.AddItem(ChargeCost);
+
+	// cooldown
 	Cooldown = new class'X2AbilityCooldown';
 	Cooldown.iNumTurns = 3;
 	Template.AbilityCooldown = Cooldown;
 
-	Template.AbilityToHitCalc = default.DeadEye;
-
+	// conditions
 	Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
 	Template.AddShooterEffectExclusions();
 
@@ -129,14 +143,14 @@ static function X2AbilityTemplate AddSpireQuicksilver()
 	Template.AbilityTargetConditions.AddItem(TargetCondition);
 	Template.AbilityTargetConditions.AddItem(default.GameplayVisibilityCondition);
 
+	// effects
 	ActionPointEffect = new class'X2Effect_GrantActionPoints';
 	ActionPointEffect.NumActionPoints = 1;
 	ActionPointEffect.PointType = class'X2CharacterTemplateManager'.default.StandardActionPoint;
 	ActionPointEffect.bSelectUnit = true;
 	Template.AddTargetEffect(ActionPointEffect);
 
-	Template.AbilityTargetStyle = default.SimpleSingleTarget;
-
+	// visualization and gamestate
 	Template.bShowActivation = true;
 	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
 	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;

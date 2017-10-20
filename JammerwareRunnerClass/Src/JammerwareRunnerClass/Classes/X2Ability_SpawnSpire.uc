@@ -7,7 +7,6 @@ var name NAME_SPAWN_SPIRE;
 static function X2DataTemplate CreateSpawnSpire()
 {
 	local X2AbilityTemplate Template;
-	local X2AbilityCost_ActionPoints ActionPointCost;
 	local X2AbilityCooldown Cooldown;
 	local X2AbilityTarget_Cursor CursorTarget;
 	local X2Effect_SpawnSpire SpawnSpireEffect;
@@ -23,10 +22,7 @@ static function X2DataTemplate CreateSpawnSpire()
 	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_SQUADDIE_PRIORITY;
 
 	// costs
-	ActionPointCost = new class'X2AbilityCost_ActionPoints';
-	ActionPointCost.iNumPoints = 1;
-	ActionPointCost.bConsumeAllPoints = true;
-	Template.AbilityCosts.AddItem(ActionPointCost);
+	Template.AbilityCosts.AddItem(default.FreeActionCost);
 
 	// cooldown
 	Cooldown = new class'X2AbilityCooldown';

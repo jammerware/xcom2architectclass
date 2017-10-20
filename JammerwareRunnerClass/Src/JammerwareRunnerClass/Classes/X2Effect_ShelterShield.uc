@@ -1,20 +1,21 @@
 class X2Effect_ShelterShield extends X2Effect_ModifyStats;
 
-var name SHELTER_DAMAGE_TAG;
-
 simulated protected function OnEffectAdded(const out EffectAppliedData ApplyEffectParameters, XComGameState_BaseObject kNewTargetState, XComGameState NewGameState, XComGameState_Effect NewEffectState)
 {
 	local XComGameState_Item WeaponState;
-	local WeaponDamageValue WeaponDamageValue;
+	local X2Template_SpireGun Template;
 	local array<StatChange> StatChanges;
 	local StatChange ShieldChange;
 
 	// read the amount of shield from the spiregun's ability damage
 	WeaponState = XComGameState_Item(NewGameState.GetGameStateForObjectID(ApplyEffectParameters.ItemStateObjectRef.ObjectID));
-	WeaponState.GetWeaponDamageValue(none, default.SHELTER_DAMAGE_TAG, WeaponDamageValue);
+	`LOG("JSRC: shelter added, weaponstate" @ WeaponState.name);
+	Template = X2Template_SpireGun(WeaponState.GetMyTemplate());
+	`LOG("JSRC: shelter added, template" @ Template.name);
+	`LOG("JSRC: shelter added, bonus" @ Template.ShelterShieldBonus);
 
 	ShieldChange.StatType = eStat_ShieldHP;
-	ShieldChange.StatAmount = WeaponDamageValue.Damage;
+	ShieldChange.StatAmount = Template.ShelterShieldBonus;
 	ShieldChange.ModOp = MODOP_Addition;
 	StatChanges.AddItem(ShieldChange);
 	NewEffectState.StatChanges = StatChanges;
@@ -40,5 +41,4 @@ defaultproperties
 {
 	DuplicateResponse=eDupe_Refresh
 	EffectName=Jammerware_JSRC_Effect_ShelterShield
-	SHELTER_DAMAGE_TAG=Shelter
 }

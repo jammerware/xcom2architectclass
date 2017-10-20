@@ -19,7 +19,7 @@ The goal of the Spire Runner class is to encourage the player's spatial awarenes
 | ---- | ----- | ------ |
 | **Corporal** |  *Shelter* - Allies who end their turn adjacent to a spire gain a small shield. Shelter doesn't stack. | *Quicksilver* - Your spires gain Quicksilver, an ability that grants an adjacent ally an additional action point for the turn. 5-turn cooldown. |
 | **Sergeant** |  | *Reclaim* - Destroy an adjacent spire. You gain one action point, and the cooldown of Create Spire is reset. |
-| **Lieutenant** | *Targeting Array* - While adjacent to a spire, your <primary weapon> shots can't miss. This ability is available in the Training Center. | *i dunno. maybe something else cross-classable?* |
+| **Lieutenant** | *Targeting Array* - While adjacent to a spire, your <primary weapon> shots gain additional accuracy. This ability is available in the Training Center. | *i dunno. maybe something else cross-classable?* |
 | **Captain** | *Headstone* - Summon a spire on top of the corpse of an enemy unit.  |  |
 | **Major** | | *Transmat Link* - Swap locations with a spire. 6-turn cooldown. |
 | **Colonel** | *Unity* - You can summon spires adjacent to any ally. | *Soul of the Architect* - All effects that apply to spires also apply to you. You gain all abilities your spires have. |
