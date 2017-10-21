@@ -1,7 +1,10 @@
-class Jammerware_SpireSharedAbilitiesService extends Object;
+class Jammerware_SpireAbilitiesService extends Object;
 
-function ConfigureSpireAbilitiesFromSourceUnit(XComGameState_Unit SpireUnit, XComGameState_Unit SourceUnit, XComGameState NewGameState)
+function ConfigureSpireAbilities(XComGameState_Unit SpireUnit, XComGameState_Unit SourceUnit, XComGameState NewGameState)
 {
+	local X2AbilityTemplateManager TemplateManager;
+	local X2AbilityTemplate DecommissionTemplate;
+
 	// TODO: eventually some kind of associative array would be better here
 	// note that some abilities need to be registered to an item, like shelter
 	InitSpireAbilityFromRunnerAbility
@@ -19,7 +22,8 @@ function ConfigureSpireAbilitiesFromSourceUnit(XComGameState_Unit SpireUnit, XCo
 		SpireUnit, 
 		class'X2Ability_RunnerAbilitySet'.default.NAME_QUICKSILVER, 
 		class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_QUICKSILVER,
-		NewGameState
+		NewGameState,
+		SourceUnit.GetSecondaryWeapon().GetReference()
 	);
 	InitSpireAbilityFromRunnerAbility
 	(
@@ -30,6 +34,18 @@ function ConfigureSpireAbilitiesFromSourceUnit(XComGameState_Unit SpireUnit, XCo
 		NewGameState,
 		SourceUnit.GetSecondaryWeapon().GetReference()
 	);
+
+	// if the spire has any active abilities, also give it decommission so they don't have to keep ending turn on it if they
+	// don't want to
+	// this may not be a release thing (spires may deactivate or die when the runner is out of range?)
+	
+	
+	if (SpireHasActiveAbility(SpireUnit, NewGameState))
+	{
+		TemplateManager = class'X2AbilityTemplateManager'.static.GetAbilityTemplateManager();
+		DecommissionTemplate = TemplateManager.FindAbilityTemplate(class'X2Ability_SpireAbilitySet'.default.NAME_DECOMMISSION);
+		`TACTICALRULES.InitAbilityForUnit(DecommissionTemplate, SpireUnit, NewGameState);
+	}
 }
 
 function InitSpireAbilityFromRunnerAbility(
@@ -53,4 +69,28 @@ function InitSpireAbilityFromRunnerAbility(
 		`LOG("JSRC: initing" @ SharedAbilityTemplate.DataName @ "for" @ SpireUnit.GetMyTemplate().DataName);
 		`TACTICALRULES.InitAbilityForUnit(SharedAbilityTemplate, SpireUnit, NewGameState, WeaponRef);
 	}
+}
+
+private function bool SpireHasActiveAbility(XComGameState_Unit SpireState, XComGameState GameState)
+{
+	local X2AbilityTemplate SpireAbilityTemplate;
+	local XComGameState_Ability SpireAbilityState;
+	local StateObjectReference SpireAbilityRef;
+	local X2AbilityTrigger SpireAbilityTrigger;
+
+	foreach SpireState.Abilities(SpireAbilityRef)
+	{
+		SpireAbilityState = XComGameState_Ability(GameState.GetGameStateForObjectID(SpireAbilityRef.ObjectID));
+		SpireAbilityTemplate = SpireAbilityState.GetMyTemplate();
+
+		foreach SpireAbilityTemplate.AbilityTriggers(SpireAbilityTrigger)
+		{
+			if (SpireAbilityTrigger.IsA('X2AbilityTrigger_PlayerInput'))
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
 }

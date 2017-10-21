@@ -34,6 +34,13 @@
 ;-------------------------------------------------------------
 ; ABILITIES
 ;-------------------------------------------------------------
+[Jammerware_JSRC_Ability_Decommission X2AbilityTemplate]
+LocFriendlyName="Decommission"
+LocLongDescription="Destroy this spire."
+LocHelpText="Destroy this spire."
+LocFlyOverText="Decommission"
+LocPromotionPopupText="Would it make you feel better if it were called 'Retire'?"
+
 [Jammerware_JSRC_Ability_SpawnSpire X2AbilityTemplate]
 LocFriendlyName="Create Spire"
 LocLongDescription="Create a spire. Spires provide high cover and have railguns that deal minor electrical damage."

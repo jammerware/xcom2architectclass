@@ -49,10 +49,10 @@ function ETeam GetTeam(const out EffectAppliedData ApplyEffectParameters)
 function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, StateObjectReference NewUnitRef, XComGameState NewGameState, XComGameState_Effect NewEffectState)
 {
 	local XComGameState_Unit SourceUnitGameState, SpireUnitGameState, TargetUnitGameState;
-	local Jammerware_SpireSharedAbilitiesService SpireSharedAbilitiesService;
+	local Jammerware_SpireAbilitiesService SpireAbilitiesService;
 	local Jammerware_SpireRegistrationService SpireRegistrationService;
 
-	SpireSharedAbilitiesService = new class'Jammerware_SpireSharedAbilitiesService';
+	SpireAbilitiesService = new class'Jammerware_SpireAbilitiesService';
 	SpireRegistrationService = new class'Jammerware_SpireRegistrationService';
 	SourceUnitGameState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(ApplyEffectParameters.SourceStateObjectRef.ObjectID));
 	SpireUnitGameState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(NewUnitRef.ObjectID));
@@ -71,7 +71,7 @@ function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, Stat
 	// DANGER, WILL ROBINSON
 	// i'm super unsure of this implementation, especially because it results in using the dreaded InitAbilityForUnit method, which is indicated as
 	// pretty dangerous by Firaxis. if the soldier who spawns the spire has certain abilities, the spire gets them too
-	SpireSharedAbilitiesService.ConfigureSpireAbilitiesFromSourceUnit(SpireUnitGameState, SourceUnitGameState, NewGameState);
+	SpireAbilitiesService.ConfigureSpireAbilities(SpireUnitGameState, SourceUnitGameState, NewGameState);
 
 	// set the cover state of the spire
 	SpireUnitGameState.bGeneratesCover = true;
