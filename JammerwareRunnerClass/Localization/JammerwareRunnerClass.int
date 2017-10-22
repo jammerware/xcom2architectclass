@@ -22,6 +22,6 @@ TacticalText="Spire Gun Mk.IIIs allow the runner to summon Hardlight Spires.\n\n
 ;-------------------------------------------------------------
 ; EFFECTS
 ;-------------------------------------------------------------
-[X2Ability_RunnerAbilitySet]
+[X2Ability_TargetingArray]
 +TargetingArrayTriggeredFriendlyName="Targeting Array Active"
 +TargetingArrayTriggeredFriendlyDesc="The nearby spire's targeting array is active, enhancing the accuracy of your shots."

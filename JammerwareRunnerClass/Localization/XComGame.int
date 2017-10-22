@@ -118,6 +118,13 @@ LocHelpText="Your <Ability:WeaponName/> shots gain an additional 20% accuracy wh
 LocFlyOverText="Targeting Array"
 LocPromotionPopupText="'If only it were small enough to fit on a gun...'\n\n<Bullet/> Passive"
 
+[Jammerware_JSRC_Ability_TargetingArrayTriggered X2AbilityTemplate]
+LocFriendlyName="Targeting Array"
+LocLongDescription="Your <Ability:WeaponName/> shots gain an additional 20% accuracy when you're adjacent to a spire."
+LocHelpText="Your <Ability:WeaponName/> shots gain an additional 20% accuracy when you're adjacent to a spire."
+LocFlyOverText="Targeting Array"
+LocPromotionPopupText="'If only it were small enough to fit on a gun...'\n\n<Bullet/> Passive"
+
 [Jammerware_JSRC_Ability_Unity X2AbilityTemplate]
 LocFriendlyName="Unity"
 LocLongDescription="You can use Create Spire on tiles adjacent to allies."

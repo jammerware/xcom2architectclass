@@ -35,13 +35,17 @@ function RegisterForEvents(XComGameState_Effect EffectGameState)
 
 static function EventListenerReturn OnUnitMoved(Object EventData, Object EventSource, XComGameState GameState, Name EventID, Object CallbackData)
 {
+	local XComGameState_Unit UnitState;
 	local XComGameState_Effect EffectState;
 	local XComGameStateContext_EffectRemoved RemoveContext;
 	local XComGameState NewGameState;
+	local Jammerware_ProximityService ProximityService;
 
+	ProximityService = new class'Jammerware_ProximityService';
 	EffectState = XComGameState_Effect(CallbackData);
+	UnitState = XComGameState_Unit(EventData);
 	
-	if (!EffectState.bRemoved)
+	if (!EffectState.bRemoved && !ProximityService.IsUnitAdjacentToSpire(UnitState))
 	{
 		RemoveContext = class'XComGameStateContext_EffectRemoved'.static.CreateEffectRemovedContext(EffectState);
 		NewGameState = `XCOMHISTORY.CreateNewGameState(true, RemoveContext);

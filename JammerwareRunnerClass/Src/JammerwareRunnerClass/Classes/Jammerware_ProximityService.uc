@@ -28,7 +28,6 @@ private function bool AreTilesAdjacent(TTile TileA, TTile TileB)
     local float Tiles;
 
 	Tiles = GetUnitDistanceBetween(TileA, TileB) / WORLD_STEP_SIZE;
-    `LOG("JSRC: tile distance" @ Tiles);
     
     return Tiles < 2;
 }
