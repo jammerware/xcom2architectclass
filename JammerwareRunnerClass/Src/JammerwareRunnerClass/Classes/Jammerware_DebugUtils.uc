@@ -40,6 +40,11 @@ static function LogUnitLocation(XComGameState_Unit Unit)
     `LOG("JSRC: unit" @ Unit.GetMyTemplateName() @ Unit.GetReference().ObjectID @ "is located at" @ `XWORLD.GetPositionFromTileCoordinates(Unit.TileLocation));
 }
 
+static function LogStateObject(XComGameState_BaseObject State)
+{
+    `LOG("JSRC: state object" @ GetStateLogName(State));
+}
+
 static function string GetStateLogName(XComGameState_BaseObject State)
 {
     return State.GetMyTemplateName() @ "(" @ State.GetReference().ObjectID @ ")";

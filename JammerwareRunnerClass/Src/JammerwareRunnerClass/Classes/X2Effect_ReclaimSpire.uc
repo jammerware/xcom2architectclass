@@ -6,7 +6,7 @@ simulated protected function OnEffectAdded(const out EffectAppliedData ApplyEffe
 	local int KillAmount;
 
 	TargetUnit = XComGameState_Unit(kNewTargetState);
-	if( (TargetUnit != none) && !TargetUnit.IsDead()  )
+	if( (TargetUnit != none) && !TargetUnit.IsDead())
 	{
 		KillAmount = TargetUnit.GetCurrentStat(eStat_HP) + TargetUnit.GetCurrentStat(eStat_ShieldHP);
 		TargetUnit.TakeEffectDamage(self, KillAmount, 0, 0, ApplyEffectParameters, NewGameState, false, false);

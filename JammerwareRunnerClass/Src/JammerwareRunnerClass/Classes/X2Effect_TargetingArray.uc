@@ -10,6 +10,48 @@ function GetToHitModifiers(XComGameState_Effect EffectState, XComGameState_Unit 
 	ShotModifiers.AddItem(AccuracyInfo);
 }
 
+function RegisterForEvents(XComGameState_Effect EffectGameState)
+{
+	local X2EventManager EventMgr;
+	local XComGameState_Unit UnitState;
+	local Object EffectObj;
+
+	EventMgr = `XEVENTMGR;
+	EffectObj = EffectGameState;
+	UnitState = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(EffectGameState.ApplyEffectParameters.SourceStateObjectRef.ObjectID));
+
+	EventMgr.RegisterForEvent
+	(
+		EffectObj, 
+		'UnitMoveFinished', 
+		OnUnitMoved, 
+		ELD_OnStateSubmitted, 
+		, 
+		UnitState,
+		,
+		EffectGameState
+	);
+}
+
+static function EventListenerReturn OnUnitMoved(Object EventData, Object EventSource, XComGameState GameState, Name EventID, Object CallbackData)
+{
+	local XComGameState_Effect EffectState;
+	local XComGameStateContext_EffectRemoved RemoveContext;
+	local XComGameState NewGameState;
+
+	EffectState = XComGameState_Effect(CallbackData);
+	
+	if (!EffectState.bRemoved)
+	{
+		RemoveContext = class'XComGameStateContext_EffectRemoved'.static.CreateEffectRemovedContext(EffectState);
+		NewGameState = `XCOMHISTORY.CreateNewGameState(true, RemoveContext);
+		EffectState.RemoveEffect(NewGameState, GameState);
+		`TACTICALRULES.SubmitGameState(NewGameState);
+	}
+
+	return ELR_NoInterrupt;
+}
+
 defaultproperties
 {
     EffectName=Jammerware_JSRC_Effect_TargetingArray

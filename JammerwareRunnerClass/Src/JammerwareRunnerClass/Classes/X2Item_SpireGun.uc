@@ -52,7 +52,6 @@ static function X2DataTemplate CreateTemplate_SpireGun_Conventional()
 	// bonuses for this tier of spire gun
 	Template.QuicksilverChargesBonus = default.SPIREGUN_CONVENTIONAL_QUICKSILVERCHARGESBONUS;
 	Template.ShelterShieldBonus = default.SPIREGUN_CONVENTIONAL_SHELTERSHIELDBONUS;
-	Template.TargetingArrayAccuracyBonus = default.SPIREGUN_CONVENTIONAL_TARGETINGARRAYACCURACYBONUS;
 	
 	return Template;
 }
@@ -75,7 +74,6 @@ static function X2DataTemplate CreateTemplate_SpireGun_Magnetic()
 	Template.ExtraDamage = default.SPIREGUN_MAGNETIC_ABILITYDAMAGE;
 	Template.QuicksilverChargesBonus = default.SPIREGUN_MAGNETIC_QUICKSILVERCHARGESBONUS;
 	Template.ShelterShieldBonus = default.SPIREGUN_MAGNETIC_SHELTERSHIELDBONUS;
-	Template.TargetingArrayAccuracyBonus = default.SPIREGUN_MAGNETIC_TARGETINGARRAYACCURACYBONUS;
 	
 	// upgradey stuff
 	Template.CreatorTemplateName = class'X2Item_SpireGunSchematics'.default.NAME_SPIREGUN_SCHEMATIC_MAGNETIC;
@@ -102,7 +100,6 @@ static function X2DataTemplate CreateTemplate_SpireGun_Beam()
 	Template.ExtraDamage = default.SPIREGUN_BEAM_ABILITYDAMAGE;
 	Template.QuicksilverChargesBonus = default.SPIREGUN_BEAM_QUICKSILVERCHARGESBONUS;
 	Template.ShelterShieldBonus = default.SPIREGUN_BEAM_SHELTERSHIELDBONUS;
-	Template.TargetingArrayAccuracyBonus = default.SPIREGUN_BEAM_TARGETINGARRAYACCURACYBONUS;
 	
 	// upgradey stuff
 	Template.CreatorTemplateName = class'X2Item_SpireGunSchematics'.default.NAME_SPIREGUN_SCHEMATIC_BEAM;

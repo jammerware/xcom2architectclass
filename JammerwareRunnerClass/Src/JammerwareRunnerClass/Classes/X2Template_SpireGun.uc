@@ -2,7 +2,6 @@ class X2Template_SpireGun extends X2WeaponTemplate;
 
 var int QuicksilverChargesBonus;
 var int ShelterShieldBonus;
-var int TargetingArrayAccuracyBonus;
 
 DefaultProperties
 {

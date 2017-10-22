@@ -7,6 +7,7 @@ static function X2DataTemplate CreateTransmatLink()
     local X2AbilityTemplate Template;
 	local X2AbilityCost_ActionPoints ActionPointCost;
 	local X2AbilityCooldown Cooldown;
+	local X2Condition_UnitProperty TargetPropertiesCondition;
 	local X2Condition_UnitType UnitTypeCondition;
 
 	// general properties
@@ -41,7 +42,14 @@ static function X2DataTemplate CreateTransmatLink()
 	// conditions
 	Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
 
-	// TODO: need to enforce that the spire target belongs to the ability source and is friendly
+	// TODO: need to enforce that the spire target belongs to the ability source
+
+	TargetPropertiesCondition = new class'X2Condition_UnitProperty';
+	TargetPropertiesCondition.ExcludeHostileToSource = true;
+	TargetPropertiesCondition.ExcludeFriendlyToSource = false;
+	TargetPropertiesCondition.RequireSquadmates = true;
+	TargetPropertiesCondition.ExcludeDead = true;
+	Template.AbilityTargetConditions.AddItem(TargetPropertiesCondition);
 
 	UnitTypeCondition = new class'X2Condition_UnitType';
 	UnitTypeCondition.IncludeTypes.AddItem(class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE);
@@ -85,7 +93,6 @@ static simulated function XComGameState TransmatLink_BuildGameState(XComGameStat
 		WeaponState = XComGameState_Item(NewGameState.ModifyStateObject(class'XComGameState_Item', AbilityContext.InputContext.ItemObject.ObjectID));
 	}
 
-    `LOG("JSRC: build gamestate");
     class'Jammerware_DebugUtils'.static.LogUnitLocation(ShooterUnit);
     class'Jammerware_DebugUtils'.static.LogUnitLocation(TargetUnit);
 

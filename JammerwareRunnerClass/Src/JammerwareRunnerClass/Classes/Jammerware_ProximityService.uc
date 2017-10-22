@@ -5,7 +5,7 @@ const WORLD_STEP_SIZE = 96.0f;
 
 function bool AreAdjacent(XComGameState_Unit UnitA, XComGameState_Unit UnitB)
 {
-    return UnitA.TileDistanceBetween(UnitB) <= 1;
+    return AreTilesAdjacent(UnitA.TileLocation, UnitB.TileLocation);
 }
 
 function bool IsTileAdjacentToAlly(TTile Tile, XComGameState GameState, XComGameState_Unit UnitGameState)
@@ -14,7 +14,7 @@ function bool IsTileAdjacentToAlly(TTile Tile, XComGameState GameState, XComGame
 
     foreach GameState.IterateByClassType(class'XComGameState_Unit', IterateUnitState)
     {
-        if (IterateUnitState.GetTeam() == UnitGameState.GetTeam() && AreTilesAdjacent(Tile, GetTileLocation(IterateUnitState)))
+        if (IterateUnitState.GetTeam() == UnitGameState.GetTeam() && AreTilesAdjacent(Tile, IterateUnitState.TileLocation))
         {
             return true;
         }
@@ -28,6 +28,7 @@ private function bool AreTilesAdjacent(TTile TileA, TTile TileB)
     local float Tiles;
 
 	Tiles = GetUnitDistanceBetween(TileA, TileB) / WORLD_STEP_SIZE;
+    `LOG("JSRC: tile distance" @ Tiles);
     
     return Tiles < 2;
 }
@@ -43,9 +44,22 @@ public function float GetUnitDistanceBetween(TTile TileA, TTile TileB)
 	return VSize(LocA - LocB);
 }
 
-public function TTile GetTileLocation(XComGameState_Unit UnitState)
+public function bool IsUnitAdjacentToSpire(XComGameState_Unit UnitState, bool RequireOwnership = false)
 {
-    local TTile UnitTile;
-    UnitState.GetKeystoneVisibilityLocation(UnitTile);
-    return UnitTile;
+    local XComGameState_Unit SpireState;
+
+    foreach `XCOMHISTORY.IterateByClassType(class'XComGameState_Unit', SpireState)
+	{
+		if
+        (
+            SpireState.GetMyTemplate().CharacterGroupName == class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE &&
+            SpireState.GetTeam() == UnitState.GetTeam() &&
+            AreAdjacent(SpireState, UnitState)
+        )
+		{
+            return true;
+		}
+	}
+
+    return false;
 }
