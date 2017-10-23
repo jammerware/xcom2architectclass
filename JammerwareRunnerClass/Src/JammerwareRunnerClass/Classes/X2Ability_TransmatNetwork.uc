@@ -30,6 +30,8 @@ static function X2AbilityTemplate CreateTransmat()
 {
 	local X2AbilityTemplate Template;
 	local X2AbilityCost_ActionPoints ActionPointCost;
+	local X2AbilityCooldown_Global Cooldown;
+	local X2Condition_SpireAdjacency SpireAdjacencyCondition;
 
 	// general properties
 	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_TRANSMAT);
@@ -40,6 +42,7 @@ static function X2AbilityTemplate CreateTransmat()
 	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_ShowIfAvailable;
 	Template.IconImage = default.ICON_TRANSMATNETWORK;
 	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.UNSPECIFIED_PRIORITY;
+	Template.bDisplayInUITooltip = false;
 
 	// cost
 	ActionPointCost = new class'X2AbilityCost_ActionPoints';
@@ -47,9 +50,17 @@ static function X2AbilityTemplate CreateTransmat()
 	ActionPointCost.bFreeCost = true;
 	Template.AbilityCosts.AddItem(ActionPointCost);
 
+	// cooldown
+	Cooldown = new class'X2AbilityCooldown_Global';
+	Cooldown.iNumTurns = 6;
+	Template.AbilityCooldown = Cooldown;
+
 	// conditions
     Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
-	Template.AbilityShooterConditions.AddItem(new class'X2Condition_SpireAdjacency');
+
+	SpireAdjacencyCondition = new class'X2Condition_SpireAdjacency';
+	SpireAdjacencyCondition.RequiredSpireEffect = default.NAME_SPIRETRANSMATNETWORK;
+	Template.AbilityShooterConditions.AddItem(SpireAdjacencyCondition);
 
 	// targeting style (how targets are determined by game rules)
 	Template.AbilityTargetStyle = new class'X2AbilityTarget_Cursor';

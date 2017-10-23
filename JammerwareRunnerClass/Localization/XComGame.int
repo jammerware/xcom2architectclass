@@ -3,7 +3,7 @@
 ;-------------------------------------------------------------
 [Runner X2SoldierClassTemplate]
 +DisplayName="Spire Runner"
-+ClassSummary="The spire runner is a mobile but offensively weak operative that supports their squad with powerful Spires."
++ClassSummary="Spire runners are mobile but offensively weak operatives that support their squadmates with powerful Spires. These immobile structures provide powerful supportive benefits - if the runner places them well."
 +LeftAbilityTreeTitle="Fight"
 +RightAbilityTreeTitle="Flight"
 +AbilityTreeTitles[0]="Fight"

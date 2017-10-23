@@ -36,7 +36,7 @@ function name ValidateTargetLocations(const array<Vector> TargetLocations)
 
 		if (
 			!super.IsInAbilityRange(TargetTile) &&
-			!ProximityService.IsTileAdjacentToAlly(TargetTile, self.ShooterState)
+			!ProximityService.IsTileAdjacentToAlly(TargetTile, self.ShooterState.GetTeam())
 		)
 		{
 			AbilityAvailability = 'AA_NotInRange';

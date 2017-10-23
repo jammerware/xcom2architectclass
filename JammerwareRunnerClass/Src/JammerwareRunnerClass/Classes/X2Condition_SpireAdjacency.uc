@@ -1,5 +1,7 @@
 class X2Condition_SpireAdjacency extends X2Condition;
 
+var name RequiredSpireEffect;
+
 event name CallMeetsCondition(XComGameState_BaseObject kTarget) 
 {
 	local XComGameState_Unit TargetState;
@@ -8,7 +10,7 @@ event name CallMeetsCondition(XComGameState_BaseObject kTarget)
     TargetState = XComGameState_Unit(kTarget);
     ProximityService = new class'Jammerware_ProximityService';
 
-    if (ProximityService.IsUnitAdjacentToSpire(TargetState))
+    if (ProximityService.IsUnitAdjacentToSpire(TargetState, RequiredSpireEffect))
     {
         return 'AA_Success';
     }

@@ -5,14 +5,18 @@ function bool AreAdjacent(XComGameState_Unit UnitA, XComGameState_Unit UnitB)
     return AreTilesAdjacent(UnitA.TileLocation, UnitB.TileLocation);
 }
 
-function bool IsTileAdjacentToAlly(TTile Tile, XComGameState_Unit UnitGameState, optional name AllyCharacterGroup)
+function bool IsTileAdjacentToAlly(TTile Tile, ETeam Team, optional name RequiredAllyEffect, optional name AllyCharacterGroup)
 {
     local XComGameState_Unit IterateUnitState;
+    local Jammerware_GameStateEffectsService EffectsService;
+
+    EffectsService = new class'Jammerware_GameStateEffectsService';
 
     foreach `XCOMHISTORY.IterateByClassType(class'XComGameState_Unit', IterateUnitState)
     {
         if (
-            IterateUnitState.GetTeam() == UnitGameState.GetTeam() && 
+            IterateUnitState.GetTeam() == Team && 
+            (RequiredAllyEffect == 'None' || EffectsService.IsUnitAffectedByEffect(IterateUnitState, RequiredAllyEffect)) &&
             (AllyCharacterGroup == 'None' || IterateUnitState.GetMyTemplate().CharacterGroupName == AllyCharacterGroup) &&
             AreTilesAdjacent(Tile, IterateUnitState.TileLocation)
         )
@@ -43,7 +47,7 @@ public function float GetUnitDistanceBetween(TTile TileA, TTile TileB)
 	return VSize(LocA - LocB);
 }
 
-public function bool IsUnitAdjacentToSpire(XComGameState_Unit UnitState, bool RequireOwnership = false)
+public function bool IsUnitAdjacentToSpire(XComGameState_Unit UnitState, optional name RequiredSpireEffect)
 {
-    return IsTileAdjacentToAlly(UnitState.TileLocation, UnitState, class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE);
+    return IsTileAdjacentToAlly(UnitState.TileLocation, UnitState.GetTeam(), RequiredSpireEffect, class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE);
 }

@@ -5,13 +5,6 @@ function int GetInitialCharges(XComGameState_Ability Ability, XComGameState_Unit
 	local int Charges;
     local XComGameState_Item WeaponState;
     local X2Template_SpireGun WeaponTemplate;
-	
-	`LOG("JSRC: GATHERING CHARGES");
-	`LOG("JSRC: GATHERING CHARGES");
-	`LOG("JSRC: GATHERING CHARGES");
-	`LOG("JSRC: GATHERING CHARGES");
-	`LOG("JSRC: GATHERING CHARGES");
-	`LOG("JSRC: ability src weapon is" @ Ability.GetSourceWeapon());
 
     Charges = super.GetInitialCharges(Ability, Unit);
 

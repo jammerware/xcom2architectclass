@@ -65,7 +65,6 @@ static function X2AbilityTemplate AddQuicksilver()
 static function X2AbilityTemplate AddReclaim()
 {
 	local X2AbilityTemplate Template;
-	local X2AbilityCost_ActionPoints ActionPointCost;
 	local X2AbilityCooldown Cooldown;
 	local X2Condition_UnitProperty RangeCondition;
 	local X2Condition_UnitType UnitTypeCondition;
@@ -86,10 +85,7 @@ static function X2AbilityTemplate AddReclaim()
 	Template.bLimitTargetIcons = true;
 
 	// cost
-	ActionPointCost = new class'X2AbilityCost_ActionPoints';
-	ActionPointCost.iNumPoints = 1;
-	ActionPointCost.bConsumeAllPoints = false;
-	Template.AbilityCosts.AddItem(ActionPointCost);
+	Template.AbilityCosts.AddItem(default.FreeActionCost);
 
 	// Cooldown
 	Cooldown = new class'X2AbilityCooldown';
