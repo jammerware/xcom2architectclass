@@ -1,20 +1,21 @@
 class Jammerware_ProximityService extends Object;
 
-// hard-coded (copy/pasted from XComWorldData) for speed
-const WORLD_STEP_SIZE = 96.0f;
-
 function bool AreAdjacent(XComGameState_Unit UnitA, XComGameState_Unit UnitB)
 {
     return AreTilesAdjacent(UnitA.TileLocation, UnitB.TileLocation);
 }
 
-function bool IsTileAdjacentToAlly(TTile Tile, XComGameState GameState, XComGameState_Unit UnitGameState)
+function bool IsTileAdjacentToAlly(TTile Tile, XComGameState_Unit UnitGameState, optional name AllyCharacterGroup)
 {
     local XComGameState_Unit IterateUnitState;
 
-    foreach GameState.IterateByClassType(class'XComGameState_Unit', IterateUnitState)
+    foreach `XCOMHISTORY.IterateByClassType(class'XComGameState_Unit', IterateUnitState)
     {
-        if (IterateUnitState.GetTeam() == UnitGameState.GetTeam() && AreTilesAdjacent(Tile, IterateUnitState.TileLocation))
+        if (
+            IterateUnitState.GetTeam() == UnitGameState.GetTeam() && 
+            (AllyCharacterGroup == 'None' || IterateUnitState.GetMyTemplate().CharacterGroupName == AllyCharacterGroup) &&
+            AreTilesAdjacent(Tile, IterateUnitState.TileLocation)
+        )
         {
             return true;
         }
@@ -27,8 +28,7 @@ private function bool AreTilesAdjacent(TTile TileA, TTile TileB)
 {
     local float Tiles;
 
-	Tiles = GetUnitDistanceBetween(TileA, TileB) / WORLD_STEP_SIZE;
-    
+	Tiles = GetUnitDistanceBetween(TileA, TileB) / `XWORLD.WORLD_StepSize;
     return Tiles < 2;
 }
 
@@ -45,20 +45,5 @@ public function float GetUnitDistanceBetween(TTile TileA, TTile TileB)
 
 public function bool IsUnitAdjacentToSpire(XComGameState_Unit UnitState, bool RequireOwnership = false)
 {
-    local XComGameState_Unit SpireState;
-
-    foreach `XCOMHISTORY.IterateByClassType(class'XComGameState_Unit', SpireState)
-	{
-		if
-        (
-            SpireState.GetMyTemplate().CharacterGroupName == class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE &&
-            SpireState.GetTeam() == UnitState.GetTeam() &&
-            AreAdjacent(SpireState, UnitState)
-        )
-		{
-            return true;
-		}
-	}
-
-    return false;
+    return IsTileAdjacentToAlly(UnitState.TileLocation, UnitState, class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE);
 }

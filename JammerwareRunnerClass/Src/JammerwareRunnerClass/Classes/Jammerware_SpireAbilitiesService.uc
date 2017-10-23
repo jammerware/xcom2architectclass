@@ -34,11 +34,18 @@ function ConfigureSpireAbilities(XComGameState_Unit SpireUnit, XComGameState_Uni
 		NewGameState,
 		SourceUnit.GetSecondaryWeapon().GetReference()
 	);
+	InitSpireAbilityFromRunnerAbility
+	(
+		SourceUnit,
+		SpireUnit,
+		class'X2Ability_TransmatNetwork'.default.NAME_TRANSMATNETWORK,
+		class'X2Ability_TransmatNetwork'.default.NAME_SPIRETRANSMATNETWORK,
+		NewGameState,
+	);
 
 	// if the spire has any active abilities, also give it decommission so they don't have to keep ending turn on it if they
 	// don't want to
 	// this may not be a release thing (spires may deactivate or die when the runner is out of range?)
-	
 	
 	if (SpireHasActiveAbility(SpireUnit, NewGameState))
 	{

@@ -1,4 +1,4 @@
-class X2Condition_SpireProximityCondition extends X2Condition;
+class X2Condition_SpireAdjacency extends X2Condition;
 
 event name CallMeetsCondition(XComGameState_BaseObject kTarget) 
 {

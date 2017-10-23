@@ -18,7 +18,12 @@ static event InstallNewCampaign(XComGameState StartState)
 /// Called when all base game templates are loaded
 /// </summary>
 static event OnPostTemplatesCreated()
-{}
+{
+    local Jammerware_JSRC_TransmatNetworkService TransmatNetworkService;
+
+    TransmatNetworkService = new class'Jammerware_JSRC_TransmatNetworkService';
+    TransmatNetworkService.RegisterTransmatAbilityToCharacterTemplates();
+}
 
 /// <summary>
 /// Called from XComGameState_Unit:GatherUnitAbilitiesForInit after the game has built what it believes is the full list of

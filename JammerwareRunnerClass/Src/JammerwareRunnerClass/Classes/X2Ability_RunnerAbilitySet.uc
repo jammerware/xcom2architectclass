@@ -27,21 +27,22 @@ static function array <X2DataTemplate> CreateTemplates()
 
 	// SERGEANT!
 	Templates.AddItem(AddReclaim());
-	Templates.AddItem(class'X2Ability_TransmatLink'.static.CreateTransmatLink());
 
 	// LIEUTENANT!
 	Templates.AddItem(class'X2Ability_TargetingArray'.static.CreateTargetingArray());
 	Templates.AddItem(class'X2Ability_TargetingArray'.static.CreateTargetingArrayTriggered());
+	Templates.AddItem(class'X2Ability_TransmatLink'.static.CreateTransmatLink());
 
 	// CAPTAIN!
 	Templates.AddItem(AddHeadstone());
 	Templates.AddItem(AddQuicksilver());
 
 	// MAJOR!
+	Templates.AddItem(CreateUnity());
 
 	// COLONEL!
-	Templates.AddItem(CreateUnity());
-	Templates.AddItem(AddSoulOfTheArchitect());
+	Templates.AddItem(CreateSoulOfTheArchitect());
+	Templates.AddItem(class'X2Ability_TransmatNetwork'.static.CreateRunnerTransmatNetwork());
 
 	return Templates;
 }
@@ -271,7 +272,7 @@ static function X2AbilityTemplate CreateUnity()
 	return PurePassive(default.NAME_UNITY, "img:///UILibrary_PerkIcons.UIPerk_aethershift");
 }
 
-static function X2AbilityTemplate AddSoulOfTheArchitect()
+static function X2AbilityTemplate CreateSoulOfTheArchitect()
 {
 	local X2AbilityTemplate Template;
 

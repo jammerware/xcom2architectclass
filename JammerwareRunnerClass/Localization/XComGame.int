@@ -139,6 +139,27 @@ LocHelpText="All effects that apply to your spires also apply to you. You gain a
 LocFlyOverText="Soul of the Architect"
 LocPromotionPopupText="'You've become one with your spires. Or, you know. Two or three with them. Or whatever.'"
 
+[Jammerware_JSRC_Ability_TransmatNetwork X2AbilityTemplate]
+LocFriendlyName="Transmat Network"
+LocLongDescription="Your spires gain Transmat Network Node. When a squadmate is adjacent to a node, they can use Transmat, a free ability that allows them to relocate to any space adjacent to a spire in the network. 6-turn global cooldown."
+LocHelpText="Your spires gain Transmat Network Node. When a squadmate is adjacent to a node, they can use Transmat, a free ability that allows them to relocate to any space adjacent to a spire in the network. 6-turn global cooldown."
+LocFlyOverText="Transmat Network"
+LocPromotionPopupText="'Everything has to be somewhere. The trick is having the right things be in the right places.'\n\n<Bullet/> Transmat's cooldown is global, which means that if any squadmate uses it, the ability goes on cooldown for the entire squad.\n\n<Bullet/> The Transmat ability is free."
+
+[Jammerware_JSRC_Ability_SpireTransmatNetwork X2AbilityTemplate]
+LocFriendlyName="Transmat Network Node"
+LocLongDescription="Squadmates can activate Transmat when adjacent to this spire, relocating to another space adjacent any spire in the network. 6-turn global cooldown."
+LocHelpText="Squadmates can active Transmat when adjacent to this spire, relocating to another space adjacent any spire in the network. 6-turn global cooldown."
+LocFlyOverText="Transmat Network Node"
+LocPromotionPopupText="'Everything has to be somewhere. The trick is having the right things be in the right places.'"
+
+[Jammerware_JSRC_Ability_Transmat X2AbilityTemplate]
+LocFriendlyName="Transmat"
+LocLongDescription="Relocate to any space adjacent to a spire in the same transmat network. Free action. 6-turn global cooldown."
+LocHelpText="Relocate to any space adjacent to a spire in the same transmat network. Free action. 6-turn global cooldown."
+LocFlyOverText="Transmat"
+LocPromotionPopupText="'Everything has to be somewhere. The trick is having the right things be in the right places.'"
+
 ;-------------------------------------------------------------
 ; WEAPONS
 ;-------------------------------------------------------------

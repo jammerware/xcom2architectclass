@@ -5,7 +5,6 @@ var name NAME_TRANSMAT_LINK;
 static function X2DataTemplate CreateTransmatLink()
 {
     local X2AbilityTemplate Template;
-	local X2AbilityCost_ActionPoints ActionPointCost;
 	local X2AbilityCooldown Cooldown;
 	local X2Condition_UnitProperty TargetPropertiesCondition;
 	local X2Condition_UnitType UnitTypeCondition;
@@ -23,11 +22,8 @@ static function X2DataTemplate CreateTransmatLink()
 	Template.bLimitTargetIcons = true;
 
 	// cost
-	ActionPointCost = new class'X2AbilityCost_ActionPoints';
-	ActionPointCost.iNumPoints = 1;
-	ActionPointCost.bConsumeAllPoints = true;
-	Template.AbilityCosts.AddItem(ActionPointCost);
-
+	Template.AbilityCosts.AddItem(default.FreeActionCost);
+	
 	// Cooldown
 	Cooldown = new class'X2AbilityCooldown';
 	Cooldown.iNumTurns = 5;
@@ -131,10 +127,6 @@ simulated function TransmatLink_BuildVisualization(XComGameState VisualizeGameSt
     SourceUnit = XComGameState_Unit(VisualizeGameState.GetGameStateForObjectID(Context.InputContext.SourceObject.ObjectID));
     TargetUnit = XComGameState_Unit(VisualizeGameState.GetGameStateForObjectID(Context.InputContext.PrimaryTarget.ObjectID));
 
-    `LOG("JSRC: build visualization");
-    class'Jammerware_DebugUtils'.static.LogUnitLocation(SourceUnit);
-    class'Jammerware_DebugUtils'.static.LogUnitLocation(TargetUnit);
-
 	//****************************************************************************************
 	//Configure the visualization track for the source
 	//****************************************************************************************
@@ -157,7 +149,7 @@ simulated function TransmatLink_BuildVisualization(XComGameState VisualizeGameSt
     class'X2Action_ShowSpawnedUnit'.static.AddToVisualizationTree(TargetTrack, Context);
 	class'X2Action_AbilityPerkEnd'.static.AddToVisualizationTree(SourceTrack, Context, false, SourceTrack.LastActionAdded);
 
-	// sync the visualizers - i think this makes sure the units will appear in the right place on the board - not tested CREATE_X2ABILITY_TEMPLATE
+	// sync the visualizers - i think this makes sure the units will appear in the right place on the board
 	SourceUnit.SyncVisualizer();
 	TargetUnit.SyncVisualizer();
 }

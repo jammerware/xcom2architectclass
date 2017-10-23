@@ -18,6 +18,9 @@ static function array <X2DataTemplate> CreateTemplates()
 	Templates.AddItem(class'X2Ability_SpireShelter'.static.CreateSpireShelter());
 	Templates.AddItem(AddSpireQuicksilver());
 
+	// COLONEL!
+	Templates.AddItem(class'X2Ability_TransmatNetwork'.static.CreateSpireTransmatNetwork());
+
 	return Templates;
 }
 
@@ -55,7 +58,7 @@ static function X2AbilityTemplate CreateDecommission()
 	Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);
 	
 	// effects
-	Template.AddTargetEffect(new class'X2Effect_KillUnit');
+	Template.AddTargetEffect(new class'X2Effect_ReclaimSpire');
 
 	// game state and visualization
 	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
