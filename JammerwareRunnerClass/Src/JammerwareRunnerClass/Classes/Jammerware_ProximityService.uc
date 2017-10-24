@@ -15,6 +15,7 @@ function bool IsTileAdjacentToAlly(TTile Tile, ETeam Team, optional name Require
     foreach `XCOMHISTORY.IterateByClassType(class'XComGameState_Unit', IterateUnitState)
     {
         if (
+            !IterateUnitState.IsDead() &&
             IterateUnitState.GetTeam() == Team && 
             (RequiredAllyEffect == 'None' || EffectsService.IsUnitAffectedByEffect(IterateUnitState, RequiredAllyEffect)) &&
             (AllyCharacterGroup == 'None' || IterateUnitState.GetMyTemplate().CharacterGroupName == AllyCharacterGroup) &&

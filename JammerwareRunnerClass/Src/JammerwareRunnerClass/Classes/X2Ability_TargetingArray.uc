@@ -53,6 +53,13 @@ static function X2DataTemplate CreateTargetingArrayTriggered()
 	Trigger.ListenerData.EventFn = class'XComGameState_Ability'.static.AbilityTriggerEventListener_Self;
 	Template.AbilityTriggers.AddItem(Trigger);
 
+	Trigger = new class'X2AbilityTrigger_EventListener';
+	Trigger.ListenerData.EventID = 'UnitSpawned';
+	Trigger.ListenerData.Filter = eFilter_None;
+	Trigger.ListenerData.Deferral = ELD_OnStateSubmitted;
+	Trigger.ListenerData.EventFn = class'XComGameState_Ability'.static.AbilityTriggerEventListener_Self;
+	Template.AbilityTriggers.AddItem(Trigger);
+
 	// effects
 	TargetingArrayEffect = new class'X2Effect_TargetingArray';
 	TargetingArrayEffect.BuildPersistentEffect(1, true);
@@ -60,6 +67,8 @@ static function X2DataTemplate CreateTargetingArrayTriggered()
 	Template.AddTargetEffect(TargetingArrayEffect);
 
 	// game state and visualization
+	Template.bSkipFireAction = true;
+	Template.bSkipPerkActivationActionsSync = false;
 	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
 	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
 

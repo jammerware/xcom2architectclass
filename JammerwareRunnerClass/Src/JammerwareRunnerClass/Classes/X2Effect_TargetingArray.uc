@@ -7,6 +7,7 @@ function GetToHitModifiers(XComGameState_Effect EffectState, XComGameState_Unit 
 	AccuracyInfo.ModType = eHit_Success;
 	AccuracyInfo.Value = 20;
 	AccuracyInfo.Reason = FriendlyName;
+
 	ShotModifiers.AddItem(AccuracyInfo);
 }
 
@@ -20,30 +21,26 @@ function RegisterForEvents(XComGameState_Effect EffectGameState)
 	EffectObj = EffectGameState;
 	UnitState = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(EffectGameState.ApplyEffectParameters.SourceStateObjectRef.ObjectID));
 
-	EventMgr.RegisterForEvent
-	(
-		EffectObj, 
-		'UnitMoveFinished', 
-		OnUnitMoved, 
-		ELD_OnStateSubmitted, 
-		, 
-		UnitState,
-		,
-		EffectGameState
-	);
+	// the source of this effect is the soldier who has Targeting Array. if they move, check to remove it
+	EventMgr.RegisterForEvent(EffectObj, 'UnitMoveFinished', OnUnitMoved, ELD_OnStateSubmitted, , UnitState, , EffectObj);
+	// if any unit dies, check to make sure the soldier is still next to a spire
+	EventMgr.RegisterForEvent(EffectObj, 'UnitDied', OnUnitMoved, ELD_OnStateSubmitted, , , , EffectObj);
 }
 
 static function EventListenerReturn OnUnitMoved(Object EventData, Object EventSource, XComGameState GameState, Name EventID, Object CallbackData)
 {
-	local XComGameState_Unit UnitState;
 	local XComGameState_Effect EffectState;
+	local XComGameState_Unit UnitState;
 	local XComGameStateContext_EffectRemoved RemoveContext;
 	local XComGameState NewGameState;
 	local Jammerware_ProximityService ProximityService;
 
 	ProximityService = new class'Jammerware_ProximityService';
 	EffectState = XComGameState_Effect(CallbackData);
-	UnitState = XComGameState_Unit(EventData);
+	UnitState = XComGameState_Unit(GameState.GetGameStateForObjectID(EffectState.ApplyEffectParameters.TargetStateObjectRef.ObjectID));
+
+	`LOG("JSRC: targeting array callback. effect is" @ EffectState.name);
+	`LOG("JSRC: targeting array callback. unit is" @ UnitState.GetMyTemplateName());
 	
 	if (!EffectState.bRemoved && !ProximityService.IsUnitAdjacentToSpire(UnitState))
 	{

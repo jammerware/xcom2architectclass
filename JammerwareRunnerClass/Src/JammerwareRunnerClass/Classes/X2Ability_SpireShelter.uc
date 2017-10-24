@@ -26,6 +26,7 @@ static function X2AbilityTemplate CreateSpireShelter()
 
 	// conditions
 	Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
+	
 	EffectsCondition = new class'X2Condition_UnitEffects';
 	EffectsCondition.AddExcludeEffect(class'X2Effect_ShelterShield'.default.EffectName, 'AA_DuplicateEffectIgnored');
 	Template.AbilityTargetConditions.AddItem(EffectsCondition);

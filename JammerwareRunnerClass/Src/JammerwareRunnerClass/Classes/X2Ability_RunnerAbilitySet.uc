@@ -140,7 +140,6 @@ static function X2AbilityTemplate AddReclaim()
 static function X2AbilityTemplate AddHeadstone()
 {
 	local X2AbilityTemplate Template;
-	local X2AbilityCost_ActionPoints ActionPointCost;
 	local X2AbilityCooldown Cooldown;
 	local X2Condition_UnitProperty DeadEnemiesCondition;
 	local X2Effect_SpawnSpire SpawnSpireEffect;
