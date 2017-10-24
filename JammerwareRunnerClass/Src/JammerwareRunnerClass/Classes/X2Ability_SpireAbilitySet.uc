@@ -13,10 +13,13 @@ static function array <X2DataTemplate> CreateTemplates()
 	// SQUADDIE!
 	Templates.AddItem(CreateDecommission());
 
-	// CORPORAL!
-	Templates.AddItem(AddSpireLightningRod());
+	// SERGEANT!
 	Templates.AddItem(class'X2Ability_SpireShelter'.static.CreateSpireShelter());
 	Templates.AddItem(AddSpireQuicksilver());
+
+	// LIEUTENANT
+	Templates.AddItem(AddSpireLightningRod());
+	Templates.AddItem(class'X2Ability_KineticPulse'.static.CreateKineticPulse());
 
 	// COLONEL!
 	Templates.AddItem(class'X2Ability_TransmatNetwork'.static.CreateSpireTransmatNetwork());

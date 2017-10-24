@@ -42,7 +42,8 @@ static function X2AbilityTemplate CreateTransmat()
 	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_ShowIfAvailable;
 	Template.IconImage = default.ICON_TRANSMATNETWORK;
 	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.UNSPECIFIED_PRIORITY;
-	Template.bDisplayInUITooltip = false;
+	Template.bDontDisplayInAbilitySummary = true;
+	Template.AbilityIconColor = "e69831";
 
 	// cost
 	ActionPointCost = new class'X2AbilityCost_ActionPoints';

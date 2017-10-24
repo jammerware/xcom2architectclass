@@ -125,6 +125,20 @@ LocHelpText="Your <Ability:WeaponName/> shots gain an additional 20% accuracy wh
 LocFlyOverText="Targeting Array"
 LocPromotionPopupText="'If only it were small enough to fit on a gun...'\n\n<Bullet/> Passive"
 
+[Jammerware_JSRC_Ability_KineticRigging X2AbilityTemplate]
+LocFriendlyName="Kinetic Rigging"
+LocLongDescription="Your spires each gain a single charge of Kinetic Pulse, an ability that knocks back all enemies in the area of effect."
+LocHelpText="Your spires each gain a single charge of Kinetic Pulse, an ability that knocks back all enemies in the area of effect."
+LocFlyOverText="Kinetic Rigging"
+LocPromotionPopupText="'Advent may have dispensed with the use of nonlethal force, but we haven't. Well... at least we hold it until they're out of cover.'\n\n<Bullet/> 5-turn cooldown"
+
+[Jammerware_JSRC_Ability_KineticPulse X2AbilityTemplate]
+LocFriendlyName="Kinetic Pulse"
+LocLongDescription="The spire emits a blast of pure kinetic energy, knocking back all targets in the area of effect."
+LocHelpText="The spire emits a blast of pure kinetic energy, knocking back all targets in the area of effect."
+LocFlyOverText="Kinetic Pulse"
+LocPromotionPopupText="'Advent may have dispensed with the use of nonlethal force, but we haven't. Well... at least we hold it until they're out of cover.'\n\n<Bullet/> 5-turn cooldown"
+
 [Jammerware_JSRC_Ability_Unity X2AbilityTemplate]
 LocFriendlyName="Unity"
 LocLongDescription="You can use Create Spire on tiles adjacent to allies."

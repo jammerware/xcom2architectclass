@@ -3,6 +3,7 @@ class X2Ability_RunnerAbilitySet extends X2Ability
 
 // ability names
 var name NAME_HEADSTONE;
+var name NAME_KINETIC_RIGGING;
 var name NAME_LIGHTNINGROD;
 var name NAME_QUICKSILVER;
 var name NAME_RECLAIM;
@@ -22,23 +23,24 @@ static function array <X2DataTemplate> CreateTemplates()
 	Templates.AddItem(class'X2Ability_SpawnSpire'.static.CreateSpawnSpire());
 	
 	// CORPORAL!
+	Templates.AddItem(AddHeadstone());
+	Templates.AddItem(AddReclaim());
 	Templates.AddItem(AddLightningRod());
-	Templates.AddItem(AddShelter());
 
 	// SERGEANT!
-	Templates.AddItem(AddReclaim());
+	Templates.AddItem(AddShelter());
+	Templates.AddItem(AddQuicksilver());
 
 	// LIEUTENANT!
 	Templates.AddItem(class'X2Ability_TargetingArray'.static.CreateTargetingArray());
 	Templates.AddItem(class'X2Ability_TargetingArray'.static.CreateTargetingArrayTriggered());
-	Templates.AddItem(class'X2Ability_TransmatLink'.static.CreateTransmatLink());
+	Templates.AddItem(CreateKineticRigging());
 
 	// CAPTAIN!
-	Templates.AddItem(AddHeadstone());
-	Templates.AddItem(AddQuicksilver());
+	Templates.AddItem(CreateUnity());
+	Templates.AddItem(class'X2Ability_TransmatLink'.static.CreateTransmatLink());
 
 	// MAJOR!
-	Templates.AddItem(CreateUnity());
 
 	// COLONEL!
 	Templates.AddItem(CreateSoulOfTheArchitect());
@@ -259,6 +261,11 @@ static function Headstone_BuildVisualization(XComGameState VisualizeGameState)
 	class'X2Action_EnterCover'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
 }
 
+static function X2AbilityTemplate CreateKineticRigging()
+{
+	return PurePassive(default.NAME_KINETIC_RIGGING, "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_StunStrike");
+}
+
 static function X2AbilityTemplate CreateUnity()
 {
 	return PurePassive(default.NAME_UNITY, "img:///UILibrary_PerkIcons.UIPerk_aethershift");
@@ -279,6 +286,7 @@ static function X2AbilityTemplate CreateSoulOfTheArchitect()
 defaultproperties 
 {
 	NAME_HEADSTONE=Jammerware_JSRC_Ability_Headstone
+	NAME_KINETIC_RIGGING=Jammerware_JSRC_Ability_KineticRigging
 	NAME_LIGHTNINGROD=Jammerware_JSRC_Ability_LightningRod
 	NAME_QUICKSILVER=Jammerware_JSRC_Ability_Quicksilver
 	NAME_RECLAIM=Jammerware_JSRC_Ability_Reclaim

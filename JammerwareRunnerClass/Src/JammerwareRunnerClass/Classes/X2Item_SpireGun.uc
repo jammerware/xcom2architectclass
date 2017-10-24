@@ -44,6 +44,7 @@ static function X2DataTemplate CreateTemplate_SpireGun_Conventional()
 	Template.Tier = 0;
 	Template.StartingItem = true;
 	Template.InfiniteAmmo = true;
+	Template.iTypicalActionCost = 1;
 
 	Template.ExtraDamage = default.SPIREGUN_CONVENTIONAL_ABILITYDAMAGE;
 	Template.iSoundRange = default.SPIREGUN_ISOUNDRANGE;
@@ -66,6 +67,7 @@ static function X2DataTemplate CreateTemplate_SpireGun_Magnetic()
 	Template.GameArchetype = "WP_PsiAmp_MG.WP_PsiAmp_MG";
 	Template.Tier = 2;
 	Template.InfiniteAmmo = true;
+	Template.iTypicalActionCost = 1;
 
 	Template.iSoundRange = default.SPIREGUN_ISOUNDRANGE;
 	Template.iEnvironmentDamage = default.SPIREGUN_IENVIRONMENTDAMAGE;
@@ -92,6 +94,7 @@ static function X2DataTemplate CreateTemplate_SpireGun_Beam()
 	Template.GameArchetype = "WP_PsiAmp_BM.WP_PsiAmp_BM";
 	Template.Tier = 4;
 	Template.InfiniteAmmo = true;
+	Template.iTypicalActionCost = 1;
 
 	Template.iSoundRange = default.SPIREGUN_ISOUNDRANGE;
 	Template.iEnvironmentDamage = default.SPIREGUN_IENVIRONMENTDAMAGE;

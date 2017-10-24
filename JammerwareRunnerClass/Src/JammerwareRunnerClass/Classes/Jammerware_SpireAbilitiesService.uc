@@ -42,6 +42,15 @@ function ConfigureSpireAbilities(XComGameState_Unit SpireUnit, XComGameState_Uni
 		class'X2Ability_TransmatNetwork'.default.NAME_SPIRETRANSMATNETWORK,
 		NewGameState,
 	);
+	InitSpireAbilityFromRunnerAbility
+	(
+		SourceUnit,
+		SpireUnit,
+		class'X2Ability_RunnerAbilitySet'.default.NAME_KINETIC_RIGGING,
+		class'X2Ability_KineticPulse'.default.NAME_KINETICPULSE,
+		NewGameState,
+		SourceUnit.GetSecondaryWeapon().GetReference()
+	);
 
 	// if the spire has any active abilities, also give it decommission so they don't have to keep ending turn on it if they
 	// don't want to
