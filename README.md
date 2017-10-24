@@ -2,7 +2,7 @@
 A mod for XCOM 2: War of the Chosen that adds the Spire Runner class.
 
 ## Design
-The goal of the Spire Runner class is to encourage the player's spatial awareness of the battlefield and to create a unit with low offensive potential offset by powerful support abilities.
+The goal of the Spire Runner class is to encourage a spatially-driven play pattern and to create a unit with low offensive potential offset by powerful support abilities. It'd be nice if it were fun and balanced, too, but let's not get crazy.
 
 ### Allowed Weapons
 **Primary**: Assault Rifle
@@ -21,7 +21,7 @@ The goal of the Spire Runner class is to encourage the player's spatial awarenes
 | **SERGEANT** |  **Shelter** - *passive* - Allies who end their turn adjacent to a spire gain a small shield. Shelter doesn't stack. | **Quicksilver** - *3-turn cooldown, 1 charge per spire* - Your spires gain Quicksilver, an ability that grants an adjacent ally an additional action point for the turn. |
 | **LIEUTENANT** | **Targeting Array** - *passive* - While adjacent to a spire, your (primary weapon) shots gain additional accuracy. This ability is available in the Training Center. | *i dunno. maybe something else cross-classable?* |
 | **CAPTAIN** | **Unity** - *passive* - You can summon spires adjacent to any ally. |  |
-| **MAJOR** | **Kinetic Rigging** - *1 charge per spire* - Your spires each gain one charge of *Kinetic Blast*, an ability that knocks back enemies in a cone-shaped area of effect. | |
+| **MAJOR** | | |
 | **COLONEL** | **Transmat Network** - Your spires gain *Transmat Network Node*, a passive ability which grants any adjacent squadmate the ability to instantly relocate to any tile adjacent to a spire in the same network. 5-turn global cooldown. | *Soul of the Architect* - All effects that apply to spires also apply to you. You gain all abilities your spires have. |
 
 **Benched Abilities**
@@ -35,6 +35,10 @@ The goal of the Spire Runner class is to encourage the player's spatial awarenes
 *Call Lightning* - Your spires gain *Call Lightning*, an ability that deals heavy damage to enemies in a line between the source and a target spire.
 
 *Commence Run* - This turn, you gain extra mobility, and your detection radius is reduced by 30%. At the end of the turn, you return to the tile on which you began, and a spire appears on the one you ended. Insanely long cooldown.
+
+*Impetus Module* - When you start your turn adjacent to a spire, you gain *Impetus*. Impetus grants additional mobility for a turn, and enemy you pass while under its effect is knocked back and dealt minor damage.
+
+*Kinetic Rigging* - Your spires each gain one charge of *Kinetic Blast*, an ability that knocks back enemies in a cone-shaped area of effect.
 
 *Recall* - Teleport to a space adjacent to a spire. Long cooldown.
 
