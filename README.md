@@ -22,7 +22,7 @@ The goal of the Spire Runner class is to encourage a spatially-driven play patte
 | **LIEUTENANT** | **Targeting Array** - *passive* - While adjacent to a spire, your (primary weapon) shots gain additional accuracy. This ability is available in the Training Center. | *i dunno. maybe something else cross-classable?* |
 | **CAPTAIN** | **Unity** - *passive* - You can summon spires adjacent to any ally. |  |
 | **MAJOR** | | |
-| **COLONEL** | **Transmat Network** - Your spires gain *Transmat Network Node*, a passive ability which grants any adjacent squadmate the ability to instantly relocate to any tile adjacent to a spire in the same network. 5-turn global cooldown. | *Soul of the Architect* - All effects that apply to spires also apply to you. You gain all abilities your spires have. |
+| **COLONEL** | **Transmat Network** - *passive* - Your spires gain *Transmat Network Node*, a passive ability which grants any adjacent squadmate the ability to instantly relocate to any tile adjacent to a spire in the same network. The squad ability has a 5-turn global cooldown. | **Soul of the Architect** - *passive* - All effects that apply to spires also apply to you. You gain all abilities your spires have. |
 
 **Benched Abilities**
 
