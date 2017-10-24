@@ -158,10 +158,7 @@ static function X2AbilityTemplate AddHeadstone()
 	Template.bLimitTargetIcons = true;
 
 	// cost
-	ActionPointCost = new class'X2AbilityCost_ActionPoints';
-	ActionPointCost.iNumPoints = 1;
-	ActionPointCost.bConsumeAllPoints = false;
-	Template.AbilityCosts.AddItem(ActionPointCost);
+	Template.AbilityCosts.AddItem(default.FreeActionCost);
 
 	// Cooldown
 	Cooldown = new class'X2AbilityCooldown';
