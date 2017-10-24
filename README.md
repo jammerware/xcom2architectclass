@@ -17,12 +17,12 @@ The goal of the Spire Runner class is to encourage the player's spatial awarenes
 
 | Rank | Fight | Flight |
 | ---- | ----- | ------ |
-| **Corporal** |  *Shelter* - Allies who end their turn adjacent to a spire gain a small shield. Shelter doesn't stack. | *Quicksilver* - Your spires gain Quicksilver, an ability that grants an adjacent ally an additional action point for the turn. 5-turn cooldown. |
-| **Sergeant** |  | *Reclaim* - Destroy an adjacent spire. You gain one action point, and the cooldown of Create Spire is reset. |
-| **Lieutenant** | *Targeting Array* - While adjacent to a spire, your <primary weapon> shots gain additional accuracy. This ability is available in the Training Center. | *i dunno. maybe something else cross-classable?* |
-| **Captain** | *Headstone* - Summon a spire on top of the corpse of an enemy unit.  |  |
-| **Major** | | *Transmat Link* - Swap locations with a spire. 6-turn cooldown. |
-| **Colonel** | *Unity* - You can summon spires adjacent to any ally. | *Soul of the Architect* - All effects that apply to spires also apply to you. You gain all abilities your spires have. |
+| **CORPORAL** | **Headstone** - *free action, 2-turn cooldown* - Summon a spire on top of the corpse of an enemy unit.  | **Reclaim** - *free action, 3-turn cooldown* - Destroy an adjacent spire. You gain one action point, and the cooldown of Create Spire is reset. |
+| **SERGEANT** |  **Shelter** - *passive* - Allies who end their turn adjacent to a spire gain a small shield. Shelter doesn't stack. | **Quicksilver** - *3-turn cooldown, 1 charge per spire* - Your spires gain Quicksilver, an ability that grants an adjacent ally an additional action point for the turn. |
+| **LIEUTENANT** | **Targeting Array** - *passive* - While adjacent to a spire, your (primary weapon) shots gain additional accuracy. This ability is available in the Training Center. | *i dunno. maybe something else cross-classable?* |
+| **CAPTAIN** | **Unity** - *passive* - You can summon spires adjacent to any ally. |  |
+| **MAJOR** | **Kinetic Rigging** - *1 charge per spire* - Your spires each gain one charge of *Kinetic Blast*, an ability that knocks back enemies in a cone-shaped area of effect. | |
+| **COLONEL** | **Transmat Network** - Your spires gain *Transmat Network Node*, a passive ability which grants any adjacent squadmate the ability to instantly relocate to any tile adjacent to a spire in the same network. 5-turn global cooldown. | *Soul of the Architect* - All effects that apply to spires also apply to you. You gain all abilities your spires have. |
 
 **Benched Abilities**
 
