@@ -24,6 +24,9 @@ static function X2AbilityTemplate CreateSpireShelter()
 	// hit chance
 	Template.AbilityToHitCalc = default.DeadEye;
 
+	// concealment and tactical behavior
+	Template.ConcealmentRule = eConceal_Always;
+
 	// conditions
 	Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
 	
@@ -50,7 +53,7 @@ static function X2AbilityTemplate CreateSpireShelter()
 	// effects
 	ShieldEffect = new class'X2Effect_ShelterShield';
 	// TODO: enable config and weapon-based computation for shield strength and duration
-	ShieldEffect.BuildPersistentEffect(2, false, true, , eGameRule_PlayerTurnBegin);
+	ShieldEffect.BuildPersistentEffect(3, false, true, , eGameRule_PlayerTurnBegin);
 	ShieldEffect.SetDisplayInfo(ePerkBuff_Bonus, Template.LocFriendlyName, Template.GetMyLongDescription(), "img:///UILibrary_PerkIcons.UIPerk_adventshieldbearer_energyshield", true);
 	Template.AddTargetEffect(ShieldEffect);
 
@@ -58,6 +61,7 @@ static function X2AbilityTemplate CreateSpireShelter()
 	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
 	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
 	Template.bShowActivation = true;
+	Template.bSkipFireAction = true;
 
 	return Template;
 }

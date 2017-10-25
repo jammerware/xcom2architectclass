@@ -22,7 +22,7 @@ static function X2DataTemplate CreateSpawnSpire()
 	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_SQUADDIE_PRIORITY;
 
 	// costs
-	Template.AbilityCosts.AddItem(default.FreeActionCost);
+	Template.AbilityCosts.AddItem(default.WeaponActionTurnEnding);
 
 	// cooldown
 	Cooldown = new class'X2AbilityCooldown';
