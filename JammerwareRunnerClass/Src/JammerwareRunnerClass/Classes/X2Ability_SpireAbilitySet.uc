@@ -4,6 +4,7 @@ class X2Ability_SpireAbilitySet extends X2Ability
 var name NAME_DECOMMISSION;
 var name NAME_SPIRE_LIGHTNINGROD;
 var name NAME_SPIRE_QUICKSILVER;
+var name NAME_SPIRE_SHELTER;
 
 static function array <X2DataTemplate> CreateTemplates()
 {
@@ -14,7 +15,7 @@ static function array <X2DataTemplate> CreateTemplates()
 	Templates.AddItem(CreateDecommission());
 
 	// SERGEANT!
-	Templates.AddItem(class'X2Ability_SpireShelter'.static.CreateSpireShelter());
+	Templates.AddItem(CreateSpireShelter());
 	Templates.AddItem(AddSpireQuicksilver());
 
 	// LIEUTENANT
@@ -67,6 +68,75 @@ static function X2AbilityTemplate CreateDecommission()
 	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
 	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
 	Template.bShowActivation = true;
+
+	return Template;
+}
+
+static function X2AbilityTemplate CreateSpireShelter()
+{
+	local X2AbilityTemplate Template;
+	local X2AbilityMultiTarget_Radius MultiTargetStyle;
+	local X2AbilityTrigger_EventListener TurnEndTrigger;
+	local X2Effect_ShelterShield ShieldEffect;
+	local X2Condition_UnitEffects EffectsCondition;
+	local X2Condition_UnitProperty PropertyCondition;
+
+	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_SPIRE_SHELTER);
+
+	// hud behavior
+	Template.AbilitySourceName = 'eAbilitySource_Perk';
+	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_AlwaysShow;
+	Template.IconImage = "img:///UILibrary_PerkIcons.UIPerk_adventshieldbearer_energyshield";
+	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_CORPORAL_PRIORITY;
+
+	// targeting
+	Template.AbilityTargetStyle = default.SelfTarget;
+
+	MultiTargetStyle = new class'X2AbilityMultiTarget_Radius';
+	MultiTargetStyle.fTargetRadius = 2.375f;
+	MultiTargetStyle.bExcludeSelfAsTargetIfWithinRadius = true;
+	MultiTargetStyle.bIgnoreBlockingCover = true;
+	//MultiTargetStyle.bAddPrimaryTargetAsMultiTarget = true;
+	Template.AbilityMultiTargetStyle = MultiTargetStyle;
+
+	// hit chance
+	Template.AbilityToHitCalc = default.DeadEye;
+
+	// concealment and tactical behavior
+	Template.ConcealmentRule = eConceal_Always;
+
+	// conditions
+	Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
+	
+	EffectsCondition = new class'X2Condition_UnitEffects';
+	EffectsCondition.AddExcludeEffect(class'X2Effect_ShelterShield'.default.EffectName, 'AA_DuplicateEffectIgnored');
+	Template.AbilityMultiTargetConditions.AddItem(EffectsCondition);
+
+	PropertyCondition = new class'X2Condition_UnitProperty';
+	PropertyCondition.ExcludeFriendlyToSource = false;
+	PropertyCondition.ExcludeHostileToSource = true;
+	PropertyCondition.RequireSquadmates = true;
+	Template.AbilityMultiTargetConditions.AddItem(PropertyCondition);
+
+	// trigger
+	TurnEndTrigger = new class'X2AbilityTrigger_EventListener';
+	TurnEndTrigger.ListenerData.Deferral = ELD_OnStateSubmitted;
+	TurnEndTrigger.ListenerData.EventID = 'PlayerTurnEnded';
+	TurnEndTrigger.ListenerData.Filter = eFilter_None;
+	TurnEndTrigger.ListenerData.EventFn = class'XComGameState_Ability'.static.AbilityTriggerEventListener_Self;
+	Template.AbilityTriggers.AddItem(TurnEndTrigger);
+
+	// effects
+	ShieldEffect = new class'X2Effect_ShelterShield';
+	ShieldEffect.BuildPersistentEffect(5, false, true, , eGameRule_PlayerTurnBegin);
+	ShieldEffect.SetDisplayInfo(ePerkBuff_Bonus, Template.LocFriendlyName, Template.GetMyLongDescription(), "img:///UILibrary_PerkIcons.UIPerk_adventshieldbearer_energyshield", true);
+	Template.AddMultiTargetEffect(ShieldEffect);
+
+	// game state and visualization
+	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
+	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
+	Template.bShowActivation = true;
+	Template.bSkipFireAction = true;
 
 	return Template;
 }
@@ -222,4 +292,5 @@ defaultproperties
 	NAME_DECOMMISSION=Jammerware_JSRC_Ability_Decommission
 	NAME_SPIRE_LIGHTNINGROD=Jammerware_JSRC_Ability_SpireLightningRod
 	NAME_SPIRE_QUICKSILVER=Jammerware_JSRC_Ability_SpireQuicksilver
+	NAME_SPIRE_SHELTER=Jammerware_JSRC_Ability_SpireShelter
 }

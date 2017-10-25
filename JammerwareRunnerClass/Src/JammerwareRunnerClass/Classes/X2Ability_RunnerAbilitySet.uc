@@ -277,7 +277,7 @@ static function X2AbilityTemplate CreateSoulOfTheArchitect()
 
 	Template = PurePassive(default.NAME_SOUL_OF_THE_ARCHITECT, "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_Pillar");
 	Template.AdditionalAbilities.AddItem(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_LIGHTNINGROD);
-	Template.AdditionalAbilities.AddItem(class'X2Ability_SpireShelter'.default.NAME_SPIRE_SHELTER);
+	Template.AdditionalAbilities.AddItem(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_SHELTER);
 	Template.AdditionalAbilities.AddItem(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_QUICKSILVER);
 
 	return Template;

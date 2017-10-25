@@ -12,7 +12,7 @@ function ConfigureSpireAbilities(XComGameState_Unit SpireUnit, XComGameState_Uni
 		SourceUnit, 
 		SpireUnit, 
 		class'X2Ability_RunnerAbilitySet'.default.NAME_SHELTER, 
-		class'X2Ability_SpireShelter'.default.NAME_SPIRE_SHELTER,
+		class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_SHELTER,
 		NewGameState,
 		SourceUnit.GetSecondaryWeapon().GetReference()
 	);
