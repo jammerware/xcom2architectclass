@@ -54,7 +54,7 @@ static function X2DataTemplate CreateKineticPulse()
 	Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);
 	
 	// effects
-	KnockbackEffect = new class'X2Effect_Knockback';
+	KnockbackEffect = new class'X2Effect_Impetus';
 	KnockbackEffect.KnockbackDistance = 8;
 	KnockbackEffect.OnlyOnDeath = false; 
 	KnockbackEffect.bKnockbackDestroysNonFragile = true;

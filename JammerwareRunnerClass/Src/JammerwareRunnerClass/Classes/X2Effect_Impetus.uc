@@ -1,5 +1,12 @@
 class X2Effect_Impetus extends X2Effect_Knockback;
 
+private function bool CanBeDestroyed(XComInteractiveLevelActor InteractiveActor, float DamageAmount)
+{
+	//make sure the knockback damage can destroy this actor.
+	//check the number of interaction points to prevent larger objects from being destroyed.
+	return InteractiveActor != none && DamageAmount >= InteractiveActor.Health && InteractiveActor.InteractionPoints.Length <= 8;
+}
+
 private function int GetKnockbackDistance(XComGameStateContext_Ability AbilityContext, XComGameState_BaseObject kNewTargetState)
 {
 	local int UpdatedKnockbackDistance_Meters, ReasonIndex;
@@ -78,6 +85,7 @@ simulated function ApplyEffectToWorld(const out EffectAppliedData ApplyEffectPar
 				{
 					if (AbilityContext.ResultContext.MultiTargetEffectResults[MultiTargetIndex].ApplyResults[EffectIndex] == 'AA_Success')
 					{
+						`LOG("JSRC: found a multitarget");
 						Targets.AddItem(AbilityContext.InputContext.MultiTargets[MultiTargetIndex]);
 						break;
 					}
@@ -107,6 +115,7 @@ simulated function ApplyEffectToWorld(const out EffectAppliedData ApplyEffectPar
 			TargetUnit = XComGameState_Unit(kNewTargetState);
 			if(TargetUnit != none) //Only units can be knocked back
 			{
+				`LOG("target unit isn't none");
 				TilesEntered.Length = 0;
 				GetTilesEnteredArray(AbilityContext, kNewTargetState, TilesEntered, AttackDirection, KnockbackDamage, NewGameState);
 
@@ -174,7 +183,6 @@ private function GetTilesEnteredArray(XComGameStateContext_Ability AbilityContex
 	local Actor FloorTileActor;
 
 	local X2AbilityTemplate AbilityTemplate;
-	local bool bCursorTargetFound;
 	local X2AbilityToHitCalc_StandardAim ToHitCalc;
 
 	local int UpdatedKnockbackDistance_Meters;
@@ -200,33 +208,16 @@ private function GetTilesEnteredArray(XComGameStateContext_Ability AbilityContex
 		}
 		else
 		{
-			if (AbilityTemplate != none && AbilityTemplate.AbilityTargetStyle.IsA('X2AbilityTarget_Cursor'))
-			{
-				//attack source is at cursor location
-				`assert( AbilityContext.InputContext.TargetLocations.Length > 0 );
-				SourceLocation = AbilityContext.InputContext.TargetLocations[0];
-
-				TempTile = WorldData.GetTileCoordinatesFromPosition(SourceLocation);
-				SourceLocation = WorldData.GetPositionFromTileCoordinates(TempTile);
-
-				//Need to produce a non-zero vector
-				bCursorTargetFound = (SourceLocation.X != TargetLocation.X || SourceLocation.Y != TargetLocation.Y);
-			}
-
-			if (!bCursorTargetFound)
-			{
-				//attack source is from a Unit
-				SourceUnit = XComGameState_Unit(NewGameState.GetGameStateForObjectID(AbilityContext.InputContext.SourceObject.ObjectID));
-				SourceUnit.GetKeystoneVisibilityLocation(TempTile);
-				SourceLocation = WorldData.GetPositionFromTileCoordinates(TempTile);
-			}
+			//attack source is from a Unit
+			SourceUnit = XComGameState_Unit(NewGameState.GetGameStateForObjectID(AbilityContext.InputContext.SourceObject.ObjectID));
+			SourceUnit.GetKeystoneVisibilityLocation(TempTile);
+			SourceLocation = WorldData.GetPositionFromTileCoordinates(TempTile);
 
 			OutAttackDirection = Normal(TargetLocation - SourceLocation);
 			OutAttackDirection.Z = 0.0f;
 			StartLocation = TargetLocation;
 
 			UpdatedKnockbackDistance_Meters = GetKnockbackDistance(AbilityContext, kNewTargetState);
-
 			KnockbackToLocation = StartLocation + (OutAttackDirection * float(UpdatedKnockbackDistance_Meters) * 64.0f); //Convert knockback distance to meters
 
 			TargetVisualizer = XGUnit(History.GetVisualizer(TargetUnit.ObjectID));
@@ -299,28 +290,10 @@ private function GetTilesEnteredArray(XComGameStateContext_Ability AbilityContex
 	}
 }
 
-private function bool CanBeDestroyed(XComInteractiveLevelActor InteractiveActor, float DamageAmount)
-{
-	//make sure the knockback damage can destroy this actor.
-	//check the number of interaction points to prevent larger objects from being destroyed.
-	return InteractiveActor != none && DamageAmount >= InteractiveActor.Health && InteractiveActor.InteractionPoints.Length <= 8;
-}
-
 defaultproperties
 {
-	Begin Object Class=X2Condition_UnitProperty Name=UnitPropertyCondition
-		ExcludeTurret = true
-		ExcludeDead = false
-		FailOnNonUnits = true
-	End Object
-
-	TargetConditions.Add(UnitPropertyCondition)
-
 	DamageTypes.Add("KnockbackDamage");
-
 	OverrideRagdollFinishTimerSec=-1
-
 	OnlyOnDeath=true
-
 	ApplyChanceFn=WasTargetPreviouslyDead
 }
