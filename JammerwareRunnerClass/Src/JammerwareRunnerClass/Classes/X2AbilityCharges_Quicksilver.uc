@@ -18,7 +18,6 @@ function int GetInitialCharges(XComGameState_Ability Ability, XComGameState_Unit
 	{
 		WeaponTemplate = X2Template_SpireGun(WeaponState.GetMyTemplate());
         Charges += WeaponTemplate.QuicksilverChargesBonus;
-		`LOG("JSRC: weapontemplate charges are" @ WeaponTemplate.QuicksilverChargesBonus);
 	}
 	
 	return Charges; 

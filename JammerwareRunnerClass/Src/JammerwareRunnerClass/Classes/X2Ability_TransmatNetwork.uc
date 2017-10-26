@@ -31,7 +31,7 @@ static function X2AbilityTemplate CreateTransmat()
 	local X2AbilityTemplate Template;
 	local X2AbilityCost_ActionPoints ActionPointCost;
 	local X2AbilityCooldown_Global Cooldown;
-	local X2Condition_SpireAdjacency SpireAdjacencyCondition;
+	local X2Condition_AllyAdjacency SpireAdjacencyCondition;
 
 	// general properties
 	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_TRANSMAT);
@@ -59,8 +59,9 @@ static function X2AbilityTemplate CreateTransmat()
 	// conditions
     Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
 
-	SpireAdjacencyCondition = new class'X2Condition_SpireAdjacency';
-	SpireAdjacencyCondition.RequiredSpireEffect = default.NAME_SPIRETRANSMATNETWORK;
+	SpireAdjacencyCondition = new class'X2Condition_AllyAdjacency';
+	SpireAdjacencyCondition.RequireAllyCharacterGroup = class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE;
+	SpireAdjacencyCondition.RequireAllyEffect = default.NAME_SPIRETRANSMATNETWORK;
 	Template.AbilityShooterConditions.AddItem(SpireAdjacencyCondition);
 
 	// targeting style (how targets are determined by game rules)

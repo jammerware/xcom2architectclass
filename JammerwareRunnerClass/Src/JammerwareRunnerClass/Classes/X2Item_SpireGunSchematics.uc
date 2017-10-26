@@ -78,11 +78,11 @@ static function X2DataTemplate CreateSpireGunSchematic_Beam()
 	Template.Cost.ResourceCosts.AddItem(Resources);
 
 	Resources.ItemTemplateName = 'AlienAlloy';
-	Resources.Quantity = 10;
+	Resources.Quantity = 8;
 	Template.Cost.ResourceCosts.AddItem(Resources);
 
 	Resources.ItemTemplateName = 'EleriumDust';
-	Resources.Quantity = 10;
+	Resources.Quantity = 5;
 	Template.Cost.ResourceCosts.AddItem(Resources);
 
 	return Template;

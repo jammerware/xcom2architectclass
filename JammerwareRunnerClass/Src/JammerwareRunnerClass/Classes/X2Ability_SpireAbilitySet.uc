@@ -67,7 +67,8 @@ static function X2AbilityTemplate CreateDecommission()
 	// game state and visualization
 	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
 	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
-	Template.bShowActivation = true;
+	Template.bShowActivation = false;
+	Template.bSkipFireAction = true;
 
 	return Template;
 }
@@ -78,7 +79,6 @@ static function X2AbilityTemplate CreateSpireShelter()
 	local X2AbilityMultiTarget_Radius MultiTargetStyle;
 	local X2AbilityTrigger_EventListener TurnEndTrigger;
 	local X2Effect_ShelterShield ShieldEffect;
-	local X2Condition_UnitEffects EffectsCondition;
 	local X2Condition_UnitProperty PropertyCondition;
 
 	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_SPIRE_SHELTER);
@@ -96,7 +96,6 @@ static function X2AbilityTemplate CreateSpireShelter()
 	MultiTargetStyle.fTargetRadius = 2.375f;
 	MultiTargetStyle.bExcludeSelfAsTargetIfWithinRadius = true;
 	MultiTargetStyle.bIgnoreBlockingCover = true;
-	//MultiTargetStyle.bAddPrimaryTargetAsMultiTarget = true;
 	Template.AbilityMultiTargetStyle = MultiTargetStyle;
 
 	// hit chance
@@ -108,10 +107,10 @@ static function X2AbilityTemplate CreateSpireShelter()
 	// conditions
 	Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
 	
-	EffectsCondition = new class'X2Condition_UnitEffects';
-	EffectsCondition.AddExcludeEffect(class'X2Effect_ShelterShield'.default.EffectName, 'AA_DuplicateEffectIgnored');
-	Template.AbilityMultiTargetConditions.AddItem(EffectsCondition);
-
+	// the ability can only go off if there's an adjacent ally
+	Template.AbilityShooterConditions.AddItem(new class'X2Condition_AllyAdjacency');
+	
+	// multitarget valid targets are friendly squadmates
 	PropertyCondition = new class'X2Condition_UnitProperty';
 	PropertyCondition.ExcludeFriendlyToSource = false;
 	PropertyCondition.ExcludeHostileToSource = true;
@@ -276,6 +275,7 @@ static function X2AbilityTemplate AddSpireQuicksilver()
 
 	// visualization and gamestate
 	Template.bShowActivation = true;
+	Template.bSkipFireAction = true;
 	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
 	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
 

@@ -39,9 +39,6 @@ static function EventListenerReturn OnUnitMoved(Object EventData, Object EventSo
 	EffectState = XComGameState_Effect(CallbackData);
 	UnitState = XComGameState_Unit(GameState.GetGameStateForObjectID(EffectState.ApplyEffectParameters.TargetStateObjectRef.ObjectID));
 
-	`LOG("JSRC: targeting array callback. effect is" @ EffectState.name);
-	`LOG("JSRC: targeting array callback. unit is" @ UnitState.GetMyTemplateName());
-	
 	if (!EffectState.bRemoved && !ProximityService.IsUnitAdjacentToSpire(UnitState))
 	{
 		RemoveContext = class'XComGameStateContext_EffectRemoved'.static.CreateEffectRemovedContext(EffectState);
@@ -55,5 +52,6 @@ static function EventListenerReturn OnUnitMoved(Object EventData, Object EventSo
 
 defaultproperties
 {
+	DuplicateResponse=eDupe_Ignore
     EffectName=Jammerware_JSRC_Effect_TargetingArray
 }

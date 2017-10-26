@@ -22,6 +22,7 @@ static function X2DataTemplate CreateTargetingArrayTriggered()
 {
     local X2AbilityTemplate Template;
 	local X2Condition_UnitEffects EffectsCondition;
+	local X2Condition_AllyAdjacency AllyAdjacencyCondition;
 	local X2AbilityTrigger_EventListener Trigger;
 	local X2Effect_TargetingArray TargetingArrayEffect;
 
@@ -39,7 +40,9 @@ static function X2DataTemplate CreateTargetingArrayTriggered()
 	Template.AbilityToHitCalc = default.DeadEye;
 
 	// conditions
-	Template.AbilityTargetConditions.AddItem(new class'X2Condition_SpireAdjacency');
+	AllyAdjacencyCondition = new class'X2Condition_AllyAdjacency';
+	AllyAdjacencyCondition.RequireAllyCharacterGroup = class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE;
+	Template.AbilityTargetConditions.AddItem(AllyAdjacencyCondition);
 	
 	EffectsCondition = new class'X2Condition_UnitEffects';
 	EffectsCondition.AddExcludeEffect(class'X2Effect_TargetingArray'.default.EffectName, 'AA_DuplicateEffectIgnored');
@@ -69,6 +72,7 @@ static function X2DataTemplate CreateTargetingArrayTriggered()
 	// game state and visualization
 	Template.bSkipFireAction = true;
 	Template.bSkipPerkActivationActionsSync = false;
+	Template.bSkipPerkActivationActions = false;
 	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
 	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
 

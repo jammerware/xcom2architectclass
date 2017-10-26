@@ -5,6 +5,7 @@ var name NAME_TRANSMAT_LINK;
 static function X2DataTemplate CreateTransmatLink()
 {
     local X2AbilityTemplate Template;
+	local X2AbilityCost_ActionPoints APCost;
 	local X2AbilityCooldown Cooldown;
 	local X2Condition_UnitProperty TargetPropertiesCondition;
 	local X2Condition_UnitType UnitTypeCondition;
@@ -22,7 +23,9 @@ static function X2DataTemplate CreateTransmatLink()
 	Template.bLimitTargetIcons = true;
 
 	// cost
-	Template.AbilityCosts.AddItem(default.FreeActionCost);
+	APCost = new class'X2AbilityCost_ActionPoints';
+	APCost.iNumPoints = 1;
+	Template.AbilityCosts.AddItem(APCost);
 	
 	// Cooldown
 	Cooldown = new class'X2AbilityCooldown';

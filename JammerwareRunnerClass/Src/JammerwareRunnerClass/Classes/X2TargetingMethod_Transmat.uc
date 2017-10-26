@@ -25,7 +25,7 @@ function name ValidateTargetLocations(const array<Vector> TargetLocations)
 		ProximityService = new class'Jammerware_ProximityService';
 		World.GetFloorTileForPosition(TargetLocations[0], TargetTile);
 
-		if (!ProximityService.IsTileAdjacentToAlly(TargetTile, self.ShooterState.GetTeam(), class'X2Ability_TransmatNetwork'.default.NAME_SPIRETRANSMATNETWORK, class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE))
+		if (!ProximityService.IsTileAdjacentToAlly(TargetTile, self.ShooterState.GetTeam(), class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE, class'X2Ability_TransmatNetwork'.default.NAME_SPIRETRANSMATNETWORK))
 		{
 			AbilityAvailability = 'AA_NotInRange';
 		}
