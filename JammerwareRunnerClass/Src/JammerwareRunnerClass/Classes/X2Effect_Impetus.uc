@@ -176,7 +176,7 @@ private function GetTilesEnteredArray(XComGameStateContext_Ability AbilityContex
 	local XComUnitPawn TargetUnitPawn;
 	local Vector Extents;
 	local XComGameStateHistory History;
-	local float IncrementalStepSize;
+	local float StepSize;
 
 	local ActorTraceHitInfo TraceHitInfo;
 	local array<ActorTraceHitInfo> Hits;
@@ -192,7 +192,7 @@ private function GetTilesEnteredArray(XComGameStateContext_Ability AbilityContex
 	History = `XCOMHISTORY;
 	if(AbilityContext != none)
 	{
-		IncrementalStepSize = 8.0;
+		StepSize = 8.0;
 		AbilityTemplate = class'XComGameState_Ability'.static.GetMyTemplateManager().FindAbilityTemplate(AbilityContext.InputContext.AbilityTemplateName);
 
 		TargetUnit = XComGameState_Unit(kNewTargetState);
@@ -280,7 +280,7 @@ private function GetTilesEnteredArray(XComGameStateContext_Ability AbilityContex
 					LastTempTile = TempTile;
 				}
 
-				StepDistance += IncrementalStepSize;
+				StepDistance += StepSize;
 			}
 
 			//Move the target unit to the knockback location			
