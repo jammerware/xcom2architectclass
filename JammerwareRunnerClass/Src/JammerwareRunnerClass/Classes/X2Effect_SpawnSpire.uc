@@ -54,6 +54,7 @@ function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, Stat
 
 	SpireAbilitiesService = new class'Jammerware_SpireAbilitiesService';
 	SpireRegistrationService = new class'Jammerware_SpireRegistrationService';
+
 	SourceUnitGameState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(ApplyEffectParameters.SourceStateObjectRef.ObjectID));
 	SpireUnitGameState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(NewUnitRef.ObjectID));
 	TargetUnitGameState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(ApplyEffectParameters.TargetStateObjectRef.ObjectID));
@@ -76,6 +77,35 @@ function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, Stat
 	// set the cover state of the spire
 	SpireUnitGameState.bGeneratesCover = true;
 	SpireUnitGameState.CoverForceFlag = CoverForce_High;
+
+	// if the source unit has FieldReloadModule, allied units adjacent to the spire should be reloaded
+	// TODO: is this the best way to do this? ideally it'd be its own effect maybe, right?
+	PerformFieldReload(SourceUnitGameState, SpireUnitGameState, NewGameState);
+}
+
+private function PerformFieldReload(XComGameState_Unit Shooter, XComGameState_Unit Spire, XComGameState NewGameState)
+{
+	local Jammerware_GameStateEffectsService EffectsService;
+	local Jammerware_ProximityService ProximityService;
+
+	local array<XComGameState_Unit> AdjacentAllies;
+	local XComGameState_Unit IterAlly;
+	local XComGameState_Item AllyPrimaryWeapon, NewWeaponState;
+
+	EffectsService = new class'Jammerware_GameStateEffectsService';
+
+	if (EffectsService.IsUnitAffectedByEffect(Shooter, class'X2Ability_RunnerAbilitySet'.default.NAME_FIELD_RELOAD_MODULE))
+	{
+		ProximityService = new class'Jammerware_ProximityService';
+		AdjacentAllies = ProximityService.GetAdjacentUnits(Spire, true);
+
+		foreach AdjacentAllies(IterAlly)
+		{
+			AllyPrimaryWeapon = IterAlly.GetPrimaryWeapon();
+			NewWeaponState = XComGameState_Item(NewGameState.ModifyStateObject(class'XComGameState_Item', AllyPrimaryWeapon.ObjectID));
+    		NewWeaponState.Ammo = NewWeaponState.GetClipSize();
+		}
+	}
 }
 
 defaultproperties

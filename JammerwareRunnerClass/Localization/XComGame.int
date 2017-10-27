@@ -90,6 +90,13 @@ LocHelpText="Grant a bonus action immediately to an adjacent squadmate."
 LocFlyOverText="Quicksilver"
 LocPromotionPopupText="LIGHTNING!"
 
+[Jammerware_JSRC_Ability_FieldReloadModule X2AbilityTemplate]
+LocFriendlyName="Field Reload Module"
+LocLongDescription="When you create a spire, it reloads the weapons of any allies adjacent to it."
+LocHelpText="When you create a spire, it reloads the weapons of any allies adjacent to it."
+LocFlyOverText="Field Reload Module"
+LocPromotionPopupText="'No one cares whether it's called a mag or a clip when there's 600 pounds of Muton bearing down on them.'\n\nField Reload Module guarantees utility of your spires on the turn they're placed. It's great for a teammate with a bolt caster.\n\n<Bullet/> Passive\n<Bullet/> Works for any spire you create, including ones created with Headstone."
+
 [Jammerware_JSRC_Ability_TransmatLink X2AbilityTemplate]
 LocFriendlyName="Transmat Link"
 LocLongDescription="Exchange locations with one of your spires."

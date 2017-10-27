@@ -17,11 +17,11 @@ The goal of the Spire Runner class is to encourage a spatially-driven play patte
 
 | Rank | Fight | Flight |
 | ---- | ----- | ------ |
-| **CORPORAL** | **Headstone** - *free action, 2-turn cooldown* - Summon a spire on top of the corpse of an enemy unit.  | **Reclaim** - *free action, 3-turn cooldown* - Destroy an adjacent spire. You gain one action point, and the cooldown of Create Spire is reset. |
-| **SERGEANT** |  **Shelter** - *passive* - Allies who end their turn adjacent to a spire gain a small shield. Shelter doesn't stack. | **Quicksilver** - *3-turn cooldown, 1 charge per spire* - Your spires gain Quicksilver, an ability that grants an adjacent ally an additional action point for the turn. |
-| **LIEUTENANT** | **Targeting Array** - *passive* - While adjacent to a spire, your (primary weapon) shots gain additional accuracy. This ability is available in the Training Center. | *i dunno. maybe something else cross-classable?* |
-| **CAPTAIN** | **Unity** - *passive* - You can summon spires adjacent to any ally. |  |
-| **MAJOR** | | |
+| **CORPORAL** | **Field Reload Module** - When you create a spire, it reloads the weapons of any allies adjacent to it. | **Shelter** - *passive* - Allies who end their turn adjacent to a spire gain a small shield. Shelter doesn't stack. |
+| **SERGEANT** | **Headstone** - *free action, 2-turn cooldown* - Summon a spire on top of the corpse of an enemy unit. | **Reclaim** - *free action, 3-turn cooldown* - Destroy an adjacent spire. You gain one action point, and the cooldown of Create Spire is reset.  |
+| **LIEUTENANT** | **Targeting Array** - *passive* - While adjacent to a spire, your (primary weapon) shots gain additional accuracy. This ability is available in the Training Center. | **Kinetic Rigging** - Your spires each gain one charge of *Kinetic Blast*, an ability that knocks back enemies in a cone-shaped area of effect. |
+| **CAPTAIN** | **Unity** - *passive* - You can summon spires adjacent to any ally. | **Quicksilver** - *3-turn global cooldown, 1 charge per spire* - Your spires gain Quicksilver, an ability that grants an adjacent ally an additional action point for the turn. |
+| **MAJOR** | *pending* | **Transmat Link** - *free action, 7-turn cooldown* - Exchange locations with one of your spires. |
 | **COLONEL** | **Transmat Network** - *passive* - Your spires gain *Transmat Network Node*, a passive ability which grants any adjacent squadmate the ability to instantly relocate to any tile adjacent to a spire in the same network. The squad ability has a 5-turn global cooldown. | **Soul of the Architect** - *passive* - All effects that apply to spires also apply to you. You gain all abilities your spires have. |
 
 **Benched Abilities**
@@ -38,13 +38,13 @@ The goal of the Spire Runner class is to encourage a spatially-driven play patte
 
 *Impetus Module* - When you start your turn adjacent to a spire, you gain *Impetus*. Impetus grants additional mobility for a turn, and enemy you pass while under its effect is knocked back and dealt minor damage.
 
-*Kinetic Rigging* - Your spires each gain one charge of *Kinetic Blast*, an ability that knocks back enemies in a cone-shaped area of effect.
-
 *Recall* - Teleport to a space adjacent to a spire. Long cooldown.
 
 *Zap* - Your spires gain *Zap*, an ability that deals a small amount of damage to a target visible to the squad. (some kind of arc-soul like trait?)
 
+*Speedyrun Knockaround Shootything* - Your spires gain *Speedyrun Knockaround Shootything*, an ability that spawns a hologram of you. The hologram lasts for one turn, and any enemy it passes while moving is knocked back. Medium global cooldown.
+
 ## Acknowledgments
 - J.T.S.
-- Robojumper™, BountyGiver, and all of the members of the XCOM 2 Modding Discord for their patience and help.
+- Robojumper™, bountygiver, Aleosiss, shiremct and all of the members of the XCOM 2 Modding Discord for their patience and help.
 - Lucubration for their awesome Infantry class mod that taught me a lot about how class mods work

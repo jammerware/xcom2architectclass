@@ -2,6 +2,7 @@ class X2Ability_RunnerAbilitySet extends X2Ability
 	config(JammerwareRunnerClass);
 
 // ability names
+var name NAME_FIELD_RELOAD_MODULE;
 var name NAME_HEADSTONE;
 var name NAME_KINETIC_RIGGING;
 var name NAME_LIGHTNINGROD;
@@ -25,7 +26,7 @@ static function array <X2DataTemplate> CreateTemplates()
 	// CORPORAL!
 	Templates.AddItem(AddHeadstone());
 	Templates.AddItem(AddReclaim());
-	Templates.AddItem(AddLightningRod());
+	Templates.AddItem(CreateFieldReloadModule());
 
 	// SERGEANT!
 	Templates.AddItem(AddShelter());
@@ -38,13 +39,16 @@ static function array <X2DataTemplate> CreateTemplates()
 
 	// CAPTAIN!
 	Templates.AddItem(CreateUnity());
-	Templates.AddItem(class'X2Ability_TransmatLink'.static.CreateTransmatLink());
 
 	// MAJOR!
 
 	// COLONEL!
 	Templates.AddItem(CreateSoulOfTheArchitect());
 	Templates.AddItem(class'X2Ability_TransmatNetwork'.static.CreateRunnerTransmatNetwork());
+
+	// HOPEFULLY WON'T EVEN BE A REAL THING!
+	Templates.AddItem(AddLightningRod());
+	Templates.AddItem(class'X2Ability_TransmatLink'.static.CreateTransmatLink());
 
 	return Templates;
 }
@@ -261,6 +265,11 @@ static function Headstone_BuildVisualization(XComGameState VisualizeGameState)
 	class'X2Action_EnterCover'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
 }
 
+static function X2AbilityTemplate CreateFieldReloadModule()
+{
+	return PurePassive(default.NAME_FIELD_RELOAD_MODULE, "img:///UILibrary_PerkIcons.UIPerk_reload");
+}
+
 static function X2AbilityTemplate CreateKineticRigging()
 {
 	return PurePassive(default.NAME_KINETIC_RIGGING, "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_StunStrike");
@@ -285,6 +294,7 @@ static function X2AbilityTemplate CreateSoulOfTheArchitect()
 
 defaultproperties 
 {
+	NAME_FIELD_RELOAD_MODULE=Jammerware_JSRC_Ability_FieldReloadModule
 	NAME_HEADSTONE=Jammerware_JSRC_Ability_Headstone
 	NAME_KINETIC_RIGGING=Jammerware_JSRC_Ability_KineticRigging
 	NAME_LIGHTNINGROD=Jammerware_JSRC_Ability_LightningRod
