@@ -153,6 +153,13 @@ LocHelpText="You can use Create Spire on tiles adjacent to allies."
 LocFlyOverText="Unity"
 LocPromotionPopupText="'You sense this will have a MASSive EFFECT on your tactical engagements.'\n\nYou can still place spires around you in the same range as you could without Unity - it just adds the tiles adjacent to your visible squadmates as additional options.\n\n<Bullet/> Passive"
 
+[Jammerware_JSRC_Ability_RelayedShot X2AbilityTemplate]
+LocFriendlyName="Relayed Shot"
+LocLongDescription="You fire your <Ability:WeaponName/> at one of your spires. It amplifies the kinetic energy of the shot, increasing its effective range and overpenetrating all targets in the area of effect."
+LocHelpText="You fire your <Ability:WeaponName/> at one of your spires. It amplifies the kinetic energy of the shot, increasing its effective range and overpenetrating all targets in the area of effect."
+LocFlyOverText="Relayed Shot"
+LocPromotionPopupText="'These new recruits don't even have to aim. I'm gettin' too old for this.'\nCentral Officer Bradford\n\nRelayed Shot deals the damage of your primary weapon to all targets in the area of effect. This makes spire runners with this ability especially good ammo carriers, since special ammunition effects are also applied.\n\n<Bullet/> 5-turn cooldown<Bullet/> Empties your clip"
+
 [Jammerware_JSRC_Ability_SoulOfTheArchitect X2AbilityTemplate]
 LocFriendlyName="Soul of the Architect"
 LocLongDescription="All effects that apply to your spires also apply to you. You gain all abilities that your spires have."

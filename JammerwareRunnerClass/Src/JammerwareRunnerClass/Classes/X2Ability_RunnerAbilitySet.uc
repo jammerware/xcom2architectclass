@@ -41,6 +41,7 @@ static function array <X2DataTemplate> CreateTemplates()
 	Templates.AddItem(CreateUnity());
 
 	// MAJOR!
+	Templates.AddItem(class'X2Ability_RelayedShot'.static.CreateRelayedShot());
 
 	// COLONEL!
 	Templates.AddItem(CreateSoulOfTheArchitect());
