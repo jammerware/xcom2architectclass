@@ -40,6 +40,9 @@ static function X2DataTemplate CreateRelayedShot()
 	Template.AbilityTargetStyle = default.SimpleSingleTarget;
     Template.AbilityMultiTargetStyle = new class'X2AbilityMultiTarget_Line';
 
+	Template.TargetingMethod = class'X2TargetingMethod_Line';
+	Template.SkipRenderOfTargetingTemplate = true;
+
 	// hit chance
 	Template.AbilityToHitCalc = default.DeadEye;
 
@@ -67,10 +70,85 @@ static function X2DataTemplate CreateRelayedShot()
 	// game state and visualization
 	Template.bUsesFiringCamera = true;
 	Template.CinescriptCameraType = "StandardGunFiring";
-	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
+	//Template.ModifyNewContextFn = RelayedShot_ModifyActivatedAbilityContext;
+	Template.BuildNewGameStateFn = RelayedShot_BuildGameState;
 	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
 
 	return Template;
+}
+
+static function RelayedShot_ModifyActivatedAbilityContext(XComGameStateContext Context)
+{
+	local XComWorldData World;
+	local XComGameStateContext_Ability AbilityContext;
+	local XComGameState_Ability AbilityState;
+	local StateObjectReference MultiTargetObjectRef;
+	local XComGameState_Unit MultiTargetUnit;
+	local int i;
+
+	AbilityContext = XComGameStateContext_Ability(Context);
+	AbilityContext.ResultContext.ProjectileHitLocations.Length = 0;
+	AbilityState = XComGameState_Ability(`XCOMHISTORY.GetGameStateForObjectID(AbilityContext.InputContext.AbilityRef.ObjectID, eReturnType_Reference));
+	World = `XWORLD;
+
+	`LOG("JSRC: input target location length" @ AbilityContext.InputContext.TargetLocations.Length);
+	`LOG("JSRC: input multitargets length" @ AbilityContext.InputContext.MultiTargets.Length);
+	`LOG("JSRC: input projectile events length" @ AbilityContext.InputContext.ProjectileEvents.Length);
+
+	for (i = 0; i < AbilityContext.InputContext.MultiTargets.Length; i++)
+	{
+		MultiTargetObjectRef = AbilityContext.InputContext.MultiTargets[i];
+		MultiTargetUnit = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(MultiTargetObjectRef.ObjectID));
+
+		if (MultiTargetUnit != None)
+		{
+			AbilityContext.ResultContext.ProjectileHitLocations.AddItem(World.GetPositionFromTileCoordinates(MultiTargetUnit.TileLocation));
+		}
+	}
+
+	`LOG("JSRC: projectile hit locations" @ AbilityContext.ResultContext.ProjectileHitLocations.Length);
+}
+
+static function XComGameState RelayedShot_BuildGameState(XComGameStateContext Context)
+{
+	local XComGameState GameState;
+	local XComGameStateContext_Ability AbilityContext;
+	local XComGameState_Ability AbilityState;
+	local XComGameState_Item SourceWeapon;
+
+	local X2AbilityTemplate AbilityTemplate;
+	local X2AmmoTemplate AmmoTemplate;
+
+	`LOG("JSRC: building gamestate");
+
+	// TypicalAbility_BuildGameState is so close, but it doesn't apply ammo effects to multitargets, even if bAllowAmmoEffects is true
+	GameState = TypicalAbility_BuildGameState(Context);
+
+	`LOG("JSRC: original gamestate built");
+
+	// need to get the relayed shot ability so we can look at the weapon for ammo
+	AbilityContext = XComGameStateContext_Ability(GameState.GetContext());
+	AbilityState = XComGameState_Ability(GameState.GetGameStateForObjectID(AbilityContext.InputContext.AbilityRef.ObjectID));	
+	AbilityTemplate = AbilityState.GetMyTemplate();
+	SourceWeapon = AbilityState.GetSourceWeapon();
+
+	`LOG("JSRC: ability template allows ammo" @ AbilityTemplate.bAllowAmmoEffects);
+	`LOG("JSRC: SourceWeapon has loaded ammo" @ SourceWeapon.HasLoadedAmmo());
+
+	if (AbilityTemplate.bAllowAmmoEffects && SourceWeapon != none && SourceWeapon.HasLoadedAmmo())
+	{
+		`LOG("JSRC: source weapon has ammo");
+		`LOG("JSRC: source weapon has ammo");
+		`LOG("JSRC: source weapon has ammo");
+
+		AmmoTemplate = X2AmmoTemplate(SourceWeapon.GetLoadedAmmoTemplate(AbilityState));
+		if (AmmoTemplate != none && AmmoTemplate.TargetEffects.Length > 0)
+		{
+			`LOG("JSRC: ammo template is ready to rock");
+		}
+	}
+
+	return GameState;
 }
 
 defaultproperties

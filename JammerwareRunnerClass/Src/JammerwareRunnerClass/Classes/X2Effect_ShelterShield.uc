@@ -3,7 +3,7 @@ class X2Effect_ShelterShield extends X2Effect_ModifyStats;
 simulated protected function OnEffectAdded(const out EffectAppliedData ApplyEffectParameters, XComGameState_BaseObject kNewTargetState, XComGameState NewGameState, XComGameState_Effect NewEffectState)
 {
 	local XComGameState_Item WeaponState;
-	local X2Template_SpireGun Template;
+	local X2WeaponTemplate_SpireGun Template;
 	local array<StatChange> StatChanges;
 	local StatChange ShieldChange;
 
@@ -11,7 +11,7 @@ simulated protected function OnEffectAdded(const out EffectAppliedData ApplyEffe
 
 	// read the amount of shield from the spiregun's template
 	WeaponState = XComGameState_Item(NewGameState.GetGameStateForObjectID(ApplyEffectParameters.ItemStateObjectRef.ObjectID));
-	Template = X2Template_SpireGun(WeaponState.GetMyTemplate());
+	Template = X2WeaponTemplate_SpireGun(WeaponState.GetMyTemplate());
 
 	ShieldChange.StatType = eStat_ShieldHP;
 	ShieldChange.StatAmount = Template.ShelterShieldBonus;

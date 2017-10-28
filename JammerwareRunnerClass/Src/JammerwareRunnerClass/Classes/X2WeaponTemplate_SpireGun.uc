@@ -1,5 +1,6 @@
-class X2Template_SpireGun extends X2WeaponTemplate;
+class X2WeaponTemplate_SpireGun extends X2WeaponTemplate;
 
+var int FieldReloadAmmoGranted;
 var int QuicksilverChargesBonus;
 var int ShelterShieldBonus;
 

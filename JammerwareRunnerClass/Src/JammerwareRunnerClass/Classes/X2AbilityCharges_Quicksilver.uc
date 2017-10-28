@@ -4,7 +4,7 @@ function int GetInitialCharges(XComGameState_Ability Ability, XComGameState_Unit
 { 
 	local int Charges;
     local XComGameState_Item WeaponState;
-    local X2Template_SpireGun WeaponTemplate;
+    local X2WeaponTemplate_SpireGun WeaponTemplate;
 
     Charges = super.GetInitialCharges(Ability, Unit);
 
@@ -16,7 +16,7 @@ function int GetInitialCharges(XComGameState_Ability Ability, XComGameState_Unit
 	WeaponState = Unit.GetSecondaryWeapon();
 	if (WeaponState != None)
 	{
-		WeaponTemplate = X2Template_SpireGun(WeaponState.GetMyTemplate());
+		WeaponTemplate = X2WeaponTemplate_SpireGun(WeaponState.GetMyTemplate());
         Charges += WeaponTemplate.QuicksilverChargesBonus;
 	}
 	

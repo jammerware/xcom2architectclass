@@ -90,7 +90,9 @@ private function PerformFieldReload(XComGameState_Unit Shooter, XComGameState_Un
 
 	local array<XComGameState_Unit> AdjacentAllies;
 	local XComGameState_Unit IterAlly;
-	local XComGameState_Item AllyPrimaryWeapon, NewWeaponState;
+	local XComGameState_Item AllyPrimaryWeapon, NewWeaponState, SpireGunState;
+	local X2WeaponTemplate_SpireGun SpireGunTemplate;
+	local int MaxLegalAmmo;
 
 	EffectsService = new class'Jammerware_GameStateEffectsService';
 
@@ -98,12 +100,22 @@ private function PerformFieldReload(XComGameState_Unit Shooter, XComGameState_Un
 	{
 		ProximityService = new class'Jammerware_ProximityService';
 		AdjacentAllies = ProximityService.GetAdjacentUnits(Spire, true);
+		SpireGunState = Shooter.GetSecondaryWeapon();
+		SpireGunTemplate = X2WeaponTemplate_SpireGun(SpireGunState.GetMyTemplate());
 
 		foreach AdjacentAllies(IterAlly)
 		{
 			AllyPrimaryWeapon = IterAlly.GetPrimaryWeapon();
 			NewWeaponState = XComGameState_Item(NewGameState.ModifyStateObject(class'XComGameState_Item', AllyPrimaryWeapon.ObjectID));
-    		NewWeaponState.Ammo = NewWeaponState.GetClipSize();
+			// TODO: maybe preserve "restore all ammo" via config too
+			MaxLegalAmmo = NewWeaponState.Ammo + SpireGunTemplate.FieldReloadAmmoGranted;
+
+			if (MaxLegalAmmo > NewWeaponState.GetClipSize()) 
+			{
+				MaxLegalAmmo = NewWeaponState.GetClipSize();
+			}
+
+    		NewWeaponState.Ammo = MaxLegalAmmo;
 		}
 	}
 }

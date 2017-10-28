@@ -6,18 +6,21 @@ var config int SPIREGUN_IENVIRONMENTDAMAGE;
 
 var name NAME_SPIREGUN_CONVENTIONAL;
 var config array <WeaponDamageValue> SPIREGUN_CONVENTIONAL_ABILITYDAMAGE;
+var config int SPIREGUN_CONVENTIONAL_FIELDRELOADAMMO;
 var config int SPIREGUN_CONVENTIONAL_QUICKSILVERCHARGESBONUS;
 var config int SPIREGUN_CONVENTIONAL_SHELTERSHIELDBONUS;
 var config int SPIREGUN_CONVENTIONAL_TARGETINGARRAYACCURACYBONUS;
 
 var name NAME_SPIREGUN_MAGNETIC;
 var config array<WeaponDamageValue> SPIREGUN_MAGNETIC_ABILITYDAMAGE;
+var config int SPIREGUN_MAGNETIC_FIELDRELOADAMMO;
 var config int SPIREGUN_MAGNETIC_QUICKSILVERCHARGESBONUS;
 var config int SPIREGUN_MAGNETIC_SHELTERSHIELDBONUS;
 var config int SPIREGUN_MAGNETIC_TARGETINGARRAYACCURACYBONUS;
 
 var name NAME_SPIREGUN_BEAM;
 var config array<WeaponDamageValue> SPIREGUN_BEAM_ABILITYDAMAGE;
+var config int SPIREGUN_BEAM_FIELDRELOADAMMO;
 var config int SPIREGUN_BEAM_QUICKSILVERCHARGESBONUS;
 var config int SPIREGUN_BEAM_SHELTERSHIELDBONUS;
 var config int SPIREGUN_BEAM_TARGETINGARRAYACCURACYBONUS;
@@ -35,9 +38,9 @@ static function array<X2DataTemplate> CreateTemplates()
 
 static function X2DataTemplate CreateTemplate_SpireGun_Conventional()
 {
-	local X2Template_SpireGun Template;
+	local X2WeaponTemplate_SpireGun Template;
 
-	`CREATE_X2TEMPLATE(class'X2Template_SpireGun', Template, default.NAME_SPIREGUN_CONVENTIONAL);
+	`CREATE_X2TEMPLATE(class'X2WeaponTemplate_SpireGun', Template, default.NAME_SPIREGUN_CONVENTIONAL);
 	Template.WeaponTech = 'conventional';
 	Template.strImage = "img:///UILibrary_Common.ConvSecondaryWeapons.PsiAmp";
 	Template.GameArchetype = "WP_PsiAmp_CV.WP_PsiAmp_CV";
@@ -51,6 +54,7 @@ static function X2DataTemplate CreateTemplate_SpireGun_Conventional()
 	Template.iEnvironmentDamage = default.SPIREGUN_IENVIRONMENTDAMAGE;
 
 	// bonuses for this tier of spire gun
+	Template.FieldReloadAmmoGranted = default.SPIREGUN_CONVENTIONAL_FIELDRELOADAMMO;
 	Template.QuicksilverChargesBonus = default.SPIREGUN_CONVENTIONAL_QUICKSILVERCHARGESBONUS;
 	Template.ShelterShieldBonus = default.SPIREGUN_CONVENTIONAL_SHELTERSHIELDBONUS;
 	
@@ -59,9 +63,9 @@ static function X2DataTemplate CreateTemplate_SpireGun_Conventional()
 
 static function X2DataTemplate CreateTemplate_SpireGun_Magnetic()
 {
-	local X2Template_SpireGun Template;
+	local X2WeaponTemplate_SpireGun Template;
 
-	`CREATE_X2TEMPLATE(class'X2Template_SpireGun', Template, default.NAME_SPIREGUN_MAGNETIC);
+	`CREATE_X2TEMPLATE(class'X2WeaponTemplate_SpireGun', Template, default.NAME_SPIREGUN_MAGNETIC);
 	Template.WeaponTech = 'magnetic';
 	Template.strImage = "img:///UILibrary_Common.MagSecondaryWeapons.MagPsiAmp";
 	Template.GameArchetype = "WP_PsiAmp_MG.WP_PsiAmp_MG";
@@ -74,6 +78,7 @@ static function X2DataTemplate CreateTemplate_SpireGun_Magnetic()
 
 	// bonuses for this tier of spire gun
 	Template.ExtraDamage = default.SPIREGUN_MAGNETIC_ABILITYDAMAGE;
+	Template.FieldReloadAmmoGranted = default.SPIREGUN_MAGNETIC_FIELDRELOADAMMO;
 	Template.QuicksilverChargesBonus = default.SPIREGUN_MAGNETIC_QUICKSILVERCHARGESBONUS;
 	Template.ShelterShieldBonus = default.SPIREGUN_MAGNETIC_SHELTERSHIELDBONUS;
 	
@@ -86,9 +91,9 @@ static function X2DataTemplate CreateTemplate_SpireGun_Magnetic()
 
 static function X2DataTemplate CreateTemplate_SpireGun_Beam()
 {
-	local X2Template_SpireGun Template;
+	local X2WeaponTemplate_SpireGun Template;
 
-	`CREATE_X2TEMPLATE(class'X2Template_SpireGun', Template, default.NAME_SPIREGUN_BEAM);
+	`CREATE_X2TEMPLATE(class'X2WeaponTemplate_SpireGun', Template, default.NAME_SPIREGUN_BEAM);
 	Template.WeaponTech = 'beam';
 	Template.strImage = "img:///UILibrary_Common.BeamSecondaryWeapons.BeamPsiAmp";
 	Template.GameArchetype = "WP_PsiAmp_BM.WP_PsiAmp_BM";
@@ -101,6 +106,7 @@ static function X2DataTemplate CreateTemplate_SpireGun_Beam()
 
 	// bonuses for this tier of spire gun
 	Template.ExtraDamage = default.SPIREGUN_BEAM_ABILITYDAMAGE;
+	Template.FieldReloadAmmoGranted = default.SPIREGUN_BEAM_FIELDRELOADAMMO;
 	Template.QuicksilverChargesBonus = default.SPIREGUN_BEAM_QUICKSILVERCHARGESBONUS;
 	Template.ShelterShieldBonus = default.SPIREGUN_BEAM_SHELTERSHIELDBONUS;
 	
