@@ -19,10 +19,14 @@ static event InstallNewCampaign(XComGameState StartState)
 /// </summary>
 static event OnPostTemplatesCreated()
 {
+    local Jammerware_JSRC_GtsUnlockService GtsUnlockService;
     local Jammerware_JSRC_TransmatNetworkService TransmatNetworkService;
 
     TransmatNetworkService = new class'Jammerware_JSRC_TransmatNetworkService';
     TransmatNetworkService.RegisterTransmatAbilityToCharacterTemplates();
+
+    GtsUnlockService = new class'Jammerware_JSRC_GtsUnlockService';
+    GtsUnlockService.AddUnlock(class'X2SoldierAbilityUnlockTemplate_Deadbolt'.default.NAME_DEADBOLT);
 }
 
 /// <summary>

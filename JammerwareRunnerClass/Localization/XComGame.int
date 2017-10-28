@@ -32,7 +32,7 @@
 +PhotoboothSoloBLines_Female[0]="Speed and spires."
 
 ;-------------------------------------------------------------
-; ABILITIES
+; PERK ABILITIES
 ;-------------------------------------------------------------
 [Jammerware_JSRC_Ability_Decommission X2AbilityTemplate]
 LocFriendlyName="Decommission"
@@ -187,6 +187,20 @@ LocLongDescription="Relocate to any space adjacent to a spire in the same transm
 LocHelpText="Relocate to any space adjacent to a spire in the same transmat network. Free action. 6-turn global cooldown."
 LocFlyOverText="Transmat"
 LocPromotionPopupText="\"Everything has to be somewhere. The trick is having the right things be in the right places.\""
+
+;-------------------------------------------------------------
+; GTS UNLOCK AND ABILITY
+;-------------------------------------------------------------
+[Jammerware_JSRC_AbilityUnlock_Deadbolt X2SoldierAbilityUnlockTemplate]
+DisplayName="Spire Runner: Bolt from the Whoosh"
+Summary="When a spire runner misses a shot, the bullet is returned to the magazine if they're using a boltcaster."
+
+[Jammerware_JSRC_Ability_Deadbolt X2AbilityTemplate]
+LocFriendlyName="Bolt from the Whoosh"
+LocLongDescription="When you miss a shot with a boltcaster, the bullet is returned to the clip."
+LocHelpText="When you miss a shot with a boltcaster, the bullet is returned to the clip."
+LocFlyOverText="Bolt from the Whoosh"
+LocPromotionPopupText="\"If you're using a terrible gun and you're a terrible shot, an equally offsetting good has to appear somewhere in the universe.\""
 
 ;-------------------------------------------------------------
 ; WEAPONS

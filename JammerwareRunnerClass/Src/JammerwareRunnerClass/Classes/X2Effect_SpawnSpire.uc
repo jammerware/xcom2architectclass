@@ -86,18 +86,19 @@ function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, Stat
 private function PerformFieldReload(XComGameState_Unit Shooter, XComGameState_Unit Spire, XComGameState NewGameState)
 {
 	local Jammerware_GameStateEffectsService EffectsService;
+	local Jammerware_JSRC_ItemStateService ItemsService;
 	local Jammerware_ProximityService ProximityService;
 
 	local array<XComGameState_Unit> AdjacentAllies;
 	local XComGameState_Unit IterAlly;
-	local XComGameState_Item AllyPrimaryWeapon, NewWeaponState, SpireGunState;
+	local XComGameState_Item SpireGunState;
 	local X2WeaponTemplate_SpireGun SpireGunTemplate;
-	local int MaxLegalAmmo;
 
 	EffectsService = new class'Jammerware_GameStateEffectsService';
 
 	if (EffectsService.IsUnitAffectedByEffect(Shooter, class'X2Ability_RunnerAbilitySet'.default.NAME_FIELD_RELOAD_MODULE))
 	{
+		ItemsService = new class'Jammerware_JSRC_ItemStateService';
 		ProximityService = new class'Jammerware_ProximityService';
 		AdjacentAllies = ProximityService.GetAdjacentUnits(Spire, true);
 		SpireGunState = Shooter.GetSecondaryWeapon();
@@ -105,17 +106,8 @@ private function PerformFieldReload(XComGameState_Unit Shooter, XComGameState_Un
 
 		foreach AdjacentAllies(IterAlly)
 		{
-			AllyPrimaryWeapon = IterAlly.GetPrimaryWeapon();
-			NewWeaponState = XComGameState_Item(NewGameState.ModifyStateObject(class'XComGameState_Item', AllyPrimaryWeapon.ObjectID));
 			// TODO: maybe preserve "restore all ammo" via config too
-			MaxLegalAmmo = NewWeaponState.Ammo + SpireGunTemplate.FieldReloadAmmoGranted;
-
-			if (MaxLegalAmmo > NewWeaponState.GetClipSize()) 
-			{
-				MaxLegalAmmo = NewWeaponState.GetClipSize();
-			}
-
-    		NewWeaponState.Ammo = MaxLegalAmmo;
+			ItemsService.LoadAmmo(IterAlly.GetPrimaryWeapon(), SpireGunTemplate.FieldReloadAmmoGranted, NewGameState);
 		}
 	}
 }

@@ -24,7 +24,10 @@ The goal of the Spire Runner class is to encourage a spatially-driven play patte
 | **MAJOR** | **Unity** - *passive* - You can summon spires adjacent to any ally. | **Transmat Link** - *free action, 7-turn cooldown* - Exchange locations with one of your spires. |
 | **COLONEL** | **Transmat Network** - *passive* - Your spires gain *Transmat Network Node*, a passive ability which grants any adjacent squadmate the ability to instantly relocate to any tile adjacent to a spire in the same network. The squad ability has a 5-turn global cooldown. | **Soul of the Architect** - *passive* - All effects that apply to spires also apply to you. You gain all abilities your spires have. |
 
-**Benched Abilities**
+### GTS Perk
+**Bolt from the Whoosh** - When a spire runner misses a shot, the bullet is returned to the magazine if they're using a boltcaster.;
+
+### Benched Abilities
 
 *Lightning Rod* - Each spire emits a pulse in a 2-tile radius around it. Enemy units hit by the pulse take moderate damage and are stunned for a turn. Robotic enemies take extra damage.
 
