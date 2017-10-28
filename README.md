@@ -48,6 +48,6 @@ The goal of the Spire Runner class is to encourage a spatially-driven play patte
 *Speedyrun Knockaround Shootything* - Your spires gain *Speedyrun Knockaround Shootything*, an ability that spawns a hologram of you. The hologram lasts for one turn, and any enemy it passes while moving is knocked back. Medium global cooldown.
 
 ## Acknowledgments
-- J.T.S.
+- Consulting Designer: SBGC_Smallfry
 - Robojumper™, bountygiver, Aleosiss, shiremct and all of the members of the XCOM 2 Modding Discord for their patience and help.
 - Lucubration for their awesome Infantry class mod that taught me a lot about how class mods work
