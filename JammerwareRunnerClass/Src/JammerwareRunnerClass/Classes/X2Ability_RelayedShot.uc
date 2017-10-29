@@ -40,8 +40,7 @@ static function X2DataTemplate CreateRelayedShot()
 	Template.AbilityTargetStyle = default.SimpleSingleTarget;
     Template.AbilityMultiTargetStyle = new class'X2AbilityMultiTarget_Line';
 
-	Template.TargetingMethod = class'X2TargetingMethod_Line';
-	Template.SkipRenderOfTargetingTemplate = true;
+	//Template.TargetingMethod = class'X2TargetingMethod_RelayedShot';
 
 	// hit chance
 	Template.AbilityToHitCalc = default.DeadEye;
@@ -70,7 +69,7 @@ static function X2DataTemplate CreateRelayedShot()
 	// game state and visualization
 	Template.bUsesFiringCamera = true;
 	Template.CinescriptCameraType = "StandardGunFiring";
-	//Template.ModifyNewContextFn = RelayedShot_ModifyActivatedAbilityContext;
+	Template.ModifyNewContextFn = RelayedShot_ModifyActivatedAbilityContext;
 	Template.BuildNewGameStateFn = RelayedShot_BuildGameState;
 	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
 
@@ -109,42 +108,104 @@ static function RelayedShot_ModifyActivatedAbilityContext(XComGameStateContext C
 	`LOG("JSRC: projectile hit locations" @ AbilityContext.ResultContext.ProjectileHitLocations.Length);
 }
 
+// TypicalAbility_BuildGameState is SO CLOSE in this case, but it doesn't seem to respect bAllowAmmoEffects or bAllowBonusWeaponEffects for multitargets.
+// we add that handling here
 static function XComGameState RelayedShot_BuildGameState(XComGameStateContext Context)
 {
+	// history and gamestate
+	local XComGameStateHistory History;
 	local XComGameState GameState;
+
+	// ability and weapon
 	local XComGameStateContext_Ability AbilityContext;
 	local XComGameState_Ability AbilityState;
-	local XComGameState_Item SourceWeapon;
-
 	local X2AbilityTemplate AbilityTemplate;
 	local X2AmmoTemplate AmmoTemplate;
+	local XComGameState_Item Weapon;
+	local X2WeaponTemplate WeaponTemplate;
 
-	`LOG("JSRC: building gamestate");
+	// ammo and bonus weapon effects to apply
+	local array<X2Effect> EffectsToApply;
 
-	// TypicalAbility_BuildGameState is so close, but it doesn't apply ammo effects to multitargets, even if bAllowAmmoEffects is true
+	// multitarget states
+	local XComGameState_BaseObject SourceObject_OriginalState, AffectedTargetObject_OriginalState, AffectedTargetObject_NewState;
+
+	// loop nonsense;
+	local StateObjectReference IterMultiTarget;
+	local int i;
+	local EffectResults MultiTargetEffectResults;
+	local X2Effect IterEffect;
+
+	// use TypicalAbility_BuildGameState to get started and load up the history
 	GameState = TypicalAbility_BuildGameState(Context);
-
-	`LOG("JSRC: original gamestate built");
+	History = `XCOMHISTORY;
 
 	// need to get the relayed shot ability so we can look at the weapon for ammo
 	AbilityContext = XComGameStateContext_Ability(GameState.GetContext());
 	AbilityState = XComGameState_Ability(GameState.GetGameStateForObjectID(AbilityContext.InputContext.AbilityRef.ObjectID));	
 	AbilityTemplate = AbilityState.GetMyTemplate();
-	SourceWeapon = AbilityState.GetSourceWeapon();
+	Weapon = AbilityState.GetSourceWeapon();
+	WeaponTemplate = X2WeaponTemplate(Weapon.GetMyTemplate());
 
-	`LOG("JSRC: ability template allows ammo" @ AbilityTemplate.bAllowAmmoEffects);
-	`LOG("JSRC: SourceWeapon has loaded ammo" @ SourceWeapon.HasLoadedAmmo());
-
-	if (AbilityTemplate.bAllowAmmoEffects && SourceWeapon != none && SourceWeapon.HasLoadedAmmo())
+	// gather all effects from ammo or weapon bonuses for potential application
+	if (Weapon != none)
 	{
-		`LOG("JSRC: source weapon has ammo");
-		`LOG("JSRC: source weapon has ammo");
-		`LOG("JSRC: source weapon has ammo");
-
-		AmmoTemplate = X2AmmoTemplate(SourceWeapon.GetLoadedAmmoTemplate(AbilityState));
-		if (AmmoTemplate != none && AmmoTemplate.TargetEffects.Length > 0)
+		// add ammo effects
+		if (AbilityTemplate.bAllowAmmoEffects && Weapon.HasLoadedAmmo())
 		{
-			`LOG("JSRC: ammo template is ready to rock");
+			AmmoTemplate = X2AmmoTemplate(Weapon.GetLoadedAmmoTemplate(AbilityState));
+
+			if (AmmoTemplate != none && AmmoTemplate.TargetEffects.Length > 0)
+			{
+				foreach AmmoTemplate.TargetEffects(IterEffect)
+				{
+					EffectsToApply.AddItem(IterEffect);
+				}
+			}
+		}
+
+		// add bonus effects
+		if (AbilityTemplate.bAllowBonusWeaponEffects)
+		{
+			if (WeaponTemplate != none && WeaponTemplate.BonusWeaponEffects.Length > 0)
+			{
+				foreach WeaponTemplate.BonusWeaponEffects(IterEffect)
+				{
+					EffectsToApply.AddItem(IterEffect);
+				}
+			}
+		}
+	}
+
+	if (EffectsToApply.Length > 0)
+	{
+		SourceObject_OriginalState = History.GetGameStateForObjectID(AbilityContext.InputContext.SourceObject.ObjectID);
+
+		for (i = 0; i < AbilityContext.InputContext.MultiTargets.Length; i++)
+		{
+			IterMultiTarget = AbilityContext.InputContext.MultiTargets[i];
+			AffectedTargetObject_OriginalState = History.GetGameStateForObjectID(IterMultiTarget.ObjectID, eReturnType_Reference);
+			AffectedTargetObject_NewState = GameState.ModifyStateObject(AffectedTargetObject_OriginalState.Class, IterMultiTarget.ObjectID);
+			MultiTargetEffectResults = AbilityContext.ResultContext.MultiTargetEffectResults[i];
+
+			class'X2Ability'.static.ApplyEffectsToTarget
+			(
+				AbilityContext, 
+				AffectedTargetObject_OriginalState, 
+				SourceObject_OriginalState, 
+				AbilityState, 
+				AffectedTargetObject_NewState, 
+				GameState, 
+				AbilityContext.ResultContext.MultiTargetHitResults[i],
+				AbilityContext.ResultContext.MultiTargetArmorMitigation[i],
+				AbilityContext.ResultContext.MultiTargetStatContestResult[i],
+				EffectsToApply,
+				MultiTargetEffectResults,
+				AmmoTemplate.DataName,
+				TELT_AmmoTargetEffects
+			);
+			
+			`LOG("JSRC:" @ EffectsToApply.Length @ "effects applied to target" @ AffectedTargetObject_NewState.GetMyTemplateName());
 		}
 	}
 
