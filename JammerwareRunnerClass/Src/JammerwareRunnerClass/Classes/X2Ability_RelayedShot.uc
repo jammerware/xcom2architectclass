@@ -55,6 +55,7 @@ static function X2DataTemplate CreateRelayedShot()
 	UnitTypeCondition = new class'X2Condition_UnitType';
 	UnitTypeCondition.IncludeTypes.AddItem(class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE);
 	Template.AbilityTargetConditions.AddItem(UnitTypeCondition);
+	Template.AbilityTargetConditions.AddItem(default.GameplayVisibilityCondition);
 
 	// need to make sure the primary target (spire) is owned by the shooter
 
