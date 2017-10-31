@@ -121,7 +121,7 @@ static function X2AbilityTemplate CreateSpireShelter()
 	TurnEndTrigger = new class'X2AbilityTrigger_EventListener';
 	TurnEndTrigger.ListenerData.Deferral = ELD_OnStateSubmitted;
 	TurnEndTrigger.ListenerData.EventID = 'PlayerTurnEnded';
-	TurnEndTrigger.ListenerData.Filter = eFilter_None;
+	TurnEndTrigger.ListenerData.Filter = eFilter_Player;
 	TurnEndTrigger.ListenerData.EventFn = class'XComGameState_Ability'.static.AbilityTriggerEventListener_Self;
 	Template.AbilityTriggers.AddItem(TurnEndTrigger);
 

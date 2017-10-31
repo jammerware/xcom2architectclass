@@ -6,6 +6,7 @@ static function X2DataTemplate CreateRelayedShot()
 {
     local X2AbilityTemplate Template;
 	local X2AbilityCooldown Cooldown;
+	local X2AbilityMultiTarget_Line MultiTargetStyle;
 	local X2AbilityCost_Ammo AmmoCost;
 	local X2Condition_UnitProperty TargetPropertiesCondition;
 	local X2Condition_UnitType UnitTypeCondition;
@@ -38,7 +39,10 @@ static function X2DataTemplate CreateRelayedShot()
 
 	// targeting style (how targets are determined by game rules)
 	Template.AbilityTargetStyle = default.SimpleSingleTarget;
-    Template.AbilityMultiTargetStyle = new class'X2AbilityMultiTarget_Line';
+
+	MultiTargetStyle = new class'X2AbilityMultiTarget_Line';
+	MultiTargetStyle.TileWidthExtension = 1;
+    Template.AbilityMultiTargetStyle = MultiTargetStyle;
 
 	//Template.TargetingMethod = class'X2TargetingMethod_RelayedShot';
 
@@ -80,19 +84,13 @@ static function RelayedShot_ModifyActivatedAbilityContext(XComGameStateContext C
 {
 	local XComWorldData World;
 	local XComGameStateContext_Ability AbilityContext;
-	local XComGameState_Ability AbilityState;
 	local StateObjectReference MultiTargetObjectRef;
 	local XComGameState_Unit MultiTargetUnit;
 	local int i;
 
 	AbilityContext = XComGameStateContext_Ability(Context);
 	AbilityContext.ResultContext.ProjectileHitLocations.Length = 0;
-	AbilityState = XComGameState_Ability(`XCOMHISTORY.GetGameStateForObjectID(AbilityContext.InputContext.AbilityRef.ObjectID, eReturnType_Reference));
 	World = `XWORLD;
-
-	`LOG("JSRC: input target location length" @ AbilityContext.InputContext.TargetLocations.Length);
-	`LOG("JSRC: input multitargets length" @ AbilityContext.InputContext.MultiTargets.Length);
-	`LOG("JSRC: input projectile events length" @ AbilityContext.InputContext.ProjectileEvents.Length);
 
 	for (i = 0; i < AbilityContext.InputContext.MultiTargets.Length; i++)
 	{
@@ -104,8 +102,6 @@ static function RelayedShot_ModifyActivatedAbilityContext(XComGameStateContext C
 			AbilityContext.ResultContext.ProjectileHitLocations.AddItem(World.GetPositionFromTileCoordinates(MultiTargetUnit.TileLocation));
 		}
 	}
-
-	`LOG("JSRC: projectile hit locations" @ AbilityContext.ResultContext.ProjectileHitLocations.Length);
 }
 
 // TypicalAbility_BuildGameState is SO CLOSE in this case, but it doesn't seem to respect bAllowAmmoEffects or bAllowBonusWeaponEffects for multitargets.

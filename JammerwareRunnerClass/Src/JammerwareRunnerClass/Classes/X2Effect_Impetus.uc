@@ -294,6 +294,5 @@ defaultproperties
 {
 	DamageTypes.Add("KnockbackDamage");
 	OverrideRagdollFinishTimerSec=-1
-	OnlyOnDeath=true
 	ApplyChanceFn=WasTargetPreviouslyDead
 }

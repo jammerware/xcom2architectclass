@@ -37,7 +37,7 @@ static function X2DataTemplate CreateKineticPulse()
 
 	MultiTargetStyle = new class'X2AbilityMultiTarget_Cone';
 	MultiTargetStyle.ConeEndDiameter = 16 * class'XComWorldData'.const.WORLD_StepSize;
-	MultiTargetStyle.ConeLength = 60 * class'XComWorldData'.const.WORLD_StepSize;
+	MultiTargetStyle.ConeLength = 10 * class'XComWorldData'.const.WORLD_StepSize;
 	MultiTargetStyle.bUseWeaponRadius = true;
 	Template.AbilityMultiTargetStyle = MultiTargetStyle;
 

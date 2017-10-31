@@ -24,6 +24,7 @@ event name CallMeetsCondition(XComGameState_BaseObject kTarget)
     `LOG("JSRC: ally adjacency condition - adjacent allies count" @ AdjacentUnits.Length);
     foreach AdjacentUnits(Ally)
     {
+        `LOG("JSRC - shelter trigger, ally" @ Ally.GetMyTemplateName());
         if (
             (RequireAllyCharacterGroup == 'None' || Ally.GetMyTemplate().CharacterGroupName == RequireAllyCharacterGroup) &&
             (RequireAllyEffect == 'None' || EffectsService.IsUnitAffectedByEffect(Ally, RequireAllyEffect)) &&

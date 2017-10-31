@@ -54,7 +54,11 @@ public function array<XComGameState_Unit> GetAdjacentUnits(
 
     foreach `XCOMHISTORY.IterateByClassType(class'XComGameState_Unit', IterateUnitState)
     {
-        if (MeetsAdjacencyCriteria(Unit.TileLocation, IterateUnitState, RequiredTeam, RequiredCharacterGroup, RequiredEffect))
+        if 
+        (
+            IterateUnitState.ObjectID != Unit.ObjectID &&
+            MeetsAdjacencyCriteria(Unit.TileLocation, IterateUnitState, RequiredTeam, RequiredCharacterGroup, RequiredEffect)
+        )
         {
             Results.AddItem(IterateUnitState);
         }
