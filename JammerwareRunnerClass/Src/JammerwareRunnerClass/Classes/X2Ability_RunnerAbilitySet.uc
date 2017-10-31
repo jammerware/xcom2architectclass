@@ -39,10 +39,11 @@ static function array <X2DataTemplate> CreateTemplates()
 	Templates.AddItem(CreateKineticRigging());
 
 	// CAPTAIN!
-	Templates.AddItem(CreateUnity());
+	Templates.AddItem(class'X2Ability_RelayedShot'.static.CreateRelayedShot());
 
 	// MAJOR!
-	Templates.AddItem(class'X2Ability_RelayedShot'.static.CreateRelayedShot());
+	Templates.AddItem(CreateUnity());
+	Templates.AddItem(class'X2Ability_TransmatLink'.static.CreateTransmatLink());
 
 	// COLONEL!
 	Templates.AddItem(CreateSoulOfTheArchitect());
@@ -53,7 +54,6 @@ static function array <X2DataTemplate> CreateTemplates()
 
 	// HOPEFULLY WON'T EVEN BE A REAL THING!
 	Templates.AddItem(AddLightningRod());
-	Templates.AddItem(class'X2Ability_TransmatLink'.static.CreateTransmatLink());
 
 	return Templates;
 }
@@ -189,6 +189,7 @@ static function X2AbilityTemplate AddHeadstone()
 	DeadEnemiesCondition.ExcludeAlive = true;
 	DeadEnemiesCondition.ExcludeDead = false;
 	DeadEnemiesCondition.ExcludeHostileToSource = false;
+	DeadEnemiesCondition.ExcludeTurret = true;
 	Template.AbilityTargetConditions.AddItem(DeadEnemiesCondition);
 
 	// triggering
