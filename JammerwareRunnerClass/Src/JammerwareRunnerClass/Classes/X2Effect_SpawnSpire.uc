@@ -1,5 +1,7 @@
 class X2Effect_SpawnSpire extends X2Effect_SpawnUnit;
 
+var name NAME_SPIRE_SPAWN_TRIGGER;
+
 function vector GetSpawnLocation(const out EffectAppliedData ApplyEffectParameters, XComGameState NewGameState)
 {
 	local vector SpawnLocation;
@@ -79,41 +81,12 @@ function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, Stat
 	SpireUnitGameState.CoverForceFlag = CoverForce_High;
 
 	// if the source unit has FieldReloadModule, allied units adjacent to the spire should be reloaded
-	// TODO: is this the best way to do this? ideally it'd be its own effect maybe, right?
-	PerformFieldReload(SourceUnitGameState, SpireUnitGameState, NewGameState);
-}
-
-private function PerformFieldReload(XComGameState_Unit Shooter, XComGameState_Unit Spire, XComGameState NewGameState)
-{
-	local Jammerware_GameStateEffectsService EffectsService;
-	local Jammerware_JSRC_ItemStateService ItemsService;
-	local Jammerware_ProximityService ProximityService;
-
-	local array<XComGameState_Unit> AdjacentAllies;
-	local XComGameState_Unit IterAlly;
-	local XComGameState_Item SpireGunState;
-	local X2WeaponTemplate_SpireGun SpireGunTemplate;
-
-	EffectsService = new class'Jammerware_GameStateEffectsService';
-
-	if (EffectsService.IsUnitAffectedByEffect(Shooter, class'X2Ability_RunnerAbilitySet'.default.NAME_FIELD_RELOAD_MODULE))
-	{
-		ItemsService = new class'Jammerware_JSRC_ItemStateService';
-		ProximityService = new class'Jammerware_ProximityService';
-		AdjacentAllies = ProximityService.GetAdjacentUnits(Spire, true);
-		SpireGunState = Shooter.GetSecondaryWeapon();
-		SpireGunTemplate = X2WeaponTemplate_SpireGun(SpireGunState.GetMyTemplate());
-
-		foreach AdjacentAllies(IterAlly)
-		{
-			// TODO: maybe preserve "restore all ammo" via config too
-			ItemsService.LoadAmmo(IterAlly.GetPrimaryWeapon(), SpireGunTemplate.FieldReloadAmmoGranted, NewGameState);
-		}
-	}
+	`XEVENTMGR.TriggerEvent(default.NAME_SPIRE_SPAWN_TRIGGER, SpireUnitGameState, SourceUnitGameState, NewGameState);
 }
 
 defaultproperties
 {
 	bInfiniteDuration=true
 	EffectName=Jammerware_JSRC_Effect_SpawnSpire
+	NAME_SPIRE_SPAWN_TRIGGER=Jammerware_JSRC_EventTrigger_SpireSpawn
 }
