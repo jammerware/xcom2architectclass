@@ -172,7 +172,7 @@ LocFriendlyName="Transmat Network"
 LocLongDescription="Your spires gain Transmat Network Node. When a squadmate is adjacent to a node, they can use Transmat, a free ability that allows them to relocate to any space adjacent to a spire in the network. 6-turn global cooldown."
 LocHelpText="Your spires gain Transmat Network Node. When a squadmate is adjacent to a node, they can use Transmat, a free ability that allows them to relocate to any space adjacent to a spire in the network. 6-turn global cooldown."
 LocFlyOverText="Transmat Network"
-LocPromotionPopupText="\"Everything has to be somewhere. The trick is having the right things be in the right places.\"\n\n<Bullet/> Transmat's cooldown is global, which means that if any squadmate uses it, the ability goes on cooldown for the entire squad.\n\n<Bullet/> The Transmat ability is free."
+LocPromotionPopupText="\"Everything has to be somewhere. The trick is having the right things be in the right places.\"\n\n<Bullet/> Transmat's cooldown is global, which means that if any squadmate uses it, the ability goes on cooldown for the entire squad.\n<Bullet/> The Transmat ability is free.\n<Bullet/> Civilians like VIPs can't use the Transmat ability, but non-XCOM units like hacked or mind-controlled enemies can."
 
 [Jammerware_JSRC_Ability_SpireTransmatNetwork X2AbilityTemplate]
 LocFriendlyName="Transmat Network Node"

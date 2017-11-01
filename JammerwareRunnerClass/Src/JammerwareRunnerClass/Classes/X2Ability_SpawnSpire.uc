@@ -100,8 +100,7 @@ simulated function SpawnSpire_BuildVisualization(XComGameState VisualizeGameStat
 	local XComGameStateContext_Ability Context;
 	local StateObjectReference InteractingUnitRef;
 	local Jammerware_SpireRegistrationService SpireRegistrationService;
-	local VisualizationActionMetadata EmptyTrack;
-	local VisualizationActionMetadata ShooterTrack, SpawnedUnitTrack;
+	local VisualizationActionMetadata ShooterTrack;
 	local XComGameState_Unit ShooterUnit, SpawnedUnit;
 	local X2Effect_SpawnSpire SpawnSpireEffect;
 
@@ -116,17 +115,9 @@ simulated function SpawnSpire_BuildVisualization(XComGameState VisualizeGameStat
 
 	// Configure the visualization track for the shooter
 	//****************************************************************************************
-	ShooterTrack = EmptyTrack;
 	ShooterTrack.StateObject_OldState = History.GetGameStateForObjectID(InteractingUnitRef.ObjectID, eReturnType_Reference, VisualizeGameState.HistoryIndex - 1);
 	ShooterTrack.StateObject_NewState = ShooterUnit;
 	ShooterTrack.VisualizeActor = History.GetVisualizer(InteractingUnitRef.ObjectID);
-
-	// Configure the visualization track for the spire
-	//****************************************************************************************
-	SpawnedUnitTrack = EmptyTrack;
-	SpawnedUnitTrack.StateObject_OldState = SpawnedUnit;
-	SpawnedUnitTrack.StateObject_NewState = SpawnedUnit;
-	SpawnedUnitTrack.VisualizeActor = History.GetVisualizer(SpawnedUnit.ObjectID);
 
 	// Only one target effect and it is X2Effect_SpawnSpire
 	SpawnSpireEffect = X2Effect_SpawnSpire(Context.ResultContext.ShooterEffectResults.Effects[0]);
@@ -141,7 +132,7 @@ simulated function SpawnSpire_BuildVisualization(XComGameState VisualizeGameStat
 	class'X2Action_ExitCover'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
 	class'X2Action_AbilityPerkStart'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
 
-	SpawnSpireEffect.AddSpawnVisualizationsToTracks(Context, SpawnedUnit, SpawnedUnitTrack, none);
+	SpawnSpireEffect.AddSpawnVisualizationsToTracks(Context, SpawnedUnit, ShooterTrack, none);
 
 	class'X2Action_AbilityPerkEnd'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
 	class'X2Action_EnterCover'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
