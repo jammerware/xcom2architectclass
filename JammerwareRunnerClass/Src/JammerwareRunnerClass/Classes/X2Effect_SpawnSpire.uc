@@ -67,20 +67,21 @@ function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, Stat
 		`XEVENTMGR.TriggerEvent('UnitRemovedFromPlay', TargetUnitGameState, TargetUnitGameState, NewGameState);
 	}
 
-	// TODO: look at X2Effect_SpawnPsiZombie to track relationship between runner and spire. this'll let us have a buff on the spire indicating the relationship if we want
-	// (not to mention it's less gross)
-	SpireRegistrationService.RegisterSpireToRunner(SpireUnitGameState, SourceUnitGameState);
+	SpireRegistrationService.RegisterSpireToRunner(ApplyEffectParameters, NewUnitRef, NewGameState, NewEffectState);
 
 	// DANGER, WILL ROBINSON
 	// i'm super unsure of this implementation, especially because it results in using the dreaded InitAbilityForUnit method, which is indicated as
 	// pretty dangerous by Firaxis. if the soldier who spawns the spire has certain abilities, the spire gets them too
 	SpireAbilitiesService.ConfigureSpireAbilities(SpireUnitGameState, SourceUnitGameState, NewGameState);
 
+	// NO ACTION FOR YOU
+	SpireUnitGameState.ActionPoints.Length = 0;
+
 	// set the cover state of the spire
 	SpireUnitGameState.bGeneratesCover = true;
 	SpireUnitGameState.CoverForceFlag = CoverForce_High;
 
-	// if the source unit has FieldReloadModule, allied units adjacent to the spire should be reloaded
+	// notify people who care about spires spawning
 	`XEVENTMGR.TriggerEvent(default.NAME_SPIRE_SPAWN_TRIGGER, SpireUnitGameState, SourceUnitGameState, NewGameState);
 }
 

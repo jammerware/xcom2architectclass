@@ -19,7 +19,6 @@ function RegisterTransmatAbilityToCharacterTemplates()
 
             if (IsCharacterEligibleForTransmat(CharTemplate))
             {
-                `LOG("JSRC: registering Transmat ability for" @ CharTemplate.DataName);
                 CharTemplate.Abilities.AddItem(class'X2Ability_TransmatNetwork'.default.NAME_TRANSMAT);
             }
         }

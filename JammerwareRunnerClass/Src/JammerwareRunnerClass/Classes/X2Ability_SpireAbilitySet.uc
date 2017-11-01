@@ -3,8 +3,11 @@ class X2Ability_SpireAbilitySet extends X2Ability
 
 var name NAME_DECOMMISSION;
 var name NAME_SPIRE_LIGHTNINGROD;
+var name NAME_SPIRE_PASSIVE;
 var name NAME_SPIRE_QUICKSILVER;
 var name NAME_SPIRE_SHELTER;
+
+var config int SHELTER_DURATION;
 
 static function array <X2DataTemplate> CreateTemplates()
 {
@@ -13,6 +16,7 @@ static function array <X2DataTemplate> CreateTemplates()
 
 	// SQUADDIE!
 	Templates.AddItem(CreateDecommission());
+	Templates.AddItem(CreateSpirePassive());
 
 	// SERGEANT!
 	Templates.AddItem(CreateSpireShelter());
@@ -26,6 +30,36 @@ static function array <X2DataTemplate> CreateTemplates()
 	Templates.AddItem(class'X2Ability_TransmatNetwork'.static.CreateSpireTransmatNetwork());
 
 	return Templates;
+}
+
+private static function X2AbilityTemplate CreateSpirePassive()
+{
+	local X2AbilityTemplate Template;
+	local X2Effect_SpirePassive SpirePassiveEffect;
+
+	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_SPIRE_PASSIVE);
+
+	// HUD behavior
+	Template.IconImage = "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_Pillar";
+	Template.AbilitySourceName = 'eAbilitySource_Perk';
+	Template.eAbilityIconBehaviorHUD = EAbilityIconBehavior_NeverShow;
+	Template.Hostility = eHostility_Neutral;
+
+	// targeting and ability to hit
+	Template.AbilityTargetStyle = default.SelfTarget;
+	Template.AbilityToHitCalc = default.DeadEye;
+
+	// triggering
+	Template.AbilityTriggers.AddItem(default.UnitPostBeginPlayTrigger);
+
+	SpirePassiveEffect = new class'X2Effect_SpirePassive';
+	SpirePassiveEffect.BuildPersistentEffect(1, true, false);
+	SpirePassiveEffect.SetDisplayInfo(ePerkBuff_Passive, Template.LocFriendlyName, Template.GetMyLongDescription(), Template.IconImage,,,Template.AbilitySourceName);
+	Template.AddTargetEffect(SpirePassiveEffect);
+
+	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
+
+	return Template;
 }
 
 static function X2AbilityTemplate CreateDecommission()
@@ -127,7 +161,7 @@ static function X2AbilityTemplate CreateSpireShelter()
 
 	// effects
 	ShieldEffect = new class'X2Effect_ShelterShield';
-	ShieldEffect.BuildPersistentEffect(5, false, true, , eGameRule_PlayerTurnBegin);
+	ShieldEffect.BuildPersistentEffect(default.SHELTER_DURATION, false, true, , eGameRule_PlayerTurnBegin);
 	ShieldEffect.SetDisplayInfo(ePerkBuff_Bonus, Template.LocFriendlyName, Template.GetMyLongDescription(), "img:///UILibrary_PerkIcons.UIPerk_adventshieldbearer_energyshield", true);
 	Template.AddMultiTargetEffect(ShieldEffect);
 
@@ -292,5 +326,6 @@ defaultproperties
 	NAME_DECOMMISSION=Jammerware_JSRC_Ability_Decommission
 	NAME_SPIRE_LIGHTNINGROD=Jammerware_JSRC_Ability_SpireLightningRod
 	NAME_SPIRE_QUICKSILVER=Jammerware_JSRC_Ability_SpireQuicksilver
+	NAME_SPIRE_PASSIVE=Jammerware_JSRC_Ability_SpirePassive
 	NAME_SPIRE_SHELTER=Jammerware_JSRC_Ability_SpireShelter
 }

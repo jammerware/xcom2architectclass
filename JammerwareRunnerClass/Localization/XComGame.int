@@ -28,12 +28,22 @@
 +RandomNicknames_Female[4]="Gray Lady"
 
 ;PHOTOBOOTH
-+PhotoboothSoloBLines_Male[0]="Speed and spires."
-+PhotoboothSoloBLines_Female[0]="Speed and spires."
++PhotoboothSoloBLines_Female="Speed & Spires"
++PhotoboothSoloBLines_Female="Towers of Power"
+
++PhotoboothSoloBLines_Male="Speed & Spires"
++PhotoboothSoloBLines_Male="Towers of Power"
 
 ;-------------------------------------------------------------
 ; PERK ABILITIES
 ;-------------------------------------------------------------
+[Jammerware_JSRC_Ability_ActivateSpire X2AbilityTemplate]
+LocFriendlyName="Activate Spire"
+LocLongDescription="Activate one of your spires. It can use abilities this turn."
+LocHelpText="Activate one of your spires. It can use abilities this turn."
+LocFlyOverText="Activate Spire"
+LocPromotionPopupText="Flarp donk claps"
+
 [Jammerware_JSRC_Ability_Decommission X2AbilityTemplate]
 LocFriendlyName="Decommission"
 LocLongDescription="Destroy this spire."
@@ -187,6 +197,16 @@ LocLongDescription="Relocate to any space adjacent to a spire in the same transm
 LocHelpText="Relocate to any space adjacent to a spire in the same transmat network. Free action. 6-turn global cooldown."
 LocFlyOverText="Transmat"
 LocPromotionPopupText="\"Everything has to be somewhere. The trick is having the right things be in the right places.\""
+
+;-------------------------------------------------------------
+; SPIRE-ONLY ABILITIES
+;-------------------------------------------------------------
+[Jammerware_JSRC_Ability_SpirePassive X2AbilityTemplate]
+LocFriendlyName="Standing Stone"
+LocLongDescription="The spire is quiet. It doesn't gain action points at the start of your turn."
+LocHelpText="The spire is quiet. It doesn't gain action points at the start of your turn."
+LocFlyOverText="Standing Stone"
+LocPromotionPopupText="\"What you leave behind is not what is engraved in stone monuments, but what is woven into the lives of others.\"\n- Pericles"
 
 ;-------------------------------------------------------------
 ; GTS UNLOCK AND ABILITY

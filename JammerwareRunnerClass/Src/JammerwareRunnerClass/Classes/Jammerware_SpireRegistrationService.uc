@@ -1,20 +1,29 @@
 class Jammerware_SpireRegistrationService extends Object;
 
 var name UNITVALUE_LASTSPIREID;
-var name UNITVALUE_SPIRECREATORID;
 
-function XComGameState_Unit GetRunnerFromSpire(XComGameState_Unit SpireUnitGameState, XComGameStateHistory GameState)
+function XComGameState_Unit GetRunnerFromSpire(int SpireID)
 {
-    local UnitValue SpireCreatorID;
-    
-    SpireUnitGameState.GetUnitValue(default.UNITVALUE_SPIRECREATORID, SpireCreatorID);
+    local XComGameStateHistory History;
+    local XComGameState_Unit Spire;
+    local int SpireCreatorID, i;
+    local StateObjectReference IteratorEffectRef;
+    local XComgameState_Effect EffectState;
 
-    if (SpireCreatorID.fValue == 0) 
+    History = `XCOMHISTORY;
+    Spire = XComGameState_Unit(History.GetGameStateForObjectID(SpireID));
+
+    for (i = 0; i < Spire.AffectedByEffectNames.Length; i++)
     {
-        return none;
+        if (Spire.AffectedByEffectNames[i] == class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_PASSIVE)
+        {
+            EffectState = XComGameState_Effect(History.GetGameStateForObjectID(Spire.AffectedByEffects[i].ObjectID));
+            SpireCreatorID = EffectState.ApplyEffectParameters.SourceStateObjectRef.ObjectID;
+            break;
+        }
     }
     
-    return XComGameState_Unit(GameState.GetGameStateForObjectID(int(SpireCreatorID.fValue)));
+    return XComGameState_Unit(History.GetGameStateForObjectID(SpireCreatorID));
 }
 
 function XComGameState_Unit GetLastSpireFromRunner(XComGameState_Unit RunnerUnitGameState, XComGameState GameState)
@@ -31,14 +40,37 @@ function XComGameState_Unit GetLastSpireFromRunner(XComGameState_Unit RunnerUnit
     return XComGameState_Unit(GameState.GetGameStateForObjectID(int(SpawnedUnitIDValue.fValue)));
 }
 
-function RegisterSpireToRunner(XComGameState_Unit SpireUnitGameState, XComGameState_Unit RunnerUnitGameState)
+function RegisterSpireToRunner(const out EffectAppliedData ApplyEffectParameters, StateObjectReference SpireUnitRef, XComGameState NewGameState, XComGameState_Effect NewEffectState)
 {
-    SpireUnitGameState.SetUnitFloatValue(default.UNITVALUE_SPIRECREATORID, RunnerUnitGameState.ObjectID, eCleanup_BeginTactical);
-    RunnerUnitGameState.SetUnitFloatValue(default.UNITVALUE_LASTSPIREID, SpireUnitGameState.ObjectID, eCleanup_BeginTactical);
+    local EffectAppliedData NewEffectParams;
+    local XComGameState_Unit RunnerState, SpireState;
+    local X2Effect_SpirePassive SpirePassiveEffect;
+
+    `LOG("JSRC: REGISTERING SPIRE TO RUNNER");
+    `LOG("JSRC: REGISTERING SPIRE TO RUNNER");
+    `LOG("JSRC: REGISTERING SPIRE TO RUNNER");
+
+    RunnerState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(ApplyEffectParameters.SourceStateObjectRef.ObjectID));
+    `LOG("JSRC: runner state during registration is" @ RunnerState.GetMyTemplateName() @ RunnerState.ObjectID);
+    SpireState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(SpireUnitRef.ObjectID));
+    `LOG("JSRC: spire state during registration is" @ SpireState.GetMyTemplateName() @ SpireState.ObjectID);
+
+	NewEffectParams = ApplyEffectParameters;
+	NewEffectParams.EffectRef.ApplyOnTickIndex = INDEX_NONE;
+	NewEffectParams.EffectRef.LookupType = TELT_AbilityTargetEffects;
+	NewEffectParams.EffectRef.SourceTemplateName = class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_PASSIVE;
+	NewEffectParams.EffectRef.TemplateEffectLookupArrayIndex = 0;
+	NewEffectParams.TargetStateObjectRef = SpireState.GetReference();
+
+	SpirePassiveEffect = X2Effect_SpirePassive(class'X2Effect'.static.GetX2Effect(NewEffectParams.EffectRef));
+	`assert(SpirePassiveEffect != none);
+	SpirePassiveEffect.ApplyEffect(NewEffectParams, SpireState, NewGameState);
+
+    // make a note of the last spire spawned by this runner. yes, i hate this
+    RunnerState.SetUnitFloatValue(default.UNITVALUE_LASTSPIREID, SpireState.ObjectID, eCleanup_BeginTactical);
 }
 
 defaultproperties
 {
     UNITVALUE_LASTSPIREID=Jammerware_JSRC_UnitValue_LastSpireID
-    UNITVALUE_SPIRECREATORID=Jammerware_JSRC_UnitValue_SpireCreatorUnitID
 }

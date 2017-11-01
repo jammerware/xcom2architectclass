@@ -2,6 +2,7 @@ class X2Ability_RunnerAbilitySet extends X2Ability
 	config(JammerwareRunnerClass);
 
 // ability names
+var name NAME_ACTIVATE_SPIRE;
 var name NAME_DEADBOLT;
 var name NAME_FIELD_RELOAD_MODULE;
 var name NAME_HEADSTONE;
@@ -14,6 +15,7 @@ var name NAME_SOUL_OF_THE_ARCHITECT;
 var name NAME_UNITY;
 
 // config/balance
+var config int ACTIVATE_SPIRE_COOLDOWN;
 var config int HEADSTONE_COOLDOWN;
 var config int RECLAIM_COOLDOWN;
 
@@ -25,18 +27,19 @@ static function array <X2DataTemplate> CreateTemplates()
 	Templates.AddItem(class'X2Ability_SpawnSpire'.static.CreateSpawnSpire());
 	
 	// CORPORAL!
-	Templates.AddItem(AddHeadstone());
-	Templates.AddItem(AddReclaim());
 	Templates.AddItem(CreateFieldReloadModule());
+	Templates.AddItem(AddShelter());
 
 	// SERGEANT!
-	Templates.AddItem(AddShelter());
-	Templates.AddItem(AddQuicksilver());
+	Templates.AddItem(AddHeadstone());
+	Templates.AddItem(AddReclaim());
 
 	// LIEUTENANT!
 	Templates.AddItem(class'X2Ability_TargetingArray'.static.CreateTargetingArray());
 	Templates.AddItem(class'X2Ability_TargetingArray'.static.CreateTargetingArrayTriggered());
 	Templates.AddItem(CreateKineticRigging());
+	Templates.AddItem(CreateQuicksilver());
+	Templates.AddItem(CreateActivateSpire());
 
 	// CAPTAIN!
 	Templates.AddItem(class'X2Ability_RelayedShot'.static.CreateRelayedShot());
@@ -68,9 +71,14 @@ static function X2AbilityTemplate AddShelter()
 	return PurePassive(default.NAME_SHELTER, "img:///UILibrary_PerkIcons.UIPerk_adventshieldbearer_energyshield");
 }
 
-static function X2AbilityTemplate AddQuicksilver()
+static function X2AbilityTemplate CreateQuicksilver()
 {
-	return PurePassive(default.NAME_QUICKSILVER, "img:///UILibrary_PerkIcons.UIPerk_runandgun");
+	local X2AbilityTemplate Template;
+
+	Template = PurePassive(default.NAME_QUICKSILVER, "img:///UILibrary_PerkIcons.UIPerk_runandgun");
+	Template.AdditionalAbilities.AddItem(default.NAME_ACTIVATE_SPIRE);
+
+	return Template;
 }
 
 static function X2AbilityTemplate AddReclaim()
@@ -318,6 +326,63 @@ static function X2AbilityTemplate CreateFieldReloadModule()
 	return Template;
 }
 
+private static function X2AbilityTemplate CreateActivateSpire()
+{
+	local X2AbilityTemplate Template;
+	local X2AbilityCooldown Cooldown;
+	local X2Effect_GrantActionPoints APEffect;
+
+	// general properties
+	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_ACTIVATE_SPIRE);
+	Template.Hostility = eHostility_Neutral;
+
+	// hud behavior
+	Template.IconImage = "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_volt";
+	Template.AbilitySourceName = 'eAbilitySource_Perk';
+	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_AlwaysShow;
+	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.REND_PRIORITY;
+	Template.bLimitTargetIcons = true;
+
+	// cost
+	Template.AbilityCosts.AddItem(default.FreeActionCost);
+
+	// Cooldown
+	Cooldown = new class'X2AbilityCooldown';
+	Cooldown.iNumTurns = default.ACTIVATE_SPIRE_COOLDOWN;
+	Template.AbilityCooldown = Cooldown;
+
+	// targeting style (how targets are determined by game rules)
+	Template.AbilityTargetStyle = default.SimpleSingleTarget;
+
+	// hit chance
+	Template.AbilityToHitCalc = default.DeadEye;
+
+	// conditions
+	Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
+	Template.AbilityTargetConditions.AddItem(default.GameplayVisibilityCondition);
+	Template.AbilityTargetConditions.AddItem(new class'X2Condition_OwnedSpire');
+
+	`LOG("JSRC - ability targetconditions length" @ Template.AbilityTargetConditions.Length);
+	`LOG("JSRC - ability targetcondition 1" @ Template.AbilityTargetConditions[1].class);
+
+	// triggering
+	Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);
+	
+	// effects
+	APEffect = new class'X2Effect_GrantActionPoints';
+	APEffect.NumActionPoints = 2;
+	APEffect.PointType = class'X2CharacterTemplateManager'.default.StandardActionPoint;
+	APEffect.bSelectUnit = true;
+	Template.AddTargetEffect(APEffect);
+	
+	// game state and visualization
+	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
+	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
+	Template.bShowActivation = true;
+
+	return Template;
+}
+
 static function X2AbilityTemplate CreateKineticRigging()
 {
 	return PurePassive(default.NAME_KINETIC_RIGGING, "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_StunStrike");
@@ -373,6 +438,7 @@ private static function X2AbilityTemplate CreateDeadbolt()
 
 defaultproperties 
 {
+	NAME_ACTIVATE_SPIRE=Jammerware_JSRC_Ability_ActivateSpire
 	NAME_DEADBOLT=Jammerware_JSRC_Ability_Deadbolt
 	NAME_FIELD_RELOAD_MODULE=Jammerware_JSRC_Ability_FieldReloadModule
 	NAME_HEADSTONE=Jammerware_JSRC_Ability_Headstone
