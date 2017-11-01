@@ -362,9 +362,6 @@ private static function X2AbilityTemplate CreateActivateSpire()
 	Template.AbilityTargetConditions.AddItem(default.GameplayVisibilityCondition);
 	Template.AbilityTargetConditions.AddItem(new class'X2Condition_OwnedSpire');
 
-	`LOG("JSRC - ability targetconditions length" @ Template.AbilityTargetConditions.Length);
-	`LOG("JSRC - ability targetcondition 1" @ Template.AbilityTargetConditions[1].class);
-
 	// triggering
 	Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);
 	
