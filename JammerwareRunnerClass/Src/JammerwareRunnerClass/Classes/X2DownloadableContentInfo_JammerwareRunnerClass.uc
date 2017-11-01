@@ -35,3 +35,18 @@ static event OnPostTemplatesCreated()
 /// </summary>
 static function FinalizeUnitAbilitiesForInit(XComGameState_Unit UnitState, out array<AbilitySetupData> SetupData, optional XComGameState StartState, optional XComGameState_Player PlayerState, optional bool bMultiplayerDisplay)
 {}
+
+/// <summary>
+/// Called from X2AbilityTag:ExpandHandler after processing the base game tags. Return true (and fill OutString correctly)
+/// to indicate the tag has been expanded properly and no further processing is needed.
+/// </summary>
+static function bool AbilityTagExpandHandler(string InString, out string OutString)
+{
+    local Jammerware_JSRC_TagExpansionService TagService;
+
+    TagService = new class'Jammerware_JSRC_TagExpansionService';
+    `LOG("JSRC: expanding" @ InString);
+    OutString = TagService.ExpandAbilityTag(InString);
+    `LOG("JSRC: expanded to" @ OutString);
+    return (OutString != "");
+}

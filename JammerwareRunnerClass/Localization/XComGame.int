@@ -43,10 +43,10 @@ LocPromotionPopupText="Would it make you feel better if it were called \"Retire\
 
 [Jammerware_JSRC_Ability_SpawnSpire X2AbilityTemplate]
 LocFriendlyName="Create Spire"
-LocLongDescription="Create a spire. Spires provide high cover and have railguns that deal minor electrical damage."
-LocHelpText="Create a spire. Spires provide high cover and have railguns that deal minor electrical damage."
+LocLongDescription="Create a spire. Spires provide high cover."
+LocHelpText="Create a spire. Spires provide high cover."
 LocFlyOverText="Create Spire"
-LocPromotionPopupText="\"These would look so much cooler if they looked like the Templar pillar.\"\n\nSpires are the focal point of most Runner abilities. They provide cover, and confer additional benefits as the runner is promoted.\n <Bullet/> Range: 6 tiles\n<Bullet\> Cooldown: 3 turns\n<Bullet/> Ends your turn"
+LocPromotionPopupText="\"These would look so much cooler if they looked like the Templar pillar.\"\n\nSpires are the focal point of most Runner abilities. They provide cover, and confer additional benefits as the runner is promoted.\n<Bullet/> Range: 6 tiles\n<Bullet/> Cooldown: <Ability:SpawnSpireCooldown/> turns\n<Bullet/> Ends your turn"
 
 [Jammerware_JSRC_Ability_LightningRod X2AbilityTemplate]
 LocFriendlyName="Lightning Rod"
