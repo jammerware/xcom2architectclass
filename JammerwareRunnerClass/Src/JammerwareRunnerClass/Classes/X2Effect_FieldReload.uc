@@ -37,7 +37,6 @@ private static function EventListenerReturn OnSpireSpawned(Object EventData, Obj
 	local X2WeaponTemplate_SpireGun SpireGunTemplate;
     local XComGameState_Ability AbilityState;
 
-    NewGameState = class'XComGameStateContext_ChangeContainer'.static.CreateChangeState("Field Reload - Triggered");
     Shooter = XComGameState_Unit(EventSource);
     Spire = XComGameState_Unit(EventData);
 
@@ -50,6 +49,7 @@ private static function EventListenerReturn OnSpireSpawned(Object EventData, Obj
 
     if (AdjacentAllies.Length > 0)
     {
+        NewGameState = class'XComGameStateContext_ChangeContainer'.static.CreateChangeState("Field Reload - Triggered");
         AbilityState = XComGameState_Ability(NewGameState.ModifyStateObject(class'XComGameState_Ability', AbilityState.ObjectID));
         FlyoverService = new class'Jammerware_JSRC_FlyoverService';
 
