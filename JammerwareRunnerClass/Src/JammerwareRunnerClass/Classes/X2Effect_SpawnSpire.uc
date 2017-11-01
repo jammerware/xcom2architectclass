@@ -10,6 +10,10 @@ function vector GetSpawnLocation(const out EffectAppliedData ApplyEffectParamete
 	SourceUnitGameState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(ApplyEffectParameters.SourceStateObjectRef.ObjectID));
 	TargetUnitGameState = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(ApplyEffectParameters.TargetStateObjectRef.ObjectID));
 
+	`LOG("JSRC: headstone's target is" @ TargetUnitGameState.GetMyTemplateName());
+	`LOG("JSRC: target tile location is" @ `XWorld.GetPositionFromTileCoordinates(TargetUnitGameState.TileLocation));
+	`LOG("JSRC: input location is" @ ApplyEffectParameters.AbilityInputContext.TargetLocations[0]);
+
 	if (SourceUnitGameState.GetReference().ObjectID != TargetUnitGameState.GetReference().ObjectID)
 	{
 		// if this effect is cast on a target (like it is when Headstone is used), use the location of the target unit

@@ -21,10 +21,8 @@ event name CallMeetsCondition(XComGameState_BaseObject kTarget)
     ProximityService = new class'Jammerware_ProximityService';
     AdjacentUnits = ProximityService.GetAdjacentUnits(Target, true);
 
-    `LOG("JSRC: ally adjacency condition - adjacent allies count" @ AdjacentUnits.Length);
     foreach AdjacentUnits(Ally)
     {
-        `LOG("JSRC - shelter trigger, ally" @ Ally.GetMyTemplateName());
         if (
             (RequireAllyCharacterGroup == 'None' || Ally.GetMyTemplate().CharacterGroupName == RequireAllyCharacterGroup) &&
             (RequireAllyEffect == 'None' || EffectsService.IsUnitAffectedByEffect(Ally, RequireAllyEffect)) &&

@@ -152,6 +152,7 @@ static function X2AbilityTemplate AddHeadstone()
 {
 	local X2AbilityTemplate Template;
 	local X2AbilityCooldown Cooldown;
+	local X2Condition_IsInteractiveObject InteractiveObjectCondition;
 	local X2Condition_UnitProperty DeadEnemiesCondition;
 	local X2Effect_SpawnSpire SpawnSpireEffect;
 
@@ -189,8 +190,11 @@ static function X2AbilityTemplate AddHeadstone()
 	DeadEnemiesCondition.ExcludeAlive = true;
 	DeadEnemiesCondition.ExcludeDead = false;
 	DeadEnemiesCondition.ExcludeHostileToSource = false;
-	DeadEnemiesCondition.ExcludeTurret = true;
 	Template.AbilityTargetConditions.AddItem(DeadEnemiesCondition);
+
+	InteractiveObjectCondition = new class'X2Condition_IsInteractiveObject';
+	InteractiveObjectCondition.IsInteractiveObject = false;
+	Template.AbilityTargetConditions.AddItem(InteractiveObjectCondition);
 
 	// triggering
 	Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);
@@ -269,6 +273,9 @@ static function Headstone_BuildVisualization(XComGameState VisualizeGameState)
 
 	class'X2Action_AbilityPerkEnd'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
 	class'X2Action_EnterCover'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
+
+	// sync the spire's visualizer to ensure cover status is reflected
+	SpawnedUnit.SyncVisualizer();
 }
 
 static function X2AbilityTemplate CreateFieldReloadModule()
