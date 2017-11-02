@@ -16,7 +16,7 @@ static function X2DataTemplate CreateSpawnSpire()
 
 	// hud behavior
 	Template.IconImage = "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_Pillar";
-	Template.AbilitySourceName = 'eAbilitySource_Perk';
+	Template.AbilityIconColor = class'Jammerware_JSRC_IconColorService'.static.GetSpireAbilityIconColor();
 	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_AlwaysShow;
 	Template.Hostility = eHostility_Neutral;
 	Template.bDisplayInUITacticalText = false;
@@ -56,6 +56,9 @@ static function X2DataTemplate CreateSpawnSpire()
 	Template.BuildNewGameStateFn = SpawnSpire_BuildGameState;
 	Template.BuildVisualizationFn = SpawnSpire_BuildVisualization;
 	Template.ChosenActivationIncreasePerUse = class'X2AbilityTemplateManager'.default.NonAggressiveChosenActivationIncreasePerUse;
+
+	// additional AbilityTriggers
+	Template.AdditionalAbilities.AddItem(class'X2Ability_RunnerAbilitySet'.default.NAME_ACTIVATE_SPIRE);
 		
 	return Template;
 }

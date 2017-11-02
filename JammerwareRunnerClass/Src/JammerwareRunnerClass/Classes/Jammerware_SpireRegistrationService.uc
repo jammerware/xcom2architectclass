@@ -7,18 +7,18 @@ function XComGameState_Unit GetRunnerFromSpire(int SpireID)
     local XComGameStateHistory History;
     local XComGameState_Unit Spire;
     local int SpireCreatorID, i;
-    local StateObjectReference IteratorEffectRef;
     local XComgameState_Effect EffectState;
 
     History = `XCOMHISTORY;
     Spire = XComGameState_Unit(History.GetGameStateForObjectID(SpireID));
 
-    foreach Spire.AffectedByEffects(IteratorEffectRef)
+    // have to use the name array here, because for some reason i can't get the template name from AffectedByEffects at this point
+    // in execution. curious about this
+    for (i = 0; i < Spire.AffectedByEffectNames.Length; i++)
     {
-        EffectState = XComGameState_Effect(History.GetGameStateForObjectID(IteratorEffectRef.ObjectID));
-
-        if (EffectState.GetMyTemplateName() == class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_PASSIVE)
+        if (Spire.AffectedByEffectNames[i] == class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_PASSIVE)
         {
+            EffectState = XComGameState_Effect(History.GetGameStateForObjectID(Spire.AffectedByEffects[i].ObjectID));
             SpireCreatorID = EffectState.ApplyEffectParameters.SourceStateObjectRef.ObjectID;
             break;
         }

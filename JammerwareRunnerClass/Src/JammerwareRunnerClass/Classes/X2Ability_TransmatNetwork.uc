@@ -43,7 +43,7 @@ static function X2AbilityTemplate CreateTransmat()
 	Template.IconImage = default.ICON_TRANSMATNETWORK;
 	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.UNSPECIFIED_PRIORITY;
 	Template.bDontDisplayInAbilitySummary = true;
-	Template.AbilityIconColor = "ff6d00";
+	Template.AbilityIconColor = class'Jammerware_JSRC_IconColorService'.static.GetSpireAbilityIconColor();
 
 	// cost
 	ActionPointCost = new class'X2AbilityCost_ActionPoints';
@@ -53,7 +53,7 @@ static function X2AbilityTemplate CreateTransmat()
 
 	// cooldown
 	Cooldown = new class'X2AbilityCooldown_Global';
-	Cooldown.iNumTurns = 6;
+	Cooldown.iNumTurns = 5;
 	Template.AbilityCooldown = Cooldown;
 
 	// conditions

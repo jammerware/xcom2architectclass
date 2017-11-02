@@ -24,6 +24,7 @@ static function array <X2DataTemplate> CreateTemplates()
 
 	// SQUADDIE!
 	Templates.AddItem(class'X2Ability_SpawnSpire'.static.CreateSpawnSpire());
+	Templates.AddItem(CreateActivateSpire());
 	
 	// CORPORAL!
 	Templates.AddItem(CreateFieldReloadModule());
@@ -38,7 +39,6 @@ static function array <X2DataTemplate> CreateTemplates()
 	Templates.AddItem(class'X2Ability_TargetingArray'.static.CreateTargetingArrayTriggered());
 	Templates.AddItem(CreateKineticRigging());
 	Templates.AddItem(CreateQuicksilver());
-	Templates.AddItem(CreateActivateSpire());
 
 	// CAPTAIN!
 	Templates.AddItem(class'X2Ability_RelayedShot'.static.CreateRelayedShot());
@@ -57,6 +57,61 @@ static function array <X2DataTemplate> CreateTemplates()
 	return Templates;
 }
 
+private static function X2AbilityTemplate CreateActivateSpire()
+{
+	local X2AbilityTemplate Template;
+	local X2AbilityCooldown Cooldown;
+	local X2Effect_GrantActionPoints APEffect;
+
+	// general properties
+	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_ACTIVATE_SPIRE);
+	Template.Hostility = eHostility_Neutral;
+
+	// hud behavior
+	Template.IconImage = "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_volt";
+	Template.AbilitySourceName = 'eAbilitySource_Perk';
+	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_ShowIfAvailable;
+	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_SQUADDIE_PRIORITY;
+	Template.bLimitTargetIcons = true;
+	Template.AbilityIconColor = class'Jammerware_JSRC_IconColorService'.static.GetSpireAbilityIconColor();
+
+	// cost
+	Template.AbilityCosts.AddItem(default.FreeActionCost);
+
+	// Cooldown
+	Cooldown = new class'X2AbilityCooldown';
+	Cooldown.iNumTurns = default.ACTIVATE_SPIRE_COOLDOWN;
+	Template.AbilityCooldown = Cooldown;
+
+	// targeting style (how targets are determined by game rules)
+	Template.AbilityTargetStyle = default.SimpleSingleTarget;
+
+	// hit chance
+	Template.AbilityToHitCalc = default.DeadEye;
+
+	// conditions
+	Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
+	Template.AbilityTargetConditions.AddItem(default.GameplayVisibilityCondition);
+	Template.AbilityTargetConditions.AddItem(new class'X2Condition_OwnedSpire');
+
+	// triggering
+	Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);
+	
+	// effects
+	APEffect = new class'X2Effect_GrantActionPoints';
+	APEffect.NumActionPoints = 2;
+	APEffect.PointType = class'X2CharacterTemplateManager'.default.StandardActionPoint;
+	APEffect.bSelectUnit = true;
+	Template.AddTargetEffect(APEffect);
+	
+	// game state and visualization
+	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
+	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
+	Template.bShowActivation = true;
+
+	return Template;
+}
+
 static function X2AbilityTemplate AddShelter()
 {
 	return PurePassive(default.NAME_SHELTER, "img:///UILibrary_PerkIcons.UIPerk_adventshieldbearer_energyshield");
@@ -64,12 +119,7 @@ static function X2AbilityTemplate AddShelter()
 
 static function X2AbilityTemplate CreateQuicksilver()
 {
-	local X2AbilityTemplate Template;
-
-	Template = PurePassive(default.NAME_QUICKSILVER, "img:///UILibrary_PerkIcons.UIPerk_runandgun");
-	Template.AdditionalAbilities.AddItem(default.NAME_ACTIVATE_SPIRE);
-
-	return Template;
+	return PurePassive(default.NAME_QUICKSILVER, "img:///UILibrary_PerkIcons.UIPerk_runandgun");
 }
 
 static function X2AbilityTemplate AddReclaim()
@@ -313,60 +363,6 @@ static function X2AbilityTemplate CreateFieldReloadModule()
 	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
 	Template.bShowActivation = false;
 	Template.bSkipFireAction = true;
-
-	return Template;
-}
-
-private static function X2AbilityTemplate CreateActivateSpire()
-{
-	local X2AbilityTemplate Template;
-	local X2AbilityCooldown Cooldown;
-	local X2Effect_GrantActionPoints APEffect;
-
-	// general properties
-	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_ACTIVATE_SPIRE);
-	Template.Hostility = eHostility_Neutral;
-
-	// hud behavior
-	Template.IconImage = "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_volt";
-	Template.AbilitySourceName = 'eAbilitySource_Perk';
-	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_AlwaysShow;
-	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.REND_PRIORITY;
-	Template.bLimitTargetIcons = true;
-
-	// cost
-	Template.AbilityCosts.AddItem(default.FreeActionCost);
-
-	// Cooldown
-	Cooldown = new class'X2AbilityCooldown';
-	Cooldown.iNumTurns = default.ACTIVATE_SPIRE_COOLDOWN;
-	Template.AbilityCooldown = Cooldown;
-
-	// targeting style (how targets are determined by game rules)
-	Template.AbilityTargetStyle = default.SimpleSingleTarget;
-
-	// hit chance
-	Template.AbilityToHitCalc = default.DeadEye;
-
-	// conditions
-	Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
-	Template.AbilityTargetConditions.AddItem(default.GameplayVisibilityCondition);
-	Template.AbilityTargetConditions.AddItem(new class'X2Condition_OwnedSpire');
-
-	// triggering
-	Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);
-	
-	// effects
-	APEffect = new class'X2Effect_GrantActionPoints';
-	APEffect.NumActionPoints = 2;
-	APEffect.PointType = class'X2CharacterTemplateManager'.default.StandardActionPoint;
-	APEffect.bSelectUnit = true;
-	Template.AddTargetEffect(APEffect);
-	
-	// game state and visualization
-	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
-	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
-	Template.bShowActivation = true;
 
 	return Template;
 }

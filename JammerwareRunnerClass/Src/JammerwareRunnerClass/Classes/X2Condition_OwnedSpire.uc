@@ -24,7 +24,8 @@ event name CallMeetsCondition(XComGameState_BaseObject kTarget)
 
 event name CallMeetsConditionWithSource(XComGameState_BaseObject kTarget, XComGameState_BaseObject kSource)
 {
-    local XComGameState_Unit Source, Target;
+    local XComGameState_Unit Source, Target, SpireOwner;
+    local Jammerware_SpireRegistrationService SpireRegistrationService;
 
     Source = XComGameState_Unit(kSource);
     Target = XComGameState_Unit(kTarget);
@@ -34,18 +35,7 @@ event name CallMeetsConditionWithSource(XComGameState_BaseObject kTarget, XComGa
         return 'AA_UnitIsHostile';
     }
 
-    return 'AA_Success';
-}
-
-event name CallAbilityMeetsCondition(XComGameState_Ability kAbility, XComGameState_BaseObject kTarget)
-{
-    local Jammerware_SpireRegistrationService SpireRegistrationService;
-    local XComGameState GameState;
-    local XComGameState_Unit Source, SpireOwner;
-
     SpireRegistrationService = new class'Jammerware_SpireRegistrationService';
-    GameState = kAbility.GetParentGameState();
-    Source = XComGameState_Unit(GameState.GetGameStateForObjectID(kAbility.OwnerStateObject.ObjectID));
     SpireOwner = SpireRegistrationService.GetRunnerFromSpire(kTarget.ObjectID);
 
     if (SpireOwner == none || SpireOwner.ObjectID != Source.ObjectID)

@@ -43,7 +43,7 @@ static function X2DataTemplate CreateTemplate_SpireGun_Conventional()
 	`CREATE_X2TEMPLATE(class'X2WeaponTemplate_SpireGun', Template, default.NAME_SPIREGUN_CONVENTIONAL);
 	Template.WeaponTech = 'conventional';
 	Template.strImage = "img:///UILibrary_Common.ConvSecondaryWeapons.PsiAmp";
-	Template.GameArchetype = "WP_PsiAmp_CV.WP_PsiAmp_CV";
+	Template.GameArchetype = "Jammerware_JSRC_Weapons.WP_SpireKit_CV";
 	Template.Tier = 0;
 	Template.StartingItem = true;
 	Template.InfiniteAmmo = true;
@@ -68,7 +68,7 @@ static function X2DataTemplate CreateTemplate_SpireGun_Magnetic()
 	`CREATE_X2TEMPLATE(class'X2WeaponTemplate_SpireGun', Template, default.NAME_SPIREGUN_MAGNETIC);
 	Template.WeaponTech = 'magnetic';
 	Template.strImage = "img:///UILibrary_Common.MagSecondaryWeapons.MagPsiAmp";
-	Template.GameArchetype = "WP_PsiAmp_MG.WP_PsiAmp_MG";
+	Template.GameArchetype = "Jammerware_JSRC_Weapons.WP_SpireKit_MG";
 	Template.Tier = 2;
 	Template.InfiniteAmmo = true;
 	Template.iTypicalActionCost = 1;
@@ -96,7 +96,7 @@ static function X2DataTemplate CreateTemplate_SpireGun_Beam()
 	`CREATE_X2TEMPLATE(class'X2WeaponTemplate_SpireGun', Template, default.NAME_SPIREGUN_BEAM);
 	Template.WeaponTech = 'beam';
 	Template.strImage = "img:///UILibrary_Common.BeamSecondaryWeapons.BeamPsiAmp";
-	Template.GameArchetype = "WP_PsiAmp_BM.WP_PsiAmp_BM";
+	Template.GameArchetype = "Jammerware_JSRC_Weapons.WP_SpireKit_BM";
 	Template.Tier = 4;
 	Template.InfiniteAmmo = true;
 	Template.iTypicalActionCost = 1;
