@@ -26,7 +26,7 @@ static function X2DataTemplate CreateTransmatLink()
 	
 	// Cooldown
 	Cooldown = new class'X2AbilityCooldown';
-	Cooldown.iNumTurns = 7;
+	Cooldown.iNumTurns = 5;
 	Template.AbilityCooldown = Cooldown;
 
 	// targeting style (how targets are determined by game rules)
@@ -88,9 +88,6 @@ static simulated function XComGameState TransmatLink_BuildGameState(XComGameStat
 	{
 		WeaponState = XComGameState_Item(NewGameState.ModifyStateObject(class'XComGameState_Item', AbilityContext.InputContext.ItemObject.ObjectID));
 	}
-
-    class'Jammerware_DebugUtils'.static.LogUnitLocation(ShooterUnit);
-    class'Jammerware_DebugUtils'.static.LogUnitLocation(TargetUnit);
 
 	ShooterDesiredLoc = TargetUnit.TileLocation;
 	TargetDesiredLoc = ShooterUnit.TileLocation;
