@@ -105,7 +105,7 @@ LocFriendlyName="Create Spire"
 LocLongDescription="Create a spire. Spires provide high cover."
 LocHelpText="Create a spire. Spires provide high cover."
 LocFlyOverText="Create Spire"
-LocPromotionPopupText="\"These would look so much cooler if they looked like the Templar pillar.\"\n\nSpires are the focal point of most Runner abilities. They provide cover, and confer additional benefits as the runner is promoted.\n<Bullet/> Range: 6 tiles\n<Bullet/> Cooldown: <Ability:SpawnSpireCooldown/> turns\n<Bullet/> Ends your turn"
+LocPromotionPopupText="\"What you leave behind is not what is engraved in stone monuments, but what is woven into the lives of others.\"\n- Pericles\n\nSpires are the focal point of most Runner abilities. They provide cover, and confer additional benefits as the runner is promoted.\n<Bullet/> Range: 6 tiles\n<Bullet/> Cooldown: <Ability:SpawnSpireCooldown/> turns\n<Bullet/> Ends your turn"
 
 [Jammerware_JSRC_Ability_LightningRod X2AbilityTemplate]
 LocFriendlyName="Lightning Rod"

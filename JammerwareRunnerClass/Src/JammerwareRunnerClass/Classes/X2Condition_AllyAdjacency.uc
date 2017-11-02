@@ -14,10 +14,8 @@ event name CallMeetsCondition(XComGameState_BaseObject kTarget)
 	local XComGameState_Unit Target, Ally;
     local array<XComGameState_Unit> AdjacentUnits;
     local Jammerware_ProximityService ProximityService;
-    local Jammerware_GameStateEffectsService EffectsService;
 
     Target = XComGameState_Unit(kTarget);
-    EffectsService = new class'Jammerware_GameStateEffectsService';
     ProximityService = new class'Jammerware_ProximityService';
     AdjacentUnits = ProximityService.GetAdjacentUnits(Target, true);
 
@@ -25,8 +23,8 @@ event name CallMeetsCondition(XComGameState_BaseObject kTarget)
     {
         if (
             (RequireAllyCharacterGroup == 'None' || Ally.GetMyTemplate().CharacterGroupName == RequireAllyCharacterGroup) &&
-            (RequireAllyEffect == 'None' || EffectsService.IsUnitAffectedByEffect(Ally, RequireAllyEffect)) &&
-            (ExcludeAllyEffect == 'None' || !EffectsService.IsUnitAffectedByEffect(Ally, ExcludeAllyEffect))
+            (RequireAllyEffect == 'None' || Ally.AffectedByEffectNames.Find(RequireAllyEffect) != INDEX_NONE) &&
+            (ExcludeAllyEffect == 'None' || Ally.AffectedByEffectNames.Find(ExcludeAllyEffect) == INDEX_NONE)
         ) { return 'AA_Success'; }
     }
 

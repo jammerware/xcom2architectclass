@@ -74,14 +74,10 @@ private function bool MeetsAdjacencyCriteria(
     optional name RequiredCandidateCharacterGroup, 
     optional name RequiredCandidateEffect)
 {
-    local Jammerware_GameStateEffectsService EffectsService;
-
-    EffectsService = new class'Jammerware_GameStateEffectsService';
-
     return
         !CandidateUnit.IsDead() &&
         (RequiredCandidateTeam == eTeam_All || CandidateUnit.GetTeam() == RequiredCandidateTeam) && 
-        (RequiredCandidateEffect == 'None' || EffectsService.IsUnitAffectedByEffect(CandidateUnit, RequiredCandidateEffect)) &&
+        (RequiredCandidateEffect == 'None' || CandidateUnit.AffectedByEffectNames.Find(RequiredCandidateEffect) != INDEX_NONE) &&
         (RequiredCandidateCharacterGroup == 'None' || CandidateUnit.GetMyTemplate().CharacterGroupName == RequiredCandidateCharacterGroup) &&
         AreTilesAdjacent(SourceTile, CandidateUnit.TileLocation);
 }

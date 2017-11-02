@@ -4,13 +4,10 @@ var private bool bShooterHasUnity;
 
 function Init(AvailableAction InAction, int NewTargetIndex)
 {
-	local Jammerware_GameStateEffectsService EffectsService;
-
 	super.Init(InAction, NewTargetIndex);
 
 	// if the shooter has unity, the cursor needs to be unlocked to allow selection of tiles adjacent to allies
-	EffectsService = new class'Jammerware_GameStateEffectsService';
-	if (EffectsService.IsUnitAffectedByEffect(ShooterState, class'X2Ability_RunnerAbilitySet'.default.NAME_UNITY))
+	if (ShooterState.AffectedByEffectNames.Find(class'X2Ability_RunnerAbilitySet'.default.NAME_UNITY) != INDEX_NONE)
 	{
 		bShooterHasUnity = true;
 		LockCursorRange(-1);

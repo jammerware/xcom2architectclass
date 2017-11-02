@@ -72,14 +72,12 @@ function InitSpireAbilityFromRunnerAbility(
 	XComGameState NewGameState,
 	optional StateObjectReference WeaponRef)
 {
-	local Jammerware_GameStateEffectsService EffectsService;
 	local X2AbilityTemplate SharedAbilityTemplate;
 	local X2AbilityTemplateManager TemplateManager;
 
-	EffectsService = new class'Jammerware_GameStateEffectsService';
 	TemplateManager = class'X2AbilityTemplateManager'.static.GetAbilityTemplateManager();
 
-	if (EffectsService.IsUnitAffectedByEffect(RunnerUnit, RunnerAbilityName))
+	if (RunnerUnit.AffectedByEffectNames.Find(RunnerAbilityName) != INDEX_NONE)
 	{
 		SharedAbilityTemplate = TemplateManager.FindAbilityTemplate(SpireAbilityName);
 		`LOG("JSRC: initing" @ SharedAbilityTemplate.DataName @ "for" @ SpireUnit.GetMyTemplate().DataName);
