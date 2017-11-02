@@ -107,20 +107,6 @@ LocHelpText="Create a spire. Spires provide high cover."
 LocFlyOverText="Create Spire"
 LocPromotionPopupText="\"What you leave behind is not what is engraved in stone monuments, but what is woven into the lives of others.\"\n- Pericles\n\nSpires are the focal point of most Runner abilities. They provide cover, and confer additional benefits as the runner is promoted.\n<Bullet/> Range: 6 tiles\n<Bullet/> Cooldown: <Ability:SpawnSpireCooldown/> turns\n<Bullet/> Ends your turn"
 
-[Jammerware_JSRC_Ability_LightningRod X2AbilityTemplate]
-LocFriendlyName="Lightning Rod"
-LocLongDescription="Your spires gain Lightning Rod, an ability which deals moderate damage in a radius around the spire. Robotic units take extra damage from Lightning Rod and have a 50% chance to be stunned."
-LocHelpText="Your spires gain Lightning Rod, an ability which deals moderate damage in a radius around the spire. Robotic units take extra damage from Lightning Rod and have a 50% chance to be stunned."
-LocFlyOverText="Lightning Rod"
-LocPromotionPopupText="1.05 patch save us!"
-
-[Jammerware_JSRC_Ability_SpireLightningRod X2AbilityTemplate]
-LocFriendlyName="Lightning Rod"
-LocLongDescription="Deal moderate damage in a radius around the spire. Robotic units take extra damage from Lightning Rod and have a 50% chance to be stunned."
-LocHelpText="Deal moderate damage in a radius around the spire. Robotic units take extra damage from Lightning Rod and have a 50% chance to be stunned."
-LocFlyOverText="Lightning Rod"
-LocPromotionPopupText="LIGHTNING!"
-
 [Jammerware_JSRC_Ability_Shelter X2AbilityTemplate]
 LocFriendlyName="Shelter"
 LocLongDescription="Your spires gain Shelter, which grants allies who end their turn adjacent to the spire a small shield. Shelter doesn't stack."

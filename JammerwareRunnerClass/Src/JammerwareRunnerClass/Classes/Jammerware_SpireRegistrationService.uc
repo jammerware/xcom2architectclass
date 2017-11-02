@@ -13,16 +13,17 @@ function XComGameState_Unit GetRunnerFromSpire(int SpireID)
     History = `XCOMHISTORY;
     Spire = XComGameState_Unit(History.GetGameStateForObjectID(SpireID));
 
-    for (i = 0; i < Spire.AffectedByEffectNames.Length; i++)
+    foreach Spire.AffectedByEffects(IteratorEffectRef)
     {
-        if (Spire.AffectedByEffectNames[i] == class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_PASSIVE)
+        EffectState = XComGameState_Effect(History.GetGameStateForObjectID(IteratorEffectRef.ObjectID));
+
+        if (EffectState.GetMyTemplateName() == class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_PASSIVE)
         {
-            EffectState = XComGameState_Effect(History.GetGameStateForObjectID(Spire.AffectedByEffects[i].ObjectID));
             SpireCreatorID = EffectState.ApplyEffectParameters.SourceStateObjectRef.ObjectID;
             break;
         }
     }
-    
+
     return XComGameState_Unit(History.GetGameStateForObjectID(SpireCreatorID));
 }
 
@@ -45,10 +46,6 @@ function RegisterSpireToRunner(const out EffectAppliedData ApplyEffectParameters
     local EffectAppliedData NewEffectParams;
     local XComGameState_Unit RunnerState, SpireState;
     local X2Effect_SpirePassive SpirePassiveEffect;
-
-    `LOG("JSRC: REGISTERING SPIRE TO RUNNER");
-    `LOG("JSRC: REGISTERING SPIRE TO RUNNER");
-    `LOG("JSRC: REGISTERING SPIRE TO RUNNER");
 
     RunnerState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(ApplyEffectParameters.SourceStateObjectRef.ObjectID));
     `LOG("JSRC: runner state during registration is" @ RunnerState.GetMyTemplateName() @ RunnerState.ObjectID);

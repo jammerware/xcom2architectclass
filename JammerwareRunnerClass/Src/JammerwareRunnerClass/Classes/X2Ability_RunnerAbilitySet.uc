@@ -7,7 +7,6 @@ var name NAME_DEADBOLT;
 var name NAME_FIELD_RELOAD_MODULE;
 var name NAME_HEADSTONE;
 var name NAME_KINETIC_RIGGING;
-var name NAME_LIGHTNINGROD;
 var name NAME_QUICKSILVER;
 var name NAME_RECLAIM;
 var name NAME_SHELTER;
@@ -55,15 +54,7 @@ static function array <X2DataTemplate> CreateTemplates()
 	// GTS!
 	Templates.AddItem(CreateDeadbolt());
 
-	// HOPEFULLY WON'T EVEN BE A REAL THING!
-	Templates.AddItem(AddLightningRod());
-
 	return Templates;
-}
-
-static function X2AbilityTemplate AddLightningRod()
-{
-	return PurePassive(default.NAME_LIGHTNINGROD, "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_volt");
 }
 
 static function X2AbilityTemplate AddShelter()
@@ -440,7 +431,6 @@ defaultproperties
 	NAME_FIELD_RELOAD_MODULE=Jammerware_JSRC_Ability_FieldReloadModule
 	NAME_HEADSTONE=Jammerware_JSRC_Ability_Headstone
 	NAME_KINETIC_RIGGING=Jammerware_JSRC_Ability_KineticRigging
-	NAME_LIGHTNINGROD=Jammerware_JSRC_Ability_LightningRod
 	NAME_QUICKSILVER=Jammerware_JSRC_Ability_Quicksilver
 	NAME_RECLAIM=Jammerware_JSRC_Ability_Reclaim
 	NAME_SHELTER=Jammerware_JSRC_Ability_Shelter

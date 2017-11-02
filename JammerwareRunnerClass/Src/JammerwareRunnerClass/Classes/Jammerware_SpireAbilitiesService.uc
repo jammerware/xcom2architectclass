@@ -27,15 +27,6 @@ function ConfigureSpireAbilities(XComGameState_Unit SpireUnit, XComGameState_Uni
 	);
 	InitSpireAbilityFromRunnerAbility
 	(
-		SourceUnit, 
-		SpireUnit, 
-		class'X2Ability_RunnerAbilitySet'.default.NAME_LIGHTNINGROD, 
-		class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_LIGHTNINGROD,
-		NewGameState,
-		SourceUnit.GetSecondaryWeapon().GetReference()
-	);
-	InitSpireAbilityFromRunnerAbility
-	(
 		SourceUnit,
 		SpireUnit,
 		class'X2Ability_TransmatNetwork'.default.NAME_TRANSMATNETWORK,
