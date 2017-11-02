@@ -1,4 +1,4 @@
-class Jammerware_DebugUtils extends Object;
+class Jammerware_JSRC_DebugUtils extends Object;
 
 static function LogUnitAffectedByEffects(XComGameState_Unit Unit)
 {
