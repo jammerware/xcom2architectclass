@@ -1,2 +1,3 @@
-# per-user config files
+# per-user or per-tools config files
+.vscode
 *.XCOM_suo
