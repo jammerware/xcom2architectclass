@@ -201,7 +201,6 @@ static function X2AbilityTemplate AddHeadstone()
 {
 	local X2AbilityTemplate Template;
 	local X2AbilityCooldown Cooldown;
-	local X2Condition_IsInteractiveObject InteractiveObjectCondition;
 	local X2Condition_UnitProperty DeadEnemiesCondition;
 	local X2Effect_SpawnSpire SpawnSpireEffect;
 
@@ -214,7 +213,7 @@ static function X2AbilityTemplate AddHeadstone()
 	Template.AbilitySourceName = 'eAbilitySource_Perk';
 	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_AlwaysShow;
 	Template.bDisplayInUITacticalText = false;
-	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_LIEUTENANT_PRIORITY;
+	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_SERGEANT_PRIORITY;
 	Template.bLimitTargetIcons = true;
 
 	// cost
@@ -228,6 +227,9 @@ static function X2AbilityTemplate AddHeadstone()
 	// targeting style (how targets are determined by game rules)
 	Template.AbilityTargetStyle = default.SimpleSingleTarget;
 
+	// targeting method (how the user chooses a target based on the rules)
+	Template.TargetingMethod = class'X2TargetingMethod_TopDownTileHighlight';
+
 	// hit chance
 	Template.AbilityToHitCalc = default.DeadEye;
 
@@ -239,11 +241,8 @@ static function X2AbilityTemplate AddHeadstone()
 	DeadEnemiesCondition.ExcludeAlive = true;
 	DeadEnemiesCondition.ExcludeDead = false;
 	DeadEnemiesCondition.ExcludeHostileToSource = false;
+	DeadEnemiesCondition.FailOnNonUnits = true;
 	Template.AbilityTargetConditions.AddItem(DeadEnemiesCondition);
-
-	InteractiveObjectCondition = new class'X2Condition_IsInteractiveObject';
-	InteractiveObjectCondition.IsInteractiveObject = false;
-	Template.AbilityTargetConditions.AddItem(InteractiveObjectCondition);
 
 	// triggering
 	Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);
