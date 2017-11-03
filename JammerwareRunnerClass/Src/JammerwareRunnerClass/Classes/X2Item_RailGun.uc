@@ -43,7 +43,7 @@ private static function X2DataTemplate CreateRailgunConventional()
 	Template.iEnvironmentDamage = default.RAILGUN_IENVIRONMENTDAMAGE;
 
 	Template.InventorySlot = eInvSlot_PrimaryWeapon;
-	Template.Abilities.AddItem('StandardShot');
+	//Template.Abilities.AddItem('StandardShot');
 
 	// This all the resources; sounds, animations, models, physics, the works.
 	Template.GameArchetype = "WP_Turret_MG.WP_Turret_MG";
@@ -77,7 +77,7 @@ private static function X2DataTemplate CreateRailgunMagnetic()
 	Template.iEnvironmentDamage = default.RAILGUN_IENVIRONMENTDAMAGE;
 
 	Template.InventorySlot = eInvSlot_PrimaryWeapon;
-	Template.Abilities.AddItem('StandardShot');
+	//Template.Abilities.AddItem('StandardShot');
 
 	// This all the resources; sounds, animations, models, physics, the works.
 	Template.GameArchetype = "WP_Turret_MG.WP_Turret_MG";

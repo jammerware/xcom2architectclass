@@ -39,6 +39,12 @@ function Canceled()
 	IconManager.ShowIcons(false);
 }
 
+function Committed()
+{
+	super.Committed();
+	AOEMeshActor.Destroy();
+}
+
 function Update(float DeltaTime)
 {
 	local vector NewTargetLocation;
