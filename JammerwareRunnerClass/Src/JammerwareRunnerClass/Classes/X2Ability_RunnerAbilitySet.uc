@@ -11,6 +11,7 @@ var name NAME_QUICKSILVER;
 var name NAME_RECLAIM;
 var name NAME_SHELTER;
 var name NAME_SOUL_OF_THE_ARCHITECT;
+var name NAME_TARGETING_ARRAY;
 var name NAME_UNITY;
 
 // config/balance
@@ -35,13 +36,12 @@ static function array <X2DataTemplate> CreateTemplates()
 	Templates.AddItem(AddReclaim());
 
 	// LIEUTENANT!
-	Templates.AddItem(class'X2Ability_TargetingArray'.static.CreateTargetingArray());
-	Templates.AddItem(class'X2Ability_TargetingArray'.static.CreateTargetingArrayTriggered());
+	Templates.AddItem(CreateTargetingArray());
 	Templates.AddItem(CreateKineticRigging());
-	Templates.AddItem(CreateQuicksilver());
 
 	// CAPTAIN!
 	Templates.AddItem(class'X2Ability_RelayedShot'.static.CreateRelayedShot());
+	Templates.AddItem(CreateQuicksilver());
 
 	// MAJOR!
 	Templates.AddItem(CreateUnity());
@@ -371,6 +371,11 @@ static function X2AbilityTemplate CreateKineticRigging()
 	return PurePassive(default.NAME_KINETIC_RIGGING, "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_StunStrike");
 }
 
+private static function X2AbilityTemplate CreateTargetingArray()
+{
+	return PurePassive(default.NAME_TARGETING_ARRAY, class'X2Ability_TargetingArray'.default.ICON_TARGETING_ARRAY);
+}
+
 static function X2AbilityTemplate CreateUnity()
 {
 	return PurePassive(default.NAME_UNITY, "img:///UILibrary_PerkIcons.UIPerk_aethershift");
@@ -430,5 +435,6 @@ defaultproperties
 	NAME_RECLAIM=Jammerware_JSRC_Ability_Reclaim
 	NAME_SHELTER=Jammerware_JSRC_Ability_Shelter
 	NAME_SOUL_OF_THE_ARCHITECT=Jammerware_JSRC_Ability_SoulOfTheArchitect
+	NAME_TARGETING_ARRAY=Jammerware_JSRC_Ability_TargetingArray
 	NAME_UNITY=Jammerware_JSRC_Ability_Unity
 }

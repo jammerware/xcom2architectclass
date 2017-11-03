@@ -165,15 +165,15 @@ LocPromotionPopupText="\"Rest in peace.\"\n\n<Bullet/> Headstone doesn't share a
 
 [Jammerware_JSRC_Ability_TargetingArray X2AbilityTemplate]
 LocFriendlyName="Targeting Array"
-LocLongDescription="Your <Ability:WeaponName/> shots gain an additional 20% accuracy when you're adjacent to a spire."
-LocHelpText="Your <Ability:WeaponName/> shots gain an additional 20% accuracy when you're adjacent to a spire."
+LocLongDescription="Your spires gain Targeting Array, an ability that grants an adjacent squadmate an additional 20% accuracy for a turn."
+LocHelpText="Your spires gain Targeting Array, an ability that grants an adjacent squadmate an additional 20% accuracy for a turn."
 LocFlyOverText="Targeting Array"
 LocPromotionPopupText="\"If only it were small enough to fit on a gun...\"\n\n<Bullet/> Passive"
 
-[Jammerware_JSRC_Ability_TargetingArrayTriggered X2AbilityTemplate]
+[Jammerware_JSRC_Ability_SpireTargetingArray X2AbilityTemplate]
 LocFriendlyName="Targeting Array"
-LocLongDescription="Your <Ability:WeaponName/> shots gain an additional 20% accuracy when you're adjacent to a spire."
-LocHelpText="Your <Ability:WeaponName/> shots gain an additional 20% accuracy when you're adjacent to a spire."
+LocLongDescription="Grant an adjacent squadmate an additional 20% accuracy for a turn. Targeting Array doesn't end the spire's turn."
+LocHelpText="Grant an adjacent squadmate an additional 20% accuracy for a turn. Targeting Array doesn't end the spire's turn."
 LocFlyOverText="Targeting Array"
 LocPromotionPopupText="\"If only it were small enough to fit on a gun...\"\n\n<Bullet/> Passive"
 

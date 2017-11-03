@@ -18,6 +18,15 @@ function ConfigureSpireAbilities(XComGameState_Unit SpireUnit, XComGameState_Uni
 	);
 	InitSpireAbilityFromRunnerAbility
 	(
+		SourceUnit,
+		SpireUnit,
+		class'X2Ability_RunnerAbilitySet'.default.NAME_TARGETING_ARRAY,
+		class'X2Ability_TargetingArray'.default.NAME_SPIRE_TARGETING_ARRAY,
+		NewGameState,
+		SourceUnit.GetSecondaryWeapon().GetReference()
+	);
+	InitSpireAbilityFromRunnerAbility
+	(
 		SourceUnit, 
 		SpireUnit, 
 		class'X2Ability_RunnerAbilitySet'.default.NAME_QUICKSILVER, 

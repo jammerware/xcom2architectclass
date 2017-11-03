@@ -23,6 +23,7 @@ static function array <X2DataTemplate> CreateTemplates()
 
 	// LIEUTENANT
 	Templates.AddItem(class'X2Ability_KineticPulse'.static.CreateKineticPulse());
+	Templates.AddItem(class'X2Ability_TargetingArray'.static.CreateSpireTargetingArray());
 
 	// COLONEL!
 	Templates.AddItem(class'X2Ability_TransmatNetwork'.static.CreateSpireTransmatNetwork());
