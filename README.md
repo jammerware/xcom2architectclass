@@ -49,5 +49,6 @@ The goal of the Spire Runner class is to encourage a spatially-driven play patte
 
 ## Acknowledgments
 - Consulting Designer: SBGC_Smallfry
-- Robojumper™, bountygiver, Aleosiss, shiremct and all of the members of the XCOM 2 Modding Discord for their patience and help.
+- Visual Effects Consultant: Vortex
+- Robojumper™, bountygiver, Aleosiss, Musashi, shiremct and all of the members of the XCOM 2 Modding Discord for their patience and help.
 - Lucubration for their awesome Infantry class mod that taught me a lot about how class mods work

@@ -6,8 +6,6 @@ static function X2DataTemplate CreateTransmatLink()
 {
     local X2AbilityTemplate Template;
 	local X2AbilityCooldown Cooldown;
-	local X2Condition_UnitProperty TargetPropertiesCondition;
-	local X2Condition_UnitType UnitTypeCondition;
 
 	// general properties
 	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_TRANSMAT_LINK);
@@ -18,7 +16,7 @@ static function X2DataTemplate CreateTransmatLink()
 	Template.AbilitySourceName = 'eAbilitySource_Perk';
 	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_AlwaysShow;
 	Template.bDisplayInUITacticalText = false;
-	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_SERGEANT_PRIORITY;
+	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_MAJOR_PRIORITY;
 	Template.bLimitTargetIcons = true;
 
 	// cost
@@ -39,18 +37,9 @@ static function X2DataTemplate CreateTransmatLink()
 	Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
 
 	// TODO: need to enforce that the spire target belongs to the ability source
-
-	TargetPropertiesCondition = new class'X2Condition_UnitProperty';
-	TargetPropertiesCondition.ExcludeHostileToSource = true;
-	TargetPropertiesCondition.ExcludeFriendlyToSource = false;
-	TargetPropertiesCondition.RequireSquadmates = true;
-	TargetPropertiesCondition.ExcludeDead = true;
-	Template.AbilityTargetConditions.AddItem(TargetPropertiesCondition);
-
-	UnitTypeCondition = new class'X2Condition_UnitType';
-	UnitTypeCondition.IncludeTypes.AddItem(class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE);
-	Template.AbilityTargetConditions.AddItem(UnitTypeCondition);
-
+	Template.AbilityTargetConditions.AddItem(default.GameplayVisibilityCondition);
+	Template.AbilityTargetconditions.AddItem(new class'X2Condition_OwnedSpire');
+	
 	// triggering
 	Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);
 	
