@@ -54,10 +54,13 @@ private static function EventListenerReturn OnSpireSpawned(Object EventData, Obj
 
         foreach AdjacentAllies(IterAlly)
         {
-            // TODO: maybe preserve "restore all ammo" via config too
-            NewGameState.ModifyStateObject(class'XComGameState_Unit', IterAlly.ObjectID);
-            ItemsService.LoadAmmo(IterAlly.GetPrimaryWeapon(), SpireGunTemplate.FieldReloadAmmoGranted, NewGameState);
-            `LOG("JSRC: reloaded" @ IterAlly.GetMyTemplateName());
+            if (ItemsService.CanLoadAmmo(IterAlly.GetPrimaryWeapon()))
+            {
+                // TODO: maybe preserve "restore all ammo" via config too
+                NewGameState.ModifyStateObject(class'XComGameState_Unit', IterAlly.ObjectID);
+                ItemsService.LoadAmmo(IterAlly.GetPrimaryWeapon(), SpireGunTemplate.FieldReloadAmmoGranted, NewGameState);
+                `LOG("JSRC: reloaded" @ IterAlly.GetMyTemplateName());
+            }
         }
 
         XComGameStateContext_ChangeContainer(NewGameState.GetContext()).BuildVisualizationFn = FlyoverService.VisualizeFlyovers;

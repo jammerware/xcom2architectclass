@@ -15,3 +15,8 @@ public function LoadAmmo(XComGameState_Item Weapon, int Amount, XComGameState Ga
 
     NewWeaponState.Ammo = MaxLegalAmmo;
 }
+
+public function bool CanLoadAmmo(XComGameState_Item Weapon)
+{
+    return Weapon.Ammo < Weapon.GetClipSize();
+}
