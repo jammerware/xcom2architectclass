@@ -48,12 +48,11 @@ static function X2AbilityTemplate CreateTransmat()
 	// cost
 	ActionPointCost = new class'X2AbilityCost_ActionPoints';
 	ActionPointCost.iNumPoints = 1;
-	ActionPointCost.bFreeCost = true;
 	Template.AbilityCosts.AddItem(ActionPointCost);
 
 	// cooldown
 	Cooldown = new class'X2AbilityCooldown_Global';
-	Cooldown.iNumTurns = 5;
+	Cooldown.iNumTurns = 1;
 	Template.AbilityCooldown = Cooldown;
 
 	// conditions

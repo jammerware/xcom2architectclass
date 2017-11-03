@@ -57,7 +57,7 @@ static function X2DataTemplate CreateSpawnSpire()
 	Template.BuildVisualizationFn = SpawnSpire_BuildVisualization;
 	Template.ChosenActivationIncreasePerUse = class'X2AbilityTemplateManager'.default.NonAggressiveChosenActivationIncreasePerUse;
 
-	// additional AbilityTriggers
+	// additional abilities
 	Template.AdditionalAbilities.AddItem(class'X2Ability_RunnerAbilitySet'.default.NAME_ACTIVATE_SPIRE);
 		
 	return Template;
