@@ -2,8 +2,8 @@
 ; CLASS DEFINITION
 ;-------------------------------------------------------------
 [Runner X2SoldierClassTemplate]
-+DisplayName="Spire Runner"
-+ClassSummary="Spire runners are mobile but offensively weak operatives that support their squadmates with powerful Spires. These immobile structures provide powerful supportive benefits - if the runner places them well."
++DisplayName="Architect"
++ClassSummary="Architects are mobile but offensively weak operatives that support their squadmates with powerful Spires. These immobile structures provide powerful supportive benefits - if the architect places them well."
 +LeftAbilityTreeTitle="Fight"
 +RightAbilityTreeTitle="Flight"
 +AbilityTreeTitles[0]="Fight"
@@ -105,14 +105,14 @@ LocFriendlyName="Create Spire"
 LocLongDescription="Create a spire. Spires provide high cover."
 LocHelpText="Create a spire. Spires provide high cover."
 LocFlyOverText="Create Spire"
-LocPromotionPopupText="\"What you leave behind is not what is engraved in stone monuments, but what is woven into the lives of others.\"\n- Pericles\n\nSpires are the focal point of most Runner abilities. They provide cover, and confer additional benefits as the runner is promoted.\n<Bullet/> Range: 6 tiles\n<Bullet/> Cooldown: <Ability:SpawnSpireCooldown/> turns\n<Bullet/> Ends your turn"
+LocPromotionPopupText="\"What you leave behind is not what is engraved in stone monuments, but what is woven into the lives of others.\"\n- Pericles\n\nSpires are the focal point of most Architect abilities. They provide cover, and confer additional benefits as the architect is promoted.\n<Bullet/> Range: 6 tiles\n<Bullet/> Cooldown: <Ability:SpawnSpireCooldown/> turns\n<Bullet/> Ends your turn"
 
 [Jammerware_JSRC_Ability_Shelter X2AbilityTemplate]
 LocFriendlyName="Shelter"
 LocLongDescription="Your spires gain Shelter, which grants allies who end their turn adjacent to the spire a small shield. Shelter doesn't stack."
 LocHelpText="Your spires gain Shelter, which grants allies who end their turn adjacent to the spire a small shield. Shelter doesn't stack."
 LocFlyOverText="Shelter"
-LocPromotionPopupText="\"What do you actually need? Food, clothing and shelter. Everything else is entertainment.\"\n-Aloe Blacc\n\n<Bullet/> Shelter's shield effect lasts for five turns, but it's refreshed when the shielded soldier ends their turn adjacent to a spire with Shelter.\n<Bullet/> The strength of the shield increases as the runner's spire gun is upgraded.\n<Bullet/> Passive"
+LocPromotionPopupText="\"What do you actually need? Food, clothing and shelter. Everything else is entertainment.\"\n-Aloe Blacc\n\n<Bullet/> Shelter's shield effect lasts for five turns, but it's refreshed when the shielded soldier ends their turn adjacent to a spire with Shelter.\n<Bullet/> The strength of the shield increases as the architect's spire kit is upgraded.\n<Bullet/> Passive"
 
 [Jammerware_JSRC_Ability_SpireShelter X2AbilityTemplate]
 LocFriendlyName="Shelter"
@@ -203,7 +203,7 @@ LocFriendlyName="Relayed Shot"
 LocLongDescription="You fire your <Ability:WeaponName/> at one of your spires. It amplifies the kinetic energy of the shot, increasing its effective range and overpenetrating all targets in the area of effect."
 LocHelpText="You fire your <Ability:WeaponName/> at one of your spires. It amplifies the kinetic energy of the shot, increasing its effective range and overpenetrating all targets in the area of effect."
 LocFlyOverText="Relayed Shot"
-LocPromotionPopupText="\"These new recruits don't even have to aim. I'm gettin' too old for this.\"\nCentral Officer Bradford\n\nRelayed Shot deals the damage of your primary weapon to all targets in the area of effect. This makes spire runners with this ability especially good ammo carriers, since special ammunition effects are also applied.\n\n<Bullet/> 5-turn cooldown<Bullet/> Empties your clip"
+LocPromotionPopupText="\"These new recruits don't even have to aim. I'm gettin' too old for this.\"\nCentral Officer Bradford\n\nRelayed Shot deals the damage of your primary weapon to all targets in the area of effect. This makes architects with this ability especially good ammo carriers, since special ammunition effects are also applied.\n\n<Bullet/> 5-turn cooldown<Bullet/> Empties your clip"
 
 [Jammerware_JSRC_Ability_SoulOfTheArchitect X2AbilityTemplate]
 LocFriendlyName="Soul of the Architect"
@@ -247,8 +247,8 @@ LocPromotionPopupText="\"What you leave behind is not what is engraved in stone 
 ; GTS UNLOCK AND ABILITY
 ;-------------------------------------------------------------
 [Jammerware_JSRC_AbilityUnlock_Deadbolt X2SoldierAbilityUnlockTemplate]
-DisplayName="Spire Runner: Bolt from the Whoosh"
-Summary="When a spire runner misses a shot, the bullet is returned to the magazine if they're using a boltcaster."
+DisplayName="Architect: Bolt from the Whoosh"
+Summary="When an architect misses a shot, the bullet is returned to the magazine if they're using a boltcaster."
 
 [Jammerware_JSRC_Ability_Deadbolt X2AbilityTemplate]
 LocFriendlyName="Bolt from the Whoosh"
@@ -273,9 +273,9 @@ FriendlyName="Beam Railgun"
 ; SCHEMATICS
 ;-------------------------------------------------------------
 [Jammerware_JSRC_Item_SpireGun_Magnetic_Schematic X2SchematicTemplate]
-m_strClassLabel="SPIRE RUNNER"
+m_strClassLabel="ARCHITECT"
 [Jammerware_JSRC_Item_SpireGun_Beam_Schematic X2SchematicTemplate]
-m_strClassLabel="SPIRE RUNNER"
+m_strClassLabel="ARCHITECT"
 
 ;-------------------------------------------------------------
 ; CHARACTERS

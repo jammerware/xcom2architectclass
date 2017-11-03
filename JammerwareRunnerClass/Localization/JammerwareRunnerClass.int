@@ -2,22 +2,22 @@
 ; WEAPONS
 ;-------------------------------------------------------------
 [Jammerware_JSRC_Item_SpireGun_Conventional X2WeaponTemplate_SpireGun]
-FriendlyName="Spire Gun Mk.I"
-FriendlyNamePlural="Spire Guns (Mk.I)"
+FriendlyName="Spire Kit"
+FriendlyNamePlural="Spire Kits"
 BriefSummary="As word of resistance began to spread, an enterprising engineer discovered the schematic for the spire gun in the archives of XCOM's Experimental Tactics Division. The weapon is in need of refinement, but it enables sufficiently trained soldiers to construct tactical spires in battle."
-TacticalText="Spire Gun Mk.Is allow the runner to summon Spires.\n\nStandard spires produce the following values for key spire runner abilities:\n\n<Bullet/> Shelter - 2 points of shield\n<Bullet/> Targeting Array - 10% accuracy bonus"
+TacticalText="Spire Kits allow the runner to summon Spires.\n\nStandard spires produce the following values for key spire runner abilities:\n\n<Bullet/> Shelter - 2 points of shield\n<Bullet/> Targeting Array - 10% accuracy bonus"
 
 [Jammerware_JSRC_Item_SpireGun_Magnetic X2WeaponTemplate_SpireGun]
-FriendlyName="Spire Gun Mk.II"
-FriendlyNamePlural="Spire Guns (Mk.II)"
-BriefSummary="Electromagnetic circuitry tech has improved the performance of our spire guns considerably, enabling rapid construction of powerful EM Spires in the field."
-TacticalText="Spire Gun Mk.IIs allow the runner to summon EM Spires.\n\nEM Spires improve the effect of the following abilities:\n\n<Bullet/> Shelter - The amount of the shield is increased.\n<Bullet/> Targeting Array - The amount of bonus accuracy is increased.\n"
+FriendlyName="EM Spire Kit"
+FriendlyNamePlural="EM Spire Kits"
+BriefSummary="Electromagnetic circuitry tech has improved the performance of our spire kits considerably, enabling rapid construction of powerful EM Spires in the field."
+TacticalText="EM Spire Kits allow the runner to summon EM Spires.\n\nEM Spires improve the effect of the following abilities:\n\n<Bullet/> Shelter - The amount of the shield is increased.\n<Bullet/> Targeting Array - The amount of bonus accuracy is increased.\n"
 
 [Jammerware_JSRC_Item_SpireGun_Beam X2WeaponTemplate_SpireGun]
-FriendlyName="Spire Gun Mk.III"
-FriendlyNamePlural="Spire Guns (Mk.III)"
-BriefSummary="Incorporation of scavenged alien tech has elevated our spire guns to their ultimate efficiency, enabling the materialization of Hardlight Spires in tactical situations."
-TacticalText="Spire Gun Mk.IIIs allow the runner to summon Hardlight Spires.\n\nHardlight Spires further improve the effect of the following abilities:\n\n<Bullet/> Shelter - The amount of the shield is increased.\n<Bullet/> Targeting Array - The amount of bonus accuracy is increased.\n"
+FriendlyName="Hardlight Spire Kit"
+FriendlyNamePlural="Hardlight Spire Kit"
+BriefSummary="Incorporation of scavenged alien tech has elevated our spire kits to their ultimate efficiency, enabling the materialization of Hardlight Spires in tactical situations."
+TacticalText="Hardlight Spire Kits allow the runner to summon Hardlight Spires.\n\nHardlight Spires further improve the effect of the following abilities:\n\n<Bullet/> Shelter - The amount of the shield is increased.\n<Bullet/> Targeting Array - The amount of bonus accuracy is increased.\n"
 
 ;-------------------------------------------------------------
 ; EFFECTS
