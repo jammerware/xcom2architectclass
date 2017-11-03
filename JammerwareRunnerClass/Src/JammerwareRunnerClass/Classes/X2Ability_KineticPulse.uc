@@ -5,8 +5,6 @@ var name NAME_KINETICPULSE;
 static function X2DataTemplate CreateKineticPulse()
 {
     local X2AbilityTemplate Template;
-	local X2AbilityCharges Charges;
-	local X2AbilityCost_Charges ChargeCost;
     local X2AbilityMultiTarget_Cone MultiTargetStyle;
     local X2Effect_Knockback KnockbackEffect;
 
@@ -20,17 +18,8 @@ static function X2DataTemplate CreateKineticPulse()
 	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_ShowIfAvailable;
 	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_LIEUTENANT_PRIORITY;
 
-	// initial Charges
-	Charges = new class'X2AbilityCharges';
-	Charges.InitialCharges = 1;
-	Template.AbilityCharges = Charges;
-
 	// cost
 	Template.AbilityCosts.AddItem(default.WeaponActionTurnEnding);
-
-	ChargeCost = new class'X2AbilityCost_Charges';
-	ChargeCost.NumCharges = 1;
-	Template.AbilityCosts.AddItem(ChargeCost);
 
 	// targeting style (how targets are determined by game rules)
 	Template.AbilityTargetStyle = new class'X2AbilityTarget_Cursor';

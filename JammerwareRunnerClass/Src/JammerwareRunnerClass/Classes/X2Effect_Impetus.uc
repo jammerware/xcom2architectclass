@@ -1,5 +1,59 @@
 class X2Effect_Impetus extends X2Effect_Knockback;
 
+// gets the 8 tiles surrounding the input tile
+private function array<TTile> GetAdjacentTiles(TTile Tile)
+{
+	local int x, y;
+	local TTile StartingTile, TempTile;
+	local array<TTile> Tiles;
+
+	for (x = -1; x <= 1; x++)
+	{
+		for (y = -1; y <=1; y++)
+		{
+			TempTile = StartingTile;
+			TempTile.X += x;
+			TempTile.Y += y;
+
+			if (TempTile.X != StartingTile.X || TempTile.Y != StartingTile.Y)
+			{
+				Tiles.AddItem(TempTile);
+			}
+		}
+	}
+
+	return Tiles;
+}
+
+private function TTile GetClosestTile(TTile StartTile, array<TTile> Tiles)
+{
+	local XComWorldData World;
+	local Vector StartLocation;
+	local Vector TileLocation;
+	local TTile ClosestTile, TileIterator;
+	local float Distance, MinDistance;
+
+	World = `XWORLD;
+	StartLocation = World.GetPositionFromTileCoordinates(StartTile);
+	// what am i even doing with my life
+	MinDistance = 999999999999;
+
+	foreach Tiles(TileIterator)
+	{
+		TileLocation = World.GetPositionFromTileCoordinates(TileIterator);
+		Distance = VSize2D(TileLocation - StartLocation);
+
+		if (Distance < MinDistance)
+		{
+			`LOG("New tile" @ TileLocation @ "is closer" @ Distance);
+			MinDistance = Distance;
+			ClosestTile = TileIterator;
+		}
+	}
+
+	return ClosestTile;
+}
+
 private function bool CanBeDestroyed(XComInteractiveLevelActor InteractiveActor, float DamageAmount)
 {
 	//make sure the knockback damage can destroy this actor.
@@ -29,7 +83,6 @@ private function int GetKnockbackDistance(XComGameStateContext_Ability AbilityCo
 		UpdatedKnockbackDistance_Meters = KnockbackDistanceOverrides[ReasonIndex].NewKnockbackDistance_Meters;
 	}
 
-    `LOG("JSRC: knockback distance:" @UpdatedKnockbackDistance_Meters);
 	return UpdatedKnockbackDistance_Meters;
 }
 
@@ -115,11 +168,8 @@ simulated function ApplyEffectToWorld(const out EffectAppliedData ApplyEffectPar
 			TargetUnit = XComGameState_Unit(kNewTargetState);
 			if(TargetUnit != none) //Only units can be knocked back
 			{
-				`LOG("target unit isn't none");
 				TilesEntered.Length = 0;
 				GetTilesEnteredArray(AbilityContext, kNewTargetState, TilesEntered, AttackDirection, KnockbackDamage, NewGameState);
-
-                `LOG("JSRC: tiles entered" @ TilesEntered.Length);
 
 				//Only process the code below if the target went somewhere
 				if(TilesEntered.Length > 0)
@@ -156,138 +206,142 @@ simulated function ApplyEffectToWorld(const out EffectAppliedData ApplyEffectPar
 	}
 }
 
-//Returns the list of tiles that the unit will pass through as part of the knock back. The last tile in the array is the final destination.
+// this is simplified from the original implementation that i lifted from X2Effect_Knockback
+// Unlike effects in the base game that apply knockbacks, i'm applying mine via a cone targeting thing. this differs from the original implementation in that
+// it doesn't handle a lot of random cases that the general effect does, and it calculates the tile adjacent to the target that is closest the shooter and just 
+// lies and says that the knockback came from there instead. it'll be cool if it works.
 private function GetTilesEnteredArray(XComGameStateContext_Ability AbilityContext, XComGameState_BaseObject kNewTargetState, out array<TTile> OutTilesEntered, out Vector OutAttackDirection, float DamageAmount, XComGameState NewGameState)
 {
+	local XComGameStateHistory History;
 	local XComWorldData WorldData;
-	local XComGameState_Unit SourceUnit;
+
+	local XComGameState_Unit ShooterUnit;
+	local Vector ShooterLocation;
+	local TTile ShooterTile;
+
+	local TTile KnockbackSourceTile;
+	local Vector KnockbackSourceLocation;
+
 	local XComGameState_Unit TargetUnit;
-	local Vector SourceLocation;
+	local array<TTile> TargetAdjacentTiles;
+	local TTile TargetTile;
+	local XGUnit TargetVisualizer;
+	local XComUnitPawn TargetUnitPawn;
 	local Vector TargetLocation;
+
 	local Vector StartLocation;
-	local TTile  TempTile, StartTile;
-	local TTile  LastTempTile;
+	local TTile  TempTile, LastTempTile;
 	local Vector KnockbackToLocation;	
 	local float  StepDistance;
 	local Vector TestLocation;
 	local float  TestDistanceUnits;
-	local TTile  MoveToTile;
-	local XGUnit TargetVisualizer;
-	local XComUnitPawn TargetUnitPawn;
 	local Vector Extents;
-	local XComGameStateHistory History;
 	local float StepSize;
 
 	local ActorTraceHitInfo TraceHitInfo;
 	local array<ActorTraceHitInfo> Hits;
 	local Actor FloorTileActor;
 
-	local X2AbilityTemplate AbilityTemplate;
-	local X2AbilityToHitCalc_StandardAim ToHitCalc;
-
 	local int UpdatedKnockbackDistance_Meters;
 	local array<StateObjectReference> TileUnits;
 
 	WorldData = `XWORLD;
 	History = `XCOMHISTORY;
-	if(AbilityContext != none)
+	
+	StepSize = 8.0;
+
+	// find the shooter and target
+	TargetUnit = XComGameState_Unit(kNewTargetState);
+	TargetTile = TargetUnit.TileLocation;
+	TargetLocation = WorldData.GetPositionFromTileCoordinates(TargetTile);
+	TargetAdjacentTiles = GetAdjacentTiles(TargetTile);
+
+	`LOG("JSRC: there are" @ TargetAdjacentTiles.Length @ "adjacent tiles");
+
+	ShooterUnit = XComGameState_Unit(NewGameState.GetGameStateForObjectID(AbilityContext.InputContext.SourceObject.ObjectID));
+	ShooterTile = ShooterUnit.TileLocation;
+	ShooterLocation = WorldData.GetPositionFromTileCoordinates(ShooterTile);
+
+	KnockbackSourceTile = GetClosestTile(ShooterTile, TargetAdjacentTiles);
+	KnockbackSourceLocation = WorldData.GetPositionFromTileCoordinates(KnockbackSourceTile);
+
+	`LOG("JSRC: shooter at" @ ShooterLocation);
+	`LOG("JSRC: target at" @ TargetLocation);
+	`LOG("JSRC: knockback coming from" @ KnockbackSourceLocation);
+
+	OutAttackDirection = Normal(TargetLocation - KnockbackSourceLocation);
+	OutAttackDirection.Z = 0.0f;
+	StartLocation = TargetLocation;
+
+	UpdatedKnockbackDistance_Meters = GetKnockbackDistance(AbilityContext, kNewTargetState);
+	KnockbackToLocation = StartLocation + (OutAttackDirection * float(UpdatedKnockbackDistance_Meters) * 64.0f); //Convert knockback distance to meters
+
+	TargetVisualizer = XGUnit(History.GetVisualizer(TargetUnit.ObjectID));
+	if (TargetVisualizer != None)
 	{
-		StepSize = 8.0;
-		AbilityTemplate = class'XComGameState_Ability'.static.GetMyTemplateManager().FindAbilityTemplate(AbilityContext.InputContext.AbilityTemplateName);
-
-		TargetUnit = XComGameState_Unit(kNewTargetState);
-		TargetUnit.GetKeystoneVisibilityLocation(StartTile);
-		TargetLocation = WorldData.GetPositionFromTileCoordinates(StartTile);
-
-		ToHitCalc = X2AbilityToHitCalc_StandardAim(AbilityTemplate.AbilityToHitCalc);
-		if (ToHitCalc != none && ToHitCalc.bReactionFire)
+		TargetUnitPawn = TargetVisualizer.GetPawn();
+		if( TargetUnitPawn != None )
 		{
-			//If this was reaction fire, just drop the unit where they are. The physics of their motion may move them a few tiles
-			WorldData.GetFloorTileForPosition(TargetLocation, MoveToTile, true);
-			OutTilesEntered.AddItem(MoveToTile);
-		}
-		else
-		{
-			//attack source is from a Unit
-			SourceUnit = XComGameState_Unit(NewGameState.GetGameStateForObjectID(AbilityContext.InputContext.SourceObject.ObjectID));
-			SourceUnit.GetKeystoneVisibilityLocation(TempTile);
-			SourceLocation = WorldData.GetPositionFromTileCoordinates(TempTile);
-
-			OutAttackDirection = Normal(TargetLocation - SourceLocation);
-			OutAttackDirection.Z = 0.0f;
-			StartLocation = TargetLocation;
-
-			UpdatedKnockbackDistance_Meters = GetKnockbackDistance(AbilityContext, kNewTargetState);
-			KnockbackToLocation = StartLocation + (OutAttackDirection * float(UpdatedKnockbackDistance_Meters) * 64.0f); //Convert knockback distance to meters
-
-			TargetVisualizer = XGUnit(History.GetVisualizer(TargetUnit.ObjectID));
-			if( TargetVisualizer != None )
-			{
-				TargetUnitPawn = TargetVisualizer.GetPawn();
-				if( TargetUnitPawn != None )
-				{
-					Extents.X = TargetUnitPawn.CylinderComponent.CollisionRadius;
-					Extents.Y = TargetUnitPawn.CylinderComponent.CollisionRadius; 
-					Extents.Z = TargetUnitPawn.CylinderComponent.CollisionHeight;
-				}
-			}
-
-			if( WorldData.GetAllActorsTrace(StartLocation, KnockbackToLocation, Hits, Extents) )
-			{
-				foreach Hits(TraceHitInfo)
-				{
-					TempTile = WorldData.GetTileCoordinatesFromPosition(TraceHitInfo.HitLocation);
-					FloorTileActor = WorldData.GetFloorTileActor(TempTile);
-
-					if( TraceHitInfo.HitActor == FloorTileActor )
-					{
-						continue;
-					}
-
-					if ((!CanBeDestroyed(XComInteractiveLevelActor(TraceHitInfo.HitActor), DamageAmount) && XComFracLevelActor(TraceHitInfo.HitActor) == none) || !bKnockbackDestroysNonFragile)
-					{
-						//We hit an indestructible object
-						KnockbackToLocation = TraceHitInfo.HitLocation + (-OutAttackDirection * 16.0f); //Scoot the hit back a bit and use that as the knockback location
-						break;
-					}
-				}
-			}
-
-			//Walk in increments down the attack vector. We will stop if we can't find a floor, or have reached the knock back distance, or we encounter another unit.
-			TestDistanceUnits = VSize2D(KnockbackToLocation - StartLocation);
-			StepDistance = 0.0f;
-			OutTilesEntered.Length = 0;
-			LastTempTile = StartTile;
-			while (StepDistance < TestDistanceUnits)
-			{
-				TestLocation = StartLocation + (OutAttackDirection * StepDistance);			
-
-				if (!WorldData.GetFloorTileForPosition(TestLocation, TempTile, true))
-				{
-					break;
-				}
-
-				if (TempTile != StartTile)		//	don't check the start tile, since the target unit would be on it
-				{
-					TileUnits = WorldData.GetUnitsOnTile(TempTile);
-					if (TileUnits.Length > 0)
-						break;
-				}
-
-				if (LastTempTile != TempTile)
-				{
-					OutTilesEntered.AddItem(TempTile);
-					LastTempTile = TempTile;
-				}
-
-				StepDistance += StepSize;
-			}
-
-			//Move the target unit to the knockback location			
-			if (OutTilesEntered.Length == 0 || OutTilesEntered[OutTilesEntered.Length - 1] != LastTempTile)
-				OutTilesEntered.AddItem(LastTempTile);
+			Extents.X = TargetUnitPawn.CylinderComponent.CollisionRadius;
+			Extents.Y = TargetUnitPawn.CylinderComponent.CollisionRadius; 
+			Extents.Z = TargetUnitPawn.CylinderComponent.CollisionHeight;
 		}
 	}
+
+	if (WorldData.GetAllActorsTrace(StartLocation, KnockbackToLocation, Hits, Extents))
+	{
+		foreach Hits(TraceHitInfo)
+		{
+			TempTile = WorldData.GetTileCoordinatesFromPosition(TraceHitInfo.HitLocation);
+			FloorTileActor = WorldData.GetFloorTileActor(TempTile);
+
+			if (TraceHitInfo.HitActor == FloorTileActor)
+			{
+				continue;
+			}
+
+			if ((!CanBeDestroyed(XComInteractiveLevelActor(TraceHitInfo.HitActor), DamageAmount) && XComFracLevelActor(TraceHitInfo.HitActor) == none) || !bKnockbackDestroysNonFragile)
+			{
+				//We hit an indestructible object
+				KnockbackToLocation = TraceHitInfo.HitLocation + (-OutAttackDirection * 16.0f); //Scoot the hit back a bit and use that as the knockback location
+				break;
+			}
+		}
+	}
+
+	// Walk in increments down the attack vector. We will stop if we can't find a floor, or have reached the knock back distance, or we encounter another unit.
+	TestDistanceUnits = VSize2D(KnockbackToLocation - StartLocation);
+	StepDistance = 0.0f;
+	OutTilesEntered.Length = 0;
+	LastTempTile = TargetTile;
+	while (StepDistance < TestDistanceUnits)
+	{
+		TestLocation = StartLocation + (OutAttackDirection * StepDistance);			
+
+		if (!WorldData.GetFloorTileForPosition(TestLocation, TempTile, true))
+		{
+			break;
+		}
+
+		if (TempTile != TargetTile)		//	don't check the start tile, since the target unit would be on it
+		{
+			TileUnits = WorldData.GetUnitsOnTile(TempTile);
+			if (TileUnits.Length > 0)
+				break;
+		}
+
+		if (LastTempTile != TempTile)
+		{
+			OutTilesEntered.AddItem(TempTile);
+			LastTempTile = TempTile;
+		}
+
+		StepDistance += StepSize;
+	}
+
+	//Move the target unit to the knockback location			
+	if (OutTilesEntered.Length == 0 || OutTilesEntered[OutTilesEntered.Length - 1] != LastTempTile)
+		OutTilesEntered.AddItem(LastTempTile);
 }
 
 defaultproperties
