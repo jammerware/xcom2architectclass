@@ -17,6 +17,7 @@ static function X2DataTemplate CreateKineticPulse()
 	Template.AbilitySourceName = 'eAbilitySource_Perk';
 	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_ShowIfAvailable;
 	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_LIEUTENANT_PRIORITY;
+	Template.AbilityIconColor = class'Jammerware_JSRC_IconColorService'.static.GetSpireAbilityIconColor();
 
 	// cost
 	Template.AbilityCosts.AddItem(default.WeaponActionTurnEnding);

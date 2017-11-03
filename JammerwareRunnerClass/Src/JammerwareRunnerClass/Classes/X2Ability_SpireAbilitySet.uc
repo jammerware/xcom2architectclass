@@ -191,6 +191,7 @@ static function X2AbilityTemplate AddSpireQuicksilver()
 	Template.Hostility = eHostility_Neutral;
 	Template.bLimitTargetIcons = true;
 	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_AlwaysShow;	
+	Template.AbilityIconColor = class'Jammerware_JSRC_IconColorService'.static.GetSpireAbilityIconColor();
 	
 	// triggering
 	Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);
