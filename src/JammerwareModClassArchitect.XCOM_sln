@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # XCOM ModBuddy Solution File, Format Version 11.00
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{5DAE07AF-E217-45C1-8DE7-FF99D6011E8A}") = "JammerwareRunnerClass", "JammerwareRunnerClass\JammerwareRunnerClass.x2proj", "{9FEA04C5-C7D6-41C3-A849-8F0ABD97B9E4}"
+Project("{5DAE07AF-E217-45C1-8DE7-FF99D6011E8A}") = "JammerwareModClassArchitect", "JammerwareModClassArchitect\JammerwareModClassArchitect.x2proj", "{9FEA04C5-C7D6-41C3-A849-8F0ABD97B9E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

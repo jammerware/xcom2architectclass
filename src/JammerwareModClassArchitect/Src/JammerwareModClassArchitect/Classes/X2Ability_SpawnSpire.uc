@@ -1,5 +1,5 @@
 class X2Ability_SpawnSpire extends X2Ability
-    config(JammerwareRunnerClass);
+    config(JammerwareModClassArchitect);
 
 var config int SPAWNSPIRE_COOLDOWN;
 var name NAME_SPAWN_SPIRE;

@@ -1,5 +1,5 @@
 class X2Ability_RunnerAbilitySet extends X2Ability
-	config(JammerwareRunnerClass);
+	config(JammerwareModClassArchitect);
 
 // ability names
 var name NAME_ACTIVATE_SPIRE;

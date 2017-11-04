@@ -8,7 +8,7 @@ public function AddUnlock(name Unlock)
 	FacilityTemplate = X2FacilityTemplate(class'X2StrategyElementTemplateManager'.static.GetStrategyElementTemplateManager().FindStrategyElementTemplate('OfficerTrainingSchool'));
 	if (FacilityTemplate == none)
     {
-        `REDSCREEN("JSRC: Couldn't find the GTS to add the runner unlock.");
+        `REDSCREEN("JSRC: Couldn't find the GTS to add the architect unlock.");
 		return;
     }
 

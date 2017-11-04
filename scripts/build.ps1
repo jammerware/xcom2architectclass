@@ -33,14 +33,15 @@ $modNameCanonical = $mod
 # we're going to ask that people specify the folder that has their .XCOM_sln in it as the -srcDirectory argument, but a lot of the time all we care about is
 # the folder below that that contains Config, Localization, Src, etc...
 $modSrcRoot = "$srcDirectory/$modNameCanonical"
+Write-Host "Building mod $mod from source root $modSrcRoot..."
 
 # clean
 $stagingPath = "{0}/XComGame/Mods/{1}/" -f $sdkPath, $modNameCanonical
-Write-Host "Cleaning mod project at $stagingPath...";
 if (Test-Path $stagingPath) {
+    Write-Host "Cleaning mod project at $stagingPath...";
     Remove-Item $stagingPath -Recurse -WarningAction SilentlyContinue;
+    Write-Host "Cleaned."
 }
-Write-Host "Cleaned."
 
 # copy source to staging
 StageDirectory "Config" $modSrcRoot $stagingPath

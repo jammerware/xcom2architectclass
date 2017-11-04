@@ -1,4 +1,4 @@
-class X2DownloadableContentInfo_JammerwareRunnerClass extends X2DownloadableContentInfo;
+class X2DownloadableContentInfo_JammerwareModClassArchitect extends X2DownloadableContentInfo;
 
 /// <summary>
 /// This method is run if the player loads a saved game that was created prior to this DLC / Mod being installed, and allows the 
@@ -45,8 +45,6 @@ static function bool AbilityTagExpandHandler(string InString, out string OutStri
     local Jammerware_JSRC_TagExpansionService TagService;
 
     TagService = new class'Jammerware_JSRC_TagExpansionService';
-    `LOG("JSRC: expanding" @ InString);
     OutString = TagService.ExpandAbilityTag(InString);
-    `LOG("JSRC: expanded to" @ OutString);
     return (OutString != "");
 }

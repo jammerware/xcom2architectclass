@@ -1,5 +1,5 @@
 class X2Ability_SpireAbilitySet extends X2Ability
-	config(JammerwareRunnerClass);
+	config(JammerwareModClassArchitect);
 
 var name NAME_DECOMMISSION;
 var name NAME_SPIRE_PASSIVE;

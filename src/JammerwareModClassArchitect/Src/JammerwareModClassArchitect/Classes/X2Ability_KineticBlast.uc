@@ -1,5 +1,5 @@
 class X2Ability_KineticBlast extends X2Ability
-	config(JammerwareRunnerClass);
+	config(JammerwareModClassArchitect);
 
 var name NAME_KINETICBLAST;
 var config int SOUL_COOLDOWN_KINETIC_BLAST;

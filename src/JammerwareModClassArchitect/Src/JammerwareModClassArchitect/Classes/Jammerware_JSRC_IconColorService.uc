@@ -1,5 +1,5 @@
 class Jammerware_JSRC_IconColorService extends object
-    config(JammerwareRunnerClass);
+    config(JammerwareModClassArchitect);
 
 var config string SPIRE_ABILITY_ICON_COLOR;
 

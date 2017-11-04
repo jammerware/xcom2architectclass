@@ -1,4 +1,4 @@
-class X2Character_Spire extends X2Character config(JammerwareRunnerClass);
+class X2Character_Spire extends X2Character config(JammerwareModClassArchitect);
 
 var name NAME_CHARACTER_SPIRE_CONVENTIONAL;
 var name NAME_CHARACTER_SPIRE_MAGNETIC;

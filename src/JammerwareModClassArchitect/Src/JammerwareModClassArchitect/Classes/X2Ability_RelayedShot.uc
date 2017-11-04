@@ -1,5 +1,5 @@
 class X2Ability_RelayedShot extends X2Ability
-	config(JammerwareRunnerClass);
+	config(JammerwareModClassArchitect);
 
 var name NAME_RELAYED_SHOT;
 var config int COOLDOWN_RELAYED_SHOT;

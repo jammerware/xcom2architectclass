@@ -1,5 +1,5 @@
 class X2Ability_TransmatLink extends X2Ability
-	config(JammerwareRunnerClass);
+	config(JammerwareModClassArchitect);
 
 var name NAME_TRANSMAT_LINK;
 var config int COOLDOWN_TRANSMAT_LINK;
