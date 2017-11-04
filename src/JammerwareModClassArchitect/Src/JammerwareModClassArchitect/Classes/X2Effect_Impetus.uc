@@ -4,18 +4,18 @@ class X2Effect_Impetus extends X2Effect_Knockback;
 private function array<TTile> GetAdjacentTiles(TTile Tile)
 {
 	local int x, y;
-	local TTile StartingTile, TempTile;
+	local TTile TempTile;
 	local array<TTile> Tiles;
 
 	for (x = -1; x <= 1; x++)
 	{
 		for (y = -1; y <=1; y++)
 		{
-			TempTile = StartingTile;
+			TempTile = Tile;
 			TempTile.X += x;
 			TempTile.Y += y;
 
-			if (TempTile.X != StartingTile.X || TempTile.Y != StartingTile.Y)
+			if (TempTile.X != Tile.X || TempTile.Y != Tile.Y)
 			{
 				Tiles.AddItem(TempTile);
 			}
@@ -40,12 +40,12 @@ private function TTile GetClosestTile(TTile StartTile, array<TTile> Tiles)
 
 	foreach Tiles(TileIterator)
 	{
+		World.ClampTile(TileIterator);
 		TileLocation = World.GetPositionFromTileCoordinates(TileIterator);
 		Distance = VSize2D(TileLocation - StartLocation);
 
 		if (Distance < MinDistance)
 		{
-			`LOG("New tile" @ TileLocation @ "is closer" @ Distance);
 			MinDistance = Distance;
 			ClosestTile = TileIterator;
 		}
@@ -138,7 +138,6 @@ simulated function ApplyEffectToWorld(const out EffectAppliedData ApplyEffectPar
 				{
 					if (AbilityContext.ResultContext.MultiTargetEffectResults[MultiTargetIndex].ApplyResults[EffectIndex] == 'AA_Success')
 					{
-						`LOG("JSRC: found a multitarget");
 						Targets.AddItem(AbilityContext.InputContext.MultiTargets[MultiTargetIndex]);
 						break;
 					}
@@ -206,6 +205,11 @@ simulated function ApplyEffectToWorld(const out EffectAppliedData ApplyEffectPar
 	}
 }
 
+private function string DebugTile(TTile Tile)
+{
+	return Tile.X @ Tile.Y @ Tile.Z;
+}
+
 // this is simplified from the original implementation that i lifted from X2Effect_Knockback
 // Unlike effects in the base game that apply knockbacks, i'm applying mine via a cone targeting thing. this differs from the original implementation in that
 // it doesn't handle a lot of random cases that the general effect does, and it calculates the tile adjacent to the target that is closest the shooter and just 
@@ -216,7 +220,6 @@ private function GetTilesEnteredArray(XComGameStateContext_Ability AbilityContex
 	local XComWorldData WorldData;
 
 	local XComGameState_Unit ShooterUnit;
-	local Vector ShooterLocation;
 	local TTile ShooterTile;
 
 	local TTile KnockbackSourceTile;
@@ -256,18 +259,11 @@ private function GetTilesEnteredArray(XComGameStateContext_Ability AbilityContex
 	TargetLocation = WorldData.GetPositionFromTileCoordinates(TargetTile);
 	TargetAdjacentTiles = GetAdjacentTiles(TargetTile);
 
-	`LOG("JSRC: there are" @ TargetAdjacentTiles.Length @ "adjacent tiles");
-
 	ShooterUnit = XComGameState_Unit(NewGameState.GetGameStateForObjectID(AbilityContext.InputContext.SourceObject.ObjectID));
 	ShooterTile = ShooterUnit.TileLocation;
-	ShooterLocation = WorldData.GetPositionFromTileCoordinates(ShooterTile);
 
 	KnockbackSourceTile = GetClosestTile(ShooterTile, TargetAdjacentTiles);
 	KnockbackSourceLocation = WorldData.GetPositionFromTileCoordinates(KnockbackSourceTile);
-
-	`LOG("JSRC: shooter at" @ ShooterLocation);
-	`LOG("JSRC: target at" @ TargetLocation);
-	`LOG("JSRC: knockback coming from" @ KnockbackSourceLocation);
 
 	OutAttackDirection = Normal(TargetLocation - KnockbackSourceLocation);
 	OutAttackDirection.Z = 0.0f;
