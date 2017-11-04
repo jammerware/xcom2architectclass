@@ -2,8 +2,8 @@
 <Project ToolsVersion="12.0" DefaultTargets="Default" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Guid>0f60f9e7-2aea-4803-99b6-8771b8ad520e</Guid>
-    <Name>Jammerware's Spire Runner Class</Name>
-    <Description>This mod adds the Runner class to XCOM 2: WotC. Runners are highly mobile but offensively weak and provide utility to their squad via their Spire mechanic.</Description>
+    <Name>Jammerware's Architect Class</Name>
+    <Description>This mod adds the Architect class to XCOM 2: War of the Chosen. Architects are mobile but offensively weak and provide utility to their squad by building powerful Spires.</Description>
     <SteamPublishID>0</SteamPublishID>
     <AssemblyName>JammerwareRunnerClass</AssemblyName>
     <RootNamespace>JammerwareRunnerClass</RootNamespace>
