@@ -1,13 +1,13 @@
-# Jammerware's Spire Runner Class
-A mod for XCOM 2: War of the Chosen that adds the Spire Runner class.
+# Jammerware's Architect Class
+A mod for XCOM 2: War of the Chosen that adds the Architect class.
 
 ## Design
-The goal of the Spire Runner class is to encourage a spatially-driven play pattern and to create a unit with low offensive potential offset by powerful support abilities. It'd be nice if it were fun and balanced, too, but let's not get crazy.
+The goal of the Architect class is to encourage a spatially-driven play pattern and to create a unit with low offensive potential offset by powerful support abilities. It'd be nice if it were fun and balanced, too, but let's not get crazy.
 
 ### Allowed Weapons
 **Primary**: Assault Rifle
 
-**Secondary**: Spire Gun
+**Secondary**: Spire Kit
 
 ### Perks
 
@@ -25,7 +25,7 @@ The goal of the Spire Runner class is to encourage a spatially-driven play patte
 | **COLONEL** | **Soul of the Architect** - All effects that apply to your spires also apply to you. You gain all abilities your spires have. | **Transmat Network** - Your spires gain *Transmat Network Node*, a passive ability which grants any adjacent squadmate the ability to instantly relocate to any tile adjacent to a spire in the same network. |
 
 ### GTS Perk
-**Bolt from the Whoosh** - When a spire runner misses a shot, the bullet is returned to the magazine if they're using a boltcaster.
+**Bolt from the Whoosh** - When an Architect misses a shot, the bullet is returned to the magazine if they're using a boltcaster.
 
 ## Acknowledgments
 - Consulting Designer: SBGC_Smallfry
