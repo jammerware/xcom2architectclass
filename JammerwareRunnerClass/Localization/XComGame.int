@@ -1,7 +1,7 @@
 ;-------------------------------------------------------------
 ; CLASS DEFINITION
 ;-------------------------------------------------------------
-[Runner X2SoldierClassTemplate]
+[Jammerware_JSRC_Class_Architect X2SoldierClassTemplate]
 +DisplayName="Architect"
 +ClassSummary="Architects are mobile but offensively weak operatives that support their squadmates with powerful Spires. These immobile structures provide powerful supportive benefits - if the architect places them well."
 +LeftAbilityTreeTitle="Fight"
@@ -122,10 +122,10 @@ LocFlyOverText="Shelter"
 LocPromotionPopupText="The shield lasts for <Ability:ShelterShieldDuration/> turns."
 
 [Jammerware_JSRC_Ability_Quicksilver X2AbilityTemplate]
-LocFriendlyName="Quicksilver"
+LocFriendlyName="Quicksilver Rigging"
 LocLongDescription="Your spires gain Quicksilver, an ability which grants an adjacent squadmate an action point. "
 LocHelpText="Your spires gain Quicksilver, an ability which grants an adjacent squadmate an extra action once per mission."
-LocFlyOverText="Quicksilver"
+LocFlyOverText="Quicksilver Rigging"
 LocPromotionPopupText="\"A personal favorite of Prompto Argentum.\"\n\nQuicksilver contributes powerful utility to your team, enabling deep strikes from rangers and templars or rapid repositioning from a sharpshooter.\n\n<Bullet/> Spire must be activated to use Quicksilver\n<Bullet/> Each use of Quicksilver costs one of the spire's Quicksilver charges\n<Bullet/> The action point is granted instantly, and it can be given to any adjacent squadmate - even if they've used all of their action points for the turn"
 
 [Jammerware_JSRC_Ability_SpireQuicksilver X2AbilityTemplate]
@@ -143,11 +143,11 @@ LocFlyOverText="Field Reload Array"
 LocPromotionPopupText="\"No one cares whether it's called a mag or a clip when there's 600 pounds of Muton bearing down on them.\"\n\nField Reload Array guarantees utility of your spires on the turn they're placed. It's especially powerful for a squadmates holding weapons with small clips.\n\n<Bullet/> Passive\n<Bullet/> Works for any spire you create, including ones created with Headstone."
 
 [Jammerware_JSRC_Ability_TransmatLink X2AbilityTemplate]
-LocFriendlyName="Transmat Link"
+LocFriendlyName="The Swapper"
 LocLongDescription="Exchange locations with one of your spires."
 LocHelpText="Exchange locations with one of your spires."
-LocFlyOverText="Transmat Link"
-LocPromotionPopupText="\"You tell everyone it's just a lucky rabbit's foot. But do rabbits' feet glow?\"\n\nTransmat Link allows the Architect to reposition quickly, enabling safe retreat and aggressive engagement. It's also useful for bringing cover to an ally in need if Build Spire is on cooldown.\n\n<Bullet/> Free action\n<Bullet/> <Ability:TransmatLinkCooldown/>-turn cooldown"
+LocFlyOverText="The Swapper"
+LocPromotionPopupText="\"You tell everyone it's just a lucky rabbit's foot. No one has yet pointed out that most rabbits' feet don't glow bright orange.\"\n\nThe Swapper allows the Architect to reposition quickly, enabling safe retreat and aggressive engagement. It's also useful for bringing cover to an ally in need if Build Spire is on cooldown.\n\n<Bullet/> Free action\n<Bullet/> <Ability:TransmatLinkCooldown/>-turn cooldown"
 
 [Jammerware_JSRC_Ability_Reclaim X2AbilityTemplate]
 LocFriendlyName="Reclaim"
@@ -217,11 +217,11 @@ LocFriendlyName="Transmat Network"
 LocLongDescription="Your spires gain Transmat Network Node. When a squadmate is adjacent to a node, they can use Transmat, a free ability that allows them to relocate to any space adjacent to a spire in the network. 1-turn global cooldown."
 LocHelpText="Your spires gain Transmat Network Node. When a squadmate is adjacent to a node, they can use Transmat, a free ability that allows them to relocate to any space adjacent to a spire in the network. 1-turn global cooldown."
 LocFlyOverText="Transmat Network"
-LocPromotionPopupText="\"Everything has to be somewhere. The trick is having the right things be in the right places.\"\n\n<Bullet/> Transmat's cooldown is global, which means that if any squadmate uses it, the ability goes on cooldown for the entire squad.\n<Bullet/> The Transmat ability doesn't cost an action\n<Bullet/> Civilians like VIPs can't use the Transmat ability, but non-XCOM units like hacked or mind-controlled enemies can"
+LocPromotionPopupText="\"Everything has to be somewhere. The trick is having the right things be in the right places.\"\n\n<Bullet/> Transmat is usable once per turn, but any member of your squad adjacent to a spire can use it\n<Bullet/> The Transmat ability doesn't cost an action\n<Bullet/> Civilians like VIPs can't use the Transmat ability, but non-XCOM units like hacked or mind-controlled enemies can"
 
 [Jammerware_JSRC_Ability_SpireTransmatNetwork X2AbilityTemplate]
 LocFriendlyName="Transmat Network Node"
-LocLongDescription="Squadmates can activate Transmat when adjacent to this spire, relocating to another space adjacent any spire in the network."
+LocLongDescription="Once per turn, a squadmate can activate Transmat when adjacent to this spire, relocating to another space adjacent any spire in the network."
 LocHelpText="Squadmates can active Transmat when adjacent to this spire, relocating to another space adjacent any spire in the network."
 LocFlyOverText="Transmat Network Node"
 LocPromotionPopupText="\"Everything has to be somewhere. The trick is having the right things be in the right places.\""

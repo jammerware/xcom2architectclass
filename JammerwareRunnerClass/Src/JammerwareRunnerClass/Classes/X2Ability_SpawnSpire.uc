@@ -16,7 +16,7 @@ static function X2DataTemplate CreateSpawnSpire()
 
 	// hud behavior
 	Template.IconImage = "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_Pillar";
-	Template.AbilityIconColor = class'Jammerware_JSRC_IconColorService'.static.GetSpireAbilityIconColor();
+	Template.AbilitySourceName = 'eAbilitySource_Perk';
 	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_AlwaysShow;
 	Template.Hostility = eHostility_Neutral;
 	Template.bDisplayInUITacticalText = false;
@@ -56,9 +56,6 @@ static function X2DataTemplate CreateSpawnSpire()
 	Template.BuildNewGameStateFn = SpawnSpire_BuildGameState;
 	Template.BuildVisualizationFn = SpawnSpire_BuildVisualization;
 	Template.ChosenActivationIncreasePerUse = class'X2AbilityTemplateManager'.default.NonAggressiveChosenActivationIncreasePerUse;
-
-	// additional abilities
-	Template.AdditionalAbilities.AddItem(class'X2Ability_RunnerAbilitySet'.default.NAME_ACTIVATE_SPIRE);
 		
 	return Template;
 }
@@ -67,7 +64,7 @@ static function X2DataTemplate CreateSpawnSpire()
 // the spire. no idea why. it's on my list.
 static simulated function XComGameState SpawnSpire_BuildGameState(XComGameStateContext Context)
 {
-	local Jammerware_SpireRegistrationService SpireRegistrationService;
+	local Jammerware_JSRC_SpireRegistrationService SpireRegistrationService;
 	local XComGameState NewGameState;
 	local XComGameState_Unit ShooterState, SpireState;
 	local XComGameStateContext_Ability AbilityContext;
@@ -76,7 +73,7 @@ static simulated function XComGameState SpawnSpire_BuildGameState(XComGameStateC
 	local XComWorldData World;
 
 	World = `XWORLD;
-	SpireRegistrationService = new class'Jammerware_SpireRegistrationService';
+	SpireRegistrationService = new class'Jammerware_JSRC_SpireRegistrationService';
 
 	//Build the new game state frame
 	NewGameState = TypicalAbility_BuildGameState(Context);
@@ -102,7 +99,7 @@ simulated function SpawnSpire_BuildVisualization(XComGameState VisualizeGameStat
 	local XComGameStateHistory History;
 	local XComGameStateContext_Ability Context;
 	local StateObjectReference InteractingUnitRef;
-	local Jammerware_SpireRegistrationService SpireRegistrationService;
+	local Jammerware_JSRC_SpireRegistrationService SpireRegistrationService;
 	local VisualizationActionMetadata ShooterTrack;
 	local XComGameState_Unit ShooterUnit, SpawnedUnit;
 	local X2Effect_SpawnSpire SpawnSpireEffect;
@@ -110,7 +107,7 @@ simulated function SpawnSpire_BuildVisualization(XComGameState VisualizeGameStat
 	History = `XCOMHISTORY;
 	Context = XComGameStateContext_Ability(VisualizeGameState.GetContext());
 	InteractingUnitRef = Context.InputContext.SourceObject;
-	SpireRegistrationService = new class'Jammerware_SpireRegistrationService';
+	SpireRegistrationService = new class'Jammerware_JSRC_SpireRegistrationService';
 
 	// find the shooter and the spire
 	ShooterUnit = XComGameState_Unit(VisualizeGameState.GetGameStateForObjectID(InteractingUnitRef.ObjectID));

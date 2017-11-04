@@ -127,8 +127,8 @@ protected function LockCursorRange(float RangeInUnits)
 
 protected function bool IsInAbilityRange(TTile TargetTile)
 {
-    local Jammerware_ProximityService ProximityService;
+    local Jammerware_JSRC_ProximityService ProximityService;
 
-    ProximityService = new class'Jammerware_ProximityService';
+    ProximityService = new class'Jammerware_JSRC_ProximityService';
     return AbilityRangeUnits == -1 || ProximityService.GetUnitDistanceBetween(ShooterState.TileLocation, TargetTile) <= AbilityRangeUnits;
 }

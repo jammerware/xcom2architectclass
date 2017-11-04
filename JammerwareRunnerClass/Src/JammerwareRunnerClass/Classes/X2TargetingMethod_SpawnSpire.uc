@@ -19,7 +19,7 @@ function name ValidateTargetLocations(const array<Vector> TargetLocations)
 	local name AbilityAvailability;
 	local TTile TargetTile;
 	local XComWorldData World;
-	local Jammerware_ProximityService ProximityService;
+	local Jammerware_JSRC_ProximityService ProximityService;
 
 	World = `XWORLD;
 	// the parent class makes sure the tile isn't blocked and is a floor tile
@@ -28,7 +28,7 @@ function name ValidateTargetLocations(const array<Vector> TargetLocations)
 	// we assume the cursor has been locked to the ability range in init if the shooter doesn't have unity
 	if (AbilityAvailability == 'AA_Success' && self.bShooterHasUnity)
 	{
-		ProximityService = new class'Jammerware_ProximityService';
+		ProximityService = new class'Jammerware_JSRC_ProximityService';
 		World.GetFloorTileForPosition(TargetLocations[0], TargetTile);
 
 		if (

@@ -33,9 +33,9 @@ static function EventListenerReturn OnUnitMoved(Object EventData, Object EventSo
 	local XComGameState_Unit UnitState;
 	local XComGameStateContext_EffectRemoved RemoveContext;
 	local XComGameState NewGameState;
-	local Jammerware_ProximityService ProximityService;
+	local Jammerware_JSRC_ProximityService ProximityService;
 
-	ProximityService = new class'Jammerware_ProximityService';
+	ProximityService = new class'Jammerware_JSRC_ProximityService';
 	EffectState = XComGameState_Effect(CallbackData);
 	UnitState = XComGameState_Unit(GameState.GetGameStateForObjectID(EffectState.ApplyEffectParameters.TargetStateObjectRef.ObjectID));
 

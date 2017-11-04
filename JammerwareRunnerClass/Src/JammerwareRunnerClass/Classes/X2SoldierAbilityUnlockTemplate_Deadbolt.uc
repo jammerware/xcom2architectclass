@@ -17,13 +17,13 @@ private static function X2SoldierAbilityUnlockTemplate CreateDeadboltUnlock()
 
 	`CREATE_X2TEMPLATE(class'X2SoldierAbilityUnlockTemplate', Template, default.NAME_DEADBOLT);
 
-	Template.AllowedClasses.AddItem('Runner');
+	Template.AllowedClasses.AddItem('Jammerware_JSRC_Class_Architect');
 	Template.AbilityName = 'Jammerware_JSRC_Ability_Deadbolt';
 	Template.strImage = "img:///Jammerware_JSRC.gts_perk";
 
 	// Requirements
 	Template.Requirements.RequiredHighestSoldierRank = 5;
-	Template.Requirements.RequiredSoldierClass = 'Runner';
+	Template.Requirements.RequiredSoldierClass = 'Jammerware_JSRC_Class_Architect';
 	Template.Requirements.RequiredSoldierRankClassCombo = true;
 	Template.Requirements.bVisibleIfSoldierRankGatesNotMet = true;
 

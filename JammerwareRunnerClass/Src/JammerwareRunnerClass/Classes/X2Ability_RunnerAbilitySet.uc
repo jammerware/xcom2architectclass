@@ -28,20 +28,20 @@ static function array <X2DataTemplate> CreateTemplates()
 	
 	// CORPORAL!
 	Templates.AddItem(CreateFieldReloadModule());
-	Templates.AddItem(AddShelter());
+	Templates.AddItem(CreateShelter());
 
 	// SERGEANT!
-	Templates.AddItem(AddHeadstone());
-	Templates.AddItem(AddReclaim());
+	Templates.AddItem(CreateHeadstone());
+	Templates.AddItem(CreateReclaim());
 
 	// LIEUTENANT!
+	Templates.AddItem(class'X2Ability_RelayedShot'.static.CreateRelayedShot());
 	Templates.AddItem(class'X2Ability_TargetingArray'.static.CreateTargetingArray());
 	Templates.AddItem(class'X2Ability_TargetingArray'.static.CreateTargetingArrayTriggered());
-	Templates.AddItem(CreateKineticRigging());
-	Templates.AddItem(CreateQuicksilver());
 
 	// CAPTAIN!
-	Templates.AddItem(class'X2Ability_RelayedShot'.static.CreateRelayedShot());
+	Templates.AddItem(CreateKineticRigging());
+	Templates.AddItem(CreateQuicksilver());
 
 	// MAJOR!
 	Templates.AddItem(CreateUnity());
@@ -112,17 +112,52 @@ private static function X2AbilityTemplate CreateActivateSpire()
 	return Template;
 }
 
-static function X2AbilityTemplate AddShelter()
+private static function X2AbilityTemplate CreateFieldReloadModule()
+{
+	local X2AbilityTemplate Template;
+	local X2Effect_FieldReload FieldReloadEffect;
+	
+	// general properties
+	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_FIELD_RELOAD_MODULE);
+	Template.Hostility = eHostility_Neutral;
+
+	// hud behavior
+	Template.IconImage = "img:///UILibrary_PerkIcons.UIPerk_reload";
+	Template.AbilitySourceName = 'eAbilitySource_Perk';
+	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_NeverShow;
+	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_CORPORAL_PRIORITY;
+	Template.bIsPassive = true;
+
+	// targeting style (how targets are determined by game rules)
+	Template.AbilityTargetStyle = default.SelfTarget;
+
+	// hit chance
+	Template.AbilityToHitCalc = default.DeadEye;
+
+	// triggering
+	Template.AbilityTriggers.AddItem(default.UnitPostBeginPlayTrigger);
+	
+	// effects
+	FieldReloadEffect = new class'X2Effect_FieldReload';
+	FieldReloadEffect.SetDisplayInfo(ePerkBuff_Passive, Template.LocFriendlyName, Template.LocLongDescription, Template.IconImage, true,, Template.AbilitySourceName);
+	FieldReloadEffect.BuildPersistentEffect(1, true);
+	Template.AddTargetEffect(FieldReloadEffect);
+	
+	// game state and visualization
+	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
+	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
+	Template.bShowActivation = false;
+	Template.bSkipFireAction = true;
+
+	return Template;
+}
+
+private static function X2AbilityTemplate CreateShelter()
 {
 	return PurePassive(default.NAME_SHELTER, "img:///UILibrary_PerkIcons.UIPerk_adventshieldbearer_energyshield");
 }
 
-static function X2AbilityTemplate CreateQuicksilver()
-{
-	return PurePassive(default.NAME_QUICKSILVER, "img:///UILibrary_PerkIcons.UIPerk_runandgun");
-}
-
-static function X2AbilityTemplate AddReclaim()
+private static function X2AbilityTemplate CreateReclaim()
 {
 	local X2AbilityTemplate Template;
 	local X2AbilityCooldown Cooldown;
@@ -197,7 +232,7 @@ static function X2AbilityTemplate AddReclaim()
 	return Template;
 }
 
-static function X2AbilityTemplate AddHeadstone()
+private static function X2AbilityTemplate CreateHeadstone()
 {
 	local X2AbilityTemplate Template;
 	local X2AbilityCooldown Cooldown;
@@ -261,7 +296,7 @@ static function X2AbilityTemplate AddHeadstone()
 	return Template;
 }
 
-static function Headstone_BuildVisualization(XComGameState VisualizeGameState)
+private static function Headstone_BuildVisualization(XComGameState VisualizeGameState)
 {
 	local XComGameStateHistory History;
 	local XComGameStateContext_Ability Context;
@@ -326,57 +361,36 @@ static function Headstone_BuildVisualization(XComGameState VisualizeGameState)
 	SpawnedUnit.SyncVisualizer();
 }
 
-static function X2AbilityTemplate CreateFieldReloadModule()
+private static function X2AbilityTemplate CreateKineticRigging()
 {
 	local X2AbilityTemplate Template;
-	local X2Effect_FieldReload FieldReloadEffect;
-	
-	// general properties
-	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_FIELD_RELOAD_MODULE);
-	Template.Hostility = eHostility_Neutral;
 
-	// hud behavior
-	Template.IconImage = "img:///UILibrary_PerkIcons.UIPerk_reload";
-	Template.AbilitySourceName = 'eAbilitySource_Perk';
-	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_NeverShow;
-	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_CORPORAL_PRIORITY;
-	Template.bIsPassive = true;
+	Template = PurePassive(default.NAME_KINETIC_RIGGING, "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_StunStrike");
 
-	// targeting style (how targets are determined by game rules)
-	Template.AbilityTargetStyle = default.SelfTarget;
-
-	// hit chance
-	Template.AbilityToHitCalc = default.DeadEye;
-
-	// triggering
-	Template.AbilityTriggers.AddItem(default.UnitPostBeginPlayTrigger);
-	
-	// effects
-	FieldReloadEffect = new class'X2Effect_FieldReload';
-	FieldReloadEffect.SetDisplayInfo(ePerkBuff_Passive, Template.LocFriendlyName, Template.LocLongDescription, Template.IconImage, true,, Template.AbilitySourceName);
-	FieldReloadEffect.BuildPersistentEffect(1, true);
-	Template.AddTargetEffect(FieldReloadEffect);
-	
-	// game state and visualization
-	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
-	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
-	Template.bShowActivation = false;
-	Template.bSkipFireAction = true;
+	// the runner has to be able to activate the spire to use kinetic blast
+	Template.AdditionalAbilities.AddItem(class'X2Ability_RunnerAbilitySet'.default.NAME_ACTIVATE_SPIRE); 
 
 	return Template;
 }
 
-static function X2AbilityTemplate CreateKineticRigging()
+private static function X2AbilityTemplate CreateQuicksilver()
 {
-	return PurePassive(default.NAME_KINETIC_RIGGING, "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_StunStrike");
+	local X2AbilityTemplate Template;
+
+	Template = PurePassive(default.NAME_QUICKSILVER, "img:///UILibrary_PerkIcons.UIPerk_inspire");
+
+	// the architect has to be able to activate the spire to use kinetic blast
+	Template.AdditionalAbilities.AddItem(class'X2Ability_RunnerAbilitySet'.default.NAME_ACTIVATE_SPIRE); 
+
+	return PurePassive(default.NAME_QUICKSILVER, "img:///UILibrary_PerkIcons.UIPerk_runandgun");
 }
 
-static function X2AbilityTemplate CreateUnity()
+private static function X2AbilityTemplate CreateUnity()
 {
 	return PurePassive(default.NAME_UNITY, "img:///UILibrary_PerkIcons.UIPerk_aethershift");
 }
 
-static function X2AbilityTemplate CreateSoulOfTheArchitect()
+private static function X2AbilityTemplate CreateSoulOfTheArchitect()
 {
 	local X2AbilityTemplate Template;
 	local X2Effect_GenerateCover GenerateCoverEffect;
@@ -391,6 +405,7 @@ static function X2AbilityTemplate CreateSoulOfTheArchitect()
 	Template.AdditionalAbilities.AddItem(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_SHELTER);
 	Template.AdditionalAbilities.AddItem(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_QUICKSILVER);
 	Template.AdditionalAbilities.AddItem(class'X2Ability_KineticBlast'.default.NAME_KINETICBLAST);
+	Template.AdditionalAbilities.AddItem(class'X2Ability_TransmatNetwork'.default.NAME_SPIRETRANSMATNETWORK);
 
 	return Template;
 }
@@ -425,7 +440,7 @@ private static function X2AbilityTemplate CreateDeadbolt()
 	return Template;
 }
 
-defaultproperties 
+DefaultProperties 
 {
 	NAME_ACTIVATE_SPIRE=Jammerware_JSRC_Ability_ActivateSpire
 	NAME_DEADBOLT=Jammerware_JSRC_Ability_Deadbolt

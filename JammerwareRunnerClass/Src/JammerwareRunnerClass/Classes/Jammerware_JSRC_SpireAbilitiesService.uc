@@ -1,4 +1,4 @@
-class Jammerware_SpireAbilitiesService extends Object;
+class Jammerware_JSRC_SpireAbilitiesService extends Object;
 
 function ConfigureSpireAbilities(XComGameState_Unit SpireUnit, XComGameState_Unit SourceUnit, XComGameState NewGameState)
 {

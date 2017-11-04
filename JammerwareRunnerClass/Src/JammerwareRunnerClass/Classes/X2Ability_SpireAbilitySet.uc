@@ -193,8 +193,8 @@ static function X2AbilityTemplate CreateSpireQuicksilver()
 	// hud behavior
 	Template.AbilitySourceName = 'eAbilitySource_Perk';
 	Template.AbilityIconColor = class'Jammerware_JSRC_IconColorService'.static.GetSpireAbilityIconColor();
-	Template.IconImage = "img:///UILibrary_PerkIcons.UIPerk_runandgun";
-	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_SERGEANT_PRIORITY;
+	Template.IconImage = "img:///UILibrary_PerkIcons.UIPerk_inspire";
+	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_CAPTAIN_PRIORITY;
 	Template.Hostility = eHostility_Neutral;
 	Template.bLimitTargetIcons = true;
 	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_ShowIfAvailable;	

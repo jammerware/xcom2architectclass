@@ -1,4 +1,4 @@
-class Jammerware_SpireRegistrationService extends Object;
+class Jammerware_JSRC_SpireRegistrationService extends Object;
 
 var name UNITVALUE_LASTSPIREID;
 

@@ -51,11 +51,11 @@ function ETeam GetTeam(const out EffectAppliedData ApplyEffectParameters)
 function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, StateObjectReference NewUnitRef, XComGameState NewGameState, XComGameState_Effect NewEffectState)
 {
 	local XComGameState_Unit SourceUnitGameState, SpireUnitGameState, TargetUnitGameState;
-	local Jammerware_SpireAbilitiesService SpireAbilitiesService;
-	local Jammerware_SpireRegistrationService SpireRegistrationService;
+	local Jammerware_JSRC_SpireAbilitiesService SpireAbilitiesService;
+	local Jammerware_JSRC_SpireRegistrationService SpireRegistrationService;
 
-	SpireAbilitiesService = new class'Jammerware_SpireAbilitiesService';
-	SpireRegistrationService = new class'Jammerware_SpireRegistrationService';
+	SpireAbilitiesService = new class'Jammerware_JSRC_SpireAbilitiesService';
+	SpireRegistrationService = new class'Jammerware_JSRC_SpireRegistrationService';
 
 	SourceUnitGameState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(ApplyEffectParameters.SourceStateObjectRef.ObjectID));
 	SpireUnitGameState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(NewUnitRef.ObjectID));

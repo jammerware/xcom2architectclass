@@ -1,6 +1,6 @@
 class Jammerware_JSRC_TransmatNetworkService extends Object;
 
-// add the transmat ability (that works with the runner's transmat network) to a lot of things
+// add the transmat ability (that works with the architect's transmat network) to a lot of things
 function RegisterTransmatAbilityToCharacterTemplates()
 {
     local X2CharacterTemplateManager CharacterTemplateManager;

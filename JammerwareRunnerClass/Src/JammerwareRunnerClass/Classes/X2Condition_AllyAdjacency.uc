@@ -13,10 +13,10 @@ event name CallMeetsCondition(XComGameState_BaseObject kTarget)
 {
 	local XComGameState_Unit Target, Ally;
     local array<XComGameState_Unit> AdjacentUnits;
-    local Jammerware_ProximityService ProximityService;
+    local Jammerware_JSRC_ProximityService ProximityService;
 
     Target = XComGameState_Unit(kTarget);
-    ProximityService = new class'Jammerware_ProximityService';
+    ProximityService = new class'Jammerware_JSRC_ProximityService';
     AdjacentUnits = ProximityService.GetAdjacentUnits(Target, true);
 
     foreach AdjacentUnits(Ally)

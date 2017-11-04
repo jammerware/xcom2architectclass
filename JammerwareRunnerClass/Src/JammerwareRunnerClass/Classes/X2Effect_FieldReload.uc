@@ -27,7 +27,7 @@ private static function EventListenerReturn OnSpireSpawned(Object EventData, Obj
 {
     local Jammerware_JSRC_FlyoverService FlyoverService;
 	local Jammerware_JSRC_ItemStateService ItemsService;
-	local Jammerware_ProximityService ProximityService;
+	local Jammerware_JSRC_ProximityService ProximityService;
 
 	local array<XComGameState_Unit> AdjacentAllies;
     local XComGameState NewGameState;
@@ -40,7 +40,7 @@ private static function EventListenerReturn OnSpireSpawned(Object EventData, Obj
     Spire = XComGameState_Unit(EventData);
 
 	ItemsService = new class'Jammerware_JSRC_ItemStateService';
-    ProximityService = new class'Jammerware_ProximityService';
+    ProximityService = new class'Jammerware_JSRC_ProximityService';
     AdjacentAllies = ProximityService.GetAdjacentUnits(Spire, true);
     SpireGunState = Shooter.GetSecondaryWeapon();
     SpireGunTemplate = X2WeaponTemplate_SpireGun(SpireGunState.GetMyTemplate());

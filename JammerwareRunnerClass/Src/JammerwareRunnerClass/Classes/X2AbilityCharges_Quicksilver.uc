@@ -9,7 +9,7 @@ function int GetInitialCharges(XComGameState_Ability Ability, XComGameState_Unit
     Charges = super.GetInitialCharges(Ability, Unit);
 
 	// this is maybe a little crazy
-	// the runner can have this ability, but we also dynamically put it on spires during tactical.
+	// the architect can have this ability, but we also dynamically put it on spires during tactical.
 	// when that happens, the ability state doesn't know what weapon it goes with, so we have to inspect
 	// the shooter to determine how many charges we get. this'll break if the spire gun ever changes slots
 	// or something. i feel icky

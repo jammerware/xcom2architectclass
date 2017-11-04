@@ -23,7 +23,16 @@ static function X2DataTemplate CreateRunnerTransmatNetwork()
 
 static function X2DataTemplate CreateSpireTransmatNetwork()
 {
-    return PurePassive(default.NAME_SPIRETRANSMATNETWORK, default.ICON_TRANSMATNETWORK);
+	local X2AbilityTemplate Template;
+	local X2Condition_BeASpireOrHaveSoulAnd SotACondition;
+
+	SotACondition = new class'X2Condition_BeASpireOrHaveSoulAnd';
+	SotACondition.RequiredRunnerAbility = default.NAME_TRANSMATNETWORK;
+
+	Template = PurePassive(default.NAME_SPIRETRANSMATNETWORK, default.ICON_TRANSMATNETWORK);
+	Template.AbilityTargetConditions.AddItem(SotACondition);
+
+    return Template;
 }
 
 static function X2AbilityTemplate CreateTransmat()
@@ -58,8 +67,8 @@ static function X2AbilityTemplate CreateTransmat()
 	// conditions
     Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
 
+	// we intentionally don't restrict the ally to spires, because the architect can have it via soul of the architect
 	SpireAdjacencyCondition = new class'X2Condition_AllyAdjacency';
-	SpireAdjacencyCondition.RequireAllyCharacterGroup = class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE;
 	SpireAdjacencyCondition.RequireAllyEffect = default.NAME_SPIRETRANSMATNETWORK;
 	Template.AbilityShooterConditions.AddItem(SpireAdjacencyCondition);
 

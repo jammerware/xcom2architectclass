@@ -1,4 +1,4 @@
-class Jammerware_ProximityService extends Object;
+class Jammerware_JSRC_ProximityService extends Object;
 
 function bool AreAdjacent(XComGameState_Unit UnitA, XComGameState_Unit UnitB)
 {

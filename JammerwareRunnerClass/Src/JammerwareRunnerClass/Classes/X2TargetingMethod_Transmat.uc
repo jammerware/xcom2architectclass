@@ -14,7 +14,7 @@ function name ValidateTargetLocations(const array<Vector> TargetLocations)
 	local name AbilityAvailability;
 	local TTile TargetTile;
 	local XComWorldData World;
-	local Jammerware_ProximityService ProximityService;
+	local Jammerware_JSRC_ProximityService ProximityService;
 
 	World = `XWORLD;
 	// the parent class makes sure the tile isn't blocked and is a floor tile
@@ -22,10 +22,11 @@ function name ValidateTargetLocations(const array<Vector> TargetLocations)
 
 	if (AbilityAvailability == 'AA_Success')
 	{
-		ProximityService = new class'Jammerware_ProximityService';
+		ProximityService = new class'Jammerware_JSRC_ProximityService';
 		World.GetFloorTileForPosition(TargetLocations[0], TargetTile);
 
-		if (!ProximityService.IsTileAdjacentToAlly(TargetTile, self.ShooterState.GetTeam(), class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE, class'X2Ability_TransmatNetwork'.default.NAME_SPIRETRANSMATNETWORK))
+		// we intentionally don't care if the unit is a spire here, because the architect can have the buff via soul of the architect
+		if (!ProximityService.IsTileAdjacentToAlly(TargetTile, self.ShooterState.GetTeam(), , class'X2Ability_TransmatNetwork'.default.NAME_SPIRETRANSMATNETWORK))
 		{
 			AbilityAvailability = 'AA_NotInRange';
 		}
