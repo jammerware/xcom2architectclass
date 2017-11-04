@@ -59,7 +59,6 @@ private static function EventListenerReturn OnSpireSpawned(Object EventData, Obj
                 // TODO: maybe preserve "restore all ammo" via config too
                 NewGameState.ModifyStateObject(class'XComGameState_Unit', IterAlly.ObjectID);
                 ItemsService.LoadAmmo(IterAlly.GetPrimaryWeapon(), SpireGunTemplate.FieldReloadAmmoGranted, NewGameState);
-                `LOG("JSRC: reloaded" @ IterAlly.GetMyTemplateName());
             }
         }
 

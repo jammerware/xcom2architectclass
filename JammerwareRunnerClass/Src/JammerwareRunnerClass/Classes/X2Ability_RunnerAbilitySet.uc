@@ -379,8 +379,15 @@ static function X2AbilityTemplate CreateUnity()
 static function X2AbilityTemplate CreateSoulOfTheArchitect()
 {
 	local X2AbilityTemplate Template;
+	local X2Effect_GenerateCover GenerateCoverEffect;
 
 	Template = PurePassive(default.NAME_SOUL_OF_THE_ARCHITECT, "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_Pillar");
+
+	GenerateCoverEffect = new class'X2Effect_GenerateCover';
+	GenerateCoverEffect.bRemoveWhenMoved = false;
+	GenerateCoverEffect.bRemoveOnOtherActivation = false;
+	Template.AddTargetEffect(GenerateCoverEffect);
+
 	Template.AdditionalAbilities.AddItem(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_SHELTER);
 	Template.AdditionalAbilities.AddItem(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_QUICKSILVER);
 	Template.AdditionalAbilities.AddItem(class'X2Ability_KineticBlast'.default.NAME_KINETICBLAST);
