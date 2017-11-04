@@ -19,7 +19,7 @@ static function array <X2DataTemplate> CreateTemplates()
 
 	// SERGEANT!
 	Templates.AddItem(CreateSpireShelter());
-	Templates.AddItem(AddSpireQuicksilver());
+	Templates.AddItem(CreateSpireQuicksilver());
 
 	// LIEUTENANT
 	Templates.AddItem(class'X2Ability_KineticPulse'.static.CreateKineticPulse());
@@ -105,13 +105,14 @@ static function X2AbilityTemplate CreateDecommission()
 	return Template;
 }
 
-static function X2AbilityTemplate CreateSpireShelter()
+private static function X2AbilityTemplate CreateSpireShelter()
 {
 	local X2AbilityTemplate Template;
 	local X2AbilityMultiTarget_Radius MultiTargetStyle;
 	local X2AbilityTrigger_EventListener TurnEndTrigger;
 	local X2Effect_ShelterShield ShieldEffect;
 	local X2Condition_UnitProperty PropertyCondition;
+	local X2Condition_BeASpireOrHaveSoulAnd RunnerAbilityCondition;
 
 	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_SPIRE_SHELTER);
 
@@ -138,6 +139,10 @@ static function X2AbilityTemplate CreateSpireShelter()
 
 	// conditions
 	Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
+
+	RunnerAbilityCondition = new class'X2Condition_BeASpireOrHaveSoulAnd';
+	RunnerAbilityCondition.RequiredRunnerAbility = class'X2Ability_RunnerAbilitySet'.default.NAME_SHELTER;
+	Template.AbilityShooterConditions.AddItem(RunnerAbilityCondition);
 	
 	// the ability can only go off if there's an adjacent ally
 	Template.AbilityShooterConditions.AddItem(new class'X2Condition_AllyAdjacency');
@@ -172,12 +177,13 @@ static function X2AbilityTemplate CreateSpireShelter()
 	return Template;
 }
 
-static function X2AbilityTemplate AddSpireQuicksilver()
+static function X2AbilityTemplate CreateSpireQuicksilver()
 {
 	local X2AbilityTemplate Template;
 	local X2AbilityCost_ActionPoints ActionPointCost;
 	local X2AbilityCost_Charges ChargeCost;
 	local X2Effect_GrantActionPoints ActionPointEffect;
+	local X2Condition_BeASpireOrHaveSoulAnd RunnerAbilityCondition;
 	local X2Condition_UnitProperty TargetCondition;
 	local X2AbilityCooldown Cooldown;
 
@@ -190,7 +196,7 @@ static function X2AbilityTemplate AddSpireQuicksilver()
 	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_SERGEANT_PRIORITY;
 	Template.Hostility = eHostility_Neutral;
 	Template.bLimitTargetIcons = true;
-	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_AlwaysShow;	
+	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_ShowIfAvailable;	
 	Template.AbilityIconColor = class'Jammerware_JSRC_IconColorService'.static.GetSpireAbilityIconColor();
 	
 	// triggering
@@ -221,6 +227,10 @@ static function X2AbilityTemplate AddSpireQuicksilver()
 	// conditions
 	Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
 	Template.AddShooterEffectExclusions();
+
+	RunnerAbilityCondition = new class'X2Condition_BeASpireOrHaveSoulAnd';
+	RunnerAbilityCondition.RequiredRunnerAbility = class'X2Ability_RunnerAbilitySet'.default.NAME_QUICKSILVER;
+	Template.AbilityShooterConditions.AddItem(RunnerAbilityCondition);
 
 	TargetCondition = new class'X2Condition_UnitProperty';
 	TargetCondition.ExcludeHostileToSource = true;

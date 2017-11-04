@@ -40,8 +40,6 @@ event name CallMeetsConditionWithSource(XComGameState_BaseObject kTarget, XComGa
 
     if (SpireOwner == none || SpireOwner.ObjectID != Source.ObjectID)
     {
-        `LOG("JSRC: spire owner isn't right" @ SpireOwner.ObjectID);
-        `LOG("JSRC: source is" @ Source.ObjectID);
         return 'AA_ValueCheckFailed';
     }
 

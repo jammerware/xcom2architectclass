@@ -6,6 +6,7 @@ static function X2DataTemplate CreateKineticPulse()
 {
     local X2AbilityTemplate Template;
     local X2AbilityMultiTarget_Cone MultiTargetStyle;
+	local X2Condition_BeASpireOrHaveSoulAnd RunnerAbilityCondition;
     local X2Effect_Knockback KnockbackEffect;
 
 	// general properties
@@ -38,6 +39,10 @@ static function X2DataTemplate CreateKineticPulse()
 	Template.AbilityToHitCalc = default.DeadEye;
 
 	// conditions
+	RunnerAbilityCondition = new class'X2Condition_BeASpireOrHaveSoulAnd';
+	RunnerAbilityCondition.RequiredRunnerAbility = class'X2Ability_RunnerAbilitySet'.default.NAME_KINETIC_RIGGING;
+	Template.AbilityShooterConditions.AddItem(RunnerAbilityCondition);
+	
 	Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
 
 	// triggering

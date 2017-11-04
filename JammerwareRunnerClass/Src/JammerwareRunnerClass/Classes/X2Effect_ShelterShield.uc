@@ -7,8 +7,6 @@ simulated protected function OnEffectAdded(const out EffectAppliedData ApplyEffe
 	local array<StatChange> StatChanges;
 	local StatChange ShieldChange;
 
-	`LOG("JSRC: shield added");
-
 	// read the amount of shield from the spiregun's template
 	WeaponState = XComGameState_Item(NewGameState.GetGameStateForObjectID(ApplyEffectParameters.ItemStateObjectRef.ObjectID));
 	Template = X2WeaponTemplate_SpireGun(WeaponState.GetMyTemplate());
