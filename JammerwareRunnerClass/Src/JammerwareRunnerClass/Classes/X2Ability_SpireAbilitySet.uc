@@ -22,7 +22,7 @@ static function array <X2DataTemplate> CreateTemplates()
 	Templates.AddItem(CreateSpireQuicksilver());
 
 	// LIEUTENANT
-	Templates.AddItem(class'X2Ability_KineticPulse'.static.CreateKineticPulse());
+	Templates.AddItem(class'X2Ability_KineticBlast'.static.CreateKineticBlast());
 
 	// COLONEL!
 	Templates.AddItem(class'X2Ability_TransmatNetwork'.static.CreateSpireTransmatNetwork());
@@ -190,14 +190,14 @@ static function X2AbilityTemplate CreateSpireQuicksilver()
 	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_SPIRE_QUICKSILVER);
 
 	// hud behavior
-	Template.DisplayTargetHitChance = true;
 	Template.AbilitySourceName = 'eAbilitySource_Perk';
+	Template.AbilityIconColor = class'Jammerware_JSRC_IconColorService'.static.GetSpireAbilityIconColor();
 	Template.IconImage = "img:///UILibrary_PerkIcons.UIPerk_runandgun";
 	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_SERGEANT_PRIORITY;
 	Template.Hostility = eHostility_Neutral;
 	Template.bLimitTargetIcons = true;
 	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_ShowIfAvailable;	
-	Template.AbilityIconColor = class'Jammerware_JSRC_IconColorService'.static.GetSpireAbilityIconColor();
+	Template.OverrideAbilityAvailabilityFn = class'Jammerware_JSRC_AbilityAvailabilityService'.static.ShowIfValueCheckPasses;
 	
 	// triggering
 	Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);

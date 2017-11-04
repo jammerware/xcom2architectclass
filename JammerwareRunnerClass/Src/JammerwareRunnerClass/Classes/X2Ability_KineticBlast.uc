@@ -1,16 +1,19 @@
-class X2Ability_KineticPulse extends X2Ability;
+class X2Ability_KineticBlast extends X2Ability
+	config(JammerwareRunnerClass);
 
-var name NAME_KINETICPULSE;
+var name NAME_KINETICBLAST;
+var config int SOUL_COOLDOWN_KINETIC_BLAST;
 
-static function X2DataTemplate CreateKineticPulse()
+static function X2DataTemplate CreateKineticBlast()
 {
     local X2AbilityTemplate Template;
     local X2AbilityMultiTarget_Cone MultiTargetStyle;
 	local X2Condition_BeASpireOrHaveSoulAnd RunnerAbilityCondition;
+	local X2AbilityCooldown_SoulOfTheArchitect Cooldown;
     local X2Effect_Knockback KnockbackEffect;
 
 	// general properties
-	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_KINETICPULSE);
+	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_KINETICBLAST);
 	Template.Hostility = eHostility_Offensive;
 
 	// hud behavior
@@ -19,9 +22,15 @@ static function X2DataTemplate CreateKineticPulse()
 	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_ShowIfAvailable;
 	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_LIEUTENANT_PRIORITY;
 	Template.AbilityIconColor = class'Jammerware_JSRC_IconColorService'.static.GetSpireAbilityIconColor();
+	Template.OverrideAbilityAvailabilityFn = class'Jammerware_JSRC_AbilityAvailabilityService'.static.ShowIfValueCheckPasses;
 
 	// cost
 	Template.AbilityCosts.AddItem(default.WeaponActionTurnEnding);
+
+	// cooldown
+	Cooldown = new class'X2AbilityCooldown_SoulOfTheArchitect';
+	Cooldown.NonSpireCooldown = default.SOUL_COOLDOWN_KINETIC_BLAST;
+	Template.AbilityCooldown = Cooldown;
 
 	// targeting style (how targets are determined by game rules)
 	Template.AbilityTargetStyle = new class'X2AbilityTarget_Cursor';
@@ -65,5 +74,5 @@ static function X2DataTemplate CreateKineticPulse()
 
 defaultproperties
 {
-    NAME_KINETICPULSE=Jammerware_JSRC_Ability_KineticPulse
+    NAME_KINETICBLAST=Jammerware_JSRC_Ability_KineticBlast
 }

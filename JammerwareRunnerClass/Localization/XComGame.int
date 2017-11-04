@@ -179,17 +179,17 @@ LocPromotionPopupText="\"If only it were small enough to fit on a gun...\"\n\n<B
 
 [Jammerware_JSRC_Ability_KineticRigging X2AbilityTemplate]
 LocFriendlyName="Kinetic Rigging"
-LocLongDescription="Your spires each gain a single charge of Kinetic Pulse, an ability that knocks back all enemies in the area of effect."
-LocHelpText="Your spires each gain a single charge of Kinetic Pulse, an ability that knocks back all enemies in the area of effect."
+LocLongDescription="Your spires gain Kinetic Blast, an ability that knocks back all enemies in the area of effect."
+LocHelpText="Your spires gain Kinetic Blast, an ability that knocks back all enemies in the area of effect."
 LocFlyOverText="Kinetic Rigging"
-LocPromotionPopupText="\"Advent may have dispensed with the use of nonlethal force, but we haven't. Well... not while they're in cover, anyway.\"\n\n<Bullet/> 5-turn cooldown"
+LocPromotionPopupText="\"Advent may have dispensed with the use of nonlethal force, but we haven't. Well... not while they're in cover, anyway.\""
 
-[Jammerware_JSRC_Ability_KineticPulse X2AbilityTemplate]
-LocFriendlyName="Kinetic Pulse"
+[Jammerware_JSRC_Ability_KineticBlast X2AbilityTemplate]
+LocFriendlyName="Kinetic Blast"
 LocLongDescription="The spire emits a blast of pure kinetic energy, knocking back all targets in the area of effect."
 LocHelpText="The spire emits a blast of pure kinetic energy, knocking back all targets in the area of effect."
-LocFlyOverText="Kinetic Pulse"
-LocPromotionPopupText="\"Advent may have dispensed with the use of nonlethal force, but we haven't. Well... not while they're in cover, anyway.\"\n\n<Bullet/> 5-turn cooldown"
+LocFlyOverText="Kinetic Blast"
+LocPromotionPopupText="\"Advent may have dispensed with the use of nonlethal force, but we haven't. Well... not while they're in cover, anyway.\""
 
 [Jammerware_JSRC_Ability_Unity X2AbilityTemplate]
 LocFriendlyName="Unity"
