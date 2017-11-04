@@ -1,6 +1,8 @@
-class X2Ability_RelayedShot extends X2Ability;
+class X2Ability_RelayedShot extends X2Ability
+	config(JammerwareRunnerClass);
 
 var name NAME_RELAYED_SHOT;
+var config int COOLDOWN_RELAYED_SHOT;
 
 static function X2DataTemplate CreateRelayedShot()
 {
@@ -34,7 +36,7 @@ static function X2DataTemplate CreateRelayedShot()
 	
 	// Cooldown
 	Cooldown = new class'X2AbilityCooldown';
-	Cooldown.iNumTurns = 5;
+	Cooldown.iNumTurns = default.COOLDOWN_RELAYED_SHOT;
 	Template.AbilityCooldown = Cooldown;
 
 	// targeting style (how targets are determined by game rules)

@@ -6,6 +6,7 @@ var name NAME_SPIRE_PASSIVE;
 var name NAME_SPIRE_QUICKSILVER;
 var name NAME_SPIRE_SHELTER;
 
+var config int COOLDOWN_SOUL_QUICKSILVER;
 var config int SHELTER_DURATION;
 
 static function array <X2DataTemplate> CreateTemplates()
@@ -185,7 +186,7 @@ static function X2AbilityTemplate CreateSpireQuicksilver()
 	local X2Effect_GrantActionPoints ActionPointEffect;
 	local X2Condition_BeASpireOrHaveSoulAnd RunnerAbilityCondition;
 	local X2Condition_UnitProperty TargetCondition;
-	local X2AbilityCooldown Cooldown;
+	local X2AbilityCooldown_SoulOfTheArchitect Cooldown;
 
 	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_SPIRE_QUICKSILVER);
 
@@ -220,8 +221,8 @@ static function X2AbilityTemplate CreateSpireQuicksilver()
 	Template.AbilityCosts.AddItem(ChargeCost);
 
 	// cooldown
-	Cooldown = new class'X2AbilityCooldown';
-	Cooldown.iNumTurns = 3;
+	Cooldown = new class'X2AbilityCooldown_SoulOfTheArchitect';
+	Cooldown.NonSpireCooldown = default.COOLDOWN_SOUL_QUICKSILVER;
 	Template.AbilityCooldown = Cooldown;
 
 	// conditions

@@ -91,7 +91,7 @@ LocFriendlyName="Activate Spire"
 LocLongDescription="Activate one of your spires. It can use abilities this turn."
 LocHelpText="Activate one of your spires. It can use abilities this turn."
 LocFlyOverText="Activate Spire"
-LocPromotionPopupText="Flarp donk claps"
+LocPromotionPopupText="\"\"\n\nSpires always provide cover, and their passive abilities always apply to nearby squadmates. However, to use any of the spire's active abilities, the Architect has to activate it.\n\n<Bullet/> - Free action\n<Bullet/> - Usable once per turn\n<Bullet /> Requires line-of-sight to the spire"
 
 [Jammerware_JSRC_Ability_Decommission X2AbilityTemplate]
 LocFriendlyName="Decommission"
@@ -101,32 +101,32 @@ LocFlyOverText="Decommission"
 LocPromotionPopupText="Would it make you feel better if it were called \"Retire\"?"
 
 [Jammerware_JSRC_Ability_SpawnSpire X2AbilityTemplate]
-LocFriendlyName="Create Spire"
-LocLongDescription="Create a spire. Spires provide high cover."
-LocHelpText="Create a spire. Spires provide high cover."
-LocFlyOverText="Create Spire"
-LocPromotionPopupText="\"What you leave behind is not what is engraved in stone monuments, but what is woven into the lives of others.\"\n- Pericles\n\nSpires are the focal point of most Architect abilities. They provide cover, and confer additional benefits as the architect is promoted.\n<Bullet/> Range: 6 tiles\n<Bullet/> Cooldown: <Ability:SpawnSpireCooldown/> turns\n<Bullet/> Ends your turn"
+LocFriendlyName="Build Spire"
+LocLongDescription="Build a spire. Spires provide high cover."
+LocHelpText="Build a spire. Spires provide high cover."
+LocFlyOverText="Build Spire"
+LocPromotionPopupText="\"What you leave behind is not what is engraved in stone monuments, but what is woven into the lives of others.\"\n- Pericles\n\nSpires are the focal point of most Architect abilities. They provide cover, and confer additional benefits as the architect is promoted.\n\n<Bullet/> Costs one action\n<Bullet/> Doesn't end your turn\n<Bullet/> 6-tile range\n<Bullet/> <Ability:SpawnSpireCooldown/>-turn cooldown"
 
 [Jammerware_JSRC_Ability_Shelter X2AbilityTemplate]
-LocFriendlyName="Shelter"
+LocFriendlyName="Shelter Array"
 LocLongDescription="Your spires gain Shelter, which grants allies who end their turn adjacent to the spire a small shield. Shelter doesn't stack."
 LocHelpText="Your spires gain Shelter, which grants allies who end their turn adjacent to the spire a small shield. Shelter doesn't stack."
 LocFlyOverText="Shelter"
-LocPromotionPopupText="\"What do you actually need? Food, clothing and shelter. Everything else is entertainment.\"\n-Aloe Blacc\n\n<Bullet/> Shelter's shield effect lasts for five turns, but it's refreshed when the shielded soldier ends their turn adjacent to a spire with Shelter.\n<Bullet/> The strength of the shield increases as the architect's spire kit is upgraded.\n<Bullet/> Passive"
+LocPromotionPopupText="\"I don't think that architecture is only about shelter, is only about a very simple enclosure. It should be able to excite you, to calm you, to make you think.\"\n- Zaha Hadid\n\n<Bullet/> Passive\n<Bullet/> Shield lasts <Ability:ShelterShieldDuration/> turns\n<Bullet/> Shield strength increases as the architect's spire kit is upgraded."
 
 [Jammerware_JSRC_Ability_SpireShelter X2AbilityTemplate]
 LocFriendlyName="Shelter"
 LocLongDescription="Contact with a spire has granted this soldier a shield."
 LocHelpText="Contact with a spire has granted this soldier a shield."
 LocFlyOverText="Shelter"
-LocPromotionPopupText="The shield lasts for five turns."
+LocPromotionPopupText="The shield lasts for <Ability:ShelterShieldDuration/> turns."
 
 [Jammerware_JSRC_Ability_Quicksilver X2AbilityTemplate]
 LocFriendlyName="Quicksilver"
-LocLongDescription="Your spires gain Quicksilver, an ability which grants an adjacent squadmate an extra action once per mission."
+LocLongDescription="Your spires gain Quicksilver, an ability which grants an adjacent squadmate an action point. "
 LocHelpText="Your spires gain Quicksilver, an ability which grants an adjacent squadmate an extra action once per mission."
 LocFlyOverText="Quicksilver"
-LocPromotionPopupText="\"A personal favorite of Prompto Argentum.\"\n\nQuicksilver contributes powerful utility to your team, enabling deep strikes from rangers and templars or rapid repositioning from a sharpshooter.\n\n<Bullet/> Each spire can use Quicksilver a single time.\n<Bullet/> The action point is granted instantly, and it can be given to any adjacent squadmate - even if they've used all of their action points for the turn.\n<Bullet/> Each spire can use Quicksilver once."
+LocPromotionPopupText="\"A personal favorite of Prompto Argentum.\"\n\nQuicksilver contributes powerful utility to your team, enabling deep strikes from rangers and templars or rapid repositioning from a sharpshooter.\n\n<Bullet/> Spire must be activated to use Quicksilver\n<Bullet/> Each use of Quicksilver costs one of the spire's Quicksilver charges\n<Bullet/> The action point is granted instantly, and it can be given to any adjacent squadmate - even if they've used all of their action points for the turn"
 
 [Jammerware_JSRC_Ability_SpireQuicksilver X2AbilityTemplate]
 LocFriendlyName="Quicksilver"
@@ -136,32 +136,32 @@ LocFlyOverText="Quicksilver"
 LocPromotionPopupText="LIGHTNING!"
 
 [Jammerware_JSRC_Ability_FieldReloadModule X2AbilityTemplate]
-LocFriendlyName="Field Reload Module"
-LocLongDescription="When you create a spire, it reloads the weapons of any allies adjacent to it."
-LocHelpText="When you create a spire, it reloads the weapons of any allies adjacent to it."
-LocFlyOverText="Field Reload Module"
-LocPromotionPopupText="\"No one cares whether it's called a mag or a clip when there's 600 pounds of Muton bearing down on them.\"\n\nField Reload Module guarantees utility of your spires on the turn they're placed. It's great for a teammate with a bolt caster.\n\n<Bullet/> Passive\n<Bullet/> Works for any spire you create, including ones created with Headstone."
+LocFriendlyName="Field Reload Array"
+LocLongDescription="When you create a spire, it restores some ammo to allies adjacent to it."
+LocHelpText="When you create a spire, it restores some ammo to allies adjacent to it."
+LocFlyOverText="Field Reload Array"
+LocPromotionPopupText="\"No one cares whether it's called a mag or a clip when there's 600 pounds of Muton bearing down on them.\"\n\nField Reload Array guarantees utility of your spires on the turn they're placed. It's especially powerful for a squadmates holding weapons with small clips.\n\n<Bullet/> Passive\n<Bullet/> Works for any spire you create, including ones created with Headstone."
 
 [Jammerware_JSRC_Ability_TransmatLink X2AbilityTemplate]
 LocFriendlyName="Transmat Link"
 LocLongDescription="Exchange locations with one of your spires."
 LocHelpText="Exchange locations with one of your spires."
 LocFlyOverText="Transmat Link"
-LocPromotionPopupText="You tell everyone it's just a lucky rabbit's foot. But do rabbits' feet glow?"
+LocPromotionPopupText="\"You tell everyone it's just a lucky rabbit's foot. But do rabbits' feet glow?\"\n\nTransmat Link allows the Architect to reposition quickly, enabling safe retreat and aggressive engagement. It's also useful for bringing cover to an ally in need if Build Spire is on cooldown.\n\n<Bullet/> Free action\n<Bullet/> <Ability:TransmatLinkCooldown/>-turn cooldown"
 
 [Jammerware_JSRC_Ability_Reclaim X2AbilityTemplate]
 LocFriendlyName="Reclaim"
-LocLongDescription="Destroy an adjacent spire. You gain one action point, and the cooldown of Create Spire resets."
-LocHelpText="Destroy an adjacent spire. You gain one action point, and the cooldown of Create Spire resets."
+LocLongDescription="Destroy an adjacent spire. You gain one action point, and the cooldown of Build Spire resets."
+LocHelpText="Destroy an adjacent spire. You gain one action point, and the cooldown of Build Spire resets."
 LocFlyOverText="Reclaim"
-LocPromotionPopupText="\"Reduce. Reuse. Recycle.\"\n\n<Bullet/> Reclaim doesn't end your turn, so you can approach a spire, reclaim it, and then place another in the same turn.\n<Bullet/> Cooldown: 5 turns"
+LocPromotionPopupText="\"Reduce. Reuse. Recycle.\"\n\n<Bullet/> Free action\n<Bullet/> <Ability:ReclaimCooldown/>-turn cooldown"
 
 [Jammerware_JSRC_Ability_Headstone X2AbilityTemplate]
 LocFriendlyName="Headstone"
 LocLongDescription="Summon a spire on a tile occupied by the corpse of an enemy."
 LocHelpText="Summon a spire on a tile occupied by the corpse of an enemy."
 LocFlyOverText="Headstone"
-LocPromotionPopupText="\"Rest in peace.\"\n\n<Bullet/> Headstone doesn't share a cooldown with Create Spire, so it grants additional Spire throughput.\n<Bullet/> Headstone can target any organic enemy corpse in visual range of the soldier.\n<Bullet/> Cooldown: 6 turns\n<Bullet/> Doesn't end your turn"
+LocPromotionPopupText="\"Rest in peace.\"\n\nHeadstone doesn't share a cooldown with Build Spire, so it increases the rate at which you can create spires considerably.\n\n<Bullet/> Free action\n<Bullet/> <Ability:HeadstoneCooldown/>-turn cooldown\n<Bullet/> Can target any enemy corpse in visual range of the Architect"
 
 [Jammerware_JSRC_Ability_TargetingArray X2AbilityTemplate]
 LocFriendlyName="Targeting Array"
@@ -172,8 +172,8 @@ LocPromotionPopupText="\"If only it were small enough to fit on a gun...\"\n\n<B
 
 [Jammerware_JSRC_Ability_TargetingArrayTriggered X2AbilityTemplate]
 LocFriendlyName="Targeting Array"
-LocLongDescription="Your <Ability:WeaponName/> shots gain an additional 20% accuracy when you're adjacent to a spire."
-LocHelpText="Your <Ability:WeaponName/> shots gain an additional 20% accuracy when you're adjacent to a spire."
+LocLongDescription="Your <Ability:WeaponName/> shots gain additional accuracy when you're adjacent to a spire."
+LocHelpText="Your <Ability:WeaponName/> shots gain additional accuracy when you're adjacent to a spire."
 LocFlyOverText="Targeting Array"
 LocPromotionPopupText="\"If only it were small enough to fit on a gun...\"\n\n<Bullet/> Passive"
 
@@ -182,7 +182,7 @@ LocFriendlyName="Kinetic Rigging"
 LocLongDescription="Your spires gain Kinetic Blast, an ability that knocks back all enemies in the area of effect."
 LocHelpText="Your spires gain Kinetic Blast, an ability that knocks back all enemies in the area of effect."
 LocFlyOverText="Kinetic Rigging"
-LocPromotionPopupText="\"Advent may have dispensed with the use of nonlethal force, but we haven't. Well... not while they're in cover, anyway.\""
+LocPromotionPopupText="\"Advent may have dispensed with the use of nonlethal force, but we haven't. Well... not while they're in cover, anyway.\"\n\n<Bullet/> Spire must be activated to use Kinetic Blast"
 
 [Jammerware_JSRC_Ability_KineticBlast X2AbilityTemplate]
 LocFriendlyName="Kinetic Blast"
@@ -193,8 +193,8 @@ LocPromotionPopupText="\"Advent may have dispensed with the use of nonlethal for
 
 [Jammerware_JSRC_Ability_Unity X2AbilityTemplate]
 LocFriendlyName="Unity"
-LocLongDescription="You can use Create Spire on tiles adjacent to allies."
-LocHelpText="You can use Create Spire on tiles adjacent to allies."
+LocLongDescription="You can use Build Spire on tiles adjacent to allies."
+LocHelpText="You can use Build Spire on tiles adjacent to allies."
 LocFlyOverText="Unity"
 LocPromotionPopupText="\"You sense this will have a MASSive EFFECT on your tactical engagements.\"\n\nYou can still place spires around you in the same range as you could without Unity - it just adds the tiles adjacent to your visible squadmates as additional options.\n\n<Bullet/> Passive"
 
@@ -203,33 +203,33 @@ LocFriendlyName="Relayed Shot"
 LocLongDescription="You fire your <Ability:WeaponName/> at one of your spires. It amplifies the kinetic energy of the shot, increasing its effective range and overpenetrating all targets in the area of effect."
 LocHelpText="You fire your <Ability:WeaponName/> at one of your spires. It amplifies the kinetic energy of the shot, increasing its effective range and overpenetrating all targets in the area of effect."
 LocFlyOverText="Relayed Shot"
-LocPromotionPopupText="\"These new recruits don't even have to aim. I'm gettin' too old for this.\"\nCentral Officer Bradford\n\nRelayed Shot deals the damage of your primary weapon to all targets in the area of effect. This makes architects with this ability especially good ammo carriers, since special ammunition effects are also applied.\n\n<Bullet/> 5-turn cooldown<Bullet/> Empties your clip"
+LocPromotionPopupText="\"These new recruits don't even have to aim. I'm gettin' too old for this.\"\nCentral Officer Bradford\n\nRelayed Shot deals the damage of your primary weapon to all targets in the area of effect. This makes architects with this ability especially good ammo carriers, since special ammunition effects are also applied.\n\n<Bullet/> <Ability:RelayedShotCooldown/>-turn cooldown\n<Bullet/> Empties your clip\n<Bullet/> Ends your turn"
 
 [Jammerware_JSRC_Ability_SoulOfTheArchitect X2AbilityTemplate]
 LocFriendlyName="Soul of the Architect"
 LocLongDescription="All effects that apply to your spires also apply to you. You gain all abilities that your spires have."
 LocHelpText="All effects that apply to your spires also apply to you. You gain all abilities that your spires have."
 LocFlyOverText="Soul of the Architect"
-LocPromotionPopupText="\"You've become one with your spires. Or, you know. Two or three with them. Or whatever.\""
+LocPromotionPopupText="\"We shape our buildings; thereafter they shape us.\"\n- Winston Churchill\n\nSoul of the Architect makes you, in many ways, functionally similar to your spires. You provide high cover to your squad, and any other perks you've gained that affect your spires also apply to you passively.\n\n<Bullet/> Some skills that don't have cooldowns on your spires do when you gain them via Soul of the Architect\n<Bullet/> Kinetic Blast has a <Ability:KineticBlastCooldownWithSoul/>-turn cooldown\n<Bullet/> Quicksilver has a <Ability:QuicksilverCooldownWithSoul/>-turn cooldown\n<Bullet/> You don't apply Targeting Array or Shelter Array to yourself"
 
 [Jammerware_JSRC_Ability_TransmatNetwork X2AbilityTemplate]
 LocFriendlyName="Transmat Network"
-LocLongDescription="Your spires gain Transmat Network Node. When a squadmate is adjacent to a node, they can use Transmat, a free ability that allows them to relocate to any space adjacent to a spire in the network. 6-turn global cooldown."
-LocHelpText="Your spires gain Transmat Network Node. When a squadmate is adjacent to a node, they can use Transmat, a free ability that allows them to relocate to any space adjacent to a spire in the network. 6-turn global cooldown."
+LocLongDescription="Your spires gain Transmat Network Node. When a squadmate is adjacent to a node, they can use Transmat, a free ability that allows them to relocate to any space adjacent to a spire in the network. 1-turn global cooldown."
+LocHelpText="Your spires gain Transmat Network Node. When a squadmate is adjacent to a node, they can use Transmat, a free ability that allows them to relocate to any space adjacent to a spire in the network. 1-turn global cooldown."
 LocFlyOverText="Transmat Network"
-LocPromotionPopupText="\"Everything has to be somewhere. The trick is having the right things be in the right places.\"\n\n<Bullet/> Transmat's cooldown is global, which means that if any squadmate uses it, the ability goes on cooldown for the entire squad.\n<Bullet/> The Transmat ability is free.\n<Bullet/> Civilians like VIPs can't use the Transmat ability, but non-XCOM units like hacked or mind-controlled enemies can."
+LocPromotionPopupText="\"Everything has to be somewhere. The trick is having the right things be in the right places.\"\n\n<Bullet/> Transmat's cooldown is global, which means that if any squadmate uses it, the ability goes on cooldown for the entire squad.\n<Bullet/> The Transmat ability doesn't cost an action\n<Bullet/> Civilians like VIPs can't use the Transmat ability, but non-XCOM units like hacked or mind-controlled enemies can"
 
 [Jammerware_JSRC_Ability_SpireTransmatNetwork X2AbilityTemplate]
 LocFriendlyName="Transmat Network Node"
-LocLongDescription="Squadmates can activate Transmat when adjacent to this spire, relocating to another space adjacent any spire in the network. 6-turn global cooldown."
-LocHelpText="Squadmates can active Transmat when adjacent to this spire, relocating to another space adjacent any spire in the network. 6-turn global cooldown."
+LocLongDescription="Squadmates can activate Transmat when adjacent to this spire, relocating to another space adjacent any spire in the network."
+LocHelpText="Squadmates can active Transmat when adjacent to this spire, relocating to another space adjacent any spire in the network."
 LocFlyOverText="Transmat Network Node"
 LocPromotionPopupText="\"Everything has to be somewhere. The trick is having the right things be in the right places.\""
 
 [Jammerware_JSRC_Ability_Transmat X2AbilityTemplate]
 LocFriendlyName="Transmat"
-LocLongDescription="Relocate to any space adjacent to a spire in the same transmat network. Free action. 6-turn global cooldown."
-LocHelpText="Relocate to any space adjacent to a spire in the same transmat network. Free action. 6-turn global cooldown."
+LocLongDescription="Relocate to any space adjacent to a spire in the same transmat network. Free action. Can be used by your squad once per turn."
+LocHelpText="Relocate to any space adjacent to a spire in the same transmat network. Free action. Can be used by your squad once per turn."
 LocFlyOverText="Transmat"
 LocPromotionPopupText="\"Everything has to be somewhere. The trick is having the right things be in the right places.\""
 
@@ -255,7 +255,7 @@ LocFriendlyName="Bolt from the Whoosh"
 LocLongDescription="When you miss a shot with a boltcaster, the bullet is returned to the clip."
 LocHelpText="When you miss a shot with a boltcaster, the bullet is returned to the clip."
 LocFlyOverText="Bolt from the Whoosh"
-LocPromotionPopupText="\"If you're using a terrible gun and you're a terrible shot, an equally offsetting good has to appear somewhere in the universe.\""
+LocPromotionPopupText="\"If you're using a terrible gun and you're a terrible shot, an equally offsetting good has to appear somewhere in the universe... right?\""
 
 ;-------------------------------------------------------------
 ; WEAPONS

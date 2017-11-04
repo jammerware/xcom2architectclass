@@ -1,6 +1,8 @@
-class X2Ability_TransmatLink extends X2Ability;
+class X2Ability_TransmatLink extends X2Ability
+	config(JammerwareRunnerClass);
 
 var name NAME_TRANSMAT_LINK;
+var config int COOLDOWN_TRANSMAT_LINK;
 
 static function X2DataTemplate CreateTransmatLink()
 {
@@ -24,7 +26,7 @@ static function X2DataTemplate CreateTransmatLink()
 	
 	// Cooldown
 	Cooldown = new class'X2AbilityCooldown';
-	Cooldown.iNumTurns = 5;
+	Cooldown.iNumTurns = default.COOLDOWN_TRANSMAT_LINK;
 	Template.AbilityCooldown = Cooldown;
 
 	// targeting style (how targets are determined by game rules)
@@ -36,7 +38,6 @@ static function X2DataTemplate CreateTransmatLink()
 	// conditions
 	Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
 
-	// TODO: need to enforce that the spire target belongs to the ability source
 	Template.AbilityTargetConditions.AddItem(default.GameplayVisibilityCondition);
 	Template.AbilityTargetconditions.AddItem(new class'X2Condition_OwnedSpire');
 	

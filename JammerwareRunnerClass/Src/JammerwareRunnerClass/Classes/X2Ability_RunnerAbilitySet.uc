@@ -397,7 +397,6 @@ private static function X2AbilityTemplate CreateDeadbolt()
 
 	// HUD behavior
 	Template.IconImage = "img:///UILibrary_PerkIcons.UIPerk_equip";
-
 	Template.AbilitySourceName = 'eAbilitySource_Perk';
 	Template.eAbilityIconBehaviorHUD = EAbilityIconBehavior_NeverShow;
 	Template.Hostility = eHostility_Neutral;
