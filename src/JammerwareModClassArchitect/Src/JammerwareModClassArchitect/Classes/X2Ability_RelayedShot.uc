@@ -57,6 +57,7 @@ static function X2DataTemplate CreateRelayedShot()
 
 	Template.AbilityTargetConditions.AddItem(default.GameplayVisibilityCondition);
 	Template.AbilityTargetConditions.AddItem(new class'X2Condition_OwnedSpire');
+	Template.AbilityMultiTargetConditions.AddItem(default.LivingHostileTargetProperty);
 
 	// triggering
 	Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);
@@ -67,7 +68,6 @@ static function X2DataTemplate CreateRelayedShot()
 	
 	// game state and visualization
 	Template.bUsesFiringCamera = true;
-	Template.CinescriptCameraType = "StandardGunFiring";
 	Template.ModifyNewContextFn = RelayedShot_ModifyActivatedAbilityContext;
 	Template.BuildNewGameStateFn = RelayedShot_BuildGameState;
 	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
@@ -170,6 +170,7 @@ static function XComGameState RelayedShot_BuildGameState(XComGameStateContext Co
 
 	if (EffectsToApply.Length > 0)
 	{
+		`LOG("JSRC: WE HAVE EFECTS TO APPLY");
 		SourceObject_OriginalState = History.GetGameStateForObjectID(AbilityContext.InputContext.SourceObject.ObjectID);
 
 		for (i = 0; i < AbilityContext.InputContext.MultiTargets.Length; i++)
@@ -195,8 +196,6 @@ static function XComGameState RelayedShot_BuildGameState(XComGameStateContext Co
 				AmmoTemplate.DataName,
 				TELT_AmmoTargetEffects
 			);
-			
-			`LOG("JSRC:" @ EffectsToApply.Length @ "effects applied to target" @ AffectedTargetObject_NewState.GetMyTemplateName());
 		}
 	}
 
