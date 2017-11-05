@@ -2,17 +2,18 @@ class X2Ability_RelayedShot extends X2Ability
 	config(JammerwareModClassArchitect);
 
 var name NAME_RELAYED_SHOT;
+
+var config int AMMO_COST_RELAYED_SHOT;
 var config int COOLDOWN_RELAYED_SHOT;
+var config int AOE_BONUS_WIDTH_RELAYED_SHOT;
 
 static function X2DataTemplate CreateRelayedShot()
 {
     local X2AbilityTemplate Template;
 	local X2AbilityCooldown Cooldown;
 	local X2AbilityMultiTarget_Line MultiTargetStyle;
-	local X2AbilityCost_Ammo AmmoCost;
-	local X2Condition_UnitProperty TargetPropertiesCondition;
-	local X2Condition_UnitType UnitTypeCondition;
-
+	local X2AbilityCost_Ammo_MagSizeOrAmountMin AmmoCost;
+	
 	// general properties
 	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_RELAYED_SHOT);
 	Template.Hostility = eHostility_Offensive;
@@ -22,16 +23,15 @@ static function X2DataTemplate CreateRelayedShot()
 	Template.AbilitySourceName = 'eAbilitySource_Perk';
 	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_AlwaysShow;
 	Template.bDisplayInUITacticalText = false;
-	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_MAJOR_PRIORITY;
+	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_LIEUTENANT_PRIORITY;
 	Template.bLimitTargetIcons = true;
 	Template.bFriendlyFireWarning = false;
 
 	// cost
 	Template.AbilityCosts.AddItem(default.WeaponActionTurnEnding);
 
-	AmmoCost = new class'X2AbilityCost_Ammo';
-	AmmoCost.iAmmo = 1;
-	AmmoCost.bConsumeAllAmmo = true;
+	AmmoCost = new class'X2AbilityCost_Ammo_MagSizeOrAmountMin';
+	AmmoCost.iAmmo = default.AMMO_COST_RELAYED_SHOT;
 	Template.AbilityCosts.AddItem(AmmoCost);
 	
 	// Cooldown
@@ -43,7 +43,7 @@ static function X2DataTemplate CreateRelayedShot()
 	Template.AbilityTargetStyle = default.SimpleSingleTarget;
 
 	MultiTargetStyle = new class'X2AbilityMultiTarget_Line';
-	MultiTargetStyle.TileWidthExtension = 1;
+	MultiTargetStyle.TileWidthExtension = default.AOE_BONUS_WIDTH_RELAYED_SHOT;
     Template.AbilityMultiTargetStyle = MultiTargetStyle;
 
 	//Template.TargetingMethod = class'X2TargetingMethod_RelayedShot';
@@ -54,17 +54,8 @@ static function X2DataTemplate CreateRelayedShot()
 	// conditions
 	Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
 
-	UnitTypeCondition = new class'X2Condition_UnitType';
-	UnitTypeCondition.IncludeTypes.AddItem(class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE);
-	Template.AbilityTargetConditions.AddItem(UnitTypeCondition);
 	Template.AbilityTargetConditions.AddItem(default.GameplayVisibilityCondition);
-
-	// need to make sure the primary target (spire) is owned by the shooter
-
-    TargetPropertiesCondition = new class'X2Condition_UnitProperty';
-	TargetPropertiesCondition.ExcludeHostileToSource = false;
-	TargetPropertiesCondition.ExcludeFriendlyToSource = true;
-	Template.AbilityMultiTargetConditions.AddItem(TargetPropertiesCondition);
+	Template.AbilityTargetConditions.AddItem(new class'X2Condition_OwnedSpire');
 
 	// triggering
 	Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);

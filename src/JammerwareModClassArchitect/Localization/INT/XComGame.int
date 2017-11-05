@@ -66,7 +66,6 @@
 +RandomNickNames_Female="Hydra"
 +RandomNickNames_Female="Kami"
 +RandomNickNames_Female="Lamia"
-+RandomNicknames_Female="Lux"
 +RandomNicknames_Female="Naga"
 +RandomNicknames_Female="Naiad"
 +RandomNicknames_Female="Nereid"
@@ -200,8 +199,8 @@ LocPromotionPopupText="\"You sense this will have a MASSive EFFECT on your tacti
 
 [Jammerware_JSRC_Ability_RelayedShot X2AbilityTemplate]
 LocFriendlyName="Relayed Shot"
-LocLongDescription="You fire your <Ability:WeaponName/> at one of your spires. It amplifies the kinetic energy of the shot, increasing its effective range and overpenetrating all targets in the area of effect."
-LocHelpText="You fire your <Ability:WeaponName/> at one of your spires. It amplifies the kinetic energy of the shot, increasing its effective range and overpenetrating all targets in the area of effect."
+LocLongDescription="Fire your <Ability:WeaponName/> at one of your spires. The spire increases its range and causes it to overpenetrate all targets in the area of effect. Costs extra ammo."
+LocHelpText="Fire your <Ability:WeaponName/> at one of your spires. The spire increases its range and causes it to overpenetrate all targets in the area of effect. Costs extra ammo."
 LocFlyOverText="Relayed Shot"
 LocPromotionPopupText="\"These new recruits don't even have to aim. I'm gettin' too old for this.\"\nCentral Officer Bradford\n\nRelayed Shot deals the damage of your primary weapon to all targets in the area of effect. This makes architects with this ability especially good ammo carriers, since special ammunition effects are also applied.\n\n<Bullet/> <Ability:RelayedShotCooldown/>-turn cooldown\n<Bullet/> Empties your clip\n<Bullet/> Ends your turn"
 
