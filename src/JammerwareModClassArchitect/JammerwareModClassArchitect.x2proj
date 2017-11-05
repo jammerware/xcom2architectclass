@@ -4,7 +4,7 @@
     <Guid>0f60f9e7-2aea-4803-99b6-8771b8ad520e</Guid>
     <Name>Jammerware's Architect Class</Name>
     <Description>This mod adds the Architect class to XCOM 2: War of the Chosen. Architects are mobile but offensively weak and provide utility to their squad by building powerful Spires.</Description>
-    <SteamPublishID>0</SteamPublishID>
+    <SteamPublishID>1191669118</SteamPublishID>
     <AssemblyName>JammerwareModClassArchitect</AssemblyName>
     <RootNamespace>JammerwareModClassArchitect</RootNamespace>
     <ProjectGuid>{9fea04c5-c7d6-41c3-a849-8f0abd97b9e4}</ProjectGuid>
