@@ -23,6 +23,7 @@ static function X2DataTemplate CreateKineticBlast()
 	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_CAPTAIN_PRIORITY;
 	Template.AbilityIconColor = class'Jammerware_JSRC_IconColorService'.static.GetSpireAbilityIconColor();
 	Template.OverrideAbilityAvailabilityFn = class'Jammerware_JSRC_AbilityAvailabilityService'.static.ShowIfValueCheckPasses;
+	Template.bFriendlyFireWarning = false;
 
 	// cost
 	Template.AbilityCosts.AddItem(default.WeaponActionTurnEnding);

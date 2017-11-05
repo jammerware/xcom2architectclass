@@ -46,7 +46,8 @@ static function X2DataTemplate CreateRelayedShot()
 	MultiTargetStyle.TileWidthExtension = default.AOE_BONUS_WIDTH_RELAYED_SHOT;
     Template.AbilityMultiTargetStyle = MultiTargetStyle;
 
-	//Template.TargetingMethod = class'X2TargetingMethod_RelayedShot';
+	// targeting method (the UX of selecting a target)
+	Template.TargetingMethod = class'X2TargetingMethod_RelayedShot';
 
 	// hit chance
 	Template.AbilityToHitCalc = default.DeadEye;

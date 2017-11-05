@@ -13,6 +13,27 @@ private function bool AreTilesAdjacent(TTile TileA, TTile TileB)
     return Tiles < 2;
 }
 
+public function XComGameState_Unit GetFurthestUnitFrom(XComGameState_Unit Source, array<XComGameState_Unit> OtherUnits)
+{
+    local TTile ShooterTile;
+    local float MaxDistance, Distance;
+    local XComGameState_Unit UnitIterator, MaxDistanceUnit;
+
+    ShooterTile = Source.TileLocation;
+
+    foreach OtherUnits(UnitIterator)
+    {
+        Distance = GetUnitDistanceBetween(ShooterTile, UnitIterator.TileLocation);
+        if (Distance > MaxDistance)
+        {
+            MaxDistance = Distance;
+            MaxDistanceUnit = UnitIterator;
+        }
+    }
+
+    return MaxDistanceUnit;
+}
+
 public function float GetUnitDistanceBetween(TTile TileA, TTile TileB)
 {
     local XComWorldData World;
