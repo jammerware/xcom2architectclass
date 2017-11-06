@@ -9,9 +9,14 @@ var string FlyoverIcon;
 function GetToHitModifiers(XComGameState_Effect EffectState, XComGameState_Unit Attacker, XComGameState_Unit Target, XComGameState_Ability AbilityState, class<X2AbilityToHitCalc> ToHitType, bool bMelee, bool bFlanking, bool bIndirectFire, out array<ShotModifierInfo> ShotModifiers)
 {
 	local ShotModifierInfo AccuracyInfo;
+	local XComGameState_Item WeaponState;
+	local X2WeaponTemplate_SpireGun WeaponTemplate;
+
+	WeaponState = XComGameState_Item(`XCOMHISTORY.GetGameStateForObjectID(EffectState.ApplyEffectParameters.ItemStateObjectRef.ObjectID));
+	WeaponTemplate = X2WeaponTemplate_SpireGun(WeaponState.GetMyTemplate());
 
 	AccuracyInfo.ModType = eHit_Success;
-	AccuracyInfo.Value = 20;
+	AccuracyInfo.Value = WeaponTemplate.TargetingArrayAccuracyBonus;
 	AccuracyInfo.Reason = FriendlyName;
 
 	ShotModifiers.AddItem(AccuracyInfo);
