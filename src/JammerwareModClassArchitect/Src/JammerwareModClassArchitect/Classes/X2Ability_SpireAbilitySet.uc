@@ -239,12 +239,10 @@ static function X2AbilityTemplate CreateSpireQuicksilver()
 	TargetCondition.RequireSquadmates = true;
 	TargetCondition.FailOnNonUnits = true;
 	TargetCondition.ExcludeDead = true;
-	TargetCondition.ExcludeRobotic = true;
 	TargetCondition.ExcludeUnableToAct = true;
 	TargetCondition.RequireWithinRange = true;
 	TargetCondition.WithinRange = `METERSTOUNITS(class'XComWorldData'.const.WORLD_Melee_Range_Meters);
 	Template.AbilityTargetConditions.AddItem(TargetCondition);
-	Template.AbilityTargetConditions.AddItem(default.GameplayVisibilityCondition);
 
 	// effects
 	ActionPointEffect = new class'X2Effect_GrantActionPoints';

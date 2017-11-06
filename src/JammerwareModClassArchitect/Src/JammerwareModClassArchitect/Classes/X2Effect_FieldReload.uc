@@ -34,6 +34,7 @@ private static function EventListenerReturn OnSpireSpawned(Object EventData, Obj
     local XComGameState_Unit Shooter, Spire;
 	local XComGameState_Unit IterAlly;
 	local XComGameState_Item SpireGunState;
+    local X2AbilityTemplate AbilityTemplate;
 	local X2WeaponTemplate_SpireGun SpireGunTemplate;
 
     Shooter = XComGameState_Unit(EventSource);
@@ -49,9 +50,6 @@ private static function EventListenerReturn OnSpireSpawned(Object EventData, Obj
     {
         NewGameState = class'XComGameStateContext_ChangeContainer'.static.CreateChangeState("Field Reload - Triggered");
 
-        FlyoverService = new class'Jammerware_JSRC_FlyoverService';
-        FlyoverService.AbilityTemplate = XComGameState_Ability(CallbackData).GetMyTemplate();
-
         foreach AdjacentAllies(IterAlly)
         {
             if (ItemsService.CanLoadAmmo(IterAlly.GetPrimaryWeapon()))
@@ -61,6 +59,11 @@ private static function EventListenerReturn OnSpireSpawned(Object EventData, Obj
                 ItemsService.LoadAmmo(IterAlly.GetPrimaryWeapon(), SpireGunTemplate.FieldReloadAmmoGranted, NewGameState);
             }
         }
+
+        AbilityTemplate = XComGameState_Ability(CallbackData).GetMyTemplate();
+        FlyoverService = new class'Jammerware_JSRC_FlyoverService';
+        FlyoverService.FlyoverText = AbilityTemplate.LocFlyoverText;
+        FlyoverService.FlyoverIcon = AbilityTemplate.IconImage;
 
         XComGameStateContext_ChangeContainer(NewGameState.GetContext()).BuildVisualizationFn = FlyoverService.VisualizeFlyovers;
         `TACTICALRULES.SubmitGameState(NewGameState);

@@ -18,6 +18,10 @@ var config int ACTIVATE_SPIRE_COOLDOWN;
 var config int HEADSTONE_COOLDOWN;
 var config int RECLAIM_COOLDOWN;
 
+// on-the-fly effect localizations
+var localized string SpireActiveFriendlyName;
+var localized string SpireActiveFriendlyDesc;
+
 static function array <X2DataTemplate> CreateTemplates()
 {
 	local array<X2DataTemplate> Templates;
@@ -62,6 +66,7 @@ private static function X2AbilityTemplate CreateActivateSpire()
 	local X2AbilityTemplate Template;
 	local X2AbilityCooldown Cooldown;
 	local X2Effect_GrantActionPoints APEffect;
+	local X2Effect_Persistent CosmeticBuff;
 
 	// general properties
 	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_ACTIVATE_SPIRE);
@@ -103,6 +108,11 @@ private static function X2AbilityTemplate CreateActivateSpire()
 	APEffect.PointType = class'X2CharacterTemplateManager'.default.StandardActionPoint;
 	APEffect.bSelectUnit = true;
 	Template.AddTargetEffect(APEffect);
+
+	CosmeticBuff = new class'X2Effect_Persistent';
+	CosmeticBuff.BuildPersistentEffect(1);
+	CosmeticBuff.SetDisplayInfo(ePerkBuff_Passive, default.SpireActiveFriendlyName, default.SpireActiveFriendlyDesc, Template.IconImage, true,, Template.AbilitySourceName);
+	Template.AddTargetEffect(CosmeticBuff);
 	
 	// game state and visualization
 	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
@@ -394,18 +404,42 @@ private static function X2AbilityTemplate CreateSoulOfTheArchitect()
 {
 	local X2AbilityTemplate Template;
 	local X2Effect_GenerateCover GenerateCoverEffect;
+	local X2Effect_Persistent PersistentEffect;
 
-	Template = PurePassive(default.NAME_SOUL_OF_THE_ARCHITECT, "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_Pillar");
+	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_SOUL_OF_THE_ARCHITECT);
+
+	Template.IconImage = "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_Pillar";
+	Template.AbilitySourceName = 'eAbilitySource_Perk';
+	Template.eAbilityIconBehaviorHUD = EAbilityIconBehavior_NeverShow;
+	Template.Hostility = eHostility_Neutral;
+	
+	// targeting and ability to hit
+	Template.AbilityTargetStyle = default.SelfTarget;
+	Template.AbilityToHitCalc = default.DeadEye;
+
+	// triggering
+	Template.AbilityTriggers.AddItem(default.UnitPostBeginPlayTrigger);
 
 	GenerateCoverEffect = new class'X2Effect_GenerateCover';
+	GenerateCoverEffect.BuildPersistentEffect(1, true, false);
 	GenerateCoverEffect.bRemoveWhenMoved = false;
 	GenerateCoverEffect.bRemoveOnOtherActivation = false;
 	Template.AddTargetEffect(GenerateCoverEffect);
+
+	PersistentEffect = new class'X2Effect_Persistent';
+	PersistentEffect.BuildPersistentEffect(1, true, false);
+	PersistentEffect.SetDisplayInfo(ePerkBuff_Passive, Template.LocFriendlyName, Template.LocLongDescription, Template.IconImage, true,, Template.AbilitySourceName);
+	Template.AddTargetEffect(PersistentEffect);
 
 	Template.AdditionalAbilities.AddItem(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_SHELTER);
 	Template.AdditionalAbilities.AddItem(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_QUICKSILVER);
 	Template.AdditionalAbilities.AddItem(class'X2Ability_KineticBlast'.default.NAME_KINETICBLAST);
 	Template.AdditionalAbilities.AddItem(class'X2Ability_TransmatNetwork'.default.NAME_SPIRETRANSMATNETWORK);
+
+	Template.bShowActivation = true;
+	Template.bSkipFireAction = true;
+	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
+	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
 
 	return Template;
 }

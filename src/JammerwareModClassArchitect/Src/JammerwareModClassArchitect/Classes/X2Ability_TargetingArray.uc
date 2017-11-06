@@ -6,8 +6,9 @@ var name NAME_TARGETING_ARRAY_TRIGGERED;
 // effect localizations
 var localized string TargetingArrayTriggeredFriendlyName;
 var localized string TargetingArrayTriggeredFriendlyDesc;
+var localized string TargetingArrayRemovedFriendlyName;
 
-static function X2DataTemplate CreateTargetingArray()
+public static function X2DataTemplate CreateTargetingArray()
 {
     local X2AbilityTemplate Template;
 
@@ -18,7 +19,7 @@ static function X2DataTemplate CreateTargetingArray()
 	return Template;
 }
 
-static function X2DataTemplate CreateTargetingArrayTriggered()
+public static function X2DataTemplate CreateTargetingArrayTriggered()
 {
     local X2AbilityTemplate Template;
 	local X2Condition_UnitEffects EffectsCondition;
@@ -67,12 +68,13 @@ static function X2DataTemplate CreateTargetingArrayTriggered()
 	TargetingArrayEffect = new class'X2Effect_TargetingArray';
 	TargetingArrayEffect.BuildPersistentEffect(1, true);
 	TargetingArrayEffect.SetDisplayInfo(ePerkBuff_Bonus, default.TargetingArrayTriggeredFriendlyName, default.TargetingArrayTriggeredFriendlyDesc, Template.IconImage);
+	TargetingArrayEffect.FlyoverText = default.TargetingArrayTriggeredFriendlyName;
+	TargetingArrayEffect.FlyoverIcon = Template.IconImage;
+	TargetingArrayEffect.RemovedFlyoverText = default.TargetingArrayRemovedFriendlyName;
 	Template.AddTargetEffect(TargetingArrayEffect);
 
 	// game state and visualization
 	Template.bSkipFireAction = true;
-	Template.bSkipPerkActivationActionsSync = false;
-	Template.bSkipPerkActivationActions = false;
 	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
 	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
 

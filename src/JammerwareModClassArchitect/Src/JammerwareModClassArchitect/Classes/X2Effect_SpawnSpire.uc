@@ -77,10 +77,6 @@ function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, Stat
 	// NO ACTION FOR YOU
 	SpireUnitGameState.ActionPoints.Length = 0;
 
-	// set the cover state of the spire (i tried putting a GenerateCover on the spire passive, but weirdly that didn't work)
-	SpireUnitGameState.bGeneratesCover = true;
-	SpireUnitGameState.CoverForceFlag = CoverForce_High;
-
 	// notify people who care about spires spawning
 	`XEVENTMGR.TriggerEvent(default.NAME_SPIRE_SPAWN_TRIGGER, SpireUnitGameState, SourceUnitGameState, NewGameState);
 }

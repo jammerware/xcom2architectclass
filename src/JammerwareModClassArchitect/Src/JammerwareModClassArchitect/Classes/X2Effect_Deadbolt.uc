@@ -26,7 +26,7 @@ static function EventListenerReturn ShotMissListener(Object EventData, Object Ev
 {
 	local XComGameStateContext_Ability AbilityContext;
     local X2AbilityTemplateManager AbilityTemplateManager;
-	local X2AbilityTemplate AbilityTemplate;
+	local X2AbilityTemplate AbilityTemplate, DeadboltTemplate;
 	local XComGameState NewGameState;
 	local XComGameState_Unit UnitState;
     local XComGameState_Item PrimaryWeapon;
@@ -55,8 +55,10 @@ static function EventListenerReturn ShotMissListener(Object EventData, Object Ev
                     ItemStateService.LoadAmmo(PrimaryWeapon, 1, NewGameState);
                     `LOG("JSRC: reloaded by bolt from the whoosh");
 
+                    DeadboltTemplate = AbilityTemplateManager.FindAbilityTemplate(class'X2Ability_RunnerAbilitySet'.default.NAME_DEADBOLT);
                     FlyoverService = new class'Jammerware_JSRC_FlyoverService';
-                    FlyoverService.AbilityTemplate = AbilityTemplateManager.FindAbilityTemplate(class'X2Ability_RunnerAbilitySet'.default.NAME_DEADBOLT);
+                    FlyoverService.FlyoverText = DeadboltTemplate.LocFlyoverText;
+                    FlyoverService.FlyoverIcon = DeadboltTemplate.IconImage;
 
                     XComGameStateContext_ChangeContainer(NewGameState.GetContext()).BuildVisualizationFn = FlyoverService.VisualizeFlyovers;
                     `TACTICALRULES.SubmitGameState(NewGameState);

@@ -131,13 +131,11 @@ simulated function SpawnSpire_BuildVisualization(XComGameState VisualizeGameStat
 	// Build the tracks
 	class'X2Action_ExitCover'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
 	class'X2Action_AbilityPerkStart'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
-
 	SpawnSpireEffect.AddSpawnVisualizationsToTracks(Context, SpawnedUnit, ShooterTrack, none);
-
 	class'X2Action_AbilityPerkEnd'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
 	class'X2Action_EnterCover'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
 
-	// doing this here (to update the unit's cover status) and not in the effect apply seems to fix an intermittent crash
+	// sync the visualizer to make sure the new spire shows up
 	SpawnedUnit.SyncVisualizer();
 }
 

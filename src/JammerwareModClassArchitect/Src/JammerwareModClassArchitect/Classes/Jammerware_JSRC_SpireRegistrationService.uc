@@ -16,7 +16,7 @@ function XComGameState_Unit GetRunnerFromSpire(int SpireID)
     // in execution. curious about this
     for (i = 0; i < Spire.AffectedByEffectNames.Length; i++)
     {
-        if (Spire.AffectedByEffectNames[i] == class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_PASSIVE)
+        if (Spire.AffectedByEffectNames[i] == class'X2Effect_SpirePassive'.default.EffectName)
         {
             EffectState = XComGameState_Effect(History.GetGameStateForObjectID(Spire.AffectedByEffects[i].ObjectID));
             SpireCreatorID = EffectState.ApplyEffectParameters.SourceStateObjectRef.ObjectID;

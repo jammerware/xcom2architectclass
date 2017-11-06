@@ -22,6 +22,11 @@ TacticalText="Hardlight Spire Kits allow the architect to summon Hardlight Spire
 ;-------------------------------------------------------------
 ; EFFECTS
 ;-------------------------------------------------------------
+[X2Ability_RunnerAbilitySet]
++SpireActiveFriendlyName="Spire Online"
++SpireActiveFriendlyDesc="This spire is online and can use abilities this turn."
+
 [X2Ability_TargetingArray]
-+TargetingArrayTriggeredFriendlyName="Targeting Array Active"
++TargetingArrayTriggeredFriendlyName="Targeting Array Online"
 +TargetingArrayTriggeredFriendlyDesc="The nearby spire's targeting array is active, enhancing the accuracy of your shots."
++TargetingArrayRemovedFriendlyName="Targeting Array Offline"
