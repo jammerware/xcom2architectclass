@@ -41,7 +41,6 @@ static function array <X2DataTemplate> CreateTemplates()
 	// LIEUTENANT!
 	Templates.AddItem(class'X2Ability_RelayedShot'.static.CreateRelayedShot());
 	Templates.AddItem(class'X2Ability_TargetingArray'.static.CreateTargetingArray());
-	Templates.AddItem(class'X2Ability_TargetingArray'.static.CreateTargetingArrayTriggered());
 
 	// CAPTAIN!
 	Templates.AddItem(CreateKineticRigging());
@@ -389,7 +388,7 @@ private static function X2AbilityTemplate CreateQuicksilver()
 
 	Template = PurePassive(default.NAME_QUICKSILVER, "img:///UILibrary_PerkIcons.UIPerk_inspire");
 
-	// the architect has to be able to activate the spire to use kinetic blast
+	// the architect has to be able to activate the spire to use quicksilver
 	Template.AdditionalAbilities.AddItem(class'X2Ability_RunnerAbilitySet'.default.NAME_ACTIVATE_SPIRE); 
 
 	return PurePassive(default.NAME_QUICKSILVER, "img:///UILibrary_PerkIcons.UIPerk_runandgun");

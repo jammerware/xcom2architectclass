@@ -48,9 +48,7 @@ function RegisterSpireToRunner(const out EffectAppliedData ApplyEffectParameters
     local X2Effect_SpirePassive SpirePassiveEffect;
 
     RunnerState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(ApplyEffectParameters.SourceStateObjectRef.ObjectID));
-    `LOG("JSRC: runner state during registration is" @ RunnerState.GetMyTemplateName() @ RunnerState.ObjectID);
     SpireState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(SpireUnitRef.ObjectID));
-    `LOG("JSRC: spire state during registration is" @ SpireState.GetMyTemplateName() @ SpireState.ObjectID);
 
 	NewEffectParams = ApplyEffectParameters;
 	NewEffectParams.EffectRef.ApplyOnTickIndex = INDEX_NONE;

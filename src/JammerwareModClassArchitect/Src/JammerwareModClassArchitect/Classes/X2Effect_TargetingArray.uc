@@ -30,9 +30,9 @@ function RegisterForEvents(XComGameState_Effect EffectGameState)
 
 	EventMgr = `XEVENTMGR;
 	EffectObj = EffectGameState;
-	UnitState = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(EffectGameState.ApplyEffectParameters.SourceStateObjectRef.ObjectID));
+	UnitState = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(EffectGameState.ApplyEffectParameters.TargetStateObjectRef.ObjectID));
 
-	// the source of this effect is the soldier who has Targeting Array. if they move, check to remove it
+	// if the target moves, check to remove the effect
 	EventMgr.RegisterForEvent(EffectObj, 'UnitMoveFinished', OnUnitMoved, ELD_OnStateSubmitted, , UnitState, , EffectObj);
 	// if any unit dies, check to make sure the soldier is still next to a spire
 	EventMgr.RegisterForEvent(EffectObj, 'UnitDied', OnUnitMoved, ELD_OnStateSubmitted, , , , EffectObj);
@@ -68,7 +68,7 @@ static function EventListenerReturn OnUnitMoved(Object EventData, Object EventSo
 	EffectState = XComGameState_Effect(CallbackData);
 	UnitState = XComGameState_Unit(GameState.GetGameStateForObjectID(EffectState.ApplyEffectParameters.TargetStateObjectRef.ObjectID));
 
-	if (!EffectState.bRemoved && !ProximityService.IsUnitAdjacentToSpire(UnitState))
+	if (!EffectState.bRemoved && !ProximityService.IsUnitAdjacentToSpire(UnitState, class'X2Ability_TargetingArray'.default.NAME_TARGETING_ARRAY_SPIRE))
 	{
 		RemoveContext = class'XComGameStateContext_EffectRemoved'.static.CreateEffectRemovedContext(EffectState);
 		NewGameState = `XCOMHISTORY.CreateNewGameState(true, RemoveContext);

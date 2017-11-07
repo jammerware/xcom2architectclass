@@ -23,6 +23,8 @@ static function array <X2DataTemplate> CreateTemplates()
 	Templates.AddItem(CreateSpireQuicksilver());
 
 	// LIEUTENANT
+	Templates.AddItem(class'X2Ability_TargetingArray'.static.CreateSpireTargetingArray());
+	Templates.AddItem(class'X2Ability_TargetingArray'.static.CreateSpireTargetingArrayTriggered());
 	Templates.AddItem(class'X2Ability_KineticBlast'.static.CreateKineticBlast());
 
 	// COLONEL!

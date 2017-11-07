@@ -164,17 +164,24 @@ LocPromotionPopupText="\"Rest in peace.\"\n\nHeadstone doesn't share a cooldown 
 
 [Jammerware_JSRC_Ability_TargetingArray X2AbilityTemplate]
 LocFriendlyName="Targeting Array"
-LocLongDescription="Your <Ability:WeaponName/> shots gain an additional 20% accuracy when you're adjacent to a spire."
-LocHelpText="Your <Ability:WeaponName/> shots gain an additional 20% accuracy when you're adjacent to a spire."
+LocLongDescription="Your spires gain Targeting Array, a passive ability that enhances the accuracy of adjacent squadmates."
+LocHelpText="Your spires gain Targeting Array, a passive ability that enhances the accuracy of adjacent squadmates."
 LocFlyOverText="Targeting Array"
-LocPromotionPopupText="\"If only it were small enough to fit on a gun...\"\n\n<Bullet/> Passive"
+LocPromotionPopupText="\"Not bad for a start. The next version will fit on their guns.\"\n- Chief Engineer Shen\n\n<Bullet/> Passive"
 
-[Jammerware_JSRC_Ability_TargetingArrayTriggered X2AbilityTemplate]
+[Jammerware_JSRC_Ability_SpireTargetingArray X2AbilityTemplate]
 LocFriendlyName="Targeting Array"
-LocLongDescription="Your <Ability:WeaponName/> shots gain additional accuracy when you're adjacent to a spire."
-LocHelpText="Your <Ability:WeaponName/> shots gain additional accuracy when you're adjacent to a spire."
+LocLongDescription="Enhances the accuracy of adjacent squadmates."
+LocHelpText="Enhances the accuracy of adjacent squadmates."
 LocFlyOverText="Targeting Array"
-LocPromotionPopupText="\"If only it were small enough to fit on a gun...\"\n\n<Bullet/> Passive"
+LocPromotionPopupText="\"Not bad for a start. The next version will fit on their guns.\"\n- Chief Engineer Shen\n\n<Bullet/> Passive"
+
+[Jammerware_JSRC_Ability_SpireTargetingArray_Triggered X2AbilityTemplate]
+LocFriendlyName="Targeting Array Online"
+LocLongDescription="The nearby spire's targeting array is online, enhancing the accuracy of your shots."
+LocHelpText="The nearby spire's targeting array is online, enhancing the accuracy of your shots."
+LocFlyOverText="Targeting Array"
+LocPromotionPopupText="\"Not bad for a start. The next version will fit on their guns.\"\n- Chief Engineer Shen\n\n<Bullet/> Passive"
 
 [Jammerware_JSRC_Ability_KineticRigging X2AbilityTemplate]
 LocFriendlyName="Kinetic Rigging"

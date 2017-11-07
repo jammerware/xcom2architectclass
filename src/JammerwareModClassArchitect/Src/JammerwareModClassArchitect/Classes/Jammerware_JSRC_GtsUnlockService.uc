@@ -13,5 +13,4 @@ public function AddUnlock(name Unlock)
     }
 
     FacilityTemplate.SoldierUnlockTemplates.AddItem(Unlock);
-    `LOG("JSRC: Soldier unlock added to GTS:" @ Unlock);
 }

@@ -170,7 +170,6 @@ static function XComGameState RelayedShot_BuildGameState(XComGameStateContext Co
 
 	if (EffectsToApply.Length > 0)
 	{
-		`LOG("JSRC: WE HAVE EFECTS TO APPLY");
 		SourceObject_OriginalState = History.GetGameStateForObjectID(AbilityContext.InputContext.SourceObject.ObjectID);
 
 		for (i = 0; i < AbilityContext.InputContext.MultiTargets.Length; i++)

@@ -103,7 +103,6 @@ static simulated function XComGameState Transmat_BuildGameState(XComGameStateCon
 	local vector NewShooterLocation;
 	local TTile NewShooterTile;
 
-	`LOG("JSRC: finalize transmat network build gamestate function");
 	World = `XWORLD;
 
 	// create new state

@@ -50,10 +50,8 @@ static function EventListenerReturn ShotMissListener(Object EventData, Object Ev
 
                 if (InStr(PrimaryWeapon.GetMyTemplateName(), "AlienHunterRifle") != INDEX_NONE)
                 {
-                    `LOG("JSRC: shooter is using a boltcaster");
                     ItemStateService = new class'Jammerware_JSRC_ItemStateService';
                     ItemStateService.LoadAmmo(PrimaryWeapon, 1, NewGameState);
-                    `LOG("JSRC: reloaded by bolt from the whoosh");
 
                     DeadboltTemplate = AbilityTemplateManager.FindAbilityTemplate(class'X2Ability_RunnerAbilitySet'.default.NAME_DEADBOLT);
                     FlyoverService = new class'Jammerware_JSRC_FlyoverService';

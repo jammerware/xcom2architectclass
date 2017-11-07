@@ -6,7 +6,6 @@ static function array <X2DataTemplate> CreateTemplates()
 {
     local array<X2DataTemplate> Templates;
     Templates.AddItem(CreateDeadboltUnlock());
-    `LOG("JSRC: deadbolt unlock created");
     return Templates;
 }
 

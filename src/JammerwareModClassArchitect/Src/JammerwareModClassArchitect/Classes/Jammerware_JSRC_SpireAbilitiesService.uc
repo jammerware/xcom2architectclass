@@ -17,8 +17,35 @@ function ConfigureSpireAbilities(XComGameState_Unit SpireUnit, XComGameState_Uni
 	(
 		SourceUnit, 
 		SpireUnit, 
+		class'X2Ability_TargetingArray'.default.NAME_TARGETING_ARRAY, 
+		class'X2Ability_TargetingArray'.default.NAME_TARGETING_ARRAY_SPIRE,
+		NewGameState,
+		SourceUnit.GetSecondaryWeapon().GetReference()
+	);
+	InitSpireAbilityFromRunnerAbility
+	(
+		SourceUnit, 
+		SpireUnit, 
+		class'X2Ability_TargetingArray'.default.NAME_TARGETING_ARRAY, 
+		class'X2Ability_TargetingArray'.default.NAME_TARGETING_ARRAY_SPIRE_TRIGGERED,
+		NewGameState,
+		SourceUnit.GetSecondaryWeapon().GetReference()
+	);
+	InitSpireAbilityFromRunnerAbility
+	(
+		SourceUnit, 
+		SpireUnit, 
 		class'X2Ability_RunnerAbilitySet'.default.NAME_QUICKSILVER, 
 		class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_QUICKSILVER,
+		NewGameState,
+		SourceUnit.GetSecondaryWeapon().GetReference()
+	);
+	InitSpireAbilityFromRunnerAbility
+	(
+		SourceUnit,
+		SpireUnit,
+		class'X2Ability_RunnerAbilitySet'.default.NAME_KINETIC_RIGGING,
+		class'X2Ability_KineticBlast'.default.NAME_KINETICBLAST,
 		NewGameState,
 		SourceUnit.GetSecondaryWeapon().GetReference()
 	);
@@ -29,15 +56,6 @@ function ConfigureSpireAbilities(XComGameState_Unit SpireUnit, XComGameState_Uni
 		class'X2Ability_TransmatNetwork'.default.NAME_TRANSMATNETWORK,
 		class'X2Ability_TransmatNetwork'.default.NAME_SPIRETRANSMATNETWORK,
 		NewGameState,
-	);
-	InitSpireAbilityFromRunnerAbility
-	(
-		SourceUnit,
-		SpireUnit,
-		class'X2Ability_RunnerAbilitySet'.default.NAME_KINETIC_RIGGING,
-		class'X2Ability_KineticBlast'.default.NAME_KINETICBLAST,
-		NewGameState,
-		SourceUnit.GetSecondaryWeapon().GetReference()
 	);
 }
 
