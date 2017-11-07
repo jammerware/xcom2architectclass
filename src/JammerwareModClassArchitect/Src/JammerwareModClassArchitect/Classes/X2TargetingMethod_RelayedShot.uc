@@ -153,7 +153,9 @@ private function Actor GetLookAtActor(array<Actor> CurrentlyMarkedActors)
     foreach CurrentlyMarkedActors(ActorIterator)
     {
         UnitIterator = XGUnit(ActorIterator);
-        CurrentlyMarkedUnitStates.AddItem(UnitIterator.GetVisualizedGameState());
+
+		if (UnitIterator != none)
+			CurrentlyMarkedUnitStates.AddItem(UnitIterator.GetVisualizedGameState());
     }
 
     FurthestUnitState = ProximityService.GetFurthestUnitFrom(FiringUnit.GetVisualizedGameState(), CurrentlyMarkedUnitStates);

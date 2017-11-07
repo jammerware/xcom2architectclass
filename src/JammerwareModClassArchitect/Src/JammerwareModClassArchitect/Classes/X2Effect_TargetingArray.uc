@@ -40,6 +40,12 @@ function RegisterForEvents(XComGameState_Effect EffectGameState)
 
 simulated function VisualizeTargetingArray(XComGameState VisualizeGameState, out VisualizationActionMetadata ModifyTrack, const name EffectApplyResult)
 {
+	local XComGameState_Unit TargetState;
+
+	TargetState = XComGameState_Unit(VisualizeGameState.GetGameStateForObjectID(ModifyTrack.StateObject_NewState.ObjectID));
+	if (TargetState == none)
+		return;
+
 	if (EffectApplyResult == 'AA_Success')
 	{
 		class'X2StatusEffects'.static.AddEffectSoundAndFlyOverToTrack(ModifyTrack, VisualizeGameState.GetContext(), self.FlyoverText, '', eColor_Good, self.FlyoverIcon);
@@ -49,6 +55,12 @@ simulated function VisualizeTargetingArray(XComGameState VisualizeGameState, out
 
 simulated function VisualizeTargetingArrayRemoved(XComGameState VisualizeGameState, out VisualizationActionMetadata ModifyTrack, const name EffectApplyResult)
 {
+	local XComGameState_Unit TargetState;
+
+	TargetState = XComGameState_Unit(VisualizeGameState.GetGameStateForObjectID(ModifyTrack.StateObject_NewState.ObjectID));
+	if (TargetState == none)
+		return;
+
 	if (EffectApplyResult == 'AA_Success')
 	{
 		class'X2StatusEffects'.static.AddEffectSoundAndFlyOverToTrack(ModifyTrack, VisualizeGameState.GetContext(), self.RemovedFlyoverText, '', eColor_Bad, FlyoverIcon);
@@ -66,7 +78,7 @@ static function EventListenerReturn OnUnitMoved(Object EventData, Object EventSo
 
 	ProximityService = new class'Jammerware_JSRC_ProximityService';
 	EffectState = XComGameState_Effect(CallbackData);
-	UnitState = XComGameState_Unit(GameState.GetGameStateForObjectID(EffectState.ApplyEffectParameters.TargetStateObjectRef.ObjectID));
+	UnitState = XComGameState_Unit(EventData);
 
 	if (!EffectState.bRemoved && !ProximityService.IsUnitAdjacentToSpire(UnitState, class'X2Ability_TargetingArray'.default.NAME_TARGETING_ARRAY_SPIRE))
 	{
