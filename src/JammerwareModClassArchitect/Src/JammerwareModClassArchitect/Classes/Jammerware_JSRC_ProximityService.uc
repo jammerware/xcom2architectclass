@@ -103,6 +103,11 @@ private function bool MeetsAdjacencyCriteria(
         AreTilesAdjacent(SourceTile, CandidateUnit.TileLocation);
 }
 
+public function bool IsUnitAdjacentToAlly(XComGameState_Unit Unit, optional name RequiredAllyEffect)
+{
+    return IsTileAdjacentToAlly(Unit.TileLocation, Unit.GetTeam(), , RequiredAllyEffect);
+}
+
 public function bool IsUnitAdjacentToSpire(XComGameState_Unit Unit, optional name RequiredSpireEffect)
 {
     return IsTileAdjacentToAlly(Unit.TileLocation, Unit.GetTeam(), class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE, RequiredSpireEffect);

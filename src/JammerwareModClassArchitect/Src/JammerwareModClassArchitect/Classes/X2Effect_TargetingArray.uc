@@ -33,9 +33,9 @@ function RegisterForEvents(XComGameState_Effect EffectGameState)
 	UnitState = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(EffectGameState.ApplyEffectParameters.TargetStateObjectRef.ObjectID));
 
 	// if the target moves, check to remove the effect
-	EventMgr.RegisterForEvent(EffectObj, 'UnitMoveFinished', OnUnitMoved, ELD_OnStateSubmitted, , UnitState, , EffectObj);
+	EventMgr.RegisterForEvent(EffectObj, 'UnitMoveFinished', OnUnitMovedOrDied, ELD_OnStateSubmitted, , UnitState, , EffectObj);
 	// if any unit dies, check to make sure the soldier is still next to a spire
-	EventMgr.RegisterForEvent(EffectObj, 'UnitDied', OnUnitMoved, ELD_OnStateSubmitted, , , , EffectObj);
+	EventMgr.RegisterForEvent(EffectObj, 'UnitDied', OnUnitMovedOrDied, ELD_OnStateSubmitted, , , , EffectObj);
 }
 
 simulated function VisualizeTargetingArray(XComGameState VisualizeGameState, out VisualizationActionMetadata ModifyTrack, const name EffectApplyResult)
@@ -68,19 +68,20 @@ simulated function VisualizeTargetingArrayRemoved(XComGameState VisualizeGameSta
 	}
 }
 
-static function EventListenerReturn OnUnitMoved(Object EventData, Object EventSource, XComGameState GameState, Name EventID, Object CallbackData)
+private static function EventListenerReturn OnUnitMovedOrDied(Object EventData, Object EventSource, XComGameState GameState, Name EventID, Object CallbackData)
 {
 	local XComGameState_Effect EffectState;
 	local XComGameState_Unit UnitState;
-	local XComGameStateContext_EffectRemoved RemoveContext;
 	local XComGameState NewGameState;
+	local XComGameStateContext_EffectRemoved RemoveContext;
 	local Jammerware_JSRC_ProximityService ProximityService;
 
-	ProximityService = new class'Jammerware_JSRC_ProximityService';
 	EffectState = XComGameState_Effect(CallbackData);
-	UnitState = XComGameState_Unit(EventData);
+	// if we only cared about move finished, we could use the event data instead of the history lookup to find the target, but on unit died, the event data is the dead unit
+	UnitState = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(EffectState.ApplyEffectParameters.TargetStateObjectRef.ObjectID));
+	ProximityService = new class'Jammerware_JSRC_ProximityService';
 
-	if (!EffectState.bRemoved && !ProximityService.IsUnitAdjacentToSpire(UnitState, class'X2Ability_TargetingArray'.default.NAME_TARGETING_ARRAY_SPIRE))
+	if (UnitState != none && !EffectState.bRemoved && !ProximityService.IsUnitAdjacentToAlly(UnitState, class'X2Ability_TargetingArray'.default.NAME_TARGETING_ARRAY_SPIRE))
 	{
 		RemoveContext = class'XComGameStateContext_EffectRemoved'.static.CreateEffectRemovedContext(EffectState);
 		NewGameState = `XCOMHISTORY.CreateNewGameState(true, RemoveContext);

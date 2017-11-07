@@ -4,7 +4,6 @@ var name NAME_TARGETING_ARRAY;
 var name NAME_TARGETING_ARRAY_SPIRE;
 var name NAME_TARGETING_ARRAY_SPIRE_TRIGGERED;
 
-
 var string ICON_TARGETING_ARRAY;
 
 // effect localizations

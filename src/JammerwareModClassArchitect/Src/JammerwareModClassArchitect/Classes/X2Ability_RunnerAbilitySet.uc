@@ -430,6 +430,7 @@ private static function X2AbilityTemplate CreateSoulOfTheArchitect()
 	PersistentEffect.SetDisplayInfo(ePerkBuff_Passive, Template.LocFriendlyName, Template.LocLongDescription, Template.IconImage, true,, Template.AbilitySourceName);
 	Template.AddTargetEffect(PersistentEffect);
 
+	Template.AdditionalAbilities.AddItem(class'X2Ability_TargetingArray'.default.NAME_TARGETING_ARRAY_SPIRE);
 	Template.AdditionalAbilities.AddItem(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_SHELTER);
 	Template.AdditionalAbilities.AddItem(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_QUICKSILVER);
 	Template.AdditionalAbilities.AddItem(class'X2Ability_KineticBlast'.default.NAME_KINETICBLAST);
