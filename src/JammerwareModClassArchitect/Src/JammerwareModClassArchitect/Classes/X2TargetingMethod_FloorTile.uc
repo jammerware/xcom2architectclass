@@ -5,7 +5,7 @@ var protected X2Actor_InvalidTarget InvalidTileActor;
 var protected XComActionIconManager IconManager;
 
 var protected float AbilityRangeUnits;
-var protected XComGameState GameState;
+//var protected XComGameState GameState;
 var protected XComGameState_Unit ShooterState;
 
 function Init(AvailableAction InAction, int NewTargetIndex)
@@ -61,7 +61,6 @@ function Update(float DeltaTime)
 		if (ValidateTargetLocations(PossibleTargetLocations) == 'AA_Success')
 		{
 			// The current tile the cursor is on is a valid tile
-			// Show the ExplosionEmitter
 			InvalidTileActor.SetHidden(true);
 
 			World = `XWORLD;

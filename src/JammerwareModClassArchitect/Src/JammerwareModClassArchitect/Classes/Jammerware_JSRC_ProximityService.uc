@@ -60,25 +60,21 @@ function bool IsTileAdjacentToAlly(TTile Tile, ETeam Team, optional name AllyCha
     return false;
 }
 
-public function array<XComGameState_Unit> GetAdjacentUnits(
-    XComGameState_Unit Unit, 
-    bool RequireAllies = false, 
-    optional name RequiredCharacterGroup, 
+public function array<XComGameState_Unit> GetAdjacentUnitsFromTile(
+    TTile Tile, 
+    optional ETeam RequiredTeam = eTeam_All, 
+    optional name RequiredCharacterGroup,
     optional name RequiredEffect)
 {
     local XComGameState_Unit IterateUnitState;
     local array<XComGameState_Unit> Results;
-    local ETeam RequiredTeam;
-
-    RequiredTeam = eTeam_All;
-    if(RequireAllies) { RequiredTeam = Unit.GetTeam(); }
 
     foreach `XCOMHISTORY.IterateByClassType(class'XComGameState_Unit', IterateUnitState)
     {
         if 
         (
-            IterateUnitState.ObjectID != Unit.ObjectID &&
-            MeetsAdjacencyCriteria(Unit.TileLocation, IterateUnitState, RequiredTeam, RequiredCharacterGroup, RequiredEffect)
+            IterateUnitState.TileLocation != Tile &&
+            MeetsAdjacencyCriteria(Tile, IterateUnitState, RequiredTeam, RequiredCharacterGroup, RequiredEffect)
         )
         {
             Results.AddItem(IterateUnitState);
@@ -86,6 +82,21 @@ public function array<XComGameState_Unit> GetAdjacentUnits(
     }
 
     return Results;
+}
+
+public function array<XComGameState_Unit> GetAdjacentUnits(
+    XComGameState_Unit Unit, 
+    bool RequireAllies = false, 
+    optional name RequiredCharacterGroup, 
+    optional name RequiredEffect)
+{
+    return GetAdjacentUnitsFromTile
+    (
+        Unit.TileLocation,
+        (RequireAllies ? Unit.GetTeam() : eTeam_All),
+        RequiredCharacterGroup,
+        RequiredEffect
+    );
 }
 
 private function bool MeetsAdjacencyCriteria(
