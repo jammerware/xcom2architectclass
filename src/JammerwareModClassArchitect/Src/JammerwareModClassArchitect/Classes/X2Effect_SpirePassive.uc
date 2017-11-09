@@ -17,7 +17,7 @@ function RegisterForEvents(XComGameState_Effect EffectGameState)
 	EffectObj = EffectGameState;
 	UnitState = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(EffectGameState.ApplyEffectParameters.TargetStateObjectRef.ObjectID));
 
-	// if the spire dies, we need to clean up its cover
+	// if the spire dies, we need to clean up its cover and remove it from play
 	EventMgr.RegisterForEvent
 	(
 		EffectObj, 
@@ -48,8 +48,12 @@ private static function EventListenerReturn SpirePassive_SpireDied(Object EventD
 	// update world cover data so the space doesn't provide cover anymore
 	UpdateWorldCoverData(UnitState, NewGameState);
 
+	// remove the spire wreck from play
+    `XEVENTMGR.TriggerEvent('UnitRemovedFromPlay', UnitState, UnitState, NewGameState);
+
 	// submit it and quit it
 	`TACTICALRULES.SubmitGameState(NewGameState);
+
 	return ELR_NoInterrupt;
 }
 

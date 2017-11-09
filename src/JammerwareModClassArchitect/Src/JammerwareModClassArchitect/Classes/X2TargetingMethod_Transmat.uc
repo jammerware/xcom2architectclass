@@ -1,42 +1,12 @@
 class X2TargetingMethod_Transmat extends X2TargetingMethod_FloorTile;
 
-// people transmatting have to choose a space adjacent to an spirelike unit in the same network
-var private array<TTile> LegalTargets;
-var protected X2Actor_ValidTile ValidTileActor;
-
 // this will currently get weird if the shooter is adjacent to two spires
 function Init(AvailableAction InAction, int NewTargetIndex)
 {
 	super.Init(InAction, NewTargetIndex);
 
-	LegalTargets = GetLegalTargets();
-	DrawAOETiles(LegalTargets);
-	ValidTileActor = `CURSOR.Spawn(class'X2Actor_ValidTile', `CURSOR);
-
     // infinite cursor range
     LockCursorRange(-1);
-}
-
-function Canceled()
-{
-	super.Canceled();
-	ValidTileActor.Destroy();
-}
-
-function Committed()
-{
-	super.Committed();
-	ValidTileActor.Destroy();
-}
-
-protected function DrawValidCursorLocation(TTile Tile)
-{
-	local vector TileLocation;
-	local int TileZ;
-
-	`XWORLD.GetFloorPositionForTile(Tile, TileLocation);
-	ValidTileActor.SetLocation(TileLocation);
-	ValidTileActor.SetHidden(false);
 }
 
 private function int GetNetworkID()
@@ -58,9 +28,9 @@ private function int GetNetworkID()
 	return TransmatService.GetNetworkIDFromUnitState(AdjacentUnits[0]);
 }
 
-private function array<TTile> GetLegalTargets()
+protected function array<TTile> GetLegalTiles()
 {
-	local array<TTile> LegalTiles, AdjacentTilesIterator;
+	local array<TTile> Tiles, AdjacentTilesIterator;
 	local TTile TileIterator;
 	local array<XComGameState_Unit> UnitsInNetwork;
 	local XComGameState_Unit UnitIterator;
@@ -78,35 +48,9 @@ private function array<TTile> GetLegalTargets()
 
 		foreach AdjacentTilesIterator(TileIterator)
 		{
-			LegalTiles.AddItem(TileIterator);
+			Tiles.AddItem(TileIterator);
 		}
 	}
 
-	return LegalTiles;
-}
-
-function name ValidateTargetLocations(const array<Vector> TargetLocations)
-{
-	local name AbilityAvailability;
-	local TTile TargetTile, TileIterator;
-
-	// the parent class makes sure the tile isn't blocked and is a floor tile
-	AbilityAvailability = super.ValidateTargetLocations(TargetLocations);
-
-	if (AbilityAvailability == 'AA_Success')
-	{
-		AbilityAvailability = 'AA_NotInRange';
-		`XWORLD.GetFloorTileForPosition(TargetLocations[0], TargetTile);
-
-		foreach self.LegalTargets(TileIterator)
-		{
-			if (TileIterator.X == TargetTile.X && TileIterator.Y == TargetTile.Y && TileIterator.Z == TargetTile.Z)
-			{
-				AbilityAvailability = 'AA_Success';
-				break;
-			}
-		}
-	}
-	
-	return AbilityAvailability;
+	return Tiles;
 }

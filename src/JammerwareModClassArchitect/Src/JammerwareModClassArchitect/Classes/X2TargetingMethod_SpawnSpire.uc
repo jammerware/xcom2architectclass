@@ -14,30 +14,32 @@ function Init(AvailableAction InAction, int NewTargetIndex)
 	}
 }
 
-function name ValidateTargetLocations(const array<Vector> TargetLocations)
+protected function array<TTile> GetLegalTiles()
 {
-	local name AbilityAvailability;
-	local TTile TargetTile;
-	local XComWorldData World;
 	local Jammerware_JSRC_ProximityService ProximityService;
+	local ETeam ShooterTeam;
+	local array<TTile> Tiles, AdjacentTilesIterator;
+	local TTile TileIterator;
+	local XComGameState_Unit UnitIterator;
 
-	World = `XWORLD;
-	// the parent class makes sure the tile isn't blocked and is a floor tile
-	AbilityAvailability = super.ValidateTargetLocations(TargetLocations);
+	ProximityService = new class'Jammerware_JSRC_ProximityService';	
+	ShooterTeam = ShooterState.GetTeam();
 
-	// we assume the cursor has been locked to the ability range in init if the shooter doesn't have unity
-	if (AbilityAvailability == 'AA_Success' && self.bShooterHasUnity)
+	// get all tiles in the normal radius of the ability
+	Tiles = super.GetLegalTiles();
+
+	// then, if the shooter has unity, we add all the tiles adjacent to allies
+	foreach `XCOMHISTORY.IterateByClassType(class'XComGameState_Unit', UnitIterator)
 	{
-		ProximityService = new class'Jammerware_JSRC_ProximityService';
-		World.GetFloorTileForPosition(TargetLocations[0], TargetTile);
-
-		if (
-			!super.IsInAbilityRange(TargetTile) &&
-			!ProximityService.IsTileAdjacentToAlly(TargetTile, self.ShooterState.GetTeam())
-		)
+		if (UnitIterator.GetTeam() == ShooterTeam)
 		{
-			AbilityAvailability = 'AA_NotInRange';
+			AdjacentTilesIterator = ProximityService.GetAdjacentTiles(UnitIterator.TileLocation);
+			foreach AdjacentTilesIterator(TileIterator)
+			{
+				Tiles.AddItem(TileIterator);
+			}
 		}
 	}
-	return AbilityAvailability;
+	
+	return Tiles;
 }

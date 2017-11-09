@@ -1,22 +1,24 @@
 class X2TargetingMethod_FloorTile extends X2TargetingMethod;
 
+// UI thingies
 var protected XCom3DCursor Cursor;
 var protected XComActionIconManager IconManager;
+var protected X2Actor_ValidTile ValidTileActor;
 
+// state-based stuff computed on init
 var protected float AbilityRangeUnits;
 var protected XComGameState_Unit ShooterState;
+var private array<TTile> LegalTiles;
 
 function Init(AvailableAction InAction, int NewTargetIndex)
 {
 	super.Init(InAction, NewTargetIndex);
 
-    // this initialization is pretty much from X2TargetingMethod_Teleport
+    // init actors and cursor
+    Cursor = `CURSOR;
 	IconManager = `PRES.GetActionIconMgr();
 	IconManager.UpdateCursorLocation(true);
-	// end ripped-off code
-
-    // cache cursor reference for later use
-    Cursor = `CURSOR;
+	ValidTileActor = Cursor.Spawn(class'X2Actor_ValidTile', Cursor);
 
 	// store shooter state for validation
 	ShooterState = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(Ability.OwnerStateObject.ObjectID));
@@ -24,20 +26,28 @@ function Init(AvailableAction InAction, int NewTargetIndex)
     // store the range of the ability for use during validation
     AbilityRangeUnits = `METERSTOUNITS(Ability.GetAbilityCursorRangeMeters());
 
-    // lock the cursor to ability range - subclasses may re-lock in their RangeInUnits
+    // lock the cursor to ability range - subclasses may re-lock in their inits
     LockCursorRange(AbilityRangeUnits);
+
+	// the idea behind this kind of targeting method is that the legal tiles are a subset of visible tiles and are known at init. we cache them here 
+	LegalTiles = GetLegalTiles();
+
+	// Draw them so the player can see their options
+	DrawAOETiles(LegalTiles);
 }
 
 function Canceled()
 {
 	super.Canceled();
 	IconManager.ShowIcons(false);
+	ValidTileActor.Destroy();
 }
 
 function Committed()
 {
 	super.Committed();
 	AOEMeshActor.Destroy();
+	ValidTileActor.Destroy();
 }
 
 function Update(float DeltaTime)
@@ -50,7 +60,9 @@ function Update(float DeltaTime)
 
 	if (NewTargetLocation != CachedTargetLocation)
 	{
+		CachedTargetLocation = NewTargetLocation;
 		PossibleTargetLocations.AddItem(Cursor.GetCursorFeetLocation());
+
 		if (ValidateTargetLocations(PossibleTargetLocations) == 'AA_Success')
 		{
 			TargetTile = `XWORLD.GetTileCoordinatesFromPosition(PossibleTargetLocations[0]);
@@ -62,18 +74,10 @@ function Update(float DeltaTime)
 	super.UpdateTargetLocation(DeltaTime);
 }
 
-protected function DrawValidCursorLocation(TTile Tile)
-{
-	local array<TTile> Tiles;
-
-	Tiles.AddItem(Tile);
-	DrawAOETiles(Tiles);
-}
-
 function name ValidateTargetLocations(const array<Vector> TargetLocations)
 {
 	local name AbilityAvailability;
-	local TTile TargetTile;
+	local TTile TargetTile, TileIterator;
 	local XComWorldData World;
 	local bool bFoundFloorTile;
 
@@ -85,6 +89,20 @@ function name ValidateTargetLocations(const array<Vector> TargetLocations)
 	if (bFoundFloorTile && !World.CanUnitsEnterTile(TargetTile))
 	{
 		AbilityAvailability = 'AA_TileIsBlocked';
+	}
+	else
+	{
+		AbilityAvailability = 'AA_NotInRange';
+		`XWORLD.GetFloorTileForPosition(TargetLocations[0], TargetTile);
+
+		foreach self.LegalTiles(TileIterator)
+		{
+			if (TileIterator.X == TargetTile.X && TileIterator.Y == TargetTile.Y && TileIterator.Z == TargetTile.Z)
+			{
+				AbilityAvailability = 'AA_Success';
+				break;
+			}
+		}
 	}
 
 	return AbilityAvailability;
@@ -99,6 +117,39 @@ function GetTargetLocations(out array<Vector> TargetLocations)
 function int GetTargetIndex()
 {
 	return 0;
+}
+
+protected function array<TTile> GetLegalTiles()
+{
+	local array<TilePosPair> TilePosPairs;
+	local vector ShooterPosition;
+	local XComWorldData World;
+	local array<TTile> Tiles;
+	local TilePosPair PairIterator;
+
+	if (AbilityRangeUnits != -1)
+	{
+		World = `XWORLD;
+		ShooterPosition = World.GetPositionFromTileCoordinates(ShooterState.TileLocation);
+		// the ability range is in meters, we need units
+		World.CollectTilesInSphere(TilePosPairs, ShooterPosition, AbilityRangeUnits);
+
+		foreach TilePosPairs(PairIterator)
+		{
+			Tiles.AddItem(PairIterator.Tile);
+		}
+	}
+
+	return Tiles;
+}
+
+private function DrawValidCursorLocation(TTile Tile)
+{
+	local vector TileLocation;
+	`XWORLD.GetFloorPositionForTile(Tile, TileLocation);
+
+	ValidTileActor.SetLocation(TileLocation);
+	ValidTileActor.SetHidden(false);
 }
 
 protected function LockCursorRange(float RangeInUnits)
