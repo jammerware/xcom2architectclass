@@ -1,17 +1,42 @@
 class X2TargetingMethod_Transmat extends X2TargetingMethod_FloorTile;
 
 // people transmatting have to choose a space adjacent to an spirelike unit in the same network
-var private int NetworkID;
+var private array<TTile> LegalTargets;
+var protected X2Actor_ValidTile ValidTileActor;
 
 // this will currently get weird if the shooter is adjacent to two spires
 function Init(AvailableAction InAction, int NewTargetIndex)
 {
 	super.Init(InAction, NewTargetIndex);
 
-	NetworkID = GetNetworkID();
+	LegalTargets = GetLegalTargets();
+	DrawAOETiles(LegalTargets);
+	ValidTileActor = `CURSOR.Spawn(class'X2Actor_ValidTile', `CURSOR);
 
     // infinite cursor range
     LockCursorRange(-1);
+}
+
+function Canceled()
+{
+	super.Canceled();
+	ValidTileActor.Destroy();
+}
+
+function Committed()
+{
+	super.Committed();
+	ValidTileActor.Destroy();
+}
+
+protected function DrawValidCursorLocation(TTile Tile)
+{
+	local vector TileLocation;
+	local int TileZ;
+
+	`XWORLD.GetFloorPositionForTile(Tile, TileLocation);
+	ValidTileActor.SetLocation(TileLocation);
+	ValidTileActor.SetHidden(false);
 }
 
 private function int GetNetworkID()
@@ -22,6 +47,7 @@ private function int GetNetworkID()
 
 	ProximityService = new class'Jammerware_JSRC_ProximityService';
 	TransmatService = new class'Jammerware_JSRC_TransmatNetworkService';
+	
 	// get all allies adjacent to the shooter that have the transmat network node buff
 	AdjacentUnits = ProximityService.GetAdjacentUnits(self.ShooterState, true, , class'X2Ability_TransmatNetwork'.default.NAME_SPIRETRANSMATNETWORK);
 
@@ -32,32 +58,49 @@ private function int GetNetworkID()
 	return TransmatService.GetNetworkIDFromUnitState(AdjacentUnits[0]);
 }
 
-function name ValidateTargetLocations(const array<Vector> TargetLocations)
+private function array<TTile> GetLegalTargets()
 {
-	local name AbilityAvailability;
-	local TTile TargetTile;
-	local XComWorldData World;
-	local array<XComGameState_Unit> AdjacentUnits;
+	local array<TTile> LegalTiles, AdjacentTilesIterator;
+	local TTile TileIterator;
+	local array<XComGameState_Unit> UnitsInNetwork;
 	local XComGameState_Unit UnitIterator;
 	local Jammerware_JSRC_ProximityService ProximityService;
 	local Jammerware_JSRC_TransmatNetworkService TxmatService;
 
-	World = `XWORLD;
+	ProximityService = new class'Jammerware_JSRC_ProximityService';
+	TxmatService = new class'Jammerware_JSRC_TransmatNetworkService';
+
+	UnitsInNetwork = TxmatService.GetUnitsInNetwork(GetNetworkID());
+
+	foreach UnitsInNetwork(UnitIterator)
+	{
+		AdjacentTilesIterator = ProximityService.GetAdjacentTiles(UnitIterator.TileLocation);
+
+		foreach AdjacentTilesIterator(TileIterator)
+		{
+			LegalTiles.AddItem(TileIterator);
+		}
+	}
+
+	return LegalTiles;
+}
+
+function name ValidateTargetLocations(const array<Vector> TargetLocations)
+{
+	local name AbilityAvailability;
+	local TTile TargetTile, TileIterator;
+
 	// the parent class makes sure the tile isn't blocked and is a floor tile
 	AbilityAvailability = super.ValidateTargetLocations(TargetLocations);
 
 	if (AbilityAvailability == 'AA_Success')
 	{
 		AbilityAvailability = 'AA_NotInRange';
-		ProximityService = new class'Jammerware_JSRC_ProximityService';
-		TxmatService = new class'Jammerware_JSRC_TransmatNetworkService';
-		World.GetFloorTileForPosition(TargetLocations[0], TargetTile);
+		`XWORLD.GetFloorTileForPosition(TargetLocations[0], TargetTile);
 
-		AdjacentUnits = ProximityService.GetAdjacentUnitsFromTile(TargetTile, ShooterState.GetTeam(), , class'X2Ability_TransmatNetwork'.default.NAME_SPIRETRANSMATNETWORK);
-
-		foreach AdjacentUnits(UnitIterator)
+		foreach self.LegalTargets(TileIterator)
 		{
-			if (TxmatService.GetNetworkIDFromUnitState(UnitIterator) == self.NetworkID) 
+			if (TileIterator.X == TargetTile.X && TileIterator.Y == TargetTile.Y && TileIterator.Z == TargetTile.Z)
 			{
 				AbilityAvailability = 'AA_Success';
 				break;

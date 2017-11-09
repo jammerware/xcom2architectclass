@@ -38,12 +38,8 @@ function int GetNetworkIDFromUnitState(XComGameState_Unit UnitState)
 {
     local Jammerware_JSRC_SpireRegistrationService SpireRegistrationService;
 
-    if (UnitState == none)
-        return 0;
-
-    if (UnitState.AffectedByEffectNames.Find(class'X2Ability_TransmatNetwork'.default.NAME_SPIRETRANSMATNETWORK) == INDEX_NONE)
+    if (UnitState == none || UnitState.AffectedByEffectNames.Find(class'X2Ability_TransmatNetwork'.default.NAME_SPIRETRANSMATNETWORK) == INDEX_NONE)
     {
-        `REDSCREEN("JSRC: the transmat network service couldn't get the network id for" @ UnitState.GetFullName());
         return 0;
     }
 
@@ -56,4 +52,21 @@ function int GetNetworkIDFromUnitState(XComGameState_Unit UnitState)
 
     // otherwise hopefully the unit is just an architect
     return UnitState.ObjectID;
+}
+
+public function array<XComGameState_Unit> GetUnitsInNetwork(int NetworkID)
+{
+    local array<XComGameState_Unit> UnitsInNetwork;
+    local XComGameState_Unit UnitIterator;
+
+    if (NetworkID == 0)
+        return UnitsInNetwork;
+
+    foreach `XCOMHISTORY.IterateByClassType(class'XComGameState_Unit', UnitIterator)
+    {
+        if (GetNetworkIDFromUnitState(UnitIterator) == NetworkID)
+            UnitsInNetwork.AddItem(UnitIterator);
+    }
+
+    return UnitsInNetwork;
 }

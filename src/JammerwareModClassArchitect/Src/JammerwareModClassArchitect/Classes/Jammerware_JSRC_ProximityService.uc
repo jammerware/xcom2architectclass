@@ -1,6 +1,6 @@
 class Jammerware_JSRC_ProximityService extends Object;
 
-function bool AreAdjacent(XComGameState_Unit UnitA, XComGameState_Unit UnitB)
+public function bool AreAdjacent(XComGameState_Unit UnitA, XComGameState_Unit UnitB)
 {
     return AreTilesAdjacent(UnitA.TileLocation, UnitB.TileLocation);
 }
@@ -11,6 +11,30 @@ private function bool AreTilesAdjacent(TTile TileA, TTile TileB)
 
 	Tiles = GetUnitDistanceBetween(TileA, TileB) / `XWORLD.WORLD_StepSize;
     return Tiles < 2;
+}
+
+public function array<TTile> GetAdjacentTiles(TTile Tile)
+{
+	local int x, y;
+	local TTile TempTile;
+	local array<TTile> Tiles;
+
+	for (x = -1; x <= 1; x++)
+	{
+		for (y = -1; y <=1; y++)
+		{
+			TempTile = Tile;
+			TempTile.X += x;
+			TempTile.Y += y;
+
+			if (TempTile.X != Tile.X || TempTile.Y != Tile.Y)
+			{
+				Tiles.AddItem(TempTile);
+			}
+		}
+	}
+
+	return Tiles;
 }
 
 public function XComGameState_Unit GetFurthestUnitFrom(XComGameState_Unit Source, array<XComGameState_Unit> OtherUnits)

@@ -1,11 +1,9 @@
 class X2TargetingMethod_FloorTile extends X2TargetingMethod;
 
 var protected XCom3DCursor Cursor;
-var protected X2Actor_InvalidTarget InvalidTileActor;
 var protected XComActionIconManager IconManager;
 
 var protected float AbilityRangeUnits;
-//var protected XComGameState GameState;
 var protected XComGameState_Unit ShooterState;
 
 function Init(AvailableAction InAction, int NewTargetIndex)
@@ -13,14 +11,12 @@ function Init(AvailableAction InAction, int NewTargetIndex)
 	super.Init(InAction, NewTargetIndex);
 
     // this initialization is pretty much from X2TargetingMethod_Teleport
-	InvalidTileActor = `BATTLE.Spawn(class'X2Actor_InvalidTarget');
-
 	IconManager = `PRES.GetActionIconMgr();
 	IconManager.UpdateCursorLocation(true);
 	// end ripped-off code
 
     // cache cursor reference for later use
-    Cursor = `Cursor;
+    Cursor = `CURSOR;
 
 	// store shooter state for validation
 	ShooterState = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(Ability.OwnerStateObject.ObjectID));
@@ -35,7 +31,6 @@ function Init(AvailableAction InAction, int NewTargetIndex)
 function Canceled()
 {
 	super.Canceled();
-	InvalidTileActor.Destroy();
 	IconManager.ShowIcons(false);
 }
 
@@ -49,8 +44,6 @@ function Update(float DeltaTime)
 {
 	local vector NewTargetLocation;
 	local array<vector> PossibleTargetLocations;
-	local array<TTile> Tiles;
-	local XComWorldData World;
 	local TTile TargetTile;
 	
 	NewTargetLocation = Cursor.GetCursorFeetLocation();
@@ -60,23 +53,21 @@ function Update(float DeltaTime)
 		PossibleTargetLocations.AddItem(Cursor.GetCursorFeetLocation());
 		if (ValidateTargetLocations(PossibleTargetLocations) == 'AA_Success')
 		{
-			// The current tile the cursor is on is a valid tile
-			InvalidTileActor.SetHidden(true);
-
-			World = `XWORLD;
-		
-			TargetTile = World.GetTileCoordinatesFromPosition(PossibleTargetLocations[0]);
-			Tiles.AddItem(TargetTile);
-			DrawAOETiles(Tiles);
+			TargetTile = `XWORLD.GetTileCoordinatesFromPosition(PossibleTargetLocations[0]);
+			DrawValidCursorLocation(TargetTile);
 			IconManager.UpdateCursorLocation(, true);
-		}
-		else
-		{
-			DrawInvalidTile();
 		}
 	}
 
 	super.UpdateTargetLocation(DeltaTime);
+}
+
+protected function DrawValidCursorLocation(TTile Tile)
+{
+	local array<TTile> Tiles;
+
+	Tiles.AddItem(Tile);
+	DrawAOETiles(Tiles);
 }
 
 function name ValidateTargetLocations(const array<Vector> TargetLocations)
@@ -103,15 +94,6 @@ function GetTargetLocations(out array<Vector> TargetLocations)
 {
 	TargetLocations.Length = 0;
 	TargetLocations.AddItem(Cursor.GetCursorFeetLocation());
-}
-
-simulated protected function DrawInvalidTile()
-{
-	local Vector Center;
-
-	Center = Cursor.GetCursorFeetLocation();
-	InvalidTileActor.SetHidden(false);
-	InvalidTileActor.SetLocation(Center);
 }
 
 function int GetTargetIndex()

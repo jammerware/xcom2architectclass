@@ -115,8 +115,6 @@ private static function EventListenerReturn UnitSpawnedTargetingArrayListener(Ob
 	SpireState = XComGameState_Unit(EventData);
 	SpireRef = SpireState.GetReference();
 
-	`LOG("JSRC: unit spawned targeting array listener");
-
 	if (TacticalRules.GetGameRulesCache_Unit(SpireRef, UnitCache))
 	{
 		for (i = 0; i < UnitCache.AvailableActions.Length; ++i)
