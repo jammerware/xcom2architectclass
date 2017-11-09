@@ -254,12 +254,12 @@ LocPromotionPopupText="\"What you leave behind is not what is engraved in stone 
 ;-------------------------------------------------------------
 [Jammerware_JSRC_AbilityUnlock_Deadbolt X2SoldierAbilityUnlockTemplate]
 DisplayName="Architect: Bolt from the Whoosh"
-Summary="When an architect misses a shot, the bullet is returned to the magazine if they're using a boltcaster."
+Summary="When an architect misses a shot, the bullet has a 50% chance to be returned to the magazine. If the magazine is empty, this chance is increased to 100%."
 
 [Jammerware_JSRC_Ability_Deadbolt X2AbilityTemplate]
 LocFriendlyName="Bolt from the Whoosh"
-LocLongDescription="When you miss a shot with a boltcaster, the bullet is returned to the clip."
-LocHelpText="When you miss a shot with a boltcaster, the bullet is returned to the clip."
+LocLongDescription="When you miss a shot, the bullet has a 50% chance to be returned to your magazine. If your magazine is empty, this chance is increased to 100%."
+LocHelpText="When you miss a shot, the bullet has a 50% chance to be returned to your magazine. If your magazine is empty, this chance is increased to 100%."
 LocFlyOverText="Bolt from the Whoosh"
 LocPromotionPopupText="\"If you're using a terrible gun and you're a terrible shot, an equally offsetting good has to appear somewhere in the universe... right?\""
 

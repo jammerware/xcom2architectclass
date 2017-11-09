@@ -22,7 +22,7 @@ function RegisterForEvents(XComGameState_Effect EffectGameState)
     );
 }
 
-static function EventListenerReturn ShotMissListener(Object EventData, Object EventSource, XComGameState GameState, Name EventID, Object CallbackData)
+private static function EventListenerReturn ShotMissListener(Object EventData, Object EventSource, XComGameState GameState, Name EventID, Object CallbackData)
 {
 	local XComGameStateContext_Ability AbilityContext;
     local X2AbilityTemplateManager AbilityTemplateManager;
@@ -32,9 +32,11 @@ static function EventListenerReturn ShotMissListener(Object EventData, Object Ev
     local XComGameState_Item PrimaryWeapon;
     local Jammerware_JSRC_ItemStateService ItemStateService;
     local Jammerware_JSRC_FlyoverService FlyoverService;
+    local int Rand;
 
 	AbilityContext = XComGameStateContext_Ability(GameState.GetContext());
     AbilityTemplateManager = class'X2AbilityTemplateManager'.static.GetAbilityTemplateManager();
+    Rand = class'Engine'.static.SyncRand(2, "X2Effect_Deadbolt.ShotMissListener");
 
 	if (AbilityContext != none && AbilityContext.InterruptionStatus != eInterruptionStatus_Interrupt && AbilityContext.IsResultContextMiss())
 	{
@@ -48,7 +50,7 @@ static function EventListenerReturn ShotMissListener(Object EventData, Object Ev
 				UnitState = XComGameState_Unit(NewGameState.ModifyStateObject(UnitState.Class, UnitState.ObjectID));
                 PrimaryWeapon = UnitState.GetPrimaryWeapon();
 
-                if (InStr(PrimaryWeapon.GetMyTemplateName(), "AlienHunterRifle") != INDEX_NONE)
+                if (PrimaryWeapon.Ammo == 0 || Rand == 1)
                 {
                     ItemStateService = new class'Jammerware_JSRC_ItemStateService';
                     ItemStateService.LoadAmmo(PrimaryWeapon, 1, NewGameState);

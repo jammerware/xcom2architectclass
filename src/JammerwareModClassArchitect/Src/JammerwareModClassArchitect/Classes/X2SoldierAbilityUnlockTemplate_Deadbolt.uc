@@ -1,4 +1,4 @@
-class X2SoldierABilityUnlockTemplate_Deadbolt extends X2StrategyElement;
+class X2SoldierAbilityUnlockTemplate_Deadbolt extends X2StrategyElement;
 
 var name NAME_DEADBOLT;
 
