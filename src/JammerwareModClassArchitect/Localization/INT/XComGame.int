@@ -104,7 +104,7 @@ LocFriendlyName="Build Spire"
 LocLongDescription="Build a spire. Spires provide high cover."
 LocHelpText="Build a spire. Spires provide high cover."
 LocFlyOverText="Build Spire"
-LocPromotionPopupText="\"What you leave behind is not what is engraved in stone monuments, but what is woven into the lives of others.\"\n- Pericles\n\nSpires are the focal point of most Architect abilities. They provide cover, and confer additional benefits as the architect is promoted.\n\n<Bullet/> Costs one action\n<Bullet/> Doesn't end your turn\n<Bullet/> 6-tile range\n<Bullet/> <Ability:SpawnSpireCooldown/>-turn cooldown"
+LocPromotionPopupText="\"What you leave behind is not what is engraved in stone monuments, but what is woven into the lives of others.\"\n- Pericles\n\nSpires are the focal point of most Architect abilities. They provide cover, and confer additional benefits as the architect is promoted.\n\n<Bullet/> Costs one action\n<Bullet/> Doesn't end your turn\n<Bullet/> <Ability:SpawnSpireRange/>-tile range\n<Bullet/> <Ability:SpawnSpireCooldown/>-turn cooldown"
 
 [Jammerware_JSRC_Ability_Shelter X2AbilityTemplate]
 LocFriendlyName="Shelter Array"

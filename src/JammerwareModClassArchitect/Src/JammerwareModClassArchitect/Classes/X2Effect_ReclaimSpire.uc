@@ -13,7 +13,4 @@ simulated protected function OnEffectAdded(const out EffectAppliedData ApplyEffe
 
 		super.OnEffectAdded(ApplyEffectParameters, kNewTargetState, NewGameState, NewEffectState);
 	}
-
-    // remove the spire wreck from play
-    `XEVENTMGR.TriggerEvent('UnitRemovedFromPlay', TargetUnit, TargetUnit, NewGameState);
 }

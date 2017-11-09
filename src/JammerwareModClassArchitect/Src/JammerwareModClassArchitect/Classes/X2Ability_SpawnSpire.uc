@@ -1,8 +1,10 @@
 class X2Ability_SpawnSpire extends X2Ability
     config(JammerwareModClassArchitect);
 
-var config int SPAWNSPIRE_COOLDOWN;
 var name NAME_SPAWN_SPIRE;
+
+var config int TILERANGE_SPAWN_SPIRE;
+var config int COOLDOWN_SPAWN_SPIRE;
 
 static function X2DataTemplate CreateSpawnSpire()
 {
@@ -11,7 +13,6 @@ static function X2DataTemplate CreateSpawnSpire()
 	local X2AbilityCooldown Cooldown;
 	local X2AbilityTarget_Cursor CursorTarget;
 	local X2Effect_SpawnSpire SpawnSpireEffect;
-
 	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_SPAWN_SPIRE);
 
 	// hud behavior
@@ -29,7 +30,7 @@ static function X2DataTemplate CreateSpawnSpire()
 
 	// cooldown
 	Cooldown = new class'X2AbilityCooldown';
-	Cooldown.iNumTurns = default.SPAWNSPIRE_COOLDOWN;
+	Cooldown.iNumTurns = default.COOLDOWN_SPAWN_SPIRE;
 	Template.AbilityCooldown = Cooldown;
 
 	Template.AbilityToHitCalc = default.DeadEye;
@@ -43,7 +44,7 @@ static function X2DataTemplate CreateSpawnSpire()
 
 	// targeting
 	CursorTarget = new class'X2AbilityTarget_Cursor';
-	CursorTarget.FixedAbilityRange = 5 * class'XComWorldData'.const.WORLD_Melee_Range_Meters;
+	CursorTarget.FixedAbilityRange = default.TILERANGE_SPAWN_SPIRE * class'XComWorldData'.const.WORLD_StepSize * class'XComWorldData'.const.WORLD_UNITS_TO_METERS_MULTIPLIER;
 	Template.AbilityTargetStyle = CursorTarget;
 	Template.TargetingMethod = class'X2TargetingMethod_SpawnSpire';
 

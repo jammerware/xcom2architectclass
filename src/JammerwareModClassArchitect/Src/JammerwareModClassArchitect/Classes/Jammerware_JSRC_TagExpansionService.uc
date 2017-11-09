@@ -20,7 +20,8 @@ public function string ExpandAbilityTag(string Input)
         case "ShelterShieldAmount_Mag": return string(class'X2Item_SpireGun'.default.SPIREGUN_MAGNETIC_SHELTERSHIELDBONUS);
         case "ShelterShieldAmount_Beam": return string(class'X2Item_SpireGun'.default.SPIREGUN_BEAM_SHELTERSHIELDBONUS);
         case "ShelterShieldDuration": return string(class'X2Ability_SpireAbilitySet'.default.SHELTER_DURATION);
-        case "SpawnSpireCooldown": return string(class'X2Ability_SpawnSpire'.default.SPAWNSPIRE_COOLDOWN);
+        case "SpawnSpireCooldown": return string(class'X2Ability_SpawnSpire'.default.COOLDOWN_SPAWN_SPIRE);
+        case "SpawnSpireRange": return string(class'X2Ability_SpawnSpire'.default.TILERANGE_SPAWN_SPIRE);
         case "TargetingArrayAccuracy_Conv": return string(class'X2Item_SpireGun'.default.SPIREGUN_CONVENTIONAL_TARGETINGARRAYACCURACYBONUS);
         case "TargetingArrayAccuracy_Mag": return string(class'X2Item_SpireGun'.default.SPIREGUN_MAGNETIC_TARGETINGARRAYACCURACYBONUS);
         case "TargetingArrayAccuracy_Beam": return string(class'X2Item_SpireGun'.default.SPIREGUN_BEAM_TARGETINGARRAYACCURACYBONUS);
