@@ -7,6 +7,7 @@ var name NAME_DEADBOLT;
 var name NAME_FIELD_RELOAD_MODULE;
 var name NAME_HEADSTONE;
 var name NAME_KINETIC_RIGGING;
+var name NAME_LOAD_PERK_CONTENT;
 var name NAME_QUICKSILVER;
 var name NAME_RECLAIM;
 var name NAME_SHELTER;
@@ -27,6 +28,7 @@ static function array <X2DataTemplate> CreateTemplates()
 	local array<X2DataTemplate> Templates;
 
 	// SQUADDIE!
+	Templates.AddItem(CreateLoadPerkContent());
 	Templates.AddItem(class'X2Ability_SpawnSpire'.static.CreateSpawnSpire());
 	Templates.AddItem(CreateActivateSpire());
 	
@@ -58,6 +60,43 @@ static function array <X2DataTemplate> CreateTemplates()
 	Templates.AddItem(CreateDeadbolt());
 
 	return Templates;
+}
+
+private static function X2DataTemplate CreateLoadPerkContent()
+{
+	local X2AbilityTemplate Template;
+	local X2Effect_LoadPerkContent LoadPerkContentEffect;
+
+	// general properties
+	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_LOAD_PERK_CONTENT);
+	Template.Hostility = eHostility_Neutral;
+    Template.bIsPassive = true;
+
+	// hud behavior
+	Template.AbilitySourceName = 'eAbilitySource_Perk';
+	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_NeverShow;
+	Template.bDisplayInUITacticalText = false;
+
+	// targeting/hit chance
+	Template.AbilityTargetStyle = default.SelfTarget;
+	Template.AbilityToHitCalc = default.DeadEye;
+
+	// triggering
+	Template.AbilityTriggers.AddItem(default.UnitPostBeginPlayTrigger);
+	
+	// effects
+	LoadPerkContentEffect = new class'X2Effect_LoadPerkContent';
+	LoadPerkContentEffect.BuildPersistentEffect(1, true, false);
+	LoadPerkContentEffect.AbilitiesToLoad.AddItem(default.NAME_ACTIVATE_SPIRE);
+	Template.AddTargetEffect(LoadPerkContentEffect);	
+	
+	// game state and visualization
+	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
+	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
+	Template.bSkipFireAction = true;
+	Template.bShowActivation = false;
+
+	return Template;
 }
 
 private static function X2AbilityTemplate CreateActivateSpire()
@@ -109,11 +148,12 @@ private static function X2AbilityTemplate CreateActivateSpire()
 	Template.AddTargetEffect(APEffect);
 
 	CosmeticBuff = new class'X2Effect_Persistent';
-	CosmeticBuff.BuildPersistentEffect(1);
+	CosmeticBuff.BuildPersistentEffect(1,,,,eGameRule_PlayerTurnEnd);
 	CosmeticBuff.SetDisplayInfo(ePerkBuff_Passive, default.SpireActiveFriendlyName, default.SpireActiveFriendlyDesc, Template.IconImage, true,, Template.AbilitySourceName);
 	Template.AddTargetEffect(CosmeticBuff);
 	
 	// game state and visualization
+	Template.CustomFireAnim = 'HL_Psi_ProjectileMedium';
 	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
 	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
 	Template.bShowActivation = true;
@@ -402,6 +442,7 @@ private static function X2AbilityTemplate CreateUnity()
 private static function X2AbilityTemplate CreateSoulOfTheArchitect()
 {
 	local X2AbilityTemplate Template;
+	local X2Effect_LoadPerkContent LoadPerkContentEffect;
 	local X2Effect_GenerateCover GenerateCoverEffect;
 	local X2Effect_Persistent PersistentEffect;
 
@@ -418,6 +459,11 @@ private static function X2AbilityTemplate CreateSoulOfTheArchitect()
 
 	// triggering
 	Template.AbilityTriggers.AddItem(default.UnitPostBeginPlayTrigger);
+
+	LoadPerkContentEffect = new class'X2Effect_LoadPerkContent';
+	LoadPerkContentEffect.BuildPersistentEffect(1, true, false);
+	LoadPerkContentEffect.AbilitiesToLoad.AddItem(default.NAME_SOUL_OF_THE_ARCHITECT);
+	Template.AddTargetEffect(LoadPerkContentEffect);	
 
 	GenerateCoverEffect = new class'X2Effect_GenerateCover';
 	GenerateCoverEffect.BuildPersistentEffect(1, true, false);
@@ -437,6 +483,7 @@ private static function X2AbilityTemplate CreateSoulOfTheArchitect()
 	Template.AdditionalAbilities.AddItem(class'X2Ability_TransmatNetwork'.default.NAME_SPIRETRANSMATNETWORK);
 
 	Template.bSkipFireAction = true;
+	Template.bShowActivation = true;
 	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
 	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
 
@@ -480,6 +527,7 @@ DefaultProperties
 	NAME_FIELD_RELOAD_MODULE=Jammerware_JSRC_Ability_FieldReloadModule
 	NAME_HEADSTONE=Jammerware_JSRC_Ability_Headstone
 	NAME_KINETIC_RIGGING=Jammerware_JSRC_Ability_KineticRigging
+	NAME_LOAD_PERK_CONTENT=Jammerware_JSRC_ArchitectLoadPerkContent
 	NAME_QUICKSILVER=Jammerware_JSRC_Ability_Quicksilver
 	NAME_RECLAIM=Jammerware_JSRC_Ability_Reclaim
 	NAME_SHELTER=Jammerware_JSRC_Ability_Shelter

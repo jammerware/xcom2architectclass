@@ -13,6 +13,7 @@ static function X2DataTemplate CreateSpawnSpire()
 	local X2AbilityCooldown Cooldown;
 	local X2AbilityTarget_Cursor CursorTarget;
 	local X2Effect_SpawnSpire SpawnSpireEffect;
+
 	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_SPAWN_SPIRE);
 
 	// hud behavior
@@ -57,6 +58,10 @@ static function X2DataTemplate CreateSpawnSpire()
 	Template.BuildNewGameStateFn = SpawnSpire_BuildGameState;
 	Template.BuildVisualizationFn = SpawnSpire_BuildVisualization;
 	Template.ChosenActivationIncreasePerUse = class'X2AbilityTemplateManager'.default.NonAggressiveChosenActivationIncreasePerUse;
+
+	// additional abilities
+	// giving these to them via spawn spire at squaddie for lack of a better plan
+	Template.AdditionalAbilities.AddItem(class'X2Ability_RunnerAbilitySet'.default.NAME_LOAD_PERK_CONTENT);
 		
 	return Template;
 }

@@ -27,3 +27,33 @@ static function bool AbilityTagExpandHandler(string InString, out string OutStri
     OutString = TagService.ExpandAbilityTag(InString);
     return (OutString != "");
 }
+
+exec function JSRC_ToggleCustomDebugOutput() {
+    class'Jammerware_JSRC_DebugStateMachines'.static.GetThisScreen().ToggleVisible();
+}
+ 
+exec function JSRC_PrintPerkContentsForXCom() {
+    class'Jammerware_JSRC_DebugStateMachines'.static.PrintOutPerkContentsForXComUnits();
+}
+ 
+exec function JSRC_PrintLoadedPerkContents() {
+    class'Jammerware_JSRC_DebugStateMachines'.static.PrintOutLoadedPerkContents();
+}
+ 
+exec function JSRC_TryForceAppendAbilityPerks(name AbilityName) {
+    class'Jammerware_JSRC_DebugStateMachines'.static.TryForceAppendAbilityPerks(AbilityName);
+}
+ 
+exec function JSRC_TryForceCachePerkContent(name AbilityName) {
+    class'Jammerware_JSRC_DebugStateMachines'.static.TryForceCachePerkContent(AbilityName);
+}
+ 
+exec function JSRC_TryForceBuildPerkContentCache() {
+    class'Jammerware_JSRC_DebugStateMachines'.static.TryForceBuildPerkContentCache();
+}
+ 
+exec function JSRC_ForceLoadPerkOnToUnit(name AbilityName) {
+    class'Jammerware_JSRC_DebugStateMachines'.static.TryForceBuildPerkContentCache();
+    class'Jammerware_JSRC_DebugStateMachines'.static.TryForceCachePerkContent(AbilityName);
+    class'Jammerware_JSRC_DebugStateMachines'.static.TryForceAppendAbilityPerks(AbilityName);
+}

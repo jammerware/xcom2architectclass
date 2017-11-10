@@ -98,6 +98,7 @@ private static function X2CharacterTemplate CreateDefaultSpire(name TemplateName
 
 	CharTemplate.strTargetIconImage = class'UIUtilities_Image'.const.TargetIcon_Turret;
 	CharTemplate.bDisablePodRevealMovementChecks = true;
+	CharTemplate.Abilities.AddItem(class'X2Ability_RunnerAbilitySet'.default.NAME_LOAD_PERK_CONTENT);
 
     return CharTemplate;
 }
