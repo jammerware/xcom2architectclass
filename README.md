@@ -30,5 +30,5 @@ The goal of the Architect class is to encourage a spatially-driven play pattern 
 ## Acknowledgments
 - Consulting Designer: SBGC_Smallfry
 - Visual Effects Consultant: Vortex
-- Robojumper™, bountygiver, Aleosiss, Musashi, shiremct and all of the members of the XCOM 2 Modding Discord for their patience and help.
-- Lucubration for their awesome Infantry class mod that taught me a lot about how class mods work
+- Robojumper™, Aleosiss, Musashi, shiremct, bountygiver and all of the members of the XCOM 2 Modding Discord for their patience and help.
+- Lucubration for their awesome [Infantry class mod](https://github.com/Lucubration/XCOM2/tree/master/LucubrationsInfantryClass/LucubrationsInfantryClass) that taught me a lot about how class mods work
