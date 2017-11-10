@@ -1,58 +1,4 @@
-class X2Effect_Impetus extends X2Effect_Knockback;
-
-// gets the 8 tiles surrounding the input tile
-private function array<TTile> GetAdjacentTiles(TTile Tile)
-{
-	local int x, y;
-	local TTile TempTile;
-	local array<TTile> Tiles;
-
-	for (x = -1; x <= 1; x++)
-	{
-		for (y = -1; y <=1; y++)
-		{
-			TempTile = Tile;
-			TempTile.X += x;
-			TempTile.Y += y;
-
-			if (TempTile.X != Tile.X || TempTile.Y != Tile.Y)
-			{
-				Tiles.AddItem(TempTile);
-			}
-		}
-	}
-
-	return Tiles;
-}
-
-private function TTile GetClosestTile(TTile StartTile, array<TTile> Tiles)
-{
-	local XComWorldData World;
-	local Vector StartLocation;
-	local Vector TileLocation;
-	local TTile ClosestTile, TileIterator;
-	local float Distance, MinDistance;
-
-	World = `XWORLD;
-	StartLocation = World.GetPositionFromTileCoordinates(StartTile);
-	// what am i even doing with my life
-	MinDistance = 999999999999;
-
-	foreach Tiles(TileIterator)
-	{
-		World.ClampTile(TileIterator);
-		TileLocation = World.GetPositionFromTileCoordinates(TileIterator);
-		Distance = VSize2D(TileLocation - StartLocation);
-
-		if (Distance < MinDistance)
-		{
-			MinDistance = Distance;
-			ClosestTile = TileIterator;
-		}
-	}
-
-	return ClosestTile;
-}
+class X2Effect_KineticBlast extends X2Effect_Knockback;
 
 private function bool CanBeDestroyed(XComInteractiveLevelActor InteractiveActor, float DamageAmount)
 {
@@ -205,15 +151,11 @@ simulated function ApplyEffectToWorld(const out EffectAppliedData ApplyEffectPar
 	}
 }
 
-private function string DebugTile(TTile Tile)
-{
-	return Tile.X @ Tile.Y @ Tile.Z;
-}
-
 // this is simplified from the original implementation that i lifted from X2Effect_Knockback
 // Unlike effects in the base game that apply knockbacks, i'm applying mine via a cone targeting thing. this differs from the original implementation in that
 // it doesn't handle a lot of random cases that the general effect does, and it calculates the tile adjacent to the target that is closest the shooter and just 
 // lies and says that the knockback came from there instead. it'll be cool if it works.
+// edit: it works and it's cool
 private function GetTilesEnteredArray(XComGameStateContext_Ability AbilityContext, XComGameState_BaseObject kNewTargetState, out array<TTile> OutTilesEntered, out Vector OutAttackDirection, float DamageAmount, XComGameState NewGameState)
 {
 	local XComGameStateHistory History;
@@ -248,8 +190,11 @@ private function GetTilesEnteredArray(XComGameStateContext_Ability AbilityContex
 	local int UpdatedKnockbackDistance_Meters;
 	local array<StateObjectReference> TileUnits;
 
+	local Jammerware_JSRC_ProximityService ProximityService;
+
 	WorldData = `XWORLD;
 	History = `XCOMHISTORY;
+	ProximityService = new class'Jammerware_JSRC_ProximityService';
 	
 	StepSize = 8.0;
 
@@ -257,12 +202,12 @@ private function GetTilesEnteredArray(XComGameStateContext_Ability AbilityContex
 	TargetUnit = XComGameState_Unit(kNewTargetState);
 	TargetTile = TargetUnit.TileLocation;
 	TargetLocation = WorldData.GetPositionFromTileCoordinates(TargetTile);
-	TargetAdjacentTiles = GetAdjacentTiles(TargetTile);
+	TargetAdjacentTiles = ProximityService.GetAdjacentTiles(TargetTile);
 
 	ShooterUnit = XComGameState_Unit(NewGameState.GetGameStateForObjectID(AbilityContext.InputContext.SourceObject.ObjectID));
 	ShooterTile = ShooterUnit.TileLocation;
 
-	KnockbackSourceTile = GetClosestTile(ShooterTile, TargetAdjacentTiles);
+	KnockbackSourceTile = ProximityService.GetClosestTile(ShooterTile, TargetAdjacentTiles);
 	KnockbackSourceLocation = WorldData.GetPositionFromTileCoordinates(KnockbackSourceTile);
 
 	OutAttackDirection = Normal(TargetLocation - KnockbackSourceLocation);

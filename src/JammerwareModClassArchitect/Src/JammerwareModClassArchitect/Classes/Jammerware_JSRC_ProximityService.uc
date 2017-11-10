@@ -37,6 +37,35 @@ public function array<TTile> GetAdjacentTiles(TTile Tile)
 	return Tiles;
 }
 
+public function TTile GetClosestTile(TTile StartTile, array<TTile> Tiles)
+{
+	local XComWorldData World;
+	local Vector StartLocation;
+	local Vector TileLocation;
+	local TTile ClosestTile, TileIterator;
+	local float Distance, MinDistance;
+
+	World = `XWORLD;
+	StartLocation = World.GetPositionFromTileCoordinates(StartTile);
+	// what am i even doing with my life
+	MinDistance = 999999999999;
+
+	foreach Tiles(TileIterator)
+	{
+		World.ClampTile(TileIterator);
+		TileLocation = World.GetPositionFromTileCoordinates(TileIterator);
+		Distance = VSize2D(TileLocation - StartLocation);
+
+		if (Distance < MinDistance)
+		{
+			MinDistance = Distance;
+			ClosestTile = TileIterator;
+		}
+	}
+
+	return ClosestTile;
+}
+
 public function XComGameState_Unit GetFurthestUnitFrom(XComGameState_Unit Source, array<XComGameState_Unit> OtherUnits)
 {
     local TTile ShooterTile;

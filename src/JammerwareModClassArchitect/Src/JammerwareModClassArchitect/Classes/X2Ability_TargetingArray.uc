@@ -82,6 +82,9 @@ public static function X2DataTemplate CreateSpireTargetingArrayTriggered()
 	Trigger.ListenerData.EventFn = UnitSpawnedTargetingArrayListener;
 	Template.AbilityTriggers.AddItem(Trigger);
 
+	// also trigger at post begin play for architects with SotA and this
+	Template.AbilityTriggers.AddItem(default.UnitPostBeginPlayTrigger);
+
 	// effects
 	TargetingArrayEffect = new class'X2Effect_TargetingArray';
 	TargetingArrayEffect.BuildPersistentEffect(1, true);

@@ -69,9 +69,13 @@ function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, Stat
 
 	SpireRegistrationService.RegisterSpireToRunner(ApplyEffectParameters, NewUnitRef, NewGameState, NewEffectState);
 
+	// prevent spires from breaking squad concealment when they're summoned (unless they're on a naughty space)
+	if (SourceUnitGameState.IsConcealed())
+		SpireUnitGameState.SetIndividualConcealment(true, NewGameState);
+
 	// DANGER, WILL ROBINSON
-	// i'm super unsure of this implementation, especially because it results in using the dreaded InitAbilityForUnit method, which is indicated as
-	// pretty dangerous by Firaxis. if the soldier who spawns the spire has certain abilities, the spire gets them too
+	// i know what i'm doing a little more since I did this the first time, refactor is tracked in 
+	// https://github.com/jammerware/xcom2architectclass/issues/24
 	SpireAbilitiesService.ConfigureSpireAbilities(SpireUnitGameState, SourceUnitGameState, NewGameState);
 
 	// NO ACTION FOR YOU
