@@ -96,14 +96,14 @@ private static function X2CharacterTemplate CreateDefaultSpire(name TemplateName
 	CharTemplate.ImmuneTypes.AddItem(class'X2Item_DefaultDamageTypes'.default.ParthenogenicPoisonType);
 	CharTemplate.ImmuneTypes.AddItem('Panic');
 
-	CharTemplate.strTargetIconImage = class'UIUtilities_Image'.const.TargetIcon_Turret;
+	CharTemplate.strTargetIconImage = "Jammerware_JSRC.TargetIcons.target_icon_spire";
 	CharTemplate.bDisablePodRevealMovementChecks = true;
 	CharTemplate.Abilities.AddItem(class'X2Ability_RunnerAbilitySet'.default.NAME_LOAD_PERK_CONTENT);
 
     return CharTemplate;
 }
 
-defaultproperties
+DefaultProperties
 {
 	NAME_CHARACTER_SPIRE_CONVENTIONAL=Jammerware_JSRC_Character_Spire_Conventional
 	NAME_CHARACTER_SPIRE_MAGNETIC=Jammerware_JSRC_Character_Spire_Magnetic

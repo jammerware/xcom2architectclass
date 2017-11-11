@@ -117,6 +117,7 @@ private static function X2AbilityTemplate CreateActivateSpire()
 	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_SQUADDIE_PRIORITY;
 	Template.bLimitTargetIcons = true;
 	Template.AbilityIconColor = class'Jammerware_JSRC_IconColorService'.static.GetSpireAbilityIconColor();
+	Template.DefaultSourceItemSlot = eInvSlot_SecondaryWeapon;
 
 	// cost
 	Template.AbilityCosts.AddItem(default.FreeActionCost);
