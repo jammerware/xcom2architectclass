@@ -36,6 +36,7 @@ function bool IsEligibleForTransmatAbility(X2CharacterTemplate Template)
 // (this is basically either the spire's architect's ID or the architect themself's ID via SotA)
 function int GetNetworkIDFromUnitState(XComGameState_Unit UnitState)
 {
+    local Jammerware_JSRC_SpireService SpireService;
     local Jammerware_JSRC_SpireRegistrationService SpireRegistrationService;
 
     if (UnitState == none || UnitState.AffectedByEffectNames.Find(class'X2Ability_TransmatNetwork'.default.NAME_SPIRETRANSMATNETWORK) == INDEX_NONE)
@@ -44,7 +45,8 @@ function int GetNetworkIDFromUnitState(XComGameState_Unit UnitState)
     }
 
     // if the unit's a spire, get its architect
-    if (UnitState.GetMyTemplate().CharacterGroupName == class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE)
+    SpireService = new class'Jammerware_JSRC_SpireService';
+    if (SpireService.IsSpire(UnitState))
     {
         SpireRegistrationService = new class'Jammerware_JSRC_SpireRegistrationService';
         return SpireRegistrationService.GetRunnerFromSpire(UnitState.ObjectID).ObjectID;

@@ -3,8 +3,10 @@ class X2Condition_OwnedSpire extends X2Condition;
 event name CallMeetsCondition(XComGameState_BaseObject kTarget)
 {
     local XComGameState_Unit Target;
+    local Jammerware_JSRC_SpireService SpireService;
 
     Target = XComGameState_Unit(kTarget);
+    SpireService = new class'Jammerware_JSRC_SpireService';
 
     if (Target == none)
     {
@@ -14,7 +16,7 @@ event name CallMeetsCondition(XComGameState_BaseObject kTarget)
     {
         return 'AA_UnitIsDead';
     }
-    if (Target.GetMyTemplate().CharacterGroupName != class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE)
+    if (!SpireService.IsSpire(Target))
     {
         return 'AA_UnitIsWrongType';
     }

@@ -1,4 +1,16 @@
 ;-------------------------------------------------------------
+; CHARACTERS
+;-------------------------------------------------------------
+[Jammerware_JSRC_Character_Spire_Conventional X2CharacterTemplate_Spire]
+strCharacterName="Spire"
+
+[Jammerware_JSRC_Character_Spire_Magnetic X2CharacterTemplate_Spire]
+strCharacterName="EM Spire"
+
+[Jammerware_JSRC_Character_Spire_Beam X2CharacterTemplate_Spire]
+strCharacterName="Hardlight Spire"
+
+;-------------------------------------------------------------
 ; WEAPONS
 ;-------------------------------------------------------------
 [Jammerware_JSRC_Item_SpireGun_Conventional X2WeaponTemplate_SpireGun]
@@ -22,10 +34,6 @@ TacticalText="Hardlight Spire Kits allow the architect to summon Hardlight Spire
 ;-------------------------------------------------------------
 ; EFFECTS
 ;-------------------------------------------------------------
-[X2Ability_RunnerAbilitySet]
-+SpireActiveFriendlyName="Spire Online"
-+SpireActiveFriendlyDesc="This spire is online and can use abilities this turn. So fuck you."
-
 [X2Ability_TargetingArray]
 +TargetingArrayTriggeredFriendlyName="Targeting Array Online"
 +TargetingArrayTriggeredFriendlyDesc="The nearby spire's targeting array is active, enhancing the accuracy of your shots."

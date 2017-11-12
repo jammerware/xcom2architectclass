@@ -8,8 +8,10 @@ event name CallMeetsCondition(XComGameState_BaseObject kTarget)
     // a cursor targetstyle, the target is actually the source of the ability, and 
     // CallMeetsConditionWithSource isn't evaluated
     local XComGameState_Unit Source;
+    local Jammerware_JSRC_SpireService SpireService;
 
     Source = XComGameState_Unit(kTarget);
+    SpireService = new class'Jammerware_JSRC_SpireService';
 
     if (Source == none)
     {
@@ -18,11 +20,9 @@ event name CallMeetsCondition(XComGameState_BaseObject kTarget)
 
     if 
     (
-        Source.GetMyTemplate().CharacterGroupName != class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE &&
-        (
-            Source.AffectedByEffectNames.Find(class'X2Ability_RunnerAbilitySet'.default.NAME_SOUL_OF_THE_ARCHITECT) == INDEX_NONE ||
-            (RequiredRunnerAbility != 'None' && Source.AffectedByEffectNames.Find(RequiredRunnerAbility) == INDEX_NONE)
-        )
+        !SpireService.IsSpire(Source) 
+        && RequiredRunnerAbility != 'None' 
+        && Source.AffectedByEffectNames.Find(RequiredRunnerAbility) == INDEX_NONE
     )
     {
         return 'AA_ValueCheckFailed';
