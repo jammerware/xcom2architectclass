@@ -11,6 +11,7 @@
 +AbilityTreeTitles[2]="XCOM"
 
 ; NICKS
++RandomNickNames="Anzu"
 +RandomNickNames="Batsu"
 +RandomNickNames="Centaur"
 +RandomNickNames="Daemon"
