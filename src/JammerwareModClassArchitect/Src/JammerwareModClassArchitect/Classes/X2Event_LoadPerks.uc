@@ -1,6 +1,8 @@
 // i created this method of loading perks based on the work done by /u/stormhunter117 here:
 // https://www.reddit.com/r/xcom2mods/wiki/wotc_modding/scripting/xcomperkcontent_fix
-class X2Event_LoadPerksOnBeginTactical extends X2EventListener;
+class X2Event_LoadPerks extends X2EventListener;
+
+var name NAME_BUILD_PERK_PACKAGE_CACHE;
 
 struct PerkRegistration
 {
@@ -13,9 +15,26 @@ public static function array<X2DataTemplate> CreateTemplates()
 {
 	local array<X2DataTemplate> Templates;
 
+    Templates.AddItem(Create_OnTacticalBeginPlay_BuildPerkPackageCache());
 	Templates.AddItem(Create_OnUnitBeginPlay_LoadPerks());
 
 	return Templates;
+}
+
+private static function X2DataTemplate Create_OnTacticalBeginPlay_BuildPerkPackageCache()
+{
+    local X2EventListenerTemplate Template;
+
+	`CREATE_X2TEMPLATE(class'X2EventListenerTemplate_LoadPerks', Template, default.NAME_BUILD_PERK_PACKAGE_CACHE);
+    Template.AddEvent('OnTacticalBeginPlay', OnTacticalBeginPlay);
+
+    return Template;
+}
+
+private static function EventListenerReturn OnTacticalBeginPlay(Object EventData, Object EventSource, XComGameState GameState, Name Event, Object CallbackData)
+{
+    `CONTENT.BuildPerkPackageCache();
+    return ELR_NoInterrupt;
 }
 
 private static function X2DataTemplate Create_OnUnitBeginPlay_LoadPerks()
@@ -23,7 +42,6 @@ private static function X2DataTemplate Create_OnUnitBeginPlay_LoadPerks()
     local X2EventListenerTemplate_LoadPerks Template;
 
 	`CREATE_X2TEMPLATE(class'X2EventListenerTemplate_LoadPerks', Template, 'Jammerware_JSRC_EventListener_LoadPerksOnTacticalBegin');
-    Template.AddPerkToRegister(class'X2Ability_RunnerAbilitySet'.default.NAME_ACTIVATE_SPIRE, ,class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE);
     Template.AddPerkToRegister(class'X2Ability_RunnerAbilitySet'.default.NAME_ACTIVATE_SPIRE, 'Jammerware_JSRC_Class_Architect');
     Template.AddPerkToRegister(class'X2Ability_RunnerAbilitySet'.default.NAME_SOUL_OF_THE_ARCHITECT, 'Jammerware_JSRC_Class_Architect');
 	Template.AddEvent('OnUnitBeginPlay', OnUnitBeginPlay);
@@ -35,10 +53,6 @@ private static function EventListenerReturn OnUnitBeginPlay(Object EventData, Ob
 {
     local XComGameState_Unit UnitState;
     local X2EventListenerTemplate_LoadPerks LoadPerksTemplate;
-
-    `LOG("JSRC: EventData -" @ EventData.name);
-    `LOG("JSRC: EventSource -" @ EventSource.name);
-    `LOG("JSRC: CallbackData -" @ CallbackData.name);
 
     UnitState = XComGameState_Unit(EventSource);
     LoadPerksTemplate = GetLoadPerksTemplate('Jammerware_JSRC_EventListener_LoadPerksOnTacticalBegin');
@@ -68,26 +82,17 @@ private static function RegisterPerksFor(XComGameState_Unit UnitState, array<Per
         return;
     }
 
-    // TODO? move this to event handler?
-    Content.BuildPerkPackageCache();
-
     foreach PerksToRegister(PerkRegistrationIterator) 
     {
         if (PerkRegistrationIterator.CharacterGroupName != 'None' && CharacterTemplate.CharacterGroupName == PerkRegistrationIterator.CharacterGroupName)
         {
-            `LOG("JSRC: iterator is looking for character group" @ PerkRegistrationIterator.CharacterGroupName);
-            `LOG("JSRC: registering perk" @ PerkRegistrationIterator.Ability @ "to" @ UnitState.GetFullName() @ CharacterTemplate.CharacterGroupName);
             Content.CachePerkContent(PerkRegistrationIterator.Ability);
             Content.AppendAbilityPerks(PerkRegistrationIterator.Ability, UnitPawnNativeBase);
-            `LOG("JSRC: registered!");
         }
         else if (PerkRegistrationIterator.SoldierClassName != 'None' && ClassTemplate.DataName == PerkRegistrationIterator.SoldierClassName)
         {
-            `LOG("JSRC: iterator is looking for soldier class" @ PerkRegistrationIterator.SoldierClassName);
-            `LOG("JSRC: registering perk" @ PerkRegistrationIterator.Ability @ "to" @ UnitState.GetFullName() @ ClassTemplate.DataName);
             Content.CachePerkContent(PerkRegistrationIterator.Ability);
             Content.AppendAbilityPerks(PerkRegistrationIterator.Ability, UnitPawnNativeBase);
-            `LOG("JSRC: REGISTERED!");
         }
     }
 }
@@ -106,4 +111,9 @@ private static function X2EventListenerTemplate_LoadPerks GetLoadPerksTemplate(n
 	}
 
 	return Template;
+}
+
+DefaultProperties
+{
+    NAME_BUILD_PERK_PACKAGE_CACHE=Jammerware_JSRC_EventListener_BuildPerkPackageCache
 }

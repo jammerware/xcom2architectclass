@@ -264,13 +264,6 @@ LocFlyOverText="Bolt from the Whoosh"
 LocPromotionPopupText="\"If you're using a terrible gun and you're a terrible shot, an equally offsetting good has to appear somewhere in the universe... right?\""
 
 ;-------------------------------------------------------------
-; EFFECTS
-;-------------------------------------------------------------
-[Jammerware_JSRC_Effect_SpireActive X2Effect_SpireActive]
-FriendlyName="Spire Online"
-FriendlyDescription="This spire is online and can use abilities this turn."
-
-;-------------------------------------------------------------
 ; WEAPONS
 ;-------------------------------------------------------------
 [Jammerware_JSRC_Item_Railgun_Conventional X2WeaponTemplate]
