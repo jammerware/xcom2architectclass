@@ -3,16 +3,15 @@
 // which is the primary target
 class X2TargetingMethod_RelayedShot extends X2TargetingMethod;
 
-var private X2Camera_LookAtActor LookatCamera;
+var private X2Camera_Midpoint Camera;
 var protected int LastTarget;
 
 function Init(AvailableAction InAction, int NewTargetIndex)
 {
 	super.Init(InAction, NewTargetIndex);
 	
-	LookatCamera = new class'X2Camera_LookAtActor';
-	LookatCamera.UseTether = false;
-	`CAMERASTACK.AddCamera(LookatCamera);
+	Camera = new class'X2Camera_Midpoint';
+	`CAMERASTACK.AddCamera(Camera);
 
 	DirectSetTarget(0);
 }
@@ -20,7 +19,7 @@ function Init(AvailableAction InAction, int NewTargetIndex)
 function Canceled()
 {
 	super.Canceled();
-	`CAMERASTACK.RemoveCamera(LookatCamera);
+	`CAMERASTACK.RemoveCamera(Camera);
 	ClearTargetedActors();
 }
 
@@ -48,7 +47,7 @@ function DirectSetTarget(int TargetIndex)
 {
 	local XComPresentationLayer Pres;
 	local UITacticalHUD TacticalHud;
-	local Actor TargetedActor;
+	local Actor TargetedActor, ActorIterator;
 	local array<TTile> Tiles;
 	local TTile TargetedActorTile;
 	local XGUnit TargetedPawn;
@@ -103,16 +102,19 @@ function DirectSetTarget(int TargetIndex)
 		AbilityTemplate.AbilityTargetStyle.GetValidTilesForLocation(Ability, TargetedLocation, Tiles);
 	}
 
+	Camera.ClearFocusActors();
 	if( Tiles.Length > 1 )
 	{
 		GetTargetedActors(TargetedLocation, CurrentlyMarkedTargets, Tiles);
 		CheckForFriendlyUnit(CurrentlyMarkedTargets);
 		MarkTargetedActors(CurrentlyMarkedTargets, (!AbilityIsOffensive) ? FiringUnit.GetTeam() : eTeam_None);
 		DrawAOETiles(Tiles);
-	}
 
-    // determine which actor is furthest from the shooter, then look at that (or the source unit if no target is available)
-    LookatCamera.ActorToFollow = GetLookAtActor(CurrentlyMarkedTargets);
+		foreach CurrentlyMarkedTargets(ActorIterator)
+		{
+			Camera.AddFocusActor(ActorIterator);
+		}
+	}
 }
 
 function bool GetCurrentTargetFocus(out Vector Focus)
@@ -138,33 +140,4 @@ function bool GetCurrentTargetFocus(out Vector Focus)
 	}
 	
 	return false;
-}
-
-private function Actor GetLookAtActor(array<Actor> CurrentlyMarkedActors)
-{
-    local array<XComGameState_Unit> CurrentlyMarkedUnitStates;
-    local Actor ActorIterator;
-    local XGUnit UnitIterator;
-    local XComGameState_Unit FurthestUnitState;
-    local Jammerware_JSRC_ProximityService ProximityService;
-
-    ProximityService = new class'Jammerware_JSRC_ProximityService';
-
-    foreach CurrentlyMarkedActors(ActorIterator)
-    {
-        UnitIterator = XGUnit(ActorIterator);
-
-		if (UnitIterator != none)
-			CurrentlyMarkedUnitStates.AddItem(UnitIterator.GetVisualizedGameState());
-    }
-
-    FurthestUnitState = ProximityService.GetFurthestUnitFrom(FiringUnit.GetVisualizedGameState(), CurrentlyMarkedUnitStates);
-
-    // if there aren't any enemy units targeted, just look at the targeted spire actor
-    if (FurthestUnitState == None)
-    {
-        return GetTargetedActor();
-    }
-
-    return FurthestUnitState.GetVisualizer();
 }
