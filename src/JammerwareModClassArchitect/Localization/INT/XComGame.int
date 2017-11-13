@@ -77,9 +77,11 @@
 +RandomNicknames_Female="Sphinx"
 
 ;PHOTOBOOTH
++PhotoboothSoloBLines_Female="Architect of Destruction"
 +PhotoboothSoloBLines_Female="Speed & Spires"
 +PhotoboothSoloBLines_Female="Towers of Power"
 
++PhotoboothSoloBLines_Male="Architect of Destruction"
 +PhotoboothSoloBLines_Male="Speed & Spires"
 +PhotoboothSoloBLines_Male="Towers of Power"
 
