@@ -13,6 +13,9 @@ static event OnPostTemplatesCreated()
 
     GtsUnlockService = new class'Jammerware_JSRC_GtsUnlockService';
     GtsUnlockService.AddUnlock(class'X2SoldierAbilityUnlockTemplate_Deadbolt'.default.NAME_DEADBOLT);
+
+    // this seems like a weird place to do this, but i didn't find anything else that says "do this when the client starts and your mod is on"
+    `CONTENT.BuildPerkPackageCache();
 }
 
 /// <summary>

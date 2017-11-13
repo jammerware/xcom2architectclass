@@ -15,26 +15,9 @@ public static function array<X2DataTemplate> CreateTemplates()
 {
 	local array<X2DataTemplate> Templates;
 
-    Templates.AddItem(Create_OnTacticalBeginPlay_BuildPerkPackageCache());
 	Templates.AddItem(Create_OnUnitBeginPlay_LoadPerks());
 
 	return Templates;
-}
-
-private static function X2DataTemplate Create_OnTacticalBeginPlay_BuildPerkPackageCache()
-{
-    local X2EventListenerTemplate Template;
-
-	`CREATE_X2TEMPLATE(class'X2EventListenerTemplate_LoadPerks', Template, default.NAME_BUILD_PERK_PACKAGE_CACHE);
-    Template.AddEvent('OnTacticalBeginPlay', OnTacticalBeginPlay);
-
-    return Template;
-}
-
-private static function EventListenerReturn OnTacticalBeginPlay(Object EventData, Object EventSource, XComGameState GameState, Name Event, Object CallbackData)
-{
-    `CONTENT.BuildPerkPackageCache();
-    return ELR_NoInterrupt;
 }
 
 private static function X2DataTemplate Create_OnUnitBeginPlay_LoadPerks()
@@ -42,8 +25,16 @@ private static function X2DataTemplate Create_OnUnitBeginPlay_LoadPerks()
     local X2EventListenerTemplate_LoadPerks Template;
 
 	`CREATE_X2TEMPLATE(class'X2EventListenerTemplate_LoadPerks', Template, 'Jammerware_JSRC_EventListener_LoadPerksOnTacticalBegin');
+
+    // all my perks are currently triggered by xcom units
+    Template.ListenForTeam = eTeam_XCom;
+
+    // perk registrations
     Template.AddPerkToRegister(class'X2Ability_RunnerAbilitySet'.default.NAME_ACTIVATE_SPIRE, 'Jammerware_JSRC_Class_Architect');
     Template.AddPerkToRegister(class'X2Ability_RunnerAbilitySet'.default.NAME_SOUL_OF_THE_ARCHITECT, 'Jammerware_JSRC_Class_Architect');
+    Template.AddPerkToRegister(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_SHELTER, , class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE);
+
+    // fire it up on unit begin play
 	Template.AddEvent('OnUnitBeginPlay', OnUnitBeginPlay);
 
 	return Template;

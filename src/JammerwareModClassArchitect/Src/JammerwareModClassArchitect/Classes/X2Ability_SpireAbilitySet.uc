@@ -114,7 +114,9 @@ private static function X2AbilityTemplate CreateSpireShelter()
 	local X2AbilityMultiTarget_Radius MultiTargetStyle;
 	local X2AbilityTrigger_EventListener TurnEndTrigger;
 	local X2Effect_ShelterShield ShieldEffect;
+	local X2Condition_AllyAdjacency AllyAdjacencyCondition;
 	local X2Condition_UnitProperty PropertyCondition;
+	local X2Condition_IsSpire IsSpireCondition;
 	local X2Condition_BeASpireOrHaveSoulAnd RunnerAbilityCondition;
 
 	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_SPIRE_SHELTER);
@@ -147,8 +149,10 @@ private static function X2AbilityTemplate CreateSpireShelter()
 	RunnerAbilityCondition.RequiredRunnerAbility = class'X2Ability_RunnerAbilitySet'.default.NAME_SHELTER;
 	Template.AbilityShooterConditions.AddItem(RunnerAbilityCondition);
 	
-	// the ability can only go off if there's an adjacent ally
-	Template.AbilityShooterConditions.AddItem(new class'X2Condition_AllyAdjacency');
+	// the ability can only go off if there's an adjacent ally, and since spires can't receive shelter, they don't trigger it
+	AllyAdjacencyCondition = new class'X2Condition_AllyAdjacency';
+	AllyAdjacencyCondition.ExcludeAllyCharacterGroup = class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE;
+	Template.AbilityShooterConditions.AddItem(AllyAdjacencyCondition);
 	
 	// multitarget valid targets are friendly squadmates
 	PropertyCondition = new class'X2Condition_UnitProperty';
@@ -156,6 +160,11 @@ private static function X2AbilityTemplate CreateSpireShelter()
 	PropertyCondition.ExcludeHostileToSource = true;
 	PropertyCondition.RequireSquadmates = true;
 	Template.AbilityMultiTargetConditions.AddItem(PropertyCondition);
+
+	// can't apply to spires for gameplay clarity (damage is supposed to be basically irrelevant to spires)
+	IsSpireCondition = new class'X2Condition_IsSpire';
+	IsSpireCondition.IsNegated = true;
+	Template.AbilityMultiTargetConditions.AddItem(IsSpireCondition);
 
 	// trigger
 	TurnEndTrigger = new class'X2AbilityTrigger_EventListener';

@@ -6,6 +6,9 @@ var name ExcludeAllyEffect;
 // the check only passes if this is none or the ally has this effect
 var name RequireAllyEffect;
 
+// the check only passes if this is none or the ally isn't part of this character group
+var name ExcludeAllyCharacterGroup;
+
 // the check only passes if this is none or the ally is part of this character group
 var name RequireAllyCharacterGroup;
 
@@ -22,6 +25,7 @@ event name CallMeetsCondition(XComGameState_BaseObject kTarget)
     foreach AdjacentUnits(Ally)
     {
         if (
+            (ExcludeAllyCharacterGroup == 'None' || Ally.GetMyTemplate().CharacterGroupName != ExcludeAllyCharacterGroup) &&
             (RequireAllyCharacterGroup == 'None' || Ally.GetMyTemplate().CharacterGroupName == RequireAllyCharacterGroup) &&
             (RequireAllyEffect == 'None' || Ally.AffectedByEffectNames.Find(RequireAllyEffect) != INDEX_NONE) &&
             (ExcludeAllyEffect == 'None' || Ally.AffectedByEffectNames.Find(ExcludeAllyEffect) == INDEX_NONE)
