@@ -42,3 +42,11 @@ SpireActiveFriendlyDesc="This spire is online and can use abilities this turn."
 +TargetingArrayTriggeredFriendlyName="Targeting Array Online"
 +TargetingArrayTriggeredFriendlyDesc="The nearby spire's targeting array is active, enhancing the accuracy of your shots."
 +TargetingArrayRemovedFriendlyName="Targeting Array Offline"
+
+;-------------------------------------------------------------
+; WORLD MESSAGES
+;-------------------------------------------------------------
+; TODO: it feels ick to put this on XComGameState_SpireUnit
+[XComGameState_SpireUnit]
+LocSpireKilledTitle="OFFLINE"
+LocSpireKilledMessage="<XGParam:StrValue0/!UnitName/> was destroyed!"

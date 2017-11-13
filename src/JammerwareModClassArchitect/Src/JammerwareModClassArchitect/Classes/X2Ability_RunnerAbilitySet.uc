@@ -233,6 +233,7 @@ private static function X2AbilityTemplate CreateReclaim()
 	Template.AddShooterEffect(CreateSpireCooldownResetEffect);
 	
 	// game state and visualization
+	Template.TargetKilledByXComSpeech = ''; // suppress "target down!" kind of stuff
 	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
 	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
 	Template.bShowActivation = true;

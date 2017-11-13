@@ -46,7 +46,6 @@ public function VisualizeFlyovers(XComGameState VisualizeGameState)
 			ActionMetadata.VisualizeActor = UnitStateIterator.GetVisualizer();
 
 			PlayAnimation = X2Action_PlayAnimation(class'X2Action_PlayAnimation'.static.AddToVisualizationTree(ActionMetadata, VisualizeGameState.GetContext(), , SoundAndFlyOver));
-			PlayAnimation.bFinishAnimationWait = false;
 			PlayAnimation.Params.AnimName = TargetPlayAnimation;
 		}
 	}

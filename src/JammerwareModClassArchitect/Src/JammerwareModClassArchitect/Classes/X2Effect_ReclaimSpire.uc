@@ -14,3 +14,8 @@ simulated protected function OnEffectAdded(const out EffectAppliedData ApplyEffe
 		super.OnEffectAdded(ApplyEffectParameters, kNewTargetState, NewGameState, NewEffectState);
 	}
 }
+
+DefaultProperties
+{
+	bHideDeathWorldMessage=true
+}
