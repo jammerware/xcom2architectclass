@@ -13,7 +13,7 @@ DefaultProperties
 	iPhysicsImpulse = 5
     EquipSound = "Psi_Amp_Equip"
 	ItemCat = "weapon"
-	WeaponCat = "spiregun"
+	WeaponCat = "Jammerware_JSRC_WeaponCat_SpireGun"
 	InventorySlot = eInvSlot_SecondaryWeapon
 	StowedLocation = eSlot_RightBack
     WeaponPanelImage = "_PsiAmp"
