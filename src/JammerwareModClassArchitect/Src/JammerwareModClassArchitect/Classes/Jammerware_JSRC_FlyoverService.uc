@@ -6,7 +6,7 @@ var string FlyoverIcon;
 var float PerUnitDelaySec;
 var name TargetPlayAnimation;
 
-public function VisualizeFlyovers(XComGameState VisualizeGameState)
+public function VisualizeFlyovers(XComGameState VisualizeGameState, optional VisualizationActionMetadata VisualizationParent)
 {
 	local VisualizationActionMetadata ActionMetadata, EmptyTrack;
 	local XComGameState_Unit UnitStateIterator;
@@ -14,6 +14,9 @@ public function VisualizeFlyovers(XComGameState VisualizeGameState)
 	local X2Action_PlaySoundAndFlyOver SoundAndFlyOver;
 	local X2Action_PlayAnimation PlayAnimation;
 	local X2Action_TimedWait TimedWait;
+
+	// if a visualization parent was passed in, tell the empty track to use the parent's last action as its last action
+	EmptyTrack.LastActionAdded = VisualizationParent.LastActionAdded;
 
 	foreach VisualizeGameState.IterateByClassType(class'XComGameState_Unit', UnitStateIterator)
 	{

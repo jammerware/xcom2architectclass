@@ -60,7 +60,7 @@ private static function EventListenerReturn ShotMissListener(Object EventData, O
                     FlyoverService.FlyoverText = DeadboltTemplate.LocFlyoverText;
                     FlyoverService.FlyoverIcon = DeadboltTemplate.IconImage;
 
-                    XComGameStateContext_ChangeContainer(NewGameState.GetContext()).BuildVisualizationFn = FlyoverService.VisualizeFlyovers;
+                    //XComGameStateContext_ChangeContainer(NewGameState.GetContext()).BuildVisualizationFn = FlyoverService.VisualizeFlyovers;
                     `TACTICALRULES.SubmitGameState(NewGameState);
                 }
 			}

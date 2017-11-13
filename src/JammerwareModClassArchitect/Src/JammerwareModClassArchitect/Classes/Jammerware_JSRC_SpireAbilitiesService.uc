@@ -2,8 +2,17 @@ class Jammerware_JSRC_SpireAbilitiesService extends Object;
 
 function ConfigureSpireAbilities(XComGameState_Unit SpireUnit, XComGameState_Unit SourceUnit, XComGameState NewGameState)
 {
-	// TODO: eventually some kind of associative array would be better here
-	// note that some abilities need to be registered to an item, like shelter
+	// TODO: this'll be refactored to use conditions rather than hotloading the abilities
+	// tracked in https://github.com/jammerware/xcom2architectclass/issues/24
+	InitSpireAbilityFromRunnerAbility
+	(
+		SourceUnit,
+		SpireUnit,
+		class'X2Ability_FieldReloadArray'.default.NAME_ABILITY,
+		class'X2Ability_FieldReloadArray'.default.NAME_SPIRE_ABILITY,
+		NewGameState,
+		SourceUnit.GetSecondaryWeapon().GetReference()
+	);
 	InitSpireAbilityFromRunnerAbility
 	(
 		SourceUnit, 

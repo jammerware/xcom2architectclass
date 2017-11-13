@@ -18,6 +18,9 @@ static function array <X2DataTemplate> CreateTemplates()
 	Templates.AddItem(CreateDecommission());
 	Templates.AddItem(CreateSpirePassive());
 
+	// CORPORAL
+	Templates.AddItem(class'X2Ability_FieldReloadArray'.static.CreateSpireFieldReloadArray());
+
 	// SERGEANT!
 	Templates.AddItem(CreateSpireShelter());
 	Templates.AddItem(CreateSpireQuicksilver());
@@ -111,7 +114,6 @@ static function X2AbilityTemplate CreateDecommission()
 private static function X2AbilityTemplate CreateSpireShelter()
 {
 	local X2AbilityTemplate Template;
-	local X2AbilityMultiTarget_Radius MultiTargetStyle;
 	local X2AbilityTrigger_EventListener TurnEndTrigger;
 	local X2Effect_ShelterShield ShieldEffect;
 	local X2Condition_AllyAdjacency AllyAdjacencyCondition;
@@ -129,12 +131,7 @@ private static function X2AbilityTemplate CreateSpireShelter()
 
 	// targeting
 	Template.AbilityTargetStyle = default.SelfTarget;
-
-	MultiTargetStyle = new class'X2AbilityMultiTarget_Radius';
-	MultiTargetStyle.fTargetRadius = 2.375f;
-	MultiTargetStyle.bExcludeSelfAsTargetIfWithinRadius = true;
-	MultiTargetStyle.bIgnoreBlockingCover = true;
-	Template.AbilityMultiTargetStyle = MultiTargetStyle;
+	Template.AbilityMultiTargetStyle = new class'X2AbilityMultiTargetStyle_PBAoE';
 
 	// hit chance
 	Template.AbilityToHitCalc = default.DeadEye;

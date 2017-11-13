@@ -74,7 +74,7 @@ function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, Stat
 		SpireUnitGameState.SetIndividualConcealment(true, NewGameState);
 
 	// DANGER, WILL ROBINSON
-	// i know what i'm doing a little more since I did this the first time, refactor is tracked in 
+	// i know what i'm doing a little more now, the refactor to eliminate the hot init for the ability is tracked in 
 	// https://github.com/jammerware/xcom2architectclass/issues/24
 	SpireAbilitiesService.ConfigureSpireAbilities(SpireUnitGameState, SourceUnitGameState, NewGameState);
 

@@ -1,9 +1,7 @@
 class X2Effect_TargetingArray extends X2Effect_Persistent;
 
-// i have no idea why i can't get this from the ability template in VisualizeTargetingArray, but it's empty string there :/
 var string FlyoverText;
 var string RemovedFlyoverText;
-// the icon isn't available during effect removed, so i'm just tossing that on here as well :/
 var string FlyoverIcon;
 
 function GetToHitModifiers(XComGameState_Effect EffectState, XComGameState_Unit Attacker, XComGameState_Unit Target, XComGameState_Ability AbilityState, class<X2AbilityToHitCalc> ToHitType, bool bMelee, bool bFlanking, bool bIndirectFire, out array<ShotModifierInfo> ShotModifiers)
@@ -38,33 +36,39 @@ function RegisterForEvents(XComGameState_Effect EffectGameState)
 	EventMgr.RegisterForEvent(EffectObj, 'UnitDied', OnUnitMovedOrDied, ELD_OnStateSubmitted, , , , EffectObj);
 }
 
-simulated function VisualizeTargetingArray(XComGameState VisualizeGameState, out VisualizationActionMetadata ModifyTrack, const name EffectApplyResult)
+simulated function AddX2ActionsForVisualization(XComGameState VisualizeGameState, out VisualizationActionMetadata ActionMetadata, const name EffectApplyResult)
 {
 	local XComGameState_Unit TargetState;
 
-	TargetState = XComGameState_Unit(VisualizeGameState.GetGameStateForObjectID(ModifyTrack.StateObject_NewState.ObjectID));
+	// respect our elders
+	super.AddX2ActionsForVisualization(VisualizeGameState, ActionMetadata, EffectApplyResult);
+
+	TargetState = XComGameState_Unit(VisualizeGameState.GetGameStateForObjectID(ActionMetadata.StateObject_NewState.ObjectID));
 	if (TargetState == none)
 		return;
 
 	if (EffectApplyResult == 'AA_Success')
 	{
-		class'X2StatusEffects'.static.AddEffectSoundAndFlyOverToTrack(ModifyTrack, VisualizeGameState.GetContext(), self.FlyoverText, '', eColor_Good, self.FlyoverIcon);
-		class'X2StatusEffects'.static.UpdateUnitFlag(ModifyTrack, VisualizeGameState.GetContext());
+		class'X2StatusEffects'.static.AddEffectSoundAndFlyOverToTrack(ActionMetadata, VisualizeGameState.GetContext(), self.FlyoverText, '', eColor_Good, self.FlyoverIcon);
+		class'X2StatusEffects'.static.UpdateUnitFlag(ActionMetadata, VisualizeGameState.GetContext());
 	}
 }
 
-simulated function VisualizeTargetingArrayRemoved(XComGameState VisualizeGameState, out VisualizationActionMetadata ModifyTrack, const name EffectApplyResult)
+simulated function AddX2ActionsForVisualization_Removed(XComGameState VisualizeGameState, out VisualizationActionMetadata ActionMetadata, const name EffectApplyResult, XComGameState_Effect RemovedEffect)
 {
 	local XComGameState_Unit TargetState;
 
-	TargetState = XComGameState_Unit(VisualizeGameState.GetGameStateForObjectID(ModifyTrack.StateObject_NewState.ObjectID));
+	// respect our elders
+	super.AddX2ActionsForVisualization(VisualizeGameState, ActionMetadata, EffectApplyResult);
+
+	TargetState = XComGameState_Unit(VisualizeGameState.GetGameStateForObjectID(ActionMetadata.StateObject_NewState.ObjectID));
 	if (TargetState == none)
 		return;
 
 	if (EffectApplyResult == 'AA_Success')
 	{
-		class'X2StatusEffects'.static.AddEffectSoundAndFlyOverToTrack(ModifyTrack, VisualizeGameState.GetContext(), self.RemovedFlyoverText, '', eColor_Bad, FlyoverIcon);
-		class'X2StatusEffects'.static.UpdateUnitFlag(ModifyTrack, VisualizeGameState.GetContext());
+		class'X2StatusEffects'.static.AddEffectSoundAndFlyOverToTrack(ActionMetadata, VisualizeGameState.GetContext(), self.RemovedFlyoverText, '', eColor_Bad, FlyoverIcon);
+		class'X2StatusEffects'.static.UpdateUnitFlag(ActionMetadata, VisualizeGameState.GetContext());
 	}
 }
 
@@ -96,6 +100,4 @@ defaultproperties
 {
 	DuplicateResponse=eDupe_Ignore
     EffectName=Jammerware_JSRC_Effect_TargetingArray
-	VisualizationFn=VisualizeTargetingArray
-	EffectRemovedVisualizationFn=VisualizeTargetingArrayRemoved
 }
