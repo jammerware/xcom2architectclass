@@ -25,7 +25,7 @@ The goal of the Architect class is to encourage a spatially-driven play pattern 
 | **COLONEL** | **Soul of the Architect** - All effects that apply to your spires also apply to you. You gain all abilities your spires have. | **Transmat Network** - Your spires gain *Transmat Network Node*, a passive ability which grants any adjacent squadmate the ability to instantly relocate to any tile adjacent to a spire in the same network. |
 
 ### GTS Perk
-**Bolt from the Whoosh** - When an Architect misses a shot, the bullet is returned to the magazine if they're using a boltcaster.
+**Bolt from the Whoosh** - When an Architect misses a shot, the bullet has a 50% chance to be returned to the magazine. If the magazine is empty, this chance is increased to 100%.
 
 ## Acknowledgments
 - Consulting Designer: SBGC_Smallfry
