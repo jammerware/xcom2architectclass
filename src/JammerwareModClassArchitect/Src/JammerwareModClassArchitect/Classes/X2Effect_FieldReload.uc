@@ -64,6 +64,7 @@ private static function EventListenerReturn OnSpireSpawned(Object EventData, Obj
         FlyoverService = new class'Jammerware_JSRC_FlyoverService';
         FlyoverService.FlyoverText = AbilityTemplate.LocFlyoverText;
         FlyoverService.FlyoverIcon = AbilityTemplate.IconImage;
+        FlyoverService.TargetPlayAnimation = 'HL_Reload';
 
         XComGameStateContext_ChangeContainer(NewGameState.GetContext()).BuildVisualizationFn = FlyoverService.VisualizeFlyovers;
         `TACTICALRULES.SubmitGameState(NewGameState);
