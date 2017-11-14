@@ -26,5 +26,5 @@ event name CallAbilityMeetsCondition(XComGameState_Ability kAbility, XComGameSta
 DefaultProperties
 {
     CanReload=true
-    InventorySlot = eInvSlot_PrimaryWeapon
+    InventorySlot=eInvSlot_PrimaryWeapon
 }

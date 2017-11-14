@@ -76,7 +76,7 @@ public static function X2DataTemplate CreateSpireTargetingArrayTriggered()
 	Template.AbilityTriggers.AddItem(Trigger);
 
 	Trigger = new class'X2AbilityTrigger_EventListener';
-	Trigger.ListenerData.EventID = class'X2Effect_SpawnSpire'.default.NAME_SPIRE_SPAWN_TRIGGER;
+	Trigger.ListenerData.EventID = class'X2Effect_SpawnSpire'.default.NAME_SPAWN_SPIRE_TRIGGER;
 	Trigger.ListenerData.Filter = eFilter_None;
 	Trigger.ListenerData.Deferral = ELD_OnStateSubmitted;
 	Trigger.ListenerData.EventFn = UnitSpawnedTargetingArrayListener;
@@ -104,50 +104,15 @@ public static function X2DataTemplate CreateSpireTargetingArrayTriggered()
 
 private static function EventListenerReturn UnitSpawnedTargetingArrayListener(Object EventData, Object EventSource, XComGameState GameState, Name EventID, Object CallbackData)
 {
-	local XComGameState_Unit SpireState;
-	local StateObjectReference SpireRef;
 	local XComGameState_Ability AbilityState;
 
-	local GameRulesCache_Unit UnitCache;
-	local int i, j;
-	local X2TacticalGameRuleset TacticalRules;
-	local AvailableTarget AvailTarget;
-
-	TacticalRules = `TACTICALRULES;
 	AbilityState = XComGameState_Ability(CallbackData);
-	SpireState = XComGameState_Unit(EventData);
-	SpireRef = SpireState.GetReference();
-
-	if (TacticalRules.GetGameRulesCache_Unit(SpireRef, UnitCache))
-	{
-		for (i = 0; i < UnitCache.AvailableActions.Length; ++i)
-		{
-			if (UnitCache.AvailableActions[i].AbilityObjectRef.ObjectID == AbilityState.ObjectID)
-			{
-				for (j = 0; j < UnitCache.AvailableActions[i].AvailableTargets.Length; ++j)
-				{
-					AvailTarget = UnitCache.AvailableActions[i].AvailableTargets[j];
-					if (AvailTarget.PrimaryTarget.ObjectID == SpireRef.ObjectID)
-					{
-						if (UnitCache.AvailableActions[i].AvailableCode == 'AA_Success')
-						{
-							if (AvailTarget.AdditionalTargets.Length > 0)
-							{
-								class'XComGameStateContext_Ability'.static.ActivateAbility(UnitCache.AvailableActions[i], j,,,,, GameState.HistoryIndex);
-							}
-						}
-						break;
-					}
-				}
-				break;
-			}
-		}
-	}
+	class'Jammerware_JSRC_AbilityStateService'.static.ActivateAbility(AbilityState);
 	
 	return ELR_NoInterrupt;
 }
 
-defaultproperties
+DefaultProperties
 {
 	ICON_TARGETING_ARRAY="img:///UILibrary_PerkIcons.UIPerk_Ambush"
 	NAME_TARGETING_ARRAY=Jammerware_JSRC_Ability_TargetingArray

@@ -46,7 +46,7 @@ SpireActiveFriendlyDesc="This spire is online and can use abilities this turn."
 ;-------------------------------------------------------------
 ; WORLD MESSAGES
 ;-------------------------------------------------------------
-; TODO: it feels ick to put this on XComGameState_SpireUnit
-[XComGameState_SpireUnit]
+; TODO: it feels ick to put this on JSRCGameState_SpireUnit
+[JSRCGameState_SpireUnit]
 LocSpireKilledTitle="OFFLINE"
 LocSpireKilledMessage="<XGParam:StrValue0/!UnitName/> was destroyed!"

@@ -3,8 +3,8 @@ class X2Ability_SpawnSpire extends X2Ability
 
 var name NAME_SPAWN_SPIRE;
 
-var config int TILERANGE_SPAWN_SPIRE;
 var config int COOLDOWN_SPAWN_SPIRE;
+var config int TILERANGE_SPAWN_SPIRE;
 
 static function X2DataTemplate CreateSpawnSpire()
 {
@@ -34,8 +34,6 @@ static function X2DataTemplate CreateSpawnSpire()
 	Cooldown.iNumTurns = default.COOLDOWN_SPAWN_SPIRE;
 	Template.AbilityCooldown = Cooldown;
 
-	Template.AbilityToHitCalc = default.DeadEye;
-
 	// conditions
 	Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
 	Template.AddShooterEffectExclusions();
@@ -43,7 +41,8 @@ static function X2DataTemplate CreateSpawnSpire()
 	// triggers
 	Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);
 
-	// targeting
+	// targeting and hitting
+	Template.AbilityToHitCalc = default.DeadEye;
 	CursorTarget = new class'X2AbilityTarget_Cursor';
 	CursorTarget.FixedAbilityRange = default.TILERANGE_SPAWN_SPIRE * class'XComWorldData'.const.WORLD_StepSize * class'XComWorldData'.const.WORLD_UNITS_TO_METERS_MULTIPLIER;
 	Template.AbilityTargetStyle = CursorTarget;
@@ -55,16 +54,17 @@ static function X2DataTemplate CreateSpawnSpire()
 	Template.AddShooterEffect(SpawnSpireEffect);
 
 	// game state and visualization
+	Template.bSkipFireAction = true;
+	Template.bShowActivation = true;
 	Template.BuildNewGameStateFn = SpawnSpire_BuildGameState;
-	Template.BuildVisualizationFn = SpawnSpire_BuildVisualization;
-	Template.ChosenActivationIncreasePerUse = class'X2AbilityTemplateManager'.default.NonAggressiveChosenActivationIncreasePerUse;
+	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
 		
 	return Template;
 }
 
 // i had to build my own gamestate building function, because TypicalAbility_BuildGameState was changing the position of 
 // the spire. no idea why. it's on my list.
-static simulated function XComGameState SpawnSpire_BuildGameState(XComGameStateContext Context)
+private static simulated function XComGameState SpawnSpire_BuildGameState(XComGameStateContext Context)
 {
 	local Jammerware_JSRC_SpireRegistrationService SpireRegistrationService;
 	local XComGameState NewGameState;
@@ -94,51 +94,6 @@ static simulated function XComGameState SpawnSpire_BuildGameState(XComGameStateC
 
 	// Return the game state we maded
 	return NewGameState;
-}
-
-simulated function SpawnSpire_BuildVisualization(XComGameState VisualizeGameState)
-{
-	local XComGameStateHistory History;
-	local XComGameStateContext_Ability Context;
-	local StateObjectReference InteractingUnitRef;
-	local Jammerware_JSRC_SpireRegistrationService SpireRegistrationService;
-	local VisualizationActionMetadata ShooterTrack;
-	local XComGameState_Unit ShooterUnit, SpawnedUnit;
-	local X2Effect_SpawnSpire SpawnSpireEffect;
-
-	History = `XCOMHISTORY;
-	Context = XComGameStateContext_Ability(VisualizeGameState.GetContext());
-	InteractingUnitRef = Context.InputContext.SourceObject;
-	SpireRegistrationService = new class'Jammerware_JSRC_SpireRegistrationService';
-
-	// find the shooter and the spire
-	ShooterUnit = XComGameState_Unit(VisualizeGameState.GetGameStateForObjectID(InteractingUnitRef.ObjectID));
-	SpawnedUnit = SpireRegistrationService.GetLastSpireFromRunner(ShooterUnit, VisualizeGameState);
-
-	// Configure the visualization track for the shooter
-	//****************************************************************************************
-	ShooterTrack.StateObject_OldState = History.GetGameStateForObjectID(InteractingUnitRef.ObjectID, eReturnType_Reference, VisualizeGameState.HistoryIndex - 1);
-	ShooterTrack.StateObject_NewState = ShooterUnit;
-	ShooterTrack.VisualizeActor = History.GetVisualizer(InteractingUnitRef.ObjectID);
-
-	// Only one target effect and it is X2Effect_SpawnSpire
-	SpawnSpireEffect = X2Effect_SpawnSpire(Context.ResultContext.ShooterEffectResults.Effects[0]);
-
-	if (SpawnSpireEffect == none)
-	{
-		`RedScreen("SpawnSpire_BuildVisualization: Missing X2Effect_SpawnSpire");
-		return;
-	}
-
-	// Build the tracks
-	class'X2Action_ExitCover'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
-	class'X2Action_AbilityPerkStart'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
-	SpawnSpireEffect.AddSpawnVisualizationsToTracks(Context, SpawnedUnit, ShooterTrack, none);
-	class'X2Action_AbilityPerkEnd'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
-	class'X2Action_EnterCover'.static.AddToVisualizationTree(ShooterTrack, Context, false, ShooterTrack.LastActionAdded);
-
-	// sync the visualizer to make sure the new spire shows up
-	SpawnedUnit.SyncVisualizer();
 }
 
 defaultproperties

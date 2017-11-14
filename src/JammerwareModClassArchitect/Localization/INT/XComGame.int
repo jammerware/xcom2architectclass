@@ -144,6 +144,11 @@ LocHelpText="When you create a spire, it restores some ammo to allies adjacent t
 LocFlyOverText="Field Reload Array"
 LocPromotionPopupText="\"No one cares whether it's called a mag or a clip when there's 600 pounds of Muton bearing down on them.\"\n\nField Reload Array guarantees utility of your spires on the turn they're placed. It's especially powerful for a squadmates holding weapons with small clips.\n\n<Bullet/> Passive\n<Bullet/> Works for any spire you create, including ones created with Headstone."
 
+[Jammerware_JSRC_Ability_SpireFieldReloadModule X2AbilityTemplate]
+LocFriendlyName="Field Reload Array"
+LocLongDescription="This spire restored ammo to adjacent allies when it spawned."
+LocFlyOverText="Field Reload Array"
+
 [Jammerware_JSRC_Ability_TransmatLink X2AbilityTemplate]
 LocFriendlyName="The Swapper"
 LocLongDescription="Exchange locations with one of your spires."

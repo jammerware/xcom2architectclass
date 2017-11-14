@@ -1,71 +1,38 @@
-class X2Effect_Deadbolt extends X2Effect_Persistent;
+class X2Effect_Deadbolt extends X2Effect;
 
-function RegisterForEvents(XComGameState_Effect EffectGameState)
+simulated protected function OnEffectAdded(const out EffectAppliedData ApplyEffectParameters, XComGameState_BaseObject kNewTargetState, XComGameState NewGameState, XComGameState_Effect NewEffectState)
 {
-    local X2EventManager EventMgr;
-	local XComGameState_Unit UnitState;
-	local Object EffectObj;
+    local XComGameState_Unit TargetState;
+    local XComGameState_Item PrimaryWeaponState;
+    local Jammerware_JSRC_ItemStateService ItemStateService;
 
-	EventMgr = `XEVENTMGR;
+    TargetState = XComGameState_Unit(kNewTargetState);
+    PrimaryWeaponState = TargetState.GetPrimaryWeapon();
 
-	UnitState = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(EffectGameState.ApplyEffectParameters.TargetStateObjectRef.ObjectID));
-	EffectObj = EffectGameState;
+    `LOG("JSRC: deadbolt added to" @TargetState.GetFullName());
 
-	EventMgr.RegisterForEvent
-    (
-        EffectObj, 
-        'AbilityActivated', 
-        class'X2Effect_Deadbolt'.static.ShotMissListener, 
-        ELD_OnStateSubmitted, 
-        , 
-        UnitState
-    );
+    ItemStateService = new class'Jammerware_JSRC_ItemStateService';
+    ItemStateService.LoadAmmo(PrimaryWeaponState, 1, NewGameState);
 }
 
-private static function EventListenerReturn ShotMissListener(Object EventData, Object EventSource, XComGameState GameState, Name EventID, Object CallbackData)
+simulated function AddX2ActionsForVisualization(XComGameState VisualizeGameState, out VisualizationActionMetadata ActionMetadata, const name EffectApplyResult)
 {
-	local XComGameStateContext_Ability AbilityContext;
-    local X2AbilityTemplateManager AbilityTemplateManager;
-	local X2AbilityTemplate AbilityTemplate, DeadboltTemplate;
-	local XComGameState NewGameState;
-	local XComGameState_Unit UnitState;
-    local XComGameState_Item PrimaryWeapon;
-    local Jammerware_JSRC_ItemStateService ItemStateService;
     local Jammerware_JSRC_FlyoverService FlyoverService;
-    local int Rand;
+    local XComGameState_Unit TargetState;
+    local X2AbilityTemplateManager AbilityTemplateManager;
+    local X2AbilityTemplate DeadboltTemplate;
+    local XComGameStateContext_Ability AbilityContext;
 
-	AbilityContext = XComGameStateContext_Ability(GameState.GetContext());
-    AbilityTemplateManager = class'X2AbilityTemplateManager'.static.GetAbilityTemplateManager();
-    Rand = class'Engine'.static.SyncRand(2, "X2Effect_Deadbolt.ShotMissListener");
+    if (EffectApplyResult == 'AA_Success')
+    {
+        AbilityContext = XComGameStateContext_Ability(VisualizeGameState.GetContext());
+        AbilityTemplateManager = class'X2AbilityTemplateManager'.static.GetAbilityTemplateManager();
+        DeadboltTemplate = AbilityTemplateManager.FindAbilityTemplate(class'X2Ability_Deadbolt'.default.NAME_DEADBOLT);
+        FlyoverService = new class'Jammerware_JSRC_FlyoverService';
+        TargetState = XComGameState_Unit(VisualizeGameState.GetGameStateForObjectID(AbilityContext.InputContext.PrimaryTarget.ObjectID));
 
-	if (AbilityContext != none && AbilityContext.InterruptionStatus != eInterruptionStatus_Interrupt && AbilityContext.IsResultContextMiss())
-	{
-		AbilityTemplate = AbilityTemplateManager.FindAbilityTemplate(AbilityContext.InputContext.AbilityTemplateName);
-		if (AbilityTemplate.Hostility == eHostility_Offensive)
-		{
-			UnitState = XComGameState_Unit(EventSource);
-			if (UnitState != none)
-			{
-				NewGameState = class'XComGameStateContext_ChangeContainer'.static.CreateChangeState("Deadbolt Reload");
-				UnitState = XComGameState_Unit(NewGameState.ModifyStateObject(UnitState.Class, UnitState.ObjectID));
-                PrimaryWeapon = UnitState.GetPrimaryWeapon();
-
-                if (PrimaryWeapon.Ammo == 0 || Rand == 1)
-                {
-                    ItemStateService = new class'Jammerware_JSRC_ItemStateService';
-                    ItemStateService.LoadAmmo(PrimaryWeapon, 1, NewGameState);
-
-                    DeadboltTemplate = AbilityTemplateManager.FindAbilityTemplate(class'X2Ability_RunnerAbilitySet'.default.NAME_DEADBOLT);
-                    FlyoverService = new class'Jammerware_JSRC_FlyoverService';
-                    FlyoverService.FlyoverText = DeadboltTemplate.LocFlyoverText;
-                    FlyoverService.FlyoverIcon = DeadboltTemplate.IconImage;
-
-                    //XComGameStateContext_ChangeContainer(NewGameState.GetContext()).BuildVisualizationFn = FlyoverService.VisualizeFlyovers;
-                    `TACTICALRULES.SubmitGameState(NewGameState);
-                }
-			}
-		}
-	}
-
-	return ELR_NoInterrupt;
+        FlyoverService.FlyoverText = DeadboltTemplate.LocFlyoverText;
+        FlyoverService.FlyoverIcon = DeadboltTemplate.IconImage;
+        FlyoverService.VisualizeFlyover(VisualizeGameState, TargetState, ActionMetadata);
+    }
 }

@@ -33,11 +33,9 @@ public static function X2DataTemplate CreateSpireFieldReloadArray()
 	Template.AbilityToHitCalc = default.DeadEye;
 
 	// triggering
-	Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);
-	
-    SpireSpawnTrigger = new class'X2AbilityTrigger_EventListener';
+	SpireSpawnTrigger = new class'X2AbilityTrigger_EventListener';
 	SpireSpawnTrigger.ListenerData.Deferral = ELD_OnStateSubmitted;
-	SpireSpawnTrigger.ListenerData.EventID = class'X2Effect_SpawnSpire'.default.NAME_SPIRE_SPAWN_TRIGGER;
+	SpireSpawnTrigger.ListenerData.EventID = class'X2Effect_SpawnSpire'.default.NAME_SPAWN_SPIRE_TRIGGER;
 	SpireSpawnTrigger.ListenerData.EventFn = class'XComGameState_Ability'.static.AbilityTriggerEventListener_SelfWithAdditionalTargets;
 	Template.AbilityTriggers.AddItem(SpireSpawnTrigger);
 

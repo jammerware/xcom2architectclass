@@ -2,9 +2,9 @@ class X2CharacterTemplate_Spire extends X2CharacterTemplate;
 
 function XComGameState_Unit CreateInstanceFromTemplate(XComGameState NewGameState)
 {
-	local XComGameState_Unit Unit;
+	local JsrcGameState_SpireUnit Unit;
 
-	Unit = XComGameState_SpireUnit(NewGameState.CreateNewStateObject(class'XComGameState_SpireUnit', self));
+	Unit = JsrcGameState_SpireUnit(NewGameState.CreateNewStateObject(class'JsrcGameState_SpireUnit', self));
 
 	return Unit;
 }

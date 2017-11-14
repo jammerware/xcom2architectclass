@@ -1,6 +1,6 @@
 class X2Effect_SpawnSpire extends X2Effect_SpawnUnit;
 
-var name NAME_SPIRE_SPAWN_TRIGGER;
+var name NAME_SPAWN_SPIRE_TRIGGER;
 
 function vector GetSpawnLocation(const out EffectAppliedData ApplyEffectParameters, XComGameState NewGameState)
 {
@@ -50,15 +50,15 @@ function ETeam GetTeam(const out EffectAppliedData ApplyEffectParameters)
 
 function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, StateObjectReference NewUnitRef, XComGameState NewGameState, XComGameState_Effect NewEffectState)
 {
-	local XComGameState_Unit SourceUnitGameState, SpireUnitGameState, TargetUnitGameState;
+	local XComGameState_Unit ShooterState, SpireState, TargetUnitGameState;
 	local Jammerware_JSRC_SpireAbilitiesService SpireAbilitiesService;
 	local Jammerware_JSRC_SpireRegistrationService SpireRegistrationService;
 
 	SpireAbilitiesService = new class'Jammerware_JSRC_SpireAbilitiesService';
 	SpireRegistrationService = new class'Jammerware_JSRC_SpireRegistrationService';
 
-	SourceUnitGameState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(ApplyEffectParameters.SourceStateObjectRef.ObjectID));
-	SpireUnitGameState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(NewUnitRef.ObjectID));
+	ShooterState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(ApplyEffectParameters.SourceStateObjectRef.ObjectID));
+	SpireState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(NewUnitRef.ObjectID));
 	TargetUnitGameState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(ApplyEffectParameters.TargetStateObjectRef.ObjectID));
 
 	// if spawnspire was cast on a unit (like it is when Headstone is used), remove that unit from play
@@ -70,24 +70,44 @@ function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, Stat
 	SpireRegistrationService.RegisterSpireToRunner(ApplyEffectParameters, NewUnitRef, NewGameState, NewEffectState);
 
 	// prevent spires from breaking squad concealment when they're summoned (unless they're on a naughty space)
-	if (SourceUnitGameState.IsConcealed())
-		SpireUnitGameState.SetIndividualConcealment(true, NewGameState);
+	if (ShooterState.IsConcealed())
+		SpireState.SetIndividualConcealment(true, NewGameState);
 
 	// DANGER, WILL ROBINSON
 	// i know what i'm doing a little more now, the refactor to eliminate the hot init for the ability is tracked in 
 	// https://github.com/jammerware/xcom2architectclass/issues/24
-	SpireAbilitiesService.ConfigureSpireAbilities(SpireUnitGameState, SourceUnitGameState, NewGameState);
+	SpireAbilitiesService.ConfigureSpireAbilities(SpireState, ShooterState, NewGameState);
 
 	// NO ACTION FOR YOU
-	SpireUnitGameState.ActionPoints.Length = 0;
+	SpireState.ActionPoints.Length = 0;
 
 	// notify people who care about spires spawning
-	`XEVENTMGR.TriggerEvent(default.NAME_SPIRE_SPAWN_TRIGGER, SpireUnitGameState, SourceUnitGameState, NewGameState);
+	`XEVENTMGR.TriggerEvent(default.NAME_SPAWN_SPIRE_TRIGGER, SpireState, ShooterState, NewGameState);
 }
 
-defaultproperties
+simulated function AddX2ActionsForVisualization(XComGameState VisualizeGameState, out VisualizationActionMetadata ActionMetadata, const name EffectApplyResult)
+{
+	local XComGameStateContext_Ability AbilityContext;
+	local XComGameState_Unit ShooterState, SpireState;
+	local Jammerware_JSRC_SpireRegistrationService SpireRegistrationService;
+
+	if (EffectApplyResult == 'AA_Success')
+	{
+		SpireRegistrationService = new class'Jammerware_JSRC_SpireRegistrationService';
+		AbilityContext = XComGameStateContext_Ability(VisualizeGameState.GetContext());
+		ShooterState = XComGameState_Unit(VisualizeGameState.GetGameStateForObjectID(AbilityContext.InputContext.SourceObject.ObjectID));
+		SpireState = SpireRegistrationService.GetLastSpireFromRunner(ShooterState, VisualizeGameState);
+
+		AddSpawnVisualizationsToTracks(AbilityContext, SpireState, ActionMetadata, none);
+
+		// sync the visualizer to make sure the new spire shows up
+		SpireState.SyncVisualizer();
+	}
+}
+
+DefaultProperties
 {
 	bInfiniteDuration=true
 	EffectName=Jammerware_JSRC_Effect_SpawnSpire
-	NAME_SPIRE_SPAWN_TRIGGER=Jammerware_JSRC_EventTrigger_SpireSpawn
+	NAME_SPAWN_SPIRE_TRIGGER=Jammerware_JSRC_EventTrigger_SpireSpawn
 }

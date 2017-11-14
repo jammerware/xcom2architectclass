@@ -60,3 +60,48 @@ exec function JSRC_ForceLoadPerkOnToUnit(name AbilityName) {
     class'Jammerware_JSRC_DebugStateMachines'.static.TryForceCachePerkContent(AbilityName);
     class'Jammerware_JSRC_DebugStateMachines'.static.TryForceAppendAbilityPerks(AbilityName);
 }
+
+exec function JSRC_GrantAbility(name AbilityName)
+{
+	local XComGameStateHistory History;
+	local XComGameState NewGameState;
+	local XComGameState_Unit Unit;
+    local StateObjectReference ActiveUnitStateRef;
+	local X2TacticalGameRuleset TacticalRules;
+	local X2AbilityTemplate AbilityTemplate;
+	local X2AbilityTemplateManager AbilityTemplateManager;
+	local bool UnitAlreadyHasAbility;
+
+	AbilityTemplateManager = class'X2AbilityTemplateManager'.static.GetAbilityTemplateManager();
+	AbilityTemplate = AbilityTemplateManager.FindAbilityTemplate(AbilityName);
+    ActiveUnitStateRef = XComTacticalController(class'WorldInfo'.static.GetWorldInfo().GetALocalPlayerController()).GetActiveUnitStateRef();
+
+	if (AbilityTemplate != None)
+	{
+		// give the ability to the current unit
+		History = `XCOMHISTORY;
+		TacticalRules = `TACTICALRULES;
+
+		NewGameState = class'XComGameStateContext_ChangeContainer'.static.CreateChangeState("CHEAT: Grant Ability '" $ AbilityName $ "'");
+		Unit = XComGameState_Unit(NewGameState.ModifyStateObject(class'XComGameState_Unit', ActiveUnitStateRef.ObjectID));
+
+		// see if the unit already has this ability
+		UnitAlreadyHasAbility = (Unit.FindAbility(AbilityName).ObjectID > 0);
+
+		if (!UnitAlreadyHasAbility)
+		{
+			TacticalRules.InitAbilityForUnit(AbilityTemplate, Unit, NewGameState);
+			TacticalRules.SubmitGameState(NewGameState);
+			`log("Granted ability.");
+		}
+		else
+		{
+			History.CleanupPendingGameState(NewGameState);
+			`log("Unit already has that ability.");
+		}		
+	}
+    else
+    {
+        `REDSCREEN("JSRC: couldn't grant requested ability" @ AbilityName);
+    }
+}

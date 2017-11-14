@@ -6,14 +6,12 @@ simulated protected function OnEffectAdded(const out EffectAppliedData ApplyEffe
     local XComGameState_Unit ShooterState, TargetState;
     local XComGameState_Item WeaponState;
     local X2WeaponTemplate_SpireGun WeaponTemplate;
-    
+
     ItemsService = new class'Jammerware_JSRC_ItemStateService';
 	ShooterState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(ApplyEffectParameters.SourceStateObjectRef.ObjectID));
     WeaponState = ShooterState.GetSecondaryWeapon();
     WeaponTemplate = X2WeaponTemplate_SpireGun(WeaponState.GetMyTemplate());
     TargetState = XComGameState_Unit(kNewTargetState);
-
-    `LOG("JSRC: field reload applied to" @TargetState.GetFullName());
 
     // TODO: maybe preserve "restore all ammo" via config too
     NewGameState.ModifyStateObject(class'XComGameState_Unit', TargetState.ObjectID);
@@ -28,30 +26,26 @@ simulated function AddX2ActionsForVisualization(XComGameState VisualizeGameState
     local XComGameState_Ability AbilityState;
     local X2AbilityTemplate AbilityTemplate;
 
-    `LOG("JSRC: adding actions for field reload");
-
 	// respect our elders
 	super.AddX2ActionsForVisualization(VisualizeGameState, ActionMetadata, EffectApplyResult);
 
     if (EffectApplyResult == 'AA_Success')
     {
-        `LOG("JSRC: effect success");
         AbilityContext = XComGameStateContext_Ability(VisualizeGameState.GetContext());
         TargetState = XComGameState_Unit(VisualizeGameState.GetGameStateForObjectID(ActionMetadata.StateObject_NewState.ObjectID));
 
         if (TargetState == none)
             return;
 
-        `LOG("JSRC: ability context" @ AbilityContext.name);
         AbilityState = XComGameState_Ability(VisualizeGameState.GetGameStateForObjectID(AbilityContext.InputContext.AbilityRef.ObjectID));
         AbilityTemplate = AbilityState.GetMyTemplate();
+
+        `LOG("JSRC: the ability template dataname is" @AbilityTemplate.DataName);
 
         FlyoverService = new class'Jammerware_JSRC_FlyoverService';
         FlyoverService.FlyoverText = AbilityTemplate.LocFlyoverText;
         FlyoverService.FlyoverIcon = AbilityTemplate.IconImage;
         FlyoverService.TargetPlayAnimation = 'HL_Reload';
-        FlyoverService.VisualizeFlyovers(VisualizeGameState, ActionMetadata);
-
-        `LOG("JSRC: done");
+        FlyoverService.VisualizeFlyover(VisualizeGameState, TargetState, ActionMetadata);
     }
 }

@@ -3,7 +3,6 @@ class X2Ability_RunnerAbilitySet extends X2Ability
 
 // ability names
 var name NAME_ACTIVATE_SPIRE;
-var name NAME_DEADBOLT;
 var name NAME_FIELD_RELOAD_MODULE;
 var name NAME_HEADSTONE;
 var name NAME_KINETIC_RIGGING;
@@ -56,7 +55,8 @@ static function array <X2DataTemplate> CreateTemplates()
 	Templates.AddItem(class'X2Ability_TransmatNetwork'.static.CreateRunnerTransmatNetwork());
 
 	// GTS!
-	Templates.AddItem(CreateDeadbolt());
+	Templates.AddItem(class'X2Ability_Deadbolt'.static.CreateDeadbolt());
+	Templates.AddItem(class'X2Ability_Deadbolt'.static.CreateDeadboltTrigger());
 
 	return Templates;
 }
@@ -71,6 +71,7 @@ private static function X2AbilityTemplate CreateActivateSpire()
 	// general properties
 	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_ACTIVATE_SPIRE);
 	Template.Hostility = eHostility_Neutral;
+	Template.bUniqueSource = true; // all rigging abilities also grant this one
 
 	// hud behavior
 	Template.IconImage = "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_volt";
@@ -351,7 +352,7 @@ private static function X2AbilityTemplate CreateQuicksilver()
 	// the architect has to be able to activate the spire to use quicksilver
 	Template.AdditionalAbilities.AddItem(class'X2Ability_RunnerAbilitySet'.default.NAME_ACTIVATE_SPIRE); 
 
-	return PurePassive(default.NAME_QUICKSILVER, "img:///UILibrary_PerkIcons.UIPerk_runandgun");
+	return Template;
 }
 
 private static function X2AbilityTemplate CreateUnity()
@@ -404,40 +405,9 @@ private static function X2AbilityTemplate CreateSoulOfTheArchitect()
 	return Template;
 }
 
-private static function X2AbilityTemplate CreateDeadbolt()
-{
-	local X2AbilityTemplate Template;
-	local X2Effect_Deadbolt DeadboltEffect;
-
-	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_DEADBOLT);
-
-	// HUD behavior
-	Template.IconImage = "img:///UILibrary_PerkIcons.UIPerk_equip";
-	Template.AbilitySourceName = 'eAbilitySource_Perk';
-	Template.eAbilityIconBehaviorHUD = EAbilityIconBehavior_NeverShow;
-	Template.Hostility = eHostility_Neutral;
-
-	// targeting and ability to hit
-	Template.AbilityTargetStyle = default.SelfTarget;
-	Template.AbilityToHitCalc = default.DeadEye;
-
-	// triggering
-	Template.AbilityTriggers.AddItem(default.UnitPostBeginPlayTrigger);
-
-	DeadboltEffect = new class'X2Effect_Deadbolt';
-	DeadboltEffect.BuildPersistentEffect(1, true);
-	DeadboltEffect.SetDisplayInfo(ePerkBuff_Passive, Template.LocFriendlyName, Template.GetMyLongDescription(), Template.IconImage,,,Template.AbilitySourceName);
-	Template.AddTargetEffect(DeadboltEffect);
-
-	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
-
-	return Template;
-}
-
 DefaultProperties 
 {
 	NAME_ACTIVATE_SPIRE=Jammerware_JSRC_Ability_ActivateSpire
-	NAME_DEADBOLT=Jammerware_JSRC_Ability_Deadbolt
 	NAME_FIELD_RELOAD_MODULE=Jammerware_JSRC_Ability_FieldReloadModule
 	NAME_HEADSTONE=Jammerware_JSRC_Ability_Headstone
 	NAME_KINETIC_RIGGING=Jammerware_JSRC_Ability_KineticRigging

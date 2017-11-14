@@ -1,4 +1,4 @@
-class XComGameState_SpireUnit extends XComGameState_Unit;
+class JsrcGameState_SpireUnit extends XComGameState_Unit;
 
 var localized string LocSpireKilledTitle;
 var localized string LocSpireKilledMessage;
