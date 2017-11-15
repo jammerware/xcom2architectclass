@@ -260,15 +260,11 @@ static function X2AbilityTemplate CreateSpireQuicksilver()
 	Template.AddTargetEffect(ActionPointEffect);
 
 	// visualization and gamestate
+	Template.AbilityConfirmSound = "TacticalUI_ActivateAbility";
 	Template.bShowActivation = true;
 	Template.bSkipFireAction = true;
 	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
 	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
-
-	Template.SuperConcealmentLoss = class'X2AbilityTemplateManager'.default.SuperConcealmentStandardShotLoss;
-	Template.ChosenActivationIncreasePerUse = class'X2AbilityTemplateManager'.default.NonAggressiveChosenActivationIncreasePerUse;
-	Template.LostSpawnIncreasePerUse = class'X2AbilityTemplateManager'.default.StandardShotLostSpawnIncreasePerUse;
-	Template.AbilityConfirmSound = "TacticalUI_ActivateAbility";
 
 	return Template;
 }

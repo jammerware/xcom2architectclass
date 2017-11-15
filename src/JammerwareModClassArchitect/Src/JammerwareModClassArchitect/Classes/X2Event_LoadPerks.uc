@@ -24,15 +24,19 @@ private static function X2DataTemplate Create_OnUnitBeginPlay_LoadPerks()
 {
     local X2EventListenerTemplate_LoadPerks Template;
 
-	`CREATE_X2TEMPLATE(class'X2EventListenerTemplate_LoadPerks', Template, 'Jammerware_JSRC_EventListener_LoadPerksOnTacticalBegin');
+	`CREATE_X2TEMPLATE(class'X2EventListenerTemplate_LoadPerks', Template, default.NAME_BUILD_PERK_PACKAGE_CACHE);
 
     // all my perks are currently triggered by xcom units
     Template.ListenForTeam = eTeam_XCom;
 
-    // perk registrations
+    // perk registrations (architect)
     Template.AddPerkToRegister(class'X2Ability_RunnerAbilitySet'.default.NAME_ACTIVATE_SPIRE, 'Jammerware_JSRC_Class_Architect');
     Template.AddPerkToRegister(class'X2Ability_RunnerAbilitySet'.default.NAME_SOUL_OF_THE_ARCHITECT, 'Jammerware_JSRC_Class_Architect');
+    Template.AddPerkToRegister(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_QUICKSILVER, 'Jammerware_JSRC_Class_Architect');
+
+    // perk registrations (spire)
     Template.AddPerkToRegister(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_SHELTER, , class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE);
+    Template.AddPerkToRegister(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_QUICKSILVER, ,class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE);
 
     // fire it up on unit begin play
 	Template.AddEvent('OnUnitBeginPlay', OnUnitBeginPlay);
@@ -46,10 +50,12 @@ private static function EventListenerReturn OnUnitBeginPlay(Object EventData, Ob
     local X2EventListenerTemplate_LoadPerks LoadPerksTemplate;
 
     UnitState = XComGameState_Unit(EventSource);
-    LoadPerksTemplate = GetLoadPerksTemplate('Jammerware_JSRC_EventListener_LoadPerksOnTacticalBegin');
+    LoadPerksTemplate = GetLoadPerksTemplate(default.NAME_BUILD_PERK_PACKAGE_CACHE);
 
     if (LoadPerksTemplate.ListenForTeam == eTeam_All || UnitState.GetTeam() == LoadPerksTemplate.ListenForTeam)
         RegisterPerksFor(UnitState, LoadPerksTemplate.PerksToRegister);
+
+    `LOG("JSRC: perks fired up for" @ UnitState.GetFullName());
     
     return ELR_NoInterrupt;
 }
