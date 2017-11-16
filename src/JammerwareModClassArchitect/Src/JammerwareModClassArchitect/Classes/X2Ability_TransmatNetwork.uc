@@ -83,9 +83,10 @@ static function X2AbilityTemplate CreateTransmat()
 	Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);
 	
 	// game state and visualization
+	Template.bShowActivation = true;
+	Template.bSkipFireAction = true;
 	Template.BuildNewGameStateFn = Transmat_BuildGameState;
 	Template.BuildVisualizationFn = Transmat_BuildVisualization;
-	Template.bShowActivation = true;
 
 	return Template;
 }
@@ -135,33 +136,31 @@ static simulated function XComGameState Transmat_BuildGameState(XComGameStateCon
 
 simulated function Transmat_BuildVisualization(XComGameState VisualizeGameState)
 {
-	local XComGameStateHistory History;
-	local XComGameStateContext_Ability Context;
-	local StateObjectReference InteractingUnitRef;
-	local VisualizationActionMetadata EmptyTrack, SourceTrack;
-    local XComGameState_Unit SourceUnit;
+	local XComGameStateContext_Ability AbilityContext;	
+	local XComGameState_Unit SourceUnit;
+	local VisualizationActionMetadata EmptyTrack, ActionMetadata;
+	local X2Action_TimedWait WaitAction;
 
-	History = `XCOMHISTORY;
-	Context = XComGameStateContext_Ability(VisualizeGameState.GetContext());
-	InteractingUnitRef = Context.InputContext.SourceObject;
+	AbilityContext = XComGameStateContext_Ability(VisualizeGameState.GetContext());
+	SourceUnit = XComGameState_Unit(VisualizeGameState.GetGameStateForObjectID(AbilityContext.InputContext.SourceObject.ObjectID));
 
-    SourceUnit = XComGameState_Unit(VisualizeGameState.GetGameStateForObjectID(Context.InputContext.SourceObject.ObjectID));
+	// firaxis is smart and i am dumb
+	TypicalAbility_BuildVisualization(VisualizeGameState);
 
-	//****************************************************************************************
-	// Configure the visualization track for the source
-	//****************************************************************************************
-	SourceTrack = EmptyTrack;
-	SourceTrack.StateObject_OldState = History.GetGameStateForObjectID(InteractingUnitRef.ObjectID, eReturnType_Reference, VisualizeGameState.HistoryIndex - 1);
-	SourceTrack.StateObject_NewState = VisualizeGameState.GetGameStateForObjectID(InteractingUnitRef.ObjectID);
-	SourceTrack.VisualizeActor = History.GetVisualizer(InteractingUnitRef.ObjectID);
+	// build the shooter track
+	ActionMetadata = EmptyTrack;
+	ActionMetadata.StateObjectRef = AbilityContext.InputContext.SourceObject;
+	ActionMetadata.StateObject_OldState = SourceUnit;
+	ActionMetadata.StateObject_NewState = SourceUnit;
 
-    // Build the track
-	class'X2Action_AbilityPerkStart'.static.AddToVisualizationTree(SourceTrack, Context, false, SourceTrack.LastActionAdded);
-    class'X2Action_ShowSpawnedUnit'.static.AddToVisualizationTree(SourceTrack, Context);
-	class'X2Action_AbilityPerkEnd'.static.AddToVisualizationTree(SourceTrack, Context, false, SourceTrack.LastActionAdded);
-
-	// sync the visualizer to ensure the target appears in the correct location on the board
-	SourceUnit.SyncVisualizer();
+	// this is a hot track
+	class'X2Action_AbilityPerkStart'.static.AddToVisualizationTree(ActionMetadata, AbilityContext);
+	class'X2Action_AbilityPerkEnd'.static.AddToVisualizationTree(ActionMetadata, AbilityContext);
+	WaitAction = X2Action_TimedWait(class'X2Action_TimedWait'.static.AddToVisualizationTree(ActionMetadata, AbilityContext));
+	WaitAction.DelayTimeSec = 1.5;
+	class'X2Action_SyncVisualizer'.static.AddToVisualizationTree(ActionMetadata, AbilityContext);
+	WaitAction = X2Action_TimedWait(class'X2Action_TimedWait'.static.AddToVisualizationTree(ActionMetadata, AbilityContext));
+	WaitAction.DelayTimeSec = 1.5;
 }
 
 defaultproperties

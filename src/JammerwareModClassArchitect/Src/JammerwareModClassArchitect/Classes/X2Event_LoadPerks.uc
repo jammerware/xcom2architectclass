@@ -9,6 +9,7 @@ struct PerkRegistration
 	var name Ability;
 	var name CharacterGroupName;
     var name SoldierClassName;
+    var eTeam Team;
 };
 
 public static function array<X2DataTemplate> CreateTemplates()
@@ -26,7 +27,7 @@ private static function X2DataTemplate Create_OnUnitBeginPlay_LoadPerks()
 
 	`CREATE_X2TEMPLATE(class'X2EventListenerTemplate_LoadPerks', Template, default.NAME_BUILD_PERK_PACKAGE_CACHE);
 
-    // all my perks are currently triggered by xcom units
+    // all my perks are currently triggered by xcom units - the template doesn't even try to evaluate perks if the unit isn't xcom as an optimization
     Template.ListenForTeam = eTeam_XCom;
 
     // perk registrations (architect)
@@ -37,6 +38,9 @@ private static function X2DataTemplate Create_OnUnitBeginPlay_LoadPerks()
     // perk registrations (spire)
     Template.AddPerkToRegister(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_SHELTER, , class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE);
     Template.AddPerkToRegister(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_QUICKSILVER, ,class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE);
+
+    // perk registrations (every unit ever)
+    Template.AddPerkToRegister(class'X2Ability_TransmatNetwork'.default.NAME_TRANSMAT,,, eTeam_XCom);
 
     // fire it up on unit begin play
 	Template.AddEvent('OnUnitBeginPlay', OnUnitBeginPlay);
@@ -52,46 +56,55 @@ private static function EventListenerReturn OnUnitBeginPlay(Object EventData, Ob
     UnitState = XComGameState_Unit(EventSource);
     LoadPerksTemplate = GetLoadPerksTemplate(default.NAME_BUILD_PERK_PACKAGE_CACHE);
 
-    if (LoadPerksTemplate.ListenForTeam == eTeam_All || UnitState.GetTeam() == LoadPerksTemplate.ListenForTeam)
+    if (LoadPerksTemplate.ListenForTeam == eTeam_None || UnitState.GetTeam() == LoadPerksTemplate.ListenForTeam)
         RegisterPerksFor(UnitState, LoadPerksTemplate.PerksToRegister);
-
-    `LOG("JSRC: perks fired up for" @ UnitState.GetFullName());
     
     return ELR_NoInterrupt;
 }
 
 private static function RegisterPerksFor(XComGameState_Unit UnitState, array<PerkRegistration> PerksToRegister)
 {
-    local XComContentManager Content;
-    local XComUnitPawnNativeBase UnitPawnNativeBase;
     local PerkRegistration PerkRegistrationIterator;
     local X2SoldierClassTemplate ClassTemplate;
     local X2CharacterTemplate CharacterTemplate;
-
-    Content = `CONTENT;
+    
     ClassTemplate = UnitState.GetSoldierClassTemplate();
     CharacterTemplate = UnitState.GetMyTemplate();
-    UnitPawnNativeBase = XGUnit(UnitState.GetVisualizer()).GetPawn();
 
+    `LOG("JSRC: perks firing up for" @ UnitState.GetFullName());
+    foreach PerksToRegister(PerkRegistrationIterator) 
+    {
+        if (PerkRegistrationIterator.CharacterGroupName != 'None' && CharacterTemplate.CharacterGroupName == PerkRegistrationIterator.CharacterGroupName)
+        {
+            RegisterPerk(UnitState, PerkRegistrationIterator.Ability);
+        }
+        else if (PerkRegistrationIterator.SoldierClassName != 'None' && ClassTemplate.DataName == PerkRegistrationIterator.SoldierClassName)
+        {
+            RegisterPerk(UnitState, PerkRegistrationIterator.Ability);
+        }
+        else if (PerkRegistrationIterator.Team != eTeam_None && UnitState.GetTeam() == PerkRegistrationIterator.Team)
+        {
+            RegisterPerk(UnitState, PerkRegistrationIterator.Ability);
+        }
+    }
+}
+
+private static function RegisterPerk(XComGameState_Unit Unit, name Ability)
+{
+    local XComContentManager Content;
+    local XComUnitPawnNativeBase UnitPawnNativeBase;
+
+    Content = `CONTENT;
+    UnitPawnNativeBase = XGUnit(Unit.GetVisualizer()).GetPawn();
     if(UnitPawnNativeBase == none) 
     {
         `LOG("Warning, was unable to find a UnitPawnNativeBase for X2Effect_LoadPerkContent!");
         return;
     }
 
-    foreach PerksToRegister(PerkRegistrationIterator) 
-    {
-        if (PerkRegistrationIterator.CharacterGroupName != 'None' && CharacterTemplate.CharacterGroupName == PerkRegistrationIterator.CharacterGroupName)
-        {
-            Content.CachePerkContent(PerkRegistrationIterator.Ability);
-            Content.AppendAbilityPerks(PerkRegistrationIterator.Ability, UnitPawnNativeBase);
-        }
-        else if (PerkRegistrationIterator.SoldierClassName != 'None' && ClassTemplate.DataName == PerkRegistrationIterator.SoldierClassName)
-        {
-            Content.CachePerkContent(PerkRegistrationIterator.Ability);
-            Content.AppendAbilityPerks(PerkRegistrationIterator.Ability, UnitPawnNativeBase);
-        }
-    }
+    Content.CachePerkContent(Ability);
+    Content.AppendAbilityPerks(Ability, UnitPawnNativeBase);
+    `LOG("JSRC: registered perk" @ Ability @ "to" @ Unit.GetFullName());
 }
 
 private static function X2EventListenerTemplate_LoadPerks GetLoadPerksTemplate(name TemplateName)

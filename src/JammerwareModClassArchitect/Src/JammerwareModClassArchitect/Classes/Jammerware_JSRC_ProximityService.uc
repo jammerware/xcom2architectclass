@@ -115,7 +115,7 @@ function bool IsTileAdjacentToAlly(TTile Tile, ETeam Team, optional name AllyCha
 
 public function array<XComGameState_Unit> GetAdjacentUnitsFromTile(
     TTile Tile, 
-    optional ETeam RequiredTeam = eTeam_All, 
+    optional ETeam RequiredTeam = eTeam_None, 
     optional name RequiredCharacterGroup,
     optional name RequiredEffect)
 {
@@ -146,7 +146,7 @@ public function array<XComGameState_Unit> GetAdjacentUnits(
     return GetAdjacentUnitsFromTile
     (
         Unit.TileLocation,
-        (RequireAllies ? Unit.GetTeam() : eTeam_All),
+        (RequireAllies ? Unit.GetTeam() : eTeam_None),
         RequiredCharacterGroup,
         RequiredEffect
     );
@@ -155,13 +155,13 @@ public function array<XComGameState_Unit> GetAdjacentUnits(
 private function bool MeetsAdjacencyCriteria(
     TTile SourceTile,
     XComGameState_Unit CandidateUnit,
-    optional ETeam RequiredCandidateTeam = eTeam_All, 
+    optional ETeam RequiredCandidateTeam = eTeam_None, 
     optional name RequiredCandidateCharacterGroup, 
     optional name RequiredCandidateEffect)
 {
     return
         !CandidateUnit.IsDead() &&
-        (RequiredCandidateTeam == eTeam_All || CandidateUnit.GetTeam() == RequiredCandidateTeam) && 
+        (RequiredCandidateTeam == eTeam_None || CandidateUnit.GetTeam() == RequiredCandidateTeam) && 
         (RequiredCandidateEffect == 'None' || CandidateUnit.AffectedByEffectNames.Find(RequiredCandidateEffect) != INDEX_NONE) &&
         (RequiredCandidateCharacterGroup == 'None' || CandidateUnit.GetMyTemplate().CharacterGroupName == RequiredCandidateCharacterGroup) &&
         AreTilesAdjacent(SourceTile, CandidateUnit.TileLocation);
