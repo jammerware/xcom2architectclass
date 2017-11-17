@@ -32,9 +32,9 @@ BriefSummary="Incorporation of scavenged alien tech has elevated our spire kits 
 TacticalText="Hardlight Spire Kits allow the architect to summon Hardlight Spires.\n\nHardlight Spires further improve the effect of the following abilities:\n\n<Bullet/> Field Reload Array's ammo reloaded: <Ability:FieldReloadAmount_Beam />\n<Bullet/> Shelter Array's shield strength - <Ability:ShelterShieldAmount_Beam/> points\n<Bullet/> Targeting Array's bonus accuracy - <Ability:TargetingArrayAccuracy_Beam />\n<Bullet/> Quicksilver Rigging's charges per spire - <Ability:QuicksilverCharges_Beam/>"
 
 ;-------------------------------------------------------------
-; EFFECTS
+; ABILITY-APPLIED EFFECTS
 ;-------------------------------------------------------------
-[X2Ability_RunnerAbilitySet]
+[JsrcAbility_ActivateSpire]
 SpireActiveFriendlyName="Spire Online"
 SpireActiveFriendlyDesc="This spire is online and can use abilities this turn."
 
