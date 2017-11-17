@@ -11,10 +11,15 @@ public static function array<X2DataTemplate> CreateTemplates()
 	Templates.AddItem(CreateDeadbolt());
 	Templates.AddItem(CreateDeadboltTrigger());
 
+	`LOG("JSRC: loaded deadbolt templates" @ Templates.Length);
+	`LOG("JSRC: loaded deadbolt templates" @ Templates.Length);
+	`LOG("JSRC: loaded deadbolt templates" @ Templates.Length);
+	`LOG("JSRC: loaded deadbolt templates" @ Templates.Length);
+
 	return Templates;
 }
 
-public static function X2DataTemplate CreateDeadbolt()
+private static function X2DataTemplate CreateDeadbolt()
 {
     local X2AbilityTemplate Template;
 
@@ -24,7 +29,7 @@ public static function X2DataTemplate CreateDeadbolt()
     return Template;
 }
 
-public static function X2DataTemplate CreateDeadboltTrigger()
+private static function X2DataTemplate CreateDeadboltTrigger()
 {
     local JsrcAbilityTemplate Template;
     local X2AbilityTrigger_OnShotMissed ShotMissedTrigger;

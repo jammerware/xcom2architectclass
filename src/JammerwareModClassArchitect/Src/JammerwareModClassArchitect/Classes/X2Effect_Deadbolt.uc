@@ -9,8 +9,6 @@ simulated protected function OnEffectAdded(const out EffectAppliedData ApplyEffe
     TargetState = XComGameState_Unit(kNewTargetState);
     PrimaryWeaponState = TargetState.GetPrimaryWeapon();
 
-    `LOG("JSRC: deadbolt added to" @TargetState.GetFullName());
-
     ItemStateService = new class'Jammerware_JSRC_ItemStateService';
     ItemStateService.LoadAmmo(PrimaryWeaponState, 1, NewGameState);
 }

@@ -23,20 +23,20 @@ private function bool ShouldTriggerDeadbolt(XComGameState GameState, XComGameSta
 {
 	local X2AbilityTemplate AbilityTemplate;
 	local X2AbilityTemplateManager AbilityTemplateManager;
-	local XComGameState_Unit TargetState;
+	local XComGameState_Unit SourceState;
 	local XComGameState_Item PrimaryWeaponState;
 	local int Rand;
 
 	AbilityTemplateManager = class'X2AbilityTemplateManager'.static.GetAbilityTemplateManager();
-	Rand = class'Engine'.static.SyncRand(2, "X2Effect_Deadbolt.DoesEffectProc");
+	Rand = `SYNC_RAND(2);
 
 	AbilityTemplate = AbilityTemplateManager.FindAbilityTemplate(AbilityContext.InputContext.AbilityTemplateName);
 	if (AbilityTemplate.Hostility == eHostility_Offensive)
 	{
-		TargetState = XComGameState_Unit(GameState.GetGameStateForObjectID(AbilityCOntext.InputContext.PrimaryTarget.ObjectID));
-		if (TargetState != none)
+		SourceState = XComGameState_Unit(GameState.GetGameStateForObjectID(AbilityContext.InputContext.SourceObject.ObjectID));
+		if (SourceState != none)
 		{
-			PrimaryWeaponState = TargetState.GetPrimaryWeapon();
+			PrimaryWeaponState = SourceState.GetPrimaryWeapon();
 			if (PrimaryWeaponState.Ammo == 0 || Rand == 1)
 			{
 				return true;
@@ -44,7 +44,6 @@ private function bool ShouldTriggerDeadbolt(XComGameState GameState, XComGameSta
 		}
 	}
 
-	`LOG("JSRC: fails");
 	return false;
 }
 
