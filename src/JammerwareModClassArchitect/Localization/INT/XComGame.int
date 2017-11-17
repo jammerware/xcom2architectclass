@@ -125,8 +125,8 @@ LocPromotionPopupText="The shield lasts for <Ability:ShelterShieldDuration/> tur
 
 [Jammerware_JSRC_Ability_Quicksilver X2AbilityTemplate]
 LocFriendlyName="Quicksilver Rigging"
-LocLongDescription="Your spires gain Quicksilver, an ability which grants an adjacent squadmate an action point. "
-LocHelpText="Your spires gain Quicksilver, an ability which grants an adjacent squadmate an extra action once per mission."
+LocLongDescription="Your spires gain Quicksilver, an ability which grants an adjacent squadmate an action point. Requires activation of the spire."
+LocHelpText="Your spires gain Quicksilver, an ability which grants an adjacent squadmate an extra action once per mission. Requires activation of the spire."
 LocFlyOverText="Quicksilver Rigging"
 LocPromotionPopupText="\"A personal favorite of Prompto Argentum.\"\n\nQuicksilver contributes powerful utility to your team, enabling deep strikes from rangers and templars or rapid repositioning from a sharpshooter.\n\n<Bullet/> Spire must be activated to use Quicksilver\n<Bullet/> Each use of Quicksilver costs one of the spire's Quicksilver charges\n<Bullet/> The action point is granted instantly, and it can be given to any adjacent squadmate - even if they've used all of their action points for the turn"
 
@@ -193,8 +193,8 @@ LocPromotionPopupText="\"Not bad for a start. The next version will fit on their
 
 [Jammerware_JSRC_Ability_KineticRigging X2AbilityTemplate]
 LocFriendlyName="Kinetic Rigging"
-LocLongDescription="Your spires gain Kinetic Blast, an ability that knocks back all enemies in the area of effect."
-LocHelpText="Your spires gain Kinetic Blast, an ability that knocks back all enemies in the area of effect."
+LocLongDescription="Your spires gain Kinetic Blast, an ability that knocks back all enemies in the area of effect. Requires activation of the spire."
+LocHelpText="Your spires gain Kinetic Blast, an ability that knocks back all enemies in the area of effect. Requires activation of the spire."
 LocFlyOverText="Kinetic Rigging"
 LocPromotionPopupText="\"Advent may have dispensed with the use of nonlethal force, but we haven't. Well... not while they're in cover, anyway.\"\n\n<Bullet/> Spire must be activated to use Kinetic Blast"
 

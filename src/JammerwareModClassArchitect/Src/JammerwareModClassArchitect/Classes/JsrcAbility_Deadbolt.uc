@@ -1,8 +1,18 @@
-class X2Ability_Deadbolt extends X2Ability;
+class JsrcAbility_Deadbolt extends X2Ability;
 
 var string ICON_DEADBOLT;
 var name NAME_DEADBOLT;
 var name NAME_DEADBOLT_TRIGGER;
+
+public static function array<X2DataTemplate> CreateTemplates()
+{
+	local array<X2DataTemplate> Templates;
+
+	Templates.AddItem(CreateDeadbolt());
+	Templates.AddItem(CreateDeadboltTrigger());
+
+	return Templates;
+}
 
 public static function X2DataTemplate CreateDeadbolt()
 {

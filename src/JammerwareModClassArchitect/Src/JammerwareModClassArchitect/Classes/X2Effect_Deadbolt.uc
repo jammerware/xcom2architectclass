@@ -27,7 +27,7 @@ simulated function AddX2ActionsForVisualization(XComGameState VisualizeGameState
     {
         AbilityContext = XComGameStateContext_Ability(VisualizeGameState.GetContext());
         AbilityTemplateManager = class'X2AbilityTemplateManager'.static.GetAbilityTemplateManager();
-        DeadboltTemplate = AbilityTemplateManager.FindAbilityTemplate(class'X2Ability_Deadbolt'.default.NAME_DEADBOLT);
+        DeadboltTemplate = AbilityTemplateManager.FindAbilityTemplate(class'JsrcAbility_Deadbolt'.default.NAME_DEADBOLT);
         FlyoverService = new class'Jammerware_JSRC_FlyoverService';
         TargetState = XComGameState_Unit(VisualizeGameState.GetGameStateForObjectID(AbilityContext.InputContext.PrimaryTarget.ObjectID));
 

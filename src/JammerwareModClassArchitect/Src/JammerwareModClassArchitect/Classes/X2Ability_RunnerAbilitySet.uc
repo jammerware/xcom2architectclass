@@ -44,10 +44,6 @@ static function array <X2DataTemplate> CreateTemplates()
 	Templates.AddItem(CreateSoulOfTheArchitect());
 	Templates.AddItem(class'X2Ability_TransmatNetwork'.static.CreateRunnerTransmatNetwork());
 
-	// GTS!
-	Templates.AddItem(class'X2Ability_Deadbolt'.static.CreateDeadbolt());
-	Templates.AddItem(class'X2Ability_Deadbolt'.static.CreateDeadboltTrigger());
-
 	return Templates;
 }
 
