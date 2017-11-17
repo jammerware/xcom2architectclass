@@ -1,17 +1,11 @@
 class X2TargetingMethod_SpawnSpire extends X2TargetingMethod_FloorTile;
 
-var private bool bShooterHasUnity;
-
-function Init(AvailableAction InAction, int NewTargetIndex)
+protected function int GetCursorRange()
 {
-	super.Init(InAction, NewTargetIndex);
+	if (GetShooterHasUnity())
+		return CURSOR_RANGE_UNLIMITED;
 
-	// if the shooter has unity, the cursor needs to be unlocked to allow selection of tiles adjacent to allies
-	if (ShooterState.AffectedByEffectNames.Find(class'X2Ability_RunnerAbilitySet'.default.NAME_UNITY) != INDEX_NONE)
-	{
-		bShooterHasUnity = true;
-		LockCursorRange(-1);
-	}
+	return AbilityRangeUnits;
 }
 
 protected function array<TTile> GetLegalTiles()
@@ -29,17 +23,25 @@ protected function array<TTile> GetLegalTiles()
 	Tiles = super.GetLegalTiles();
 
 	// then, if the shooter has unity, we add all the tiles adjacent to allies
-	foreach `XCOMHISTORY.IterateByClassType(class'XComGameState_Unit', UnitIterator)
+	if (GetShooterHasUnity())
 	{
-		if (UnitIterator.GetTeam() == ShooterTeam)
+		foreach `XCOMHISTORY.IterateByClassType(class'XComGameState_Unit', UnitIterator)
 		{
-			AdjacentTilesIterator = ProximityService.GetAdjacentTiles(UnitIterator.TileLocation);
-			foreach AdjacentTilesIterator(TileIterator)
+			if (UnitIterator.GetTeam() == ShooterTeam)
 			{
-				Tiles.AddItem(TileIterator);
+				AdjacentTilesIterator = ProximityService.GetAdjacentTiles(UnitIterator.TileLocation);
+				foreach AdjacentTilesIterator(TileIterator)
+				{
+					Tiles.AddItem(TileIterator);
+				}
 			}
 		}
 	}
 	
 	return Tiles;
+}
+
+private function bool GetShooterHasUnity()
+{
+	return ShooterState.AffectedByEffectNames.Find(class'X2Ability_RunnerAbilitySet'.default.NAME_UNITY) != INDEX_NONE;
 }

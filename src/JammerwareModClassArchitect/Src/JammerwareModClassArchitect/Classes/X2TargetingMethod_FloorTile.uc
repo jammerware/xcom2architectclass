@@ -5,6 +5,9 @@ var protected XCom3DCursor Cursor;
 var protected XComActionIconManager IconManager;
 var protected X2Actor_ValidTile ValidTileActor;
 
+// internal utility thingies
+const CURSOR_RANGE_UNLIMITED = -1;
+
 // state-based stuff computed on init
 var protected float AbilityRangeUnits;
 var protected XComGameState_Unit ShooterState;
@@ -19,6 +22,7 @@ function Init(AvailableAction InAction, int NewTargetIndex)
 	IconManager = `PRES.GetActionIconMgr();
 	IconManager.UpdateCursorLocation(true);
 	ValidTileActor = Cursor.Spawn(class'X2Actor_ValidTile', Cursor);
+	ValidTileActor.SetHidden(true);
 
 	// store shooter state for validation
 	ShooterState = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(Ability.OwnerStateObject.ObjectID));
@@ -26,26 +30,31 @@ function Init(AvailableAction InAction, int NewTargetIndex)
     // store the range of the ability for use during validation
     AbilityRangeUnits = `METERSTOUNITS(Ability.GetAbilityCursorRangeMeters());
 
-    // lock the cursor to ability range - subclasses may re-lock in their inits
-    LockCursorRange(AbilityRangeUnits);
-
 	// the idea behind this kind of targeting method is that the legal tiles are a subset of visible tiles and are known at init. we cache them here 
 	LegalTiles = GetLegalTiles();
 
 	// Draw them so the player can see their options
 	DrawAOETiles(LegalTiles);
+
+	// lock the cursor to the range of the ability - subclasses may reimplement this to respond to gameplay conditions
+    LockCursorRange();
 }
 
 function Canceled()
 {
 	super.Canceled();
-	IconManager.ShowIcons(false);
-	ValidTileActor.Destroy();
+	Cleanup();
 }
 
 function Committed()
 {
 	super.Committed();
+	Cleanup();
+}
+
+private function Cleanup()
+{
+	IconManager.ShowIcons(false);
 	AOEMeshActor.Destroy();
 	ValidTileActor.Destroy();
 }
@@ -152,15 +161,13 @@ private function DrawValidCursorLocation(TTile Tile)
 	ValidTileActor.SetHidden(false);
 }
 
-protected function LockCursorRange(float RangeInUnits)
+protected function int GetCursorRange()
 {
-	Cursor.m_fMaxChainedDistance = RangeInUnits;
+	return AbilityRangeUnits;
 }
 
-protected function bool IsInAbilityRange(TTile TargetTile)
+private function LockCursorRange()
 {
-    local Jammerware_JSRC_ProximityService ProximityService;
-
-    ProximityService = new class'Jammerware_JSRC_ProximityService';
-    return AbilityRangeUnits == -1 || ProximityService.GetUnitDistanceBetween(ShooterState.TileLocation, TargetTile) <= AbilityRangeUnits;
+	Cursor.m_fMaxChainedDistance = GetCursorRange();
+	`LOG("JSRC: cursor locked to" @ Cursor.m_fMaxChainedDistance);
 }
