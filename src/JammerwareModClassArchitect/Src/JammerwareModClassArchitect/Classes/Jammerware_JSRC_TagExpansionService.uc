@@ -8,7 +8,7 @@ public function string ExpandAbilityTag(string Input)
         case "FieldReloadAmount_Conv": return string(class'X2Item_SpireGun'.default.SPIREGUN_CONVENTIONAL_FIELDRELOADAMMO);
         case "FieldReloadAmount_Mag": return string(class'X2Item_SpireGun'.default.SPIREGUN_MAGNETIC_FIELDRELOADAMMO);
         case "FieldReloadAmount_Beam": return string(class'X2Item_SpireGun'.default.SPIREGUN_BEAM_FIELDRELOADAMMO);
-        case "HeadstoneCooldown": return string(class'X2Ability_RunnerAbilitySet'.default.HEADSTONE_COOLDOWN);
+        case "HeadstoneCooldown": return string(class'JsrcAbility_Headstone'.default.HEADSTONE_COOLDOWN);
         case "QuicksilverCharges_Conv": return string(class'X2Item_SpireGun'.default.SPIREGUN_CONVENTIONAL_QUICKSILVERCHARGESBONUS);
         case "QuicksilverCharges_Mag": return string(class'X2Item_SpireGun'.default.SPIREGUN_MAGNETIC_QUICKSILVERCHARGESBONUS);
         case "QuicksilverCharges_Beam": return string(class'X2Item_SpireGun'.default.SPIREGUN_BEAM_QUICKSILVERCHARGESBONUS);
