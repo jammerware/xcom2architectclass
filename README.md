@@ -7,7 +7,7 @@ The goal of the Architect class is to encourage a spatially-driven play pattern 
 ### Allowed Weapons
 **Primary**: Assault Rifle
 
-**Secondary**: Spire Kit
+**Secondary**: Forge
 
 ### Perks
 

@@ -114,7 +114,7 @@ LocFriendlyName="Shelter Array"
 LocLongDescription="Your spires gain Shelter, which grants allies who end their turn adjacent to the spire a small shield. Shelter doesn't stack."
 LocHelpText="Your spires gain Shelter, which grants allies who end their turn adjacent to the spire a small shield. Shelter doesn't stack."
 LocFlyOverText="Shelter"
-LocPromotionPopupText="\"I don't think that architecture is only about shelter, is only about a very simple enclosure. It should be able to excite you, to calm you, to make you think.\"\n- Zaha Hadid\n\n<Bullet/> Passive\n<Bullet/> Shield lasts <Ability:ShelterShieldDuration/> turns\n<Bullet/> Shield strength increases as the architect's spire kit is upgraded."
+LocPromotionPopupText="\"I don't think that architecture is only about shelter, is only about a very simple enclosure. It should be able to excite you, to calm you, to make you think.\"\n- Zaha Hadid\n\n<Bullet/> Passive\n<Bullet/> Shield lasts <Ability:ShelterShieldDuration/> turns\n<Bullet/> Shield strength increases as the architect's forge is upgraded."
 
 [Jammerware_JSRC_Ability_SpireShelter X2AbilityTemplate]
 LocFriendlyName="Shelter"

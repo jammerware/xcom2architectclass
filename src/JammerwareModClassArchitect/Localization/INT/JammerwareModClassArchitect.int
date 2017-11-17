@@ -14,22 +14,22 @@ strCharacterName="Hardlight Spire"
 ; WEAPONS
 ;-------------------------------------------------------------
 [Jammerware_JSRC_Item_SpireGun_Conventional X2WeaponTemplate_SpireGun]
-FriendlyName="Spire Kit"
-FriendlyNamePlural="Spire Kits"
-BriefSummary="As word of resistance began to spread, an enterprising engineer discovered the schematic for the spire kit in the archives of XCOM's Experimental Tactics Division. The weapon is in need of refinement, but it enables sufficiently trained soldiers to construct tactical spires in battle."
-TacticalText="Spire Kits allow the architect to summon Spires.\n\nStandard spires produce the following values for key architect abilities:\n\n<Bullet/> Field Reload Array's ammo reloaded: <Ability:FieldReloadAmount_Conv />\n<Bullet/> Shelter Array's shield strength - <Ability:ShelterShieldAmount_Conv/> points\n<Bullet/> Targeting Array's bonus accuracy - <Ability:TargetingArrayAccuracy_Conv/>\n<Bullet/> Quicksilver Rigging's charges per spire - <Ability:QuicksilverCharges_Conv/>"
+FriendlyName="Forge"
+FriendlyNamePlural="Forge"
+BriefSummary="As word of resistance began to spread, an enterprising engineer discovered the schematic for the forge in the archives of XCOM's Experimental Tactics Division. The weapon is in need of refinement, but it enables sufficiently trained soldiers to construct tactical spires in battle."
+TacticalText="The Forge allows the architect to summon Spires.\n\nStandard spires produce the following values for key architect abilities:\n\n<Bullet/> Field Reload Array's ammo reloaded: <Ability:FieldReloadAmount_Conv />\n<Bullet/> Shelter Array's shield strength - <Ability:ShelterShieldAmount_Conv/> points\n<Bullet/> Targeting Array's bonus accuracy - <Ability:TargetingArrayAccuracy_Conv/>\n<Bullet/> Quicksilver Rigging's charges per spire - <Ability:QuicksilverCharges_Conv/>"
 
 [Jammerware_JSRC_Item_SpireGun_Magnetic X2WeaponTemplate_SpireGun]
-FriendlyName="EM Spire Kit"
-FriendlyNamePlural="EM Spire Kits"
-BriefSummary="Electromagnetic circuitry tech has improved the performance of our spire kits considerably, enabling rapid construction of powerful EM Spires in the field."
-TacticalText="EM Spire Kits allow the architect to summon EM Spires.\n\nEM Spires improve the effects of the following abilities:\n\n<Bullet/> Field Reload Array's ammo reloaded: <Ability:FieldReloadAmount_Mag />\n<Bullet/> Shelter Array's shield strength - <Ability:ShelterShieldAmount_Mag/> points\n<Bullet/> Targeting Array's bonus accuracy - <Ability:TargetingArrayAccuracy_Mag/>\n<Bullet/> Quicksilver Rigging's charges per spire - <Ability:QuicksilverCharges_Mag/>"
+FriendlyName="EM Forge"
+FriendlyNamePlural="EM Forges"
+BriefSummary="Electromagnetic circuitry tech has improved the performance of our forges considerably, enabling rapid construction of powerful EM Spires in the field."
+TacticalText="The EM Forge allows the architect to summon EM Spires.\n\nEM Spires improve the effects of the following abilities:\n\n<Bullet/> Field Reload Array's ammo reloaded: <Ability:FieldReloadAmount_Mag />\n<Bullet/> Shelter Array's shield strength - <Ability:ShelterShieldAmount_Mag/> points\n<Bullet/> Targeting Array's bonus accuracy - <Ability:TargetingArrayAccuracy_Mag/>\n<Bullet/> Quicksilver Rigging's charges per spire - <Ability:QuicksilverCharges_Mag/>"
 
 [Jammerware_JSRC_Item_SpireGun_Beam X2WeaponTemplate_SpireGun]
-FriendlyName="Hardlight Spire Kit"
-FriendlyNamePlural="Hardlight Spire Kit"
-BriefSummary="Incorporation of scavenged alien tech has elevated our spire kits to their ultimate efficiency, enabling the materialization of Hardlight Spires in tactical situations."
-TacticalText="Hardlight Spire Kits allow the architect to summon Hardlight Spires.\n\nHardlight Spires further improve the effect of the following abilities:\n\n<Bullet/> Field Reload Array's ammo reloaded: <Ability:FieldReloadAmount_Beam />\n<Bullet/> Shelter Array's shield strength - <Ability:ShelterShieldAmount_Beam/> points\n<Bullet/> Targeting Array's bonus accuracy - <Ability:TargetingArrayAccuracy_Beam />\n<Bullet/> Quicksilver Rigging's charges per spire - <Ability:QuicksilverCharges_Beam/>"
+FriendlyName="Hardlight Forge"
+FriendlyNamePlural="Hardlight Forges"
+BriefSummary="Incorporation of scavenged alien tech has elevated our forges to their ultimate efficiency, enabling the materialization of Hardlight Spires in tactical situations."
+TacticalText="The Hardlight Forge allows the architect to summon Hardlight Spires.\n\nHardlight Spires further improve the effect of the following abilities:\n\n<Bullet/> Field Reload Array's ammo reloaded: <Ability:FieldReloadAmount_Beam />\n<Bullet/> Shelter Array's shield strength - <Ability:ShelterShieldAmount_Beam/> points\n<Bullet/> Targeting Array's bonus accuracy - <Ability:TargetingArrayAccuracy_Beam />\n<Bullet/> Quicksilver Rigging's charges per spire - <Ability:QuicksilverCharges_Beam/>"
 
 ;-------------------------------------------------------------
 ; ABILITY-APPLIED EFFECTS
