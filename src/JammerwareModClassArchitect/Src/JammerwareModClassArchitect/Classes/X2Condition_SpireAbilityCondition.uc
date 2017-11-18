@@ -17,48 +17,34 @@ class X2Condition_SpireAbilityCondition extends X2Condition;
 var name RequiredArchitectAbility;
 var bool DebugOn;
 
-event name CallMeetsCondition(XComGameState_BaseObject kTarget) 
-{ 
-    ConditionalLog("JSRC: spire ability condition - call meets condition");
-    return 'AA_Success'; 
-}
-
-event name CallMeetsConditionWithSource(XComGameState_BaseObject kTarget, XComGameState_BaseObject kSource) 
-{ 
-    ConditionalLog("JSRC: spire ability condition - call meets condition with source");
-    return 'AA_Success'; 
-}
-
-event name CallAbilityMeetsCondition(XComGameState_Ability kAbility, XComGameState_BaseObject kTarget)
+// this seems to happen on unit begin play, and I think it's an optimization to prevent unnecessary evaluations of other
+// condition methods
+public function bool CanEverBeValid(XComGameState_Unit SourceUnit, bool bStrategyCheck)
 {
-    local XComGameState GameState;
-    local XComGameState_Unit ArchitectState, SourceState;
+    local XComGameState_Unit ArchitectState;
     local Jammerware_JSRC_SpireService SpireService;
     local Jammerware_JSRC_SpireRegistrationService SpireRegistrationService;
     local bool bRequireSotA;
 
-    ConditionalLog("JSRC: checking spire condition for" @ kAbility.GetMyTemplateName());
-
-    GameState = kAbility.GetParentGameState();
-    SourceState = XComGameState_Unit(GameState.GetGameStateForObjectID(kAbility.OwnerStateObject.ObjectID));
+    ConditionalLog("JSRC: can ever be valid");
     SpireService = new class'Jammerware_JSRC_SpireService';
     SpireRegistrationService = new class'Jammerware_JSRC_SpireRegistrationService';
 
-    ConditionalLog("- source state" @ SourceState.GetFullName());
+    ConditionalLog("- source state" @ SourceUnit.GetFullName());
 
-    if (SourceState == none)
-        return 'AA_NotAUnit';
+    if (SourceUnit == none)
+        return false;
 
-    if (SpireService.IsSpire(SourceState))
+    if (SpireService.IsSpire(SourceUnit))
     {
         ConditionalLog("- is spire");
-        ArchitectState = SpireRegistrationService.GetRunnerFromSpire(SourceState.ObjectID);
+        ArchitectState = SpireRegistrationService.GetRunnerFromSpire(SourceUnit.ObjectID);
         ConditionalLog("- architect:" @ ArchitectState.GetFullName());
     }
     else 
     {
         ConditionalLog("- is architect");
-        ArchitectState = SourceState;
+        ArchitectState = SourceUnit;
         bRequireSotA = true;
     }
 
@@ -75,17 +61,17 @@ event name CallAbilityMeetsCondition(XComGameState_Ability kAbility, XComGameSta
     )
     {
         ConditionalLog("value check failed");
-        return 'AA_ValueCheckFailed';
+        return false;
     }
 
     ConditionalLog("SUCCESS");
-    return 'AA_Success';
+	return true;
 }
 
 private function ConditionalLog(string Message)
 {
     if (DebugOn)
     {
-        `LOG(Message);
+        `LOG("JSRC: ability condition requiring" @ RequiredArchitectAbility @ "-" @Message);
     }
 }

@@ -58,9 +58,6 @@ function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, Stat
 	SpireState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(NewUnitRef.ObjectID));
 	TargetUnitGameState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(ApplyEffectParameters.TargetStateObjectRef.ObjectID));
 
-	// notify that the spire began play to force evaluation of its ability conditions
-	`XEVENTMGR.TriggerEvent('OnUnitBeginPlay', SpireState, SpireState, NewGameState);
-
 	// if spawnspire was cast on a unit (like it is when Headstone is used), remove that unit from play
 	if (ApplyEffectParameters.SourceStateObjectRef.ObjectID != ApplyEffectParameters.TargetStateObjectRef.ObjectID)
 	{
@@ -76,7 +73,7 @@ function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, Stat
 	// NO ACTION FOR YOU
 	// the spire passive effect stops the spire from gaining AP on each turn after this, but we need to make sure it
 	// doesn't get any this turn
-	SpireState.ActionPoints.Length = 0;
+	//SpireState.ActionPoints.Length = 0;
 
 	// notify people who care about spires spawning
 	`XEVENTMGR.TriggerEvent(default.NAME_SPAWN_SPIRE_TRIGGER, SpireState, ShooterState, NewGameState);

@@ -6,13 +6,11 @@ public static function ActivateAbility(XComGameState_Ability AbilityState)
     local XComGameState_Unit OwnerState;
     local GameRulesCache_Unit UnitCache;
 	local int i, j;
-    local name Availability;
 
     GameState = AbilityState.GetParentGameState();
     OwnerState = XComGameState_Unit(GameState.GetGameStateForObjectID(AbilityState.OwnerStateObject.ObjectID));
-    Availability = AbilityState.CanActivateAbility(OwnerState);
 
-    if(`TACTICALRULES.GetGameRulesCache_Unit(AbilityState.OwnerStateObject, UnitCache) && AbilityState.CanActivateAbility(OwnerState) != 'AA_Success')
+    if(`TACTICALRULES.GetGameRulesCache_Unit(AbilityState.OwnerStateObject, UnitCache) && AbilityState.CanActivateAbility(OwnerState) == 'AA_Success')
     {
         for (i = 0; i < UnitCache.AvailableActions.Length; ++i)
         {

@@ -29,6 +29,7 @@ private static function X2DataTemplate CreateDeadboltTrigger()
     local JsrcAbilityTemplate Template;
     local X2AbilityTrigger_OnShotMissed ShotMissedTrigger;
 
+	// this ability subclasses my custom ability template class so that i have access to listeners in my custom gamestate class
 	`CREATE_X2TEMPLATE(class'JsrcAbilityTemplate', Template, default.NAME_DEADBOLT_TRIGGER);
 
 	// HUD behavior

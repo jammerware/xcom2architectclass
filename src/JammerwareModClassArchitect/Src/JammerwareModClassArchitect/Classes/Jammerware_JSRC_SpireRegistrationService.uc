@@ -1,29 +1,23 @@
 class Jammerware_JSRC_SpireRegistrationService extends Object;
 
+var name UNIT_VALUE_ARCHITECT_ID;
 var name UNITVALUE_LASTSPIREID;
 
 function XComGameState_Unit GetRunnerFromSpire(int SpireID)
 {
     local XComGameStateHistory History;
     local XComGameState_Unit Spire;
-    local int SpireCreatorID, i;
-    local XComgameState_Effect EffectState;
+    local UnitValue ArchitectIDValue;
+    local int SpireCreatorID;
 
     History = `XCOMHISTORY;
     Spire = XComGameState_Unit(History.GetGameStateForObjectID(SpireID));
+    Spire.GetUnitValue(default.UNIT_VALUE_ARCHITECT_ID, ArchitectIDValue);
+    SpireCreatorID = int(ArchitectIDValue.fValue);
 
-    // have to use the name array here, because for some reason i can't get the template name from AffectedByEffects at this point
-    // in execution. curious about this
-    for (i = 0; i < Spire.AffectedByEffectNames.Length; i++)
-    {
-        if (Spire.AffectedByEffectNames[i] == class'X2Effect_SpirePassive'.default.EffectName)
-        {
-            EffectState = XComGameState_Effect(History.GetGameStateForObjectID(Spire.AffectedByEffects[i].ObjectID));
-            SpireCreatorID = EffectState.ApplyEffectParameters.SourceStateObjectRef.ObjectID;
-            break;
-        }
-    }
-
+    if (ArchitectIDValue.fValue == 0)
+        `REDSCREEN("JSRC: spire" @ SpireID @ "has no architect ID");
+    
     return XComGameState_Unit(History.GetGameStateForObjectID(SpireCreatorID));
 }
 
@@ -62,10 +56,15 @@ function RegisterSpireToRunner(const out EffectAppliedData ApplyEffectParameters
 	SpirePassiveEffect.ApplyEffect(NewEffectParams, SpireState, NewGameState);
 
     // make a note of the last spire spawned by this runner. yes, i hate this
+    // i also tried relying on the passive effect's source to point us to the architect who summoned this spire, but 
+    // there are situations during unit spawn where the effect isn't there yet, but we still need to know who owns it
     RunnerState.SetUnitFloatValue(default.UNITVALUE_LASTSPIREID, SpireState.ObjectID, eCleanup_BeginTactical);
+    SpireState.SetUnitFloatValue(default.UNIT_VALUE_ARCHITECT_ID, RunnerState.ObjectID, eCleanup_BeginTactical);
+    `LOG("JSRC: architect" @ RunnerState.GetFullName() @ "creates spire" @ SpireState.ObjectID);
 }
 
 defaultproperties
 {
+    UNIT_VALUE_ARCHITECT_ID=Jammerware_JSRC_UnitValue_ArchitectID
     UNITVALUE_LASTSPIREID=Jammerware_JSRC_UnitValue_LastSpireID
 }

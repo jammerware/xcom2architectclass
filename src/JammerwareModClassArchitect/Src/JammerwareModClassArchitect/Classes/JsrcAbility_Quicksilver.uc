@@ -82,6 +82,7 @@ private static function X2AbilityTemplate CreateSpireQuicksilver()
 
 	SpireAbilityCondition = new class'X2Condition_SpireAbilityCondition';
 	SpireAbilityCondition.RequiredArchitectAbility = default.NAME_QUICKSILVER;
+	SpireAbilityCondition.DebugOn = true;
 	Template.AbilityShooterConditions.AddItem(SpireAbilityCondition);
 
 	TargetCondition = new class'X2Condition_UnitProperty';
