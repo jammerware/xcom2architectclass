@@ -119,7 +119,7 @@ private static function X2AbilityTemplate CreateSpireShelter()
 	local X2Condition_AllyAdjacency AllyAdjacencyCondition;
 	local X2Condition_UnitProperty PropertyCondition;
 	local X2Condition_IsSpire IsSpireCondition;
-	local X2Condition_BeASpireOrHaveSoulAnd RunnerAbilityCondition;
+	local X2Condition_SpireAbilityCondition SpireAbilityCondition;
 
 	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_SPIRE_SHELTER);
 
@@ -142,9 +142,9 @@ private static function X2AbilityTemplate CreateSpireShelter()
 	// conditions
 	Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
 
-	RunnerAbilityCondition = new class'X2Condition_BeASpireOrHaveSoulAnd';
-	RunnerAbilityCondition.RequiredRunnerAbility = class'X2Ability_RunnerAbilitySet'.default.NAME_SHELTER;
-	Template.AbilityShooterConditions.AddItem(RunnerAbilityCondition);
+	SpireAbilityCondition = new class'X2Condition_SpireAbilityCondition';
+	SpireAbilityCondition.RequiredArchitectAbility = class'X2Ability_RunnerAbilitySet'.default.NAME_SHELTER;
+	Template.AbilityShooterConditions.AddItem(SpireAbilityCondition);
 	
 	// the ability can only go off if there's an adjacent ally, and since spires can't receive shelter, they don't trigger it
 	AllyAdjacencyCondition = new class'X2Condition_AllyAdjacency';
@@ -192,7 +192,7 @@ static function X2AbilityTemplate CreateSpireQuicksilver()
 	local X2AbilityCost_ActionPoints ActionPointCost;
 	local X2AbilityCost_Charges ChargeCost;
 	local X2Effect_GrantActionPoints ActionPointEffect;
-	local X2Condition_BeASpireOrHaveSoulAnd RunnerAbilityCondition;
+	local X2Condition_SpireAbilityCondition SpireAbilityCondition;
 	local X2Condition_UnitProperty TargetCondition;
 	local X2AbilityCooldown_SoulOfTheArchitect Cooldown;
 
@@ -237,9 +237,9 @@ static function X2AbilityTemplate CreateSpireQuicksilver()
 	Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
 	Template.AddShooterEffectExclusions();
 
-	RunnerAbilityCondition = new class'X2Condition_BeASpireOrHaveSoulAnd';
-	RunnerAbilityCondition.RequiredRunnerAbility = class'X2Ability_RunnerAbilitySet'.default.NAME_QUICKSILVER;
-	Template.AbilityShooterConditions.AddItem(RunnerAbilityCondition);
+	SpireAbilityCondition = new class'X2Condition_SpireAbilityCondition';
+	SpireAbilityCondition.RequiredArchitectAbility = class'X2Ability_RunnerAbilitySet'.default.NAME_QUICKSILVER;
+	Template.AbilityShooterConditions.AddItem(SpireAbilityCondition);
 
 	TargetCondition = new class'X2Condition_UnitProperty';
 	TargetCondition.ExcludeHostileToSource = true;

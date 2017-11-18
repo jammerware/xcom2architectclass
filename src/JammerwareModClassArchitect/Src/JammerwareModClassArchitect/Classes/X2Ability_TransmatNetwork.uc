@@ -24,13 +24,13 @@ static function X2DataTemplate CreateRunnerTransmatNetwork()
 static function X2DataTemplate CreateSpireTransmatNetwork()
 {
 	local X2AbilityTemplate Template;
-	local X2Condition_BeASpireOrHaveSoulAnd SotACondition;
+	local X2Condition_SpireAbilityCondition SpireAbilityCondition;
 
-	SotACondition = new class'X2Condition_BeASpireOrHaveSoulAnd';
-	SotACondition.RequiredRunnerAbility = default.NAME_TRANSMATNETWORK;
+	SpireAbilityCondition = new class'X2Condition_SpireAbilityCondition';
+	SpireAbilityCondition.RequiredArchitectAbility = default.NAME_TRANSMATNETWORK;
 
 	Template = PurePassive(default.NAME_SPIRETRANSMATNETWORK, default.ICON_TRANSMATNETWORK);
-	Template.AbilityTargetConditions.AddItem(SotACondition);
+	Template.AbilityTargetConditions.AddItem(SpireAbilityCondition);
 
     return Template;
 }

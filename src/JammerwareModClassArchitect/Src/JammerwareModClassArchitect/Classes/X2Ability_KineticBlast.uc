@@ -8,7 +8,7 @@ static function X2DataTemplate CreateKineticBlast()
 {
     local X2AbilityTemplate Template;
     local X2AbilityMultiTarget_Cone MultiTargetStyle;
-	local X2Condition_BeASpireOrHaveSoulAnd RunnerAbilityCondition;
+	local X2Condition_SpireAbilityCondition SpireAbilityCondition;
 	local X2AbilityCooldown_SoulOfTheArchitect Cooldown;
     local X2Effect_Knockback KnockbackEffect;
 
@@ -49,9 +49,9 @@ static function X2DataTemplate CreateKineticBlast()
 	Template.AbilityToHitCalc = default.DeadEye;
 
 	// conditions
-	RunnerAbilityCondition = new class'X2Condition_BeASpireOrHaveSoulAnd';
-	RunnerAbilityCondition.RequiredRunnerAbility = class'X2Ability_RunnerAbilitySet'.default.NAME_KINETIC_RIGGING;
-	Template.AbilityShooterConditions.AddItem(RunnerAbilityCondition);
+	SpireAbilityCondition = new class'X2Condition_SpireAbilityCondition';
+	SpireAbilityCondition.RequiredArchitectAbility = class'X2Ability_RunnerAbilitySet'.default.NAME_KINETIC_RIGGING;
+	Template.AbilityShooterConditions.AddItem(SpireAbilityCondition);
 	
 	Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
 

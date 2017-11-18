@@ -51,12 +51,9 @@ function ETeam GetTeam(const out EffectAppliedData ApplyEffectParameters)
 function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, StateObjectReference NewUnitRef, XComGameState NewGameState, XComGameState_Effect NewEffectState)
 {
 	local XComGameState_Unit ShooterState, SpireState, TargetUnitGameState;
-	local Jammerware_JSRC_SpireAbilitiesService SpireAbilitiesService;
 	local Jammerware_JSRC_SpireRegistrationService SpireRegistrationService;
 
-	SpireAbilitiesService = new class'Jammerware_JSRC_SpireAbilitiesService';
 	SpireRegistrationService = new class'Jammerware_JSRC_SpireRegistrationService';
-
 	ShooterState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(ApplyEffectParameters.SourceStateObjectRef.ObjectID));
 	SpireState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(NewUnitRef.ObjectID));
 	TargetUnitGameState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(ApplyEffectParameters.TargetStateObjectRef.ObjectID));
@@ -73,12 +70,9 @@ function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, Stat
 	if (ShooterState.IsConcealed())
 		SpireState.SetIndividualConcealment(true, NewGameState);
 
-	// DANGER, WILL ROBINSON
-	// i know what i'm doing a little more now, the refactor to eliminate the hot init for the ability is tracked in 
-	// https://github.com/jammerware/xcom2architectclass/issues/24
-	SpireAbilitiesService.ConfigureSpireAbilities(SpireState, ShooterState, NewGameState);
-
 	// NO ACTION FOR YOU
+	// the spire passive effect stops the spire from gaining AP on each turn after this, but we need to make sure it
+	// doesn't get any this turn
 	SpireState.ActionPoints.Length = 0;
 
 	// notify people who care about spires spawning

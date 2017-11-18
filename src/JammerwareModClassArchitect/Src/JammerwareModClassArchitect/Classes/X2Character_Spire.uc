@@ -54,10 +54,24 @@ private static function X2CharacterTemplate CreateDefaultSpire(name TemplateName
 	CharTemplate.CharacterGroupName = default.NAME_CHARACTERGROUP_SPIRE;
     CharTemplate.strPawnArchetypes.AddItem("GameUnit_LostTowersTurret.ARC_GameUnit_LostTowersTurretM1");
 
+	CharTemplate.ImmuneTypes.AddItem('Acid');
+	CharTemplate.ImmuneTypes.AddItem(class'X2Item_DefaultDamageTypes'.default.DisorientDamageType);
 	CharTemplate.ImmuneTypes.AddItem('Fire');
+	CharTemplate.ImmuneTypes.AddItem(class'X2Item_DefaultDamageTypes'.default.KnockbackDamageType);
+	CharTemplate.ImmuneTypes.AddItem('Mental');
 	CharTemplate.ImmuneTypes.AddItem('Poison');
 	CharTemplate.ImmuneTypes.AddItem(class'X2Item_DefaultDamageTypes'.default.ParthenogenicPoisonType);
 	CharTemplate.ImmuneTypes.AddItem('Panic');
+	CharTemplate.ImmuneTypes.AddItem('stun');
+	CharTemplate.ImmuneTypes.AddItem('Unconscious');
+
+	CharTemplate.Abilities.AddItem(class'X2Ability_FieldReloadArray'.default.NAME_SPIRE_ABILITY);
+	CharTemplate.Abilities.AddItem(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_SHELTER);
+	CharTemplate.Abilities.AddItem(class'X2Ability_TargetingArray'.default.NAME_TARGETING_ARRAY_SPIRE);
+	CharTemplate.Abilities.AddItem(class'X2Ability_TargetingArray'.default.NAME_TARGETING_ARRAY_SPIRE_TRIGGERED);
+	CharTemplate.Abilities.AddItem(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_QUICKSILVER);
+	CharTemplate.Abilities.AddItem(class'X2Ability_KineticBlast'.default.NAME_KINETICBLAST);
+	CharTemplate.Abilities.AddItem(class'X2Ability_TransmatNetwork'.default.NAME_SPIRETRANSMATNETWORK);
 
     return CharTemplate;
 }
