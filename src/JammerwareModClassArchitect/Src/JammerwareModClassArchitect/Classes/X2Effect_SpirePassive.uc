@@ -1,8 +1,35 @@
 class X2Effect_SpirePassive extends X2Effect_GenerateCover;
 
+var name GAMEPLAY_VISIBLE_TAG;
+
+simulated protected function OnEffectAdded(const out EffectAppliedData ApplyEffectParameters, XComGameState_BaseObject kNewTargetState, XComGameState NewGameState, XComGameState_Effect NewEffectState)
+{
+	super.OnEffectAdded(ApplyEffectParameters, kNewTargetState, NewGameState, NewEffectState);
+	kNewTargetState.bRequiresVisibilityUpdate = true;
+}
+
+simulated function OnEffectRemoved(const out EffectAppliedData ApplyEffectParameters, XComGameState NewGameState, bool bCleansed, XComGameState_Effect RemovedEffectState)
+{
+	local XComGameState_Unit Unit;
+
+	super.OnEffectRemoved(ApplyEffectParameters, NewGameState, bCleansed, RemovedEffectState);
+
+	Unit = XComGameState_Unit(NewGameState.ModifyStateObject(class'XComGameState_Unit', ApplyEffectParameters.TargetStateObjectRef.ObjectID));
+	Unit.bRequiresVisibilityUpdate = true;
+}
+
 function ModifyTurnStartActionPoints(XComGameState_Unit UnitState, out array<name> ActionPoints, XComGameState_Effect EffectState)
 {
     ActionPoints.Length = 0;
+}
+
+function ModifyGameplayVisibilityForTarget(out GameRulesCache_VisibilityInfo InOutVisibilityInfo, XComGameState_Unit SourceUnit, XComGameState_Unit TargetUnit)
+{
+	if( SourceUnit.IsEnemyUnit(TargetUnit) )
+	{
+		InOutVisibilityInfo.bVisibleGameplay = false;
+		InOutVisibilityInfo.GameplayVisibleTags.AddItem(default.GAMEPLAY_VISIBLE_TAG);
+	}
 }
 
 function RegisterForEvents(XComGameState_Effect EffectGameState)
@@ -62,6 +89,7 @@ DefaultProperties
 	CoverType = CoverForce_High
 	DuplicateResponse = eDupe_Ignore
 	EffectName=Jammerware_JSRC_Effect_SpirePassive
+	GAMEPLAY_VISIBLE_TAG=Jammerware_JSRC_GameplayVisibleTag_Spire
 	bRemoveWhenMoved = false
 	bRemoveOnOtherActivation = false
 }
