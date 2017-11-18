@@ -169,5 +169,4 @@ protected function int GetCursorRange()
 private function LockCursorRange()
 {
 	Cursor.m_fMaxChainedDistance = GetCursorRange();
-	`LOG("JSRC: cursor locked to" @ Cursor.m_fMaxChainedDistance);
 }

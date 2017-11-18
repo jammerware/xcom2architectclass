@@ -33,11 +33,11 @@ private static function X2DataTemplate Create_OnUnitBeginPlay_LoadPerks()
     // perk registrations (architect)
     Template.AddPerkToRegister(class'JsrcAbility_ActivateSpire'.default.NAME_ABILITY, 'Jammerware_JSRC_Class_Architect');
     Template.AddPerkToRegister(class'X2Ability_RunnerAbilitySet'.default.NAME_SOUL_OF_THE_ARCHITECT, 'Jammerware_JSRC_Class_Architect');
-    Template.AddPerkToRegister(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_QUICKSILVER, 'Jammerware_JSRC_Class_Architect');
+    Template.AddPerkToRegister(class'JsrcAbility_Quicksilver'.default.NAME_SPIRE_QUICKSILVER, 'Jammerware_JSRC_Class_Architect');
 
     // perk registrations (spire)
     Template.AddPerkToRegister(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_SHELTER, , class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE);
-    Template.AddPerkToRegister(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_QUICKSILVER, ,class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE);
+    Template.AddPerkToRegister(class'JsrcAbility_Quicksilver'.default.NAME_SPIRE_QUICKSILVER, ,class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE);
 
     // perk registrations (every unit ever)
     Template.AddPerkToRegister(class'X2Ability_TransmatNetwork'.default.NAME_TRANSMAT,,, eTeam_XCom);
@@ -54,10 +54,13 @@ private static function EventListenerReturn OnUnitBeginPlay(Object EventData, Ob
     local X2EventListenerTemplate_LoadPerks LoadPerksTemplate;
 
     UnitState = XComGameState_Unit(EventSource);
-    LoadPerksTemplate = GetLoadPerksTemplate(default.NAME_BUILD_PERK_PACKAGE_CACHE);
+    if (UnitState != none)
+    {
+        LoadPerksTemplate = GetLoadPerksTemplate(default.NAME_BUILD_PERK_PACKAGE_CACHE);
 
-    if (LoadPerksTemplate.ListenForTeam == eTeam_None || UnitState.GetTeam() == LoadPerksTemplate.ListenForTeam)
-        RegisterPerksFor(UnitState, LoadPerksTemplate.PerksToRegister);
+        if (LoadPerksTemplate.ListenForTeam == eTeam_None || UnitState.GetTeam() == LoadPerksTemplate.ListenForTeam)
+            RegisterPerksFor(UnitState, LoadPerksTemplate.PerksToRegister);
+    }
     
     return ELR_NoInterrupt;
 }
@@ -71,7 +74,6 @@ private static function RegisterPerksFor(XComGameState_Unit UnitState, array<Per
     ClassTemplate = UnitState.GetSoldierClassTemplate();
     CharacterTemplate = UnitState.GetMyTemplate();
 
-    `LOG("JSRC: perks firing up for" @ UnitState.GetFullName());
     foreach PerksToRegister(PerkRegistrationIterator) 
     {
         if (PerkRegistrationIterator.CharacterGroupName != 'None' && CharacterTemplate.CharacterGroupName == PerkRegistrationIterator.CharacterGroupName)

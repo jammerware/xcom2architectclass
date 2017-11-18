@@ -11,11 +11,6 @@ public static function array<X2DataTemplate> CreateTemplates()
 	Templates.AddItem(CreateDeadbolt());
 	Templates.AddItem(CreateDeadboltTrigger());
 
-	`LOG("JSRC: loaded deadbolt templates" @ Templates.Length);
-	`LOG("JSRC: loaded deadbolt templates" @ Templates.Length);
-	`LOG("JSRC: loaded deadbolt templates" @ Templates.Length);
-	`LOG("JSRC: loaded deadbolt templates" @ Templates.Length);
-
 	return Templates;
 }
 

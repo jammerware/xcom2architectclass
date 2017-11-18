@@ -3,9 +3,6 @@ class X2Ability_RunnerAbilitySet extends X2Ability
 
 // ability names
 var name NAME_FIELD_RELOAD_MODULE;
-var name NAME_KINETIC_RIGGING;
-var name NAME_LOAD_PERK_CONTENT;
-var name NAME_QUICKSILVER;
 var name NAME_RECLAIM;
 var name NAME_SHELTER;
 var name NAME_SOUL_OF_THE_ARCHITECT;
@@ -31,10 +28,6 @@ static function array <X2DataTemplate> CreateTemplates()
 	// LIEUTENANT!
 	Templates.AddItem(class'X2Ability_RelayedShot'.static.CreateRelayedShot());
 	Templates.AddItem(class'X2Ability_TargetingArray'.static.CreateTargetingArray());
-
-	// CAPTAIN!
-	Templates.AddItem(CreateKineticRigging());
-	Templates.AddItem(CreateQuicksilver());
 
 	// MAJOR!
 	Templates.AddItem(CreateUnity());
@@ -124,30 +117,6 @@ private static function X2AbilityTemplate CreateReclaim()
 	return Template;
 }
 
-private static function X2AbilityTemplate CreateKineticRigging()
-{
-	local X2AbilityTemplate Template;
-
-	Template = PurePassive(default.NAME_KINETIC_RIGGING, "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_StunStrike");
-
-	// the runner has to be able to activate the spire to use kinetic blast
-	Template.AdditionalAbilities.AddItem(class'JsrcAbility_ActivateSpire'.default.NAME_ABILITY); 
-
-	return Template;
-}
-
-private static function X2AbilityTemplate CreateQuicksilver()
-{
-	local X2AbilityTemplate Template;
-
-	Template = PurePassive(default.NAME_QUICKSILVER, "img:///UILibrary_PerkIcons.UIPerk_inspire");
-
-	// the architect has to be able to activate the spire to use quicksilver
-	Template.AdditionalAbilities.AddItem(class'JsrcAbility_ActivateSpire'.default.NAME_ABILITY); 
-
-	return Template;
-}
-
 private static function X2AbilityTemplate CreateUnity()
 {
 	return PurePassive(default.NAME_UNITY, "img:///UILibrary_PerkIcons.UIPerk_aethershift");
@@ -186,8 +155,8 @@ private static function X2AbilityTemplate CreateSoulOfTheArchitect()
 
 	Template.AdditionalAbilities.AddItem(class'X2Ability_TargetingArray'.default.NAME_TARGETING_ARRAY_SPIRE);
 	Template.AdditionalAbilities.AddItem(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_SHELTER);
-	Template.AdditionalAbilities.AddItem(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_QUICKSILVER);
-	Template.AdditionalAbilities.AddItem(class'X2Ability_KineticBlast'.default.NAME_KINETICBLAST);
+	Template.AdditionalAbilities.AddItem(class'JsrcAbility_Quicksilver'.default.NAME_SPIRE_QUICKSILVER);
+	Template.AdditionalAbilities.AddItem(class'JsrcAbility_KineticRigging'.default.NAME_KINETIC_BLAST);
 	Template.AdditionalAbilities.AddItem(class'X2Ability_TransmatNetwork'.default.NAME_SPIRETRANSMATNETWORK);
 
 	Template.bSkipFireAction = true;
@@ -201,9 +170,6 @@ private static function X2AbilityTemplate CreateSoulOfTheArchitect()
 DefaultProperties 
 {
 	NAME_FIELD_RELOAD_MODULE=Jammerware_JSRC_Ability_FieldReloadModule
-	NAME_KINETIC_RIGGING=Jammerware_JSRC_Ability_KineticRigging
-	NAME_LOAD_PERK_CONTENT=Jammerware_JSRC_ArchitectLoadPerkContent
-	NAME_QUICKSILVER=Jammerware_JSRC_Ability_Quicksilver
 	NAME_RECLAIM=Jammerware_JSRC_Ability_Reclaim
 	NAME_SHELTER=Jammerware_JSRC_Ability_Shelter
 	NAME_SOUL_OF_THE_ARCHITECT=Jammerware_JSRC_Ability_SoulOfTheArchitect

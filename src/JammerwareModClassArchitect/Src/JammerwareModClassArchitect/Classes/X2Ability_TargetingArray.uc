@@ -19,8 +19,14 @@ public static function X2DataTemplate CreateTargetingArray()
 public static function X2DataTemplate CreateSpireTargetingArray()
 {
 	local X2AbilityTemplate Template;
-
+	local X2Condition_SpireAbilityCondition SpireAbilityCondition;
+	
 	Template = PurePassive(default.NAME_TARGETING_ARRAY_SPIRE, default.ICON_TARGETING_ARRAY);
+
+	SpireAbilityCondition = new class'X2Condition_SpireAbilityCondition';
+	SpireAbilityCondition.RequiredArchitectAbility = default.NAME_TARGETING_ARRAY;
+	Template.AbilityShooterConditions.AddItem(SpireAbilityCondition);	
+
 	Template.AdditionalAbilities.AddItem(default.NAME_TARGETING_ARRAY_SPIRE_TRIGGERED);
 
 	return Template;
@@ -29,6 +35,7 @@ public static function X2DataTemplate CreateSpireTargetingArray()
 public static function X2DataTemplate CreateSpireTargetingArrayTriggered()
 {
     local X2AbilityTemplate Template;
+	local X2Condition_SpireAbilityCondition SpireAbilityCondition;
 	local X2Condition_UnitEffects EffectsCondition;
 	local X2Condition_UnitProperty TargetPropertiesCondition;
 	local X2AbilityMultiTarget_Radius MultiTargetStyle;
@@ -56,6 +63,10 @@ public static function X2DataTemplate CreateSpireTargetingArrayTriggered()
 
 	// conditions
 	Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
+
+	SpireAbilityCondition = new class'X2Condition_SpireAbilityCondition';
+	SpireAbilityCondition.RequiredArchitectAbility = default.NAME_TARGETING_ARRAY;
+	Template.AbilityShooterConditions.AddItem(SpireAbilityCondition);	
 
 	TargetPropertiesCondition = new class'X2Condition_UnitProperty';
 	TargetPropertiesCondition.ExcludeFriendlyToSource = false;
