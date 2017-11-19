@@ -13,6 +13,7 @@ public static function X2DataTemplate CreateSpireFieldReloadArray()
 {
     local X2AbilityTemplate Template;
     local X2AbilityTrigger_EventListener SpireSpawnTrigger;
+	local X2Condition_SpireAbilityCondition SpireAbilityCondition;
 	local X2Condition_TargetWeapon WeaponCondition;
 	
 	// general properties
@@ -40,6 +41,10 @@ public static function X2DataTemplate CreateSpireFieldReloadArray()
 	Template.AbilityTriggers.AddItem(SpireSpawnTrigger);
 
 	// conditions
+	SpireAbilityCondition = new class'X2Condition_SpireAbilityCondition';
+	SpireAbilityCondition.RequiredArchitectAbility = default.NAME_ABILITY;
+	Template.AbilityShooterConditions.AddItem(SpireAbilityCondition);
+
 	WeaponCondition = new class'X2Condition_TargetWeapon';
 	WeaponCondition.CanReload = true;
 	Template.AbilityMultiTargetConditions.AddItem(WeaponCondition);
@@ -50,7 +55,6 @@ public static function X2DataTemplate CreateSpireFieldReloadArray()
 	// game state and visualization
 	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
 	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
-	Template.bShowActivation = true;
 	Template.bSkipFireAction = true;
 
 	return Template;
