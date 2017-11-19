@@ -14,7 +14,7 @@ public function string ExpandAbilityTag(string Input)
         case "QuicksilverCharges_Beam": return string(class'X2Item_SpireGun'.default.SPIREGUN_BEAM_QUICKSILVERCHARGESBONUS);
         case "QuicksilverCooldownWithSoul": return string(class'JsrcAbility_Quicksilver'.default.COOLDOWN_SOUL_QUICKSILVER);
         case "KineticBlastCooldownWithSoul": return string(class'JsrcAbility_KineticRigging'.default.SOUL_COOLDOWN_KINETIC_BLAST);
-        case "ReclaimCooldown": return string(class'X2Ability_RunnerAbilitySet'.default.RECLAIM_COOLDOWN);
+        case "ReclaimCooldown": return string(class'JsrcAbility_Reclaim'.default.RECLAIM_COOLDOWN);
         case "RelayedShotCooldown": return string(class'JsrcAbility_RelayedShot'.default.COOLDOWN_RELAYED_SHOT);
         case "ShelterShieldAmount_Conv": return string(class'X2Item_SpireGun'.default.SPIREGUN_CONVENTIONAL_SHELTERSHIELDBONUS);
         case "ShelterShieldAmount_Mag": return string(class'X2Item_SpireGun'.default.SPIREGUN_MAGNETIC_SHELTERSHIELDBONUS);
