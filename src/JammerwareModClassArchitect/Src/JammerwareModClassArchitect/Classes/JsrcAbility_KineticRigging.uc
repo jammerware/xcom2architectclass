@@ -57,8 +57,6 @@ private static function X2DataTemplate CreateKineticBlast()
 	Cooldown.NonSpireCooldown = default.COOLDOWN_SOUL_KINETIC_BLAST;
 	Template.AbilityCooldown = Cooldown;
 
-	`LOG("JSRC: template creation - the cooldown is" @Cooldown.NonSpireCooldown);
-
 	// targeting style (how targets are determined by game rules)
 	Template.AbilityTargetStyle = new class'X2AbilityTarget_Cursor';
 
