@@ -40,6 +40,9 @@ private static function X2AbilityTemplate CreateSpireShelter()
 	Template.IconImage = default.ICON_SHELTER;
 	Template.ShotHUDPriority = class'UIUtilities_Tactical'.const.CLASS_CORPORAL_PRIORITY;
 
+	// uses the forge of either the architect or the spire with the skill
+	Template.DefaultSourceItemSlot = eInvSlot_SecondaryWeapon;
+
 	// targeting
 	Template.AbilityTargetStyle = default.SelfTarget;
 	Template.AbilityMultiTargetStyle = new class'X2AbilityMultiTargetStyle_PBAoE';
