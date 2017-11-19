@@ -65,6 +65,7 @@ private static function X2CharacterTemplate CreateDefaultSpire(name TemplateName
 	CharTemplate.ImmuneTypes.AddItem('stun');
 	CharTemplate.ImmuneTypes.AddItem('Unconscious');
 
+	CharTemplate.Abilities.AddItem(class'JsrcAbility_SpirePassive'.default.NAME_ABILITY);
 	CharTemplate.Abilities.AddItem(class'X2Ability_FieldReloadArray'.default.NAME_SPIRE_ABILITY);
 	CharTemplate.Abilities.AddItem(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_SHELTER);
 	CharTemplate.Abilities.AddItem(class'X2Ability_TargetingArray'.default.NAME_TARGETING_ARRAY_SPIRE);

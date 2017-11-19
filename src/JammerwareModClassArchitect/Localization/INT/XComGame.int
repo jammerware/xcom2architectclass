@@ -252,8 +252,8 @@ LocPromotionPopupText="\"Everything has to be somewhere. The trick is having the
 ;-------------------------------------------------------------
 [Jammerware_JSRC_Ability_SpirePassive X2AbilityTemplate]
 LocFriendlyName="Standing Stone"
-LocLongDescription="The spire is quiet. It doesn't gain action points at the start of your turn."
-LocHelpText="The spire is quiet. It doesn't gain action points at the start of your turn."
+LocLongDescription="The spire is quiet. It provides cover, but it doesn't gain action points at the start of your turn."
+LocHelpText="The spire is quiet. It provides cover, but it doesn't gain action points at the start of your turn."
 LocFlyOverText="Standing Stone"
 LocPromotionPopupText="\"What you leave behind is not what is engraved in stone monuments, but what is woven into the lives of others.\"\n- Pericles"
 

@@ -1,4 +1,4 @@
-class X2Effect_SpirePassive extends X2Effect_GenerateCover;
+class JsrcEffect_SpirePassive extends X2Effect_GenerateCover;
 
 var name GAMEPLAY_VISIBLE_TAG;
 

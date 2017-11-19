@@ -9,9 +9,6 @@ var config int SHELTER_DURATION;
 static function array <X2DataTemplate> CreateTemplates()
 {
 	local array<X2DataTemplate> Templates;
-	
-	// SQUADDIE!
-	Templates.AddItem(CreateSpirePassive());
 
 	// CORPORAL
 	Templates.AddItem(class'X2Ability_FieldReloadArray'.static.CreateSpireFieldReloadArray());
@@ -27,36 +24,6 @@ static function array <X2DataTemplate> CreateTemplates()
 	Templates.AddItem(class'X2Ability_TransmatNetwork'.static.CreateSpireTransmatNetwork());
 
 	return Templates;
-}
-
-private static function X2AbilityTemplate CreateSpirePassive()
-{
-	local X2AbilityTemplate Template;
-	local X2Effect_SpirePassive SpirePassiveEffect;
-
-	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_SPIRE_PASSIVE);
-
-	// HUD behavior
-	Template.IconImage = "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_Pillar";
-	Template.AbilitySourceName = 'eAbilitySource_Perk';
-	Template.eAbilityIconBehaviorHUD = EAbilityIconBehavior_NeverShow;
-	Template.Hostility = eHostility_Neutral;
-
-	// targeting and ability to hit
-	Template.AbilityTargetStyle = default.SelfTarget;
-	Template.AbilityToHitCalc = default.DeadEye;
-
-	// triggering
-	Template.AbilityTriggers.AddItem(default.UnitPostBeginPlayTrigger);
-
-	SpirePassiveEffect = new class'X2Effect_SpirePassive';
-	SpirePassiveEffect.BuildPersistentEffect(1, true, false);
-	SpirePassiveEffect.SetDisplayInfo(ePerkBuff_Passive, Template.LocFriendlyName, Template.GetMyLongDescription(), Template.IconImage,,,Template.AbilitySourceName);
-	Template.AddTargetEffect(SpirePassiveEffect);
-
-	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
-
-	return Template;
 }
 
 private static function X2AbilityTemplate CreateSpireShelter()
@@ -136,7 +103,6 @@ private static function X2AbilityTemplate CreateSpireShelter()
 
 defaultproperties
 {
-	
 	NAME_SPIRE_PASSIVE=Jammerware_JSRC_Ability_SpirePassive
 	NAME_SPIRE_SHELTER=Jammerware_JSRC_Ability_SpireShelter
 }
