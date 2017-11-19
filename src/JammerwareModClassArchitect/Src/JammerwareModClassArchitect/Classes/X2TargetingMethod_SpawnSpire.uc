@@ -43,5 +43,5 @@ protected function array<TTile> GetLegalTiles()
 
 private function bool GetShooterHasUnity()
 {
-	return ShooterState.AffectedByEffectNames.Find(class'X2Ability_RunnerAbilitySet'.default.NAME_UNITY) != INDEX_NONE;
+	return ShooterState.AffectedByEffectNames.Find(class'JsrcAbility_Unity'.default.NAME_ABILITY) != INDEX_NONE;
 }

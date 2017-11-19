@@ -3,7 +3,6 @@ class X2Ability_RunnerAbilitySet extends X2Ability
 
 // ability names
 var name NAME_RECLAIM;
-var name NAME_UNITY;
 
 // config/balance
 var config int RECLAIM_COOLDOWN;
@@ -16,7 +15,6 @@ static function array <X2DataTemplate> CreateTemplates()
 	Templates.AddItem(CreateReclaim());
 
 	// MAJOR!
-	Templates.AddItem(CreateUnity());
 	Templates.AddItem(class'X2Ability_TransmatLink'.static.CreateTransmatLink());
 
 	return Templates;
@@ -94,13 +92,7 @@ private static function X2AbilityTemplate CreateReclaim()
 	return Template;
 }
 
-private static function X2AbilityTemplate CreateUnity()
-{
-	return PurePassive(default.NAME_UNITY, "img:///UILibrary_PerkIcons.UIPerk_aethershift");
-}
-
 DefaultProperties 
 {
 	NAME_RECLAIM=Jammerware_JSRC_Ability_Reclaim
-	NAME_UNITY=Jammerware_JSRC_Ability_Unity
 }
