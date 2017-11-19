@@ -1,4 +1,4 @@
-class X2Ability_SpawnSpire extends X2Ability
+class JsrcAbility_SpawnSpire extends X2Ability
     config(JammerwareModClassArchitect);
 
 var name NAME_SPAWN_SPIRE;
@@ -6,7 +6,14 @@ var name NAME_SPAWN_SPIRE;
 var config int COOLDOWN_SPAWN_SPIRE;
 var config int TILERANGE_SPAWN_SPIRE;
 
-static function X2DataTemplate CreateSpawnSpire()
+public static function array<X2DataTemplate> CreateTemplates()
+{
+	local array<X2DataTemplate> Templates;
+	Templates.AddItem(CreateSpawnSpire());
+	return Templates;
+}
+
+private static function X2DataTemplate CreateSpawnSpire()
 {
 	local X2AbilityTemplate Template;
 	local X2AbilityCost_ActionPoints APCost;

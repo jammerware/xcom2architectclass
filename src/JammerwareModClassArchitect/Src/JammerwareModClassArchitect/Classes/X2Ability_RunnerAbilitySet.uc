@@ -14,9 +14,6 @@ static function array <X2DataTemplate> CreateTemplates()
 {
 	local array<X2DataTemplate> Templates;
 
-	// SQUADDIE!
-	Templates.AddItem(class'X2Ability_SpawnSpire'.static.CreateSpawnSpire());
-	
 	// CORPORAL!
 	Templates.AddItem(CreateShelter());
 
@@ -102,7 +99,7 @@ private static function X2AbilityTemplate CreateReclaim()
 
 	CreateSpireCooldownResetEffect = new class 'X2Effect_ReduceCooldowns';
 	CreateSpireCooldownResetEffect.ReduceAll = true;
-	CreateSpireCooldownResetEffect.AbilitiesToTick.AddItem(class'X2Ability_SpawnSpire'.default.NAME_SPAWN_SPIRE);
+	CreateSpireCooldownResetEffect.AbilitiesToTick.AddItem(class'JsrcAbility_SpawnSpire'.default.NAME_SPAWN_SPIRE);
 	Template.AddShooterEffect(CreateSpireCooldownResetEffect);
 	
 	// game state and visualization
