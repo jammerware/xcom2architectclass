@@ -1,4 +1,4 @@
-class X2Ability_TargetingArray extends X2Ability;
+class JsrcAbility_TargetingArray extends X2Ability;
 
 var name NAME_TARGETING_ARRAY;
 var name NAME_TARGETING_ARRAY_SPIRE;
@@ -11,12 +11,23 @@ var localized string TargetingArrayTriggeredFriendlyName;
 var localized string TargetingArrayTriggeredFriendlyDesc;
 var localized string TargetingArrayRemovedFriendlyName;
 
-public static function X2DataTemplate CreateTargetingArray()
+public static function array<X2DataTemplate> CreateTemplates()
+{
+	local array<X2DataTemplate> Templates;
+
+	Templates.AddItem(CreateTargetingArray());
+	Templates.AddItem(CreateSpireTargetingArray());
+	Templates.AddItem(CreateSpireTargetingArrayTriggered());
+
+	return Templates;
+}
+
+private static function X2DataTemplate CreateTargetingArray()
 {
     return PurePassive(default.NAME_TARGETING_ARRAY, default.ICON_TARGETING_ARRAY);
 }
 
-public static function X2DataTemplate CreateSpireTargetingArray()
+private static function X2DataTemplate CreateSpireTargetingArray()
 {
 	local X2AbilityTemplate Template;
 	local X2Condition_SpireAbilityCondition SpireAbilityCondition;
@@ -32,7 +43,7 @@ public static function X2DataTemplate CreateSpireTargetingArray()
 	return Template;
 }
 
-public static function X2DataTemplate CreateSpireTargetingArrayTriggered()
+private static function X2DataTemplate CreateSpireTargetingArrayTriggered()
 {
     local X2AbilityTemplate Template;
 	local X2Condition_SpireAbilityCondition SpireAbilityCondition;

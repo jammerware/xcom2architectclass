@@ -38,7 +38,7 @@ TacticalText="The Hardlight Forge allows the architect to summon Hardlight Spire
 SpireActiveFriendlyName="Spire Online"
 SpireActiveFriendlyDesc="This spire is online and can use abilities this turn."
 
-[X2Ability_TargetingArray]
+[JsrcAbility_TargetingArray]
 +TargetingArrayTriggeredFriendlyName="Targeting Array Online"
 +TargetingArrayTriggeredFriendlyDesc="The nearby spire's targeting array is active, enhancing the accuracy of your shots."
 +TargetingArrayRemovedFriendlyName="Targeting Array Offline"

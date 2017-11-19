@@ -85,7 +85,7 @@ private static function EventListenerReturn OnUnitMovedOrDied(Object EventData, 
 	UnitState = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(EffectState.ApplyEffectParameters.TargetStateObjectRef.ObjectID));
 	ProximityService = new class'Jammerware_JSRC_ProximityService';
 
-	if (UnitState != none && !EffectState.bRemoved && !ProximityService.IsUnitAdjacentToAlly(UnitState, class'X2Ability_TargetingArray'.default.NAME_TARGETING_ARRAY_SPIRE))
+	if (UnitState != none && !EffectState.bRemoved && !ProximityService.IsUnitAdjacentToAlly(UnitState, class'JsrcAbility_TargetingArray'.default.NAME_TARGETING_ARRAY_SPIRE))
 	{
 		RemoveContext = class'XComGameStateContext_EffectRemoved'.static.CreateEffectRemovedContext(EffectState);
 		NewGameState = `XCOMHISTORY.CreateNewGameState(true, RemoveContext);

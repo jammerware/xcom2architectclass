@@ -16,9 +16,6 @@ static function array <X2DataTemplate> CreateTemplates()
 	// SERGEANT!
 	Templates.AddItem(CreateReclaim());
 
-	// LIEUTENANT!
-	Templates.AddItem(class'X2Ability_TargetingArray'.static.CreateTargetingArray());
-
 	// MAJOR!
 	Templates.AddItem(CreateUnity());
 	Templates.AddItem(class'X2Ability_TransmatLink'.static.CreateTransmatLink());
@@ -138,7 +135,7 @@ private static function X2AbilityTemplate CreateSoulOfTheArchitect()
 	PersistentEffect.SetDisplayInfo(ePerkBuff_Passive, Template.LocFriendlyName, Template.LocLongDescription, Template.IconImage, true,, Template.AbilitySourceName);
 	Template.AddTargetEffect(PersistentEffect);
 
-	Template.AdditionalAbilities.AddItem(class'X2Ability_TargetingArray'.default.NAME_TARGETING_ARRAY_SPIRE);
+	Template.AdditionalAbilities.AddItem(class'JsrcAbility_TargetingArray'.default.NAME_TARGETING_ARRAY_SPIRE);
 	Template.AdditionalAbilities.AddItem(class'JsrcAbility_Shelter'.default.NAME_SPIRE_SHELTER);
 	Template.AdditionalAbilities.AddItem(class'JsrcAbility_Quicksilver'.default.NAME_SPIRE_QUICKSILVER);
 	Template.AdditionalAbilities.AddItem(class'JsrcAbility_KineticRigging'.default.NAME_KINETIC_BLAST);
