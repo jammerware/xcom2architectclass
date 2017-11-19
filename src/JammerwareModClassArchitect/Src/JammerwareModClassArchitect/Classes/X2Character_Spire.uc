@@ -67,7 +67,7 @@ private static function X2CharacterTemplate CreateDefaultSpire(name TemplateName
 
 	CharTemplate.Abilities.AddItem(class'JsrcAbility_SpirePassive'.default.NAME_ABILITY);
 	CharTemplate.Abilities.AddItem(class'JsrcAbility_FieldReloadArray'.default.NAME_SPIRE_ABILITY);
-	CharTemplate.Abilities.AddItem(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_SHELTER);
+	CharTemplate.Abilities.AddItem(class'JsrcAbility_Shelter'.default.NAME_SPIRE_SHELTER);
 	CharTemplate.Abilities.AddItem(class'X2Ability_TargetingArray'.default.NAME_TARGETING_ARRAY_SPIRE);
 	CharTemplate.Abilities.AddItem(class'X2Ability_TargetingArray'.default.NAME_TARGETING_ARRAY_SPIRE_TRIGGERED);
 	CharTemplate.Abilities.AddItem(class'JsrcAbility_Quicksilver'.default.NAME_SPIRE_QUICKSILVER);

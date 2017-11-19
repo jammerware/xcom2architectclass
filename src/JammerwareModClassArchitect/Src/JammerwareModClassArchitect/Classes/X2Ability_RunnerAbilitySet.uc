@@ -3,7 +3,6 @@ class X2Ability_RunnerAbilitySet extends X2Ability
 
 // ability names
 var name NAME_RECLAIM;
-var name NAME_SHELTER;
 var name NAME_SOUL_OF_THE_ARCHITECT;
 var name NAME_UNITY;
 
@@ -13,9 +12,6 @@ var config int RECLAIM_COOLDOWN;
 static function array <X2DataTemplate> CreateTemplates()
 {
 	local array<X2DataTemplate> Templates;
-
-	// CORPORAL!
-	Templates.AddItem(CreateShelter());
 
 	// SERGEANT!
 	Templates.AddItem(CreateReclaim());
@@ -32,11 +28,6 @@ static function array <X2DataTemplate> CreateTemplates()
 	Templates.AddItem(class'X2Ability_TransmatNetwork'.static.CreateRunnerTransmatNetwork());
 
 	return Templates;
-}
-
-private static function X2AbilityTemplate CreateShelter()
-{
-	return PurePassive(default.NAME_SHELTER, "img:///UILibrary_PerkIcons.UIPerk_adventshieldbearer_energyshield");
 }
 
 private static function X2AbilityTemplate CreateReclaim()
@@ -148,7 +139,7 @@ private static function X2AbilityTemplate CreateSoulOfTheArchitect()
 	Template.AddTargetEffect(PersistentEffect);
 
 	Template.AdditionalAbilities.AddItem(class'X2Ability_TargetingArray'.default.NAME_TARGETING_ARRAY_SPIRE);
-	Template.AdditionalAbilities.AddItem(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_SHELTER);
+	Template.AdditionalAbilities.AddItem(class'JsrcAbility_Shelter'.default.NAME_SPIRE_SHELTER);
 	Template.AdditionalAbilities.AddItem(class'JsrcAbility_Quicksilver'.default.NAME_SPIRE_QUICKSILVER);
 	Template.AdditionalAbilities.AddItem(class'JsrcAbility_KineticRigging'.default.NAME_KINETIC_BLAST);
 	Template.AdditionalAbilities.AddItem(class'X2Ability_TransmatNetwork'.default.NAME_SPIRETRANSMATNETWORK);
@@ -164,7 +155,6 @@ private static function X2AbilityTemplate CreateSoulOfTheArchitect()
 DefaultProperties 
 {
 	NAME_RECLAIM=Jammerware_JSRC_Ability_Reclaim
-	NAME_SHELTER=Jammerware_JSRC_Ability_Shelter
 	NAME_SOUL_OF_THE_ARCHITECT=Jammerware_JSRC_Ability_SoulOfTheArchitect
 	NAME_UNITY=Jammerware_JSRC_Ability_Unity
 }

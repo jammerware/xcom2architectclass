@@ -36,7 +36,7 @@ private static function X2DataTemplate Create_OnUnitBeginPlay_LoadPerks()
     Template.AddPerkToRegister(class'JsrcAbility_Quicksilver'.default.NAME_SPIRE_QUICKSILVER, 'Jammerware_JSRC_Class_Architect');
 
     // perk registrations (spire)
-    Template.AddPerkToRegister(class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_SHELTER, , class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE);
+    Template.AddPerkToRegister(class'JsrcAbility_Shelter'.default.NAME_SPIRE_SHELTER, , class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE);
     Template.AddPerkToRegister(class'JsrcAbility_Quicksilver'.default.NAME_SPIRE_QUICKSILVER, ,class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE);
 
     // perk registrations (every unit ever)
