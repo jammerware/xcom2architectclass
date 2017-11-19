@@ -1,4 +1,4 @@
-class X2Ability_RelayedShot extends X2Ability
+class JsrcAbility_RelayedShot extends X2Ability
 	config(JammerwareModClassArchitect);
 
 var name NAME_RELAYED_SHOT;
@@ -7,7 +7,14 @@ var config int AMMO_COST_RELAYED_SHOT;
 var config int COOLDOWN_RELAYED_SHOT;
 var config int AOE_BONUS_WIDTH_RELAYED_SHOT;
 
-static function X2DataTemplate CreateRelayedShot()
+public static function array<X2DataTemplate> CreateTemplates()
+{
+	local array<X2DataTemplate> Templates;
+	Templates.AddItem(CreateRelayedShot());
+	return Templates;
+}
+
+private static function X2DataTemplate CreateRelayedShot()
 {
     local X2AbilityTemplate Template;
 	local X2AbilityCooldown Cooldown;

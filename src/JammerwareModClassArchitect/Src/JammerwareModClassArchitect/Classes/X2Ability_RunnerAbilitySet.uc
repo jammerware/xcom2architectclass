@@ -2,7 +2,6 @@ class X2Ability_RunnerAbilitySet extends X2Ability
 	config(JammerwareModClassArchitect);
 
 // ability names
-var name NAME_FIELD_RELOAD_MODULE;
 var name NAME_RECLAIM;
 var name NAME_SHELTER;
 var name NAME_SOUL_OF_THE_ARCHITECT;
@@ -25,7 +24,6 @@ static function array <X2DataTemplate> CreateTemplates()
 	Templates.AddItem(CreateReclaim());
 
 	// LIEUTENANT!
-	Templates.AddItem(class'X2Ability_RelayedShot'.static.CreateRelayedShot());
 	Templates.AddItem(class'X2Ability_TargetingArray'.static.CreateTargetingArray());
 
 	// MAJOR!
@@ -168,7 +166,6 @@ private static function X2AbilityTemplate CreateSoulOfTheArchitect()
 
 DefaultProperties 
 {
-	NAME_FIELD_RELOAD_MODULE=Jammerware_JSRC_Ability_FieldReloadModule
 	NAME_RECLAIM=Jammerware_JSRC_Ability_Reclaim
 	NAME_SHELTER=Jammerware_JSRC_Ability_Shelter
 	NAME_SOUL_OF_THE_ARCHITECT=Jammerware_JSRC_Ability_SoulOfTheArchitect
