@@ -19,7 +19,6 @@ static function array <X2DataTemplate> CreateTemplates()
 	Templates.AddItem(class'X2Ability_SpawnSpire'.static.CreateSpawnSpire());
 	
 	// CORPORAL!
-	Templates.AddItem(class'X2Ability_FieldReloadArray'.static.CreateFieldReloadArray());
 	Templates.AddItem(CreateShelter());
 
 	// SERGEANT!

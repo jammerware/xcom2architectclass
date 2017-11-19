@@ -4,8 +4,8 @@
 
     The deal is that this condition goes on abilities that the spires get by default in X2Character_Spire. 
     They can use these abilities only if the architect who summoned them has a corresponding ability. For example,
-    the spire automatically gets the ability class'X2Ability_FieldReloadArray'.default.NAME_SPIRE_ABILITY, but it can only go off
-    if the architect has class'X2Ability_FieldReloadArray'.default.NAME_ABILITY. When the engine evaluates this condition for
+    the spire automatically gets the ability class'JsrcAbility_FieldReloadArray'.default.NAME_SPIRE_ABILITY, but it can only go off
+    if the architect has class'JsrcAbility_FieldReloadArray'.default.NAME_ABILITY. When the engine evaluates this condition for
     the spire, we need to go get the architect that summoned it and check for the prerequisite ability.
 
     The wrinkle is Soul of the Architect. All of these abilities can also go on architects, so we need to account 

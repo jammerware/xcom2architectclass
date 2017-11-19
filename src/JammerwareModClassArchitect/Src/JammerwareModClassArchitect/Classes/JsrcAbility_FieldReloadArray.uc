@@ -1,15 +1,25 @@
-class X2Ability_FieldReloadArray extends X2Ability;
+class JsrcAbility_FieldReloadArray extends X2Ability;
 
 var name NAME_ABILITY;
 var name NAME_SPIRE_ABILITY;
 var string ICON;
 
-public static function X2DataTemplate CreateFieldReloadArray()
+public static function array<X2DataTemplate> CreateTemplates()
+{
+	local array<X2DataTemplate> Templates;
+	
+	Templates.AddItem(CreateFieldReloadArray());
+	Templates.AddItem(CreateSpireFieldReloadArray());
+
+	return Templates;
+}
+
+private static function X2DataTemplate CreateFieldReloadArray()
 {
     return PurePassive(default.NAME_ABILITY, default.ICON);
 }
 
-public static function X2DataTemplate CreateSpireFieldReloadArray()
+private static function X2DataTemplate CreateSpireFieldReloadArray()
 {
     local X2AbilityTemplate Template;
     local X2AbilityTrigger_EventListener SpireSpawnTrigger;

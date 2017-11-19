@@ -10,9 +10,6 @@ static function array <X2DataTemplate> CreateTemplates()
 {
 	local array<X2DataTemplate> Templates;
 
-	// CORPORAL
-	Templates.AddItem(class'X2Ability_FieldReloadArray'.static.CreateSpireFieldReloadArray());
-
 	// SERGEANT!
 	Templates.AddItem(CreateSpireShelter());
 
