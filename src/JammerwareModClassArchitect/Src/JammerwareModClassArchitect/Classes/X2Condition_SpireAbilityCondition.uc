@@ -15,63 +15,40 @@
 class X2Condition_SpireAbilityCondition extends X2Condition;
 
 var name RequiredArchitectAbility;
-var bool DebugOn;
 
-// this seems to happen on unit begin play, and I think it's an optimization to prevent unnecessary evaluations of other
-// condition methods
-public function bool CanEverBeValid(XComGameState_Unit SourceUnit, bool bStrategyCheck)
-{
-    local XComGameState_Unit ArchitectState;
+public event name CallAbilityMeetsCondition(XComGameState_Ability kAbility, XComGameState_BaseObject kTarget)
+{ 
+    local XComGameState_Unit ArchitectState, SourceUnit;
     local Jammerware_JSRC_SpireService SpireService;
     local Jammerware_JSRC_SpireRegistrationService SpireRegistrationService;
     local bool bRequireSotA;
 
-    ConditionalLog("JSRC: can ever be valid");
     SpireService = new class'Jammerware_JSRC_SpireService';
     SpireRegistrationService = new class'Jammerware_JSRC_SpireRegistrationService';
-
-    ConditionalLog("- source state" @ SourceUnit.GetFullName());
+    SourceUnit = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(kAbility.OwnerStateObject.ObjectID));
 
     if (SourceUnit == none)
-        return false;
+        return 'AA_NotAUnit';
 
     if (SpireService.IsSpire(SourceUnit))
     {
-        ConditionalLog("- is spire");
         ArchitectState = SpireRegistrationService.GetRunnerFromSpire(SourceUnit.ObjectID);
-        ConditionalLog("- architect:" @ ArchitectState.GetFullName());
     }
     else 
     {
-        ConditionalLog("- is architect");
         ArchitectState = SourceUnit;
         bRequireSotA = true;
     }
 
-    ConditionalLog("- architect state" @ ArchitectState.GetFullName());
-    ConditionalLog("- affected by required ability" @ ArchitectState.AffectedByEffectNames.Find(RequiredArchitectAbility));
-    ConditionalLog("- SotA required" @ bRequireSotA);
-    ConditionalLog("- has soul?" @ ArchitectState.AffectedByEffectNames.Find(class'X2Ability_RunnerAbilitySet'.default.NAME_SOUL_OF_THE_ARCHITECT) != INDEX_NONE);
-
     if
     (
         ArchitectState == none ||
-        ArchitectState.AffectedByEffectNames.Find(RequiredArchitectAbility) == INDEX_NONE ||
-        (bRequireSotA && ArchitectState.AffectedByEffectNames.Find(class'X2Ability_RunnerAbilitySet'.default.NAME_SOUL_OF_THE_ARCHITECT) == INDEX_NONE)
+        ArchitectState.FindAbility(RequiredArchitectAbility).ObjectID == 0 ||
+        (bRequireSotA && ArchitectState.FindAbility(class'X2Ability_RunnerAbilitySet'.default.NAME_SOUL_OF_THE_ARCHITECT).ObjectID == 0)
     )
     {
-        ConditionalLog("value check failed");
-        return false;
+        return 'AA_ValueCheckFailed';
     }
 
-    ConditionalLog("SUCCESS");
-	return true;
-}
-
-private function ConditionalLog(string Message)
-{
-    if (DebugOn)
-    {
-        `LOG("JSRC: ability condition requiring" @ RequiredArchitectAbility @ "-" @Message);
-    }
+    return 'AA_Success'; 
 }

@@ -3,19 +3,6 @@ class JsrcGameState_SpireUnit extends XComGameState_Unit;
 var localized string LocSpireKilledTitle;
 var localized string LocSpireKilledMessage;
 
-function SetupActionsForBeginTurn()
-{
-	local Jammerware_JSRC_SpireRegistrationService RegistrationService;
-	local XComGameState_Unit ArchitectState;
-
-	`LOG("JSRC: setting up spire actions for begin turn");
-	RegistrationService = new class'Jammerware_JSRC_SpireRegistrationService';
-	ArchitectState = RegistrationService.GetRunnerFromSpire(self.ObjectID);
-	`LOG("JSRC: architect state is none?" @ ArchitectState == none);
-	`LOG("JSRC: end setting up spire actions for begin turn");
-	super.SetupActionsForBeginTurn();
-}
-
 function string GetName(ENameType eType)
 {
     local string UnitName;

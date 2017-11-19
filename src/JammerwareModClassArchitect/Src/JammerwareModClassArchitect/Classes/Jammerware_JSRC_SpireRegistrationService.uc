@@ -1,7 +1,6 @@
 class Jammerware_JSRC_SpireRegistrationService extends Object;
 
-var name UNIT_VALUE_ARCHITECT_ID;
-var name UNITVALUE_LASTSPIREID;
+var name UNIT_VALUE_LASTSPIREID;
 
 function XComGameState_Unit GetRunnerFromSpire(int SpireID)
 {
@@ -12,7 +11,7 @@ function XComGameState_Unit GetRunnerFromSpire(int SpireID)
 
     History = `XCOMHISTORY;
     Spire = XComGameState_Unit(History.GetGameStateForObjectID(SpireID));
-    Spire.GetUnitValue(default.UNIT_VALUE_ARCHITECT_ID, ArchitectIDValue);
+    Spire.GetUnitValue(class'Jammerware_JSRC_UnitSpawnService'.default.NAME_UNITVALUE_OWNER_ID, ArchitectIDValue);
     SpireCreatorID = int(ArchitectIDValue.fValue);
 
     if (ArchitectIDValue.fValue == 0)
@@ -25,7 +24,7 @@ function XComGameState_Unit GetLastSpireFromRunner(XComGameState_Unit RunnerUnit
 {
     local UnitValue SpawnedUnitIDValue;
 
-    RunnerUnitGameState.GetUnitValue(default.UNITVALUE_LASTSPIREID, SpawnedUnitIDValue);
+    RunnerUnitGameState.GetUnitValue(default.UNIT_VALUE_LASTSPIREID, SpawnedUnitIDValue);
 
     if (SpawnedUnitIDValue.fValue == 0)
     {
@@ -35,36 +34,12 @@ function XComGameState_Unit GetLastSpireFromRunner(XComGameState_Unit RunnerUnit
     return XComGameState_Unit(GameState.GetGameStateForObjectID(int(SpawnedUnitIDValue.fValue)));
 }
 
-function RegisterSpireToRunner(const out EffectAppliedData ApplyEffectParameters, StateObjectReference SpireUnitRef, XComGameState NewGameState, XComGameState_Effect NewEffectState)
+function RegisterSpireToArchitect(XComGameState_Unit SpireState, XComGameState_Unit ArchitectState)
 {
-    local EffectAppliedData NewEffectParams;
-    local XComGameState_Unit RunnerState, SpireState;
-    local X2Effect_SpirePassive SpirePassiveEffect;
-
-    RunnerState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(ApplyEffectParameters.SourceStateObjectRef.ObjectID));
-    SpireState = XComGameState_Unit(NewGameState.GetGameStateForObjectID(SpireUnitRef.ObjectID));
-
-	NewEffectParams = ApplyEffectParameters;
-	NewEffectParams.EffectRef.ApplyOnTickIndex = INDEX_NONE;
-	NewEffectParams.EffectRef.LookupType = TELT_AbilityTargetEffects;
-	NewEffectParams.EffectRef.SourceTemplateName = class'X2Ability_SpireAbilitySet'.default.NAME_SPIRE_PASSIVE;
-	NewEffectParams.EffectRef.TemplateEffectLookupArrayIndex = 0;
-	NewEffectParams.TargetStateObjectRef = SpireState.GetReference();
-
-	SpirePassiveEffect = X2Effect_SpirePassive(class'X2Effect'.static.GetX2Effect(NewEffectParams.EffectRef));
-	`assert(SpirePassiveEffect != none);
-	SpirePassiveEffect.ApplyEffect(NewEffectParams, SpireState, NewGameState);
-
-    // make a note of the last spire spawned by this runner. yes, i hate this
-    // i also tried relying on the passive effect's source to point us to the architect who summoned this spire, but 
-    // there are situations during unit spawn where the effect isn't there yet, but we still need to know who owns it
-    RunnerState.SetUnitFloatValue(default.UNITVALUE_LASTSPIREID, SpireState.ObjectID, eCleanup_BeginTactical);
-    SpireState.SetUnitFloatValue(default.UNIT_VALUE_ARCHITECT_ID, RunnerState.ObjectID, eCleanup_BeginTactical);
-    `LOG("JSRC: architect" @ RunnerState.GetFullName() @ "creates spire" @ SpireState.ObjectID);
+    ArchitectState.SetUnitFloatValue(default.UNIT_VALUE_LASTSPIREID, SpireState.ObjectID, eCleanup_BeginTactical);
 }
 
 defaultproperties
 {
-    UNIT_VALUE_ARCHITECT_ID=Jammerware_JSRC_UnitValue_ArchitectID
-    UNITVALUE_LASTSPIREID=Jammerware_JSRC_UnitValue_LastSpireID
+    UNIT_VALUE_LASTSPIREID=Jammerware_JSRC_UnitValue_LastSpireID
 }

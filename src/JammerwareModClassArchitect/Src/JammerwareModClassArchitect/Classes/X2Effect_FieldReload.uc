@@ -40,8 +40,6 @@ simulated function AddX2ActionsForVisualization(XComGameState VisualizeGameState
         AbilityState = XComGameState_Ability(VisualizeGameState.GetGameStateForObjectID(AbilityContext.InputContext.AbilityRef.ObjectID));
         AbilityTemplate = AbilityState.GetMyTemplate();
 
-        `LOG("JSRC: the ability template dataname is" @AbilityTemplate.DataName);
-
         FlyoverService = new class'Jammerware_JSRC_FlyoverService';
         FlyoverService.FlyoverText = AbilityTemplate.LocFlyoverText;
         FlyoverService.FlyoverIcon = AbilityTemplate.IconImage;

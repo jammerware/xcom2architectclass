@@ -15,12 +15,13 @@
 */
 class Jammerware_JSRC_UnitSpawnService extends Object;
 
+var name NAME_UNITVALUE_OWNER_ID;
+
 public function XComGameState_Unit CreateUnit( 
     XComGameState_Unit OwnerUnit,
 	Vector Position, 
 	Name CharacterTemplateName, 
 	ETeam Team, 
-	bool bAddToStartState, 
 	optional XComGameState NewGameState)
 {
 	local XComGameState_Unit NewUnitState;
@@ -40,16 +41,6 @@ public function XComGameState_Unit CreateUnit(
 	{
 		`REDSCREEN("No character template named" @ CharacterTemplateName @ "was found.");
 		return none;
-	}
-
-	if (bAddToStartState)
-	{
-		NewGameState = History.GetStartState();
-
-		if(NewGameState == none)
-		{
-			`assert(false); // attempting to add to start state after the start state has been locked down!
-		}
 	}
 
 	if( NewGameState == None )
@@ -142,6 +133,14 @@ private event XComGameState_Unit CreateUnitInternal(
 	// create the unit
 	UnitTile = `XWORLD.GetTileCoordinatesFromPosition(Position);
 	UnitState = CharacterTemplate.CreateInstanceFromTemplate(NewGameState);
+
+	// set its owner
+	if (OwnerUnit != none)
+	{
+		UnitState.SetUnitFloatValue(default.NAME_UNITVALUE_OWNER_ID, OwnerUnit.ObjectID, eCleanup_Never);
+	}
+
+	// this is the part that lets a lot of other systems know that a unit is in the house
 	UnitState.PostCreateInit
 	(
 		NewGameState, 
@@ -173,4 +172,9 @@ private event XComGameState_Unit CreateUnitInternal(
 	}
 
 	return UnitState;
+}
+
+DefaultProperties
+{
+	NAME_UNITVALUE_OWNER_ID=Jammerware_JSRC_UnitValue_OwnerID
 }

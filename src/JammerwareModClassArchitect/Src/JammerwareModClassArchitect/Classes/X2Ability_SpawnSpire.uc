@@ -12,7 +12,6 @@ static function X2DataTemplate CreateSpawnSpire()
 	local X2AbilityCost_ActionPoints APCost;
 	local X2AbilityCooldown Cooldown;
 	local X2AbilityTarget_Cursor CursorTarget;
-	local X2Effect_SpawnSpire SpawnSpireEffect;
 
 	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_SPAWN_SPIRE);
 
@@ -49,9 +48,7 @@ static function X2DataTemplate CreateSpawnSpire()
 	Template.TargetingMethod = class'X2TargetingMethod_SpawnSpire';
 
 	// effects
-	SpawnSpireEffect = new class'X2Effect_SpawnSpire';
-	SpawnSpireEffect.BuildPersistentEffect(1, true);
-	Template.AddShooterEffect(SpawnSpireEffect);
+	Template.AddShooterEffect(new class'JsrcEffect_SpawnSpire');
 
 	// game state and visualization
 	Template.bSkipFireAction = true;

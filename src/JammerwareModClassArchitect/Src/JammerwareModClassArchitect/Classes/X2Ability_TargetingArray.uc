@@ -87,7 +87,7 @@ public static function X2DataTemplate CreateSpireTargetingArrayTriggered()
 	Template.AbilityTriggers.AddItem(Trigger);
 
 	Trigger = new class'X2AbilityTrigger_EventListener';
-	Trigger.ListenerData.EventID = class'X2Effect_SpawnSpire'.default.NAME_SPAWN_SPIRE_TRIGGER;
+	Trigger.ListenerData.EventID = class'JsrcEffect_SpawnSpire'.default.NAME_SPAWN_SPIRE_TRIGGER;
 	Trigger.ListenerData.Filter = eFilter_None;
 	Trigger.ListenerData.Deferral = ELD_OnStateSubmitted;
 	Trigger.ListenerData.EventFn = UnitSpawnedTargetingArrayListener;
