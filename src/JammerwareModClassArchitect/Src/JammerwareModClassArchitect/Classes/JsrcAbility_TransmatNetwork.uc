@@ -1,4 +1,4 @@
-class X2Ability_TransmatNetwork extends X2Ability;
+class JsrcAbility_TransmatNetwork extends X2Ability;
 
 var name NAME_TRANSMAT;
 var name NAME_TRANSMATNETWORK;
@@ -6,22 +6,23 @@ var name NAME_SPIRETRANSMATNETWORK;
 
 var string ICON_TRANSMATNETWORK;
 
-static function array <X2DataTemplate> CreateTemplates()
+public static function array <X2DataTemplate> CreateTemplates()
 {
     local array<X2DataTemplate> Templates;
 
-    // the runner and spire abilities are added by their ability set files
+	Templates.AddItem(CreateTransmatNetwork());
+	Templates.AddItem(CreateSpireTransmatNetwork());
     Templates.AddItem(CreateTransmat());
 
     return Templates;
 }
 
-static function X2DataTemplate CreateRunnerTransmatNetwork()
+private static function X2DataTemplate CreateTransmatNetwork()
 {
     return PurePassive(default.NAME_TRANSMATNETWORK, default.ICON_TRANSMATNETWORK);
 }
 
-static function X2DataTemplate CreateSpireTransmatNetwork()
+private static function X2DataTemplate CreateSpireTransmatNetwork()
 {
 	local X2AbilityTemplate Template;
 	local X2Condition_SpireAbilityCondition SpireAbilityCondition;
@@ -35,7 +36,7 @@ static function X2DataTemplate CreateSpireTransmatNetwork()
     return Template;
 }
 
-static function X2AbilityTemplate CreateTransmat()
+private static function X2AbilityTemplate CreateTransmat()
 {
 	local X2AbilityTemplate Template;
 	local X2AbilityCost_ActionPoints ActionPointCost;
@@ -91,7 +92,7 @@ static function X2AbilityTemplate CreateTransmat()
 	return Template;
 }
 
-static simulated function XComGameState Transmat_BuildGameState(XComGameStateContext Context)
+private static simulated function XComGameState Transmat_BuildGameState(XComGameStateContext Context)
 {
 	local XComGameStateContext_Ability AbilityContext;
 	local XComGameState	NewGameState;
@@ -134,7 +135,7 @@ static simulated function XComGameState Transmat_BuildGameState(XComGameStateCon
 	return NewGameState;
 }
 
-simulated function Transmat_BuildVisualization(XComGameState VisualizeGameState)
+private simulated function Transmat_BuildVisualization(XComGameState VisualizeGameState)
 {
 	local XComGameStateContext_Ability AbilityContext;	
 	local XComGameState_Unit SourceUnit;

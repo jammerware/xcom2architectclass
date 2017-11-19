@@ -43,7 +43,7 @@ private function int GetNetworkID()
 	TransmatService = new class'Jammerware_JSRC_TransmatNetworkService';
 	
 	// get all allies adjacent to the shooter that have the transmat network node buff
-	AdjacentUnits = ProximityService.GetAdjacentUnits(self.ShooterState, true, , class'X2Ability_TransmatNetwork'.default.NAME_SPIRETRANSMATNETWORK);
+	AdjacentUnits = ProximityService.GetAdjacentUnits(self.ShooterState, true, , class'JsrcAbility_TransmatNetwork'.default.NAME_SPIRETRANSMATNETWORK);
 
 	if (AdjacentUnits.Length == 0)
 		`REDSCREEN("JSRC: X2TargetingMethod_Transmat couldn't find an adjacent transmat network node");

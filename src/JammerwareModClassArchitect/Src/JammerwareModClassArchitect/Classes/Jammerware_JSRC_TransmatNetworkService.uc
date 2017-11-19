@@ -19,7 +19,7 @@ function RegisterTransmatAbilityToCharacterTemplates()
 
             if (IsEligibleForTransmatAbility(CharTemplate))
             {
-                CharTemplate.Abilities.AddItem(class'X2Ability_TransmatNetwork'.default.NAME_TRANSMAT);
+                CharTemplate.Abilities.AddItem(class'JsrcAbility_TransmatNetwork'.default.NAME_TRANSMAT);
             }
         }
     }
@@ -39,7 +39,7 @@ function int GetNetworkIDFromUnitState(XComGameState_Unit UnitState)
     local Jammerware_JSRC_SpireService SpireService;
     local Jammerware_JSRC_SpireRegistrationService SpireRegistrationService;
 
-    if (UnitState == none || UnitState.AffectedByEffectNames.Find(class'X2Ability_TransmatNetwork'.default.NAME_SPIRETRANSMATNETWORK) == INDEX_NONE)
+    if (UnitState == none || UnitState.AffectedByEffectNames.Find(class'JsrcAbility_TransmatNetwork'.default.NAME_SPIRETRANSMATNETWORK) == INDEX_NONE)
     {
         return 0;
     }

@@ -40,7 +40,7 @@ private static function X2DataTemplate Create_OnUnitBeginPlay_LoadPerks()
     Template.AddPerkToRegister(class'JsrcAbility_Quicksilver'.default.NAME_SPIRE_QUICKSILVER, ,class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE);
 
     // perk registrations (every unit ever)
-    Template.AddPerkToRegister(class'X2Ability_TransmatNetwork'.default.NAME_TRANSMAT,,, eTeam_XCom);
+    Template.AddPerkToRegister(class'JsrcAbility_TransmatNetwork'.default.NAME_TRANSMAT,,, eTeam_XCom);
 
     // fire it up on unit begin play
 	Template.AddEvent('OnUnitBeginPlay', OnUnitBeginPlay);

@@ -22,7 +22,6 @@ static function array <X2DataTemplate> CreateTemplates()
 
 	// COLONEL!
 	Templates.AddItem(CreateSoulOfTheArchitect());
-	Templates.AddItem(class'X2Ability_TransmatNetwork'.static.CreateRunnerTransmatNetwork());
 
 	return Templates;
 }
@@ -139,7 +138,7 @@ private static function X2AbilityTemplate CreateSoulOfTheArchitect()
 	Template.AdditionalAbilities.AddItem(class'JsrcAbility_Shelter'.default.NAME_SPIRE_SHELTER);
 	Template.AdditionalAbilities.AddItem(class'JsrcAbility_Quicksilver'.default.NAME_SPIRE_QUICKSILVER);
 	Template.AdditionalAbilities.AddItem(class'JsrcAbility_KineticRigging'.default.NAME_KINETIC_BLAST);
-	Template.AdditionalAbilities.AddItem(class'X2Ability_TransmatNetwork'.default.NAME_SPIRETRANSMATNETWORK);
+	Template.AdditionalAbilities.AddItem(class'JsrcAbility_TransmatNetwork'.default.NAME_SPIRETRANSMATNETWORK);
 
 	Template.bSkipFireAction = true;
 	Template.bShowActivation = true;

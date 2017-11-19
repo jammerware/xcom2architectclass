@@ -72,7 +72,7 @@ private static function X2CharacterTemplate CreateDefaultSpire(name TemplateName
 	CharTemplate.Abilities.AddItem(class'JsrcAbility_TargetingArray'.default.NAME_TARGETING_ARRAY_SPIRE_TRIGGERED);
 	CharTemplate.Abilities.AddItem(class'JsrcAbility_Quicksilver'.default.NAME_SPIRE_QUICKSILVER);
 	CharTemplate.Abilities.AddItem(class'JsrcAbility_KineticRigging'.default.NAME_KINETIC_BLAST);
-	CharTemplate.Abilities.AddItem(class'X2Ability_TransmatNetwork'.default.NAME_SPIRETRANSMATNETWORK);
+	CharTemplate.Abilities.AddItem(class'JsrcAbility_TransmatNetwork'.default.NAME_SPIRETRANSMATNETWORK);
 
     return CharTemplate;
 }
