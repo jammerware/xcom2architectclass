@@ -66,6 +66,7 @@ private static function X2AbilityTemplate CreateHeadstone()
 	// game state and visualization
 	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
 	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
+	Template.bSkipFireAction = true;
 	Template.bShowActivation = true;
 
 	return Template;

@@ -89,7 +89,7 @@ function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, XCom
 	// if spawnspire was cast on a unit (like it is when Headstone is used), remove that unit from play
 	if (ApplyEffectParameters.SourceStateObjectRef.ObjectID != ApplyEffectParameters.TargetStateObjectRef.ObjectID)
 	{
-		`XEVENTMGR.TriggerEvent('UnitRemovedFromPlay', TargetUnitGameState, ShooterState, NewGameState);
+		`XEVENTMGR.TriggerEvent('UnitRemovedFromPlay', TargetUnitGameState, TargetUnitGameState, NewGameState);
 	}
 
 	// currently, all this does is log the last spire the architect created so we can examine it in the BuildGameState function for the abilities

@@ -1,16 +1,23 @@
-class X2Ability_TransmatLink extends X2Ability
+class JsrcAbility_TransmatLink extends X2Ability
 	config(JammerwareModClassArchitect);
 
-var name NAME_TRANSMAT_LINK;
+var name NAME_ABILITY;
 var config int COOLDOWN_TRANSMAT_LINK;
 
-static function X2DataTemplate CreateTransmatLink()
+public static function array<X2DataTemplate> CreateTemplates()
+{
+	local array<X2DataTemplate> Templates;
+	Templates.AddItem(CreateTransmatLink());
+	return Templates;
+}
+
+private static function X2DataTemplate CreateTransmatLink()
 {
     local X2AbilityTemplate Template;
 	local X2AbilityCooldown Cooldown;
 
 	// general properties
-	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_TRANSMAT_LINK);
+	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_ABILITY);
 	Template.Hostility = eHostility_Neutral;
 
 	// hud behavior
@@ -141,7 +148,7 @@ simulated function TransmatLink_BuildVisualization(XComGameState VisualizeGameSt
 	TargetUnit.SyncVisualizer();
 }
 
-defaultproperties
+DefaultProperties
 {
-    NAME_TRANSMAT_LINK=Jammerware_JSRC_Ability_TransmatLink;
+    NAME_ABILITY=Jammerware_JSRC_Ability_TransmatLink;
 }

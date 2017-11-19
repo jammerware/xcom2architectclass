@@ -3,7 +3,7 @@ class JsrcAbility_KineticRigging extends X2Ability
 
 var name NAME_KINETIC_BLAST;
 var name NAME_KINETIC_RIGGING;
-var config int SOUL_COOLDOWN_KINETIC_BLAST;
+var config int COOLDOWN_SOUL_KINETIC_BLAST;
 
 public static function array<X2DataTemplate> CreateTemplates()
 {
@@ -54,8 +54,10 @@ private static function X2DataTemplate CreateKineticBlast()
 
 	// cooldown
 	Cooldown = new class'X2AbilityCooldown_SoulOfTheArchitect';
-	Cooldown.NonSpireCooldown = default.SOUL_COOLDOWN_KINETIC_BLAST;
+	Cooldown.NonSpireCooldown = default.COOLDOWN_SOUL_KINETIC_BLAST;
 	Template.AbilityCooldown = Cooldown;
+
+	`LOG("JSRC: template creation - the cooldown is" @Cooldown.NonSpireCooldown);
 
 	// targeting style (how targets are determined by game rules)
 	Template.AbilityTargetStyle = new class'X2AbilityTarget_Cursor';

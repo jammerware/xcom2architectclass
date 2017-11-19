@@ -13,7 +13,7 @@ public function string ExpandAbilityTag(string Input)
         case "QuicksilverCharges_Mag": return string(class'X2Item_SpireGun'.default.SPIREGUN_MAGNETIC_QUICKSILVERCHARGESBONUS);
         case "QuicksilverCharges_Beam": return string(class'X2Item_SpireGun'.default.SPIREGUN_BEAM_QUICKSILVERCHARGESBONUS);
         case "QuicksilverCooldownWithSoul": return string(class'JsrcAbility_Quicksilver'.default.COOLDOWN_SOUL_QUICKSILVER);
-        case "KineticBlastCooldownWithSoul": return string(class'JsrcAbility_KineticRigging'.default.SOUL_COOLDOWN_KINETIC_BLAST);
+        case "KineticBlastCooldownWithSoul": return string(class'JsrcAbility_KineticRigging'.default.COOLDOWN_SOUL_KINETIC_BLAST);
         case "ReclaimCooldown": return string(class'JsrcAbility_Reclaim'.default.RECLAIM_COOLDOWN);
         case "RelayedShotCooldown": return string(class'JsrcAbility_RelayedShot'.default.COOLDOWN_RELAYED_SHOT);
         case "ShelterShieldAmount_Conv": return string(class'X2Item_SpireGun'.default.SPIREGUN_CONVENTIONAL_SHELTERSHIELDBONUS);
@@ -25,7 +25,7 @@ public function string ExpandAbilityTag(string Input)
         case "TargetingArrayAccuracy_Conv": return string(class'X2Item_SpireGun'.default.SPIREGUN_CONVENTIONAL_TARGETINGARRAYACCURACYBONUS);
         case "TargetingArrayAccuracy_Mag": return string(class'X2Item_SpireGun'.default.SPIREGUN_MAGNETIC_TARGETINGARRAYACCURACYBONUS);
         case "TargetingArrayAccuracy_Beam": return string(class'X2Item_SpireGun'.default.SPIREGUN_BEAM_TARGETINGARRAYACCURACYBONUS);
-        case "TransmatLinkCooldown": return string(class'X2Ability_TransmatLink'.default.COOLDOWN_TRANSMAT_LINK);
+        case "TransmatLinkCooldown": return string(class'JsrcAbility_TransmatLink'.default.COOLDOWN_TRANSMAT_LINK);
     }
 
     return "";

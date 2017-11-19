@@ -14,7 +14,7 @@ simulated function int GetNumTurns(XComGameState_Ability kAbility, XComGameState
 	if (OwnerUnit == none)
 		OwnerUnit = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(kAbility.OwnerStateObject.ObjectID));
 
-    if (SpireService.IsSpire(OwnerUnit))
+    if (!SpireService.IsSpire(OwnerUnit))
     {
         return NonSpireCooldown;
     }
