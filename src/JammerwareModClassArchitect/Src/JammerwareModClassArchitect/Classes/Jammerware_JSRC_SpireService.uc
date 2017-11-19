@@ -6,6 +6,6 @@ public function bool IsSpire(XComGameState_Unit UnitState, optional bool AllowSo
         UnitState.GetMyTemplate().CharacterGroupName == class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE ||
         (
             AllowSoulOfTheArchitect &&
-            UnitState.AffectedByEffectNames.Find(class'X2Ability_RunnerAbilitySet'.default.NAME_SOUL_OF_THE_ARCHITECT) != INDEX_NONE
+            UnitState.FindAbility(class'JsrcAbility_SoulOfTheArchitect'.default.NAME_ABILITY).ObjectID > 0
         );
 }

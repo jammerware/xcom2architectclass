@@ -3,7 +3,6 @@ class X2Ability_RunnerAbilitySet extends X2Ability
 
 // ability names
 var name NAME_RECLAIM;
-var name NAME_SOUL_OF_THE_ARCHITECT;
 var name NAME_UNITY;
 
 // config/balance
@@ -19,9 +18,6 @@ static function array <X2DataTemplate> CreateTemplates()
 	// MAJOR!
 	Templates.AddItem(CreateUnity());
 	Templates.AddItem(class'X2Ability_TransmatLink'.static.CreateTransmatLink());
-
-	// COLONEL!
-	Templates.AddItem(CreateSoulOfTheArchitect());
 
 	return Templates;
 }
@@ -103,54 +99,8 @@ private static function X2AbilityTemplate CreateUnity()
 	return PurePassive(default.NAME_UNITY, "img:///UILibrary_PerkIcons.UIPerk_aethershift");
 }
 
-private static function X2AbilityTemplate CreateSoulOfTheArchitect()
-{
-	local X2AbilityTemplate Template;
-	local X2Effect_GenerateCover GenerateCoverEffect;
-	local X2Effect_Persistent PersistentEffect;
-
-	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_SOUL_OF_THE_ARCHITECT);
-
-	Template.IconImage = "img:///UILibrary_XPACK_Common.PerkIcons.UIPerk_Pillar";
-	Template.AbilitySourceName = 'eAbilitySource_Perk';
-	Template.eAbilityIconBehaviorHUD = EAbilityIconBehavior_NeverShow;
-	Template.Hostility = eHostility_Neutral;
-	
-	// targeting and ability to hit
-	Template.AbilityTargetStyle = default.SelfTarget;
-	Template.AbilityToHitCalc = default.DeadEye;
-
-	// triggering
-	Template.AbilityTriggers.AddItem(default.UnitPostBeginPlayTrigger);
-
-	GenerateCoverEffect = new class'X2Effect_GenerateCover';
-	GenerateCoverEffect.BuildPersistentEffect(1, true, false);
-	GenerateCoverEffect.bRemoveWhenMoved = false;
-	GenerateCoverEffect.bRemoveOnOtherActivation = false;
-	Template.AddTargetEffect(GenerateCoverEffect);
-
-	PersistentEffect = new class'X2Effect_Persistent';
-	PersistentEffect.BuildPersistentEffect(1, true, false);
-	PersistentEffect.SetDisplayInfo(ePerkBuff_Passive, Template.LocFriendlyName, Template.LocLongDescription, Template.IconImage, true,, Template.AbilitySourceName);
-	Template.AddTargetEffect(PersistentEffect);
-
-	Template.AdditionalAbilities.AddItem(class'JsrcAbility_TargetingArray'.default.NAME_TARGETING_ARRAY_SPIRE);
-	Template.AdditionalAbilities.AddItem(class'JsrcAbility_Shelter'.default.NAME_SPIRE_SHELTER);
-	Template.AdditionalAbilities.AddItem(class'JsrcAbility_Quicksilver'.default.NAME_SPIRE_QUICKSILVER);
-	Template.AdditionalAbilities.AddItem(class'JsrcAbility_KineticRigging'.default.NAME_KINETIC_BLAST);
-	Template.AdditionalAbilities.AddItem(class'JsrcAbility_TransmatNetwork'.default.NAME_SPIRETRANSMATNETWORK);
-
-	Template.bSkipFireAction = true;
-	Template.bShowActivation = true;
-	Template.BuildNewGameStateFn = TypicalAbility_BuildGameState;
-	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
-
-	return Template;
-}
-
 DefaultProperties 
 {
 	NAME_RECLAIM=Jammerware_JSRC_Ability_Reclaim
-	NAME_SOUL_OF_THE_ARCHITECT=Jammerware_JSRC_Ability_SoulOfTheArchitect
 	NAME_UNITY=Jammerware_JSRC_Ability_Unity
 }

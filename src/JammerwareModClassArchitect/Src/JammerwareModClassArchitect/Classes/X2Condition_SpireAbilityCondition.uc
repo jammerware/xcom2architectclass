@@ -44,7 +44,7 @@ public event name CallAbilityMeetsCondition(XComGameState_Ability kAbility, XCom
     (
         ArchitectState == none ||
         ArchitectState.FindAbility(RequiredArchitectAbility).ObjectID == 0 ||
-        (bRequireSotA && ArchitectState.FindAbility(class'X2Ability_RunnerAbilitySet'.default.NAME_SOUL_OF_THE_ARCHITECT).ObjectID == 0)
+        (bRequireSotA && ArchitectState.FindAbility(class'JsrcAbility_SoulOfTheArchitect'.default.NAME_ABILITY).ObjectID == 0)
     )
     {
         return 'AA_ValueCheckFailed';
