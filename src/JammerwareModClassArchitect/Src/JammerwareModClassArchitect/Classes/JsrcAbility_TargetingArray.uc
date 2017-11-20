@@ -87,6 +87,7 @@ private static function X2DataTemplate CreateSpireTargetingArrayTriggered()
 	TargetPropertiesCondition.ExcludeFriendlyToSource = false;
 	TargetPropertiesCondition.ExcludeHostileToSource = true;
 	TargetPropertiesCondition.ExcludeCivilian = true;
+	TargetPropertiesCondition.FailOnNonUnits = true;
 	Template.AbilityMultiTargetConditions.AddItem(TargetPropertiesCondition);
 	
 	EffectsCondition = new class'X2Condition_UnitEffects';
@@ -96,7 +97,7 @@ private static function X2DataTemplate CreateSpireTargetingArrayTriggered()
 	// triggers
 	Trigger = new class'X2AbilityTrigger_EventListener';
 	Trigger.ListenerData.EventID = 'ObjectMoved';
-	Trigger.ListenerData.Filter = eFilter_None;
+	Trigger.ListenerData.Filter = eFilter_Unit;
 	Trigger.ListenerData.Deferral = ELD_OnStateSubmitted;
 	Trigger.ListenerData.EventFn = class'XComGameState_Ability'.static.AbilityTriggerEventListener_SelfWithAdditionalTargets;
 	Template.AbilityTriggers.AddItem(Trigger);
