@@ -114,6 +114,8 @@ function DirectSetTarget(int TargetIndex)
 		{
 			Camera.AddFocusActor(ActorIterator);
 		}
+
+		Camera.RecomputeLookatPointAndZoom(false);
 	}
 }
 
