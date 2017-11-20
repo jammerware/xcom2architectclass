@@ -60,6 +60,10 @@ private static function X2DataTemplate CreateSpireTargetingArrayTriggered()
 	Template.eAbilityIconBehaviorHUD = EAbilityIconBehavior_NeverShow;
 	Template.Hostility = eHostility_Neutral;
 
+	// weapon sourcing - when the spire has this, we need to let the game know to look in the secondary slot
+	// for the weapon
+	Template.DefaultSourceItemSlot = eInvSlot_SecondaryWeapon;
+
 	// targeting
 	Template.AbilityTargetStyle = default.SelfTarget;
 
