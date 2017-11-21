@@ -43,10 +43,11 @@ function vector GetSpawnLocation(const out EffectAppliedData ApplyEffectParamete
 	local vector SpawnLocation;
 	local XComGameState_Unit TargetUnitGameState;
 
+	TargetUnitGameState = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(ApplyEffectParameters.TargetStateObjectRef.ObjectID));
+
 	if (ApplyEffectParameters.SourceStateObjectRef.ObjectID != TargetUnitGameState.GetReference().ObjectID)
 	{
 		// if this effect is cast on a target (like it is when Headstone is used), use the location of the target unit
-		TargetUnitGameState = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(ApplyEffectParameters.TargetStateObjectRef.ObjectID));
 		SpawnLocation = `XWorld.GetPositionFromTileCoordinates(TargetUnitGameState.TileLocation);
 	}
 	else
@@ -110,17 +111,16 @@ simulated function AddX2ActionsForVisualization(XComGameState VisualizeGameState
 	local XComGameState_Unit ShooterState, SpireState;
 	local Jammerware_JSRC_SpireRegistrationService SpireRegistrationService;
 
+	AbilityContext = XComGameStateContext_Ability(VisualizeGameState.GetContext());
+	SpireRegistrationService = new class'Jammerware_JSRC_SpireRegistrationService';
+	ShooterState = XComGameState_Unit(VisualizeGameState.GetGameStateForObjectID(AbilityContext.InputContext.SourceObject.ObjectID));
+	SpireState = SpireRegistrationService.GetLastSpireFromRunner(ShooterState, VisualizeGameState);
+
 	if (EffectApplyResult == 'AA_Success')
 	{
-		SpireRegistrationService = new class'Jammerware_JSRC_SpireRegistrationService';
-		AbilityContext = XComGameStateContext_Ability(VisualizeGameState.GetContext());
-		ShooterState = XComGameState_Unit(VisualizeGameState.GetGameStateForObjectID(AbilityContext.InputContext.SourceObject.ObjectID));
-		SpireState = SpireRegistrationService.GetLastSpireFromRunner(ShooterState, VisualizeGameState);
-
-		// TODO: SOME KIND OF SWEET VISUALIZATIONS LOL
-
-		// sync the visualizer to make sure the new spire shows up
-		SpireState.SyncVisualizer();
+		`LOG("JSRC: spire state is" @ SpireState.GetFullName());
+		SpireState.SyncVisualizer(VisualizeGameState);		
+		`LOG("JSRC: visualizer sync'd");
 	}
 }
 

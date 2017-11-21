@@ -24,8 +24,7 @@ function XComGameState_Unit GetLastSpireFromRunner(XComGameState_Unit RunnerUnit
 {
     local UnitValue SpawnedUnitIDValue;
 
-    RunnerUnitGameState.GetUnitValue(default.UNIT_VALUE_LASTSPIREID, SpawnedUnitIDValue);
-
+    RunnerUnitGameState.GetUnitValue(default.UNIT_VALUE_LASTSPIREID, SpawnedUnitIDValue);    
     if (SpawnedUnitIDValue.fValue == 0)
     {
         return none;
@@ -36,6 +35,8 @@ function XComGameState_Unit GetLastSpireFromRunner(XComGameState_Unit RunnerUnit
 
 function RegisterSpireToArchitect(XComGameState_Unit SpireState, XComGameState_Unit ArchitectState)
 {
+    `LOG("JSRC: architect" @ ArchitectState.GetFullName());
+    `LOG("JSRC: spire" @ SpireState.GetFullName());
     ArchitectState.SetUnitFloatValue(default.UNIT_VALUE_LASTSPIREID, SpireState.ObjectID, eCleanup_BeginTactical);
 }
 

@@ -99,7 +99,7 @@ private static simulated function XComGameState SpawnSpire_BuildGameState(XComGa
 	return NewGameState;
 }
 
-defaultproperties
+DefaultProperties
 {
     NAME_SPAWN_SPIRE=Jammerware_JSRC_Ability_SpawnSpire
 }
