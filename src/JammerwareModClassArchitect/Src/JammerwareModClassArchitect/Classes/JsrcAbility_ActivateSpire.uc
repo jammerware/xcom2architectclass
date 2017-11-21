@@ -19,6 +19,7 @@ private static function X2AbilityTemplate CreateActivateSpire()
 {
 	local X2AbilityTemplate Template;
 	local X2AbilityCooldown Cooldown;
+	local X2Condition_OwnedSpire OwnedSpireCondition;
 	local X2Effect_GrantActionPoints APEffect;
 	local X2Effect_SpireActive SpireActiveEffect;
 
@@ -53,7 +54,10 @@ private static function X2AbilityTemplate CreateActivateSpire()
 	// conditions
 	Template.AbilityShooterConditions.AddItem(default.LivingShooterProperty);
 	Template.AbilityTargetConditions.AddItem(default.GameplayVisibilityCondition);
-	Template.AbilityTargetConditions.AddItem(new class'X2Condition_OwnedSpire');
+
+	OwnedSpireCondition = new class'X2Condition_OwnedSpire';
+	OwnedSpireCondition.RequireHasAvailableActions = true;
+	Template.AbilityTargetConditions.AddItem(OwnedSpireCondition);
 
 	// triggering
 	Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);

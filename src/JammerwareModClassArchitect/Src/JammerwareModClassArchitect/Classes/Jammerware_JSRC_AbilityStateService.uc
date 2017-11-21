@@ -26,3 +26,51 @@ public static function ActivateAbility(XComGameState_Ability AbilityState)
         }
     }
 }
+
+public function bool CanAffordNonActionPointCosts(XComGameState_Ability AbilityState)
+{
+    local X2AbilityCost Cost;
+    local XComGameState_Unit ActivatingUnitState;
+	local name AvailableCode;
+
+	if (ActivatingUnitState == none)
+		ActivatingUnitState = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(AbilityState.OwnerStateObject.ObjectID));
+
+	foreach AbilityState.GetMyTemplate().AbilityCosts(Cost)
+	{
+        if (!Cost.IsA('X2AbilityCost_ActionPoints'))
+        {
+            AvailableCode = Cost.CanAfford(AbilityState, ActivatingUnitState);
+            if (AvailableCode != 'AA_Success')
+                return false;
+        }
+	}
+	return true;
+}
+
+public function array<XComGameState_Ability> GetActivatedAbilities(XComGameState_Unit UnitState)
+{
+    local XComGameStateHistory History;
+    local StateObjectReference AbilityRefIterator;
+    local XComGameState_Ability AbilityState;
+    local X2AbilityTrigger TriggerIterator;
+    local array<XComGameState_Ability> RetVal;
+
+    History = `XCOMHISTORY;
+
+    foreach UnitState.Abilities(AbilityRefIterator)
+    {
+        AbilityState = XComGameState_Ability(History.GetGameStateForObjectID(AbilityRefIterator.ObjectID));
+
+        foreach AbilityState.GetMyTemplate().AbilityTriggers(TriggerIterator)
+        {
+            if (TriggerIterator.IsA('X2AbilityTrigger_PlayerInput'))
+            {
+                RetVal.AddItem(AbilityState);
+                break;
+            }
+        }
+    }
+
+    return RetVal;
+}
