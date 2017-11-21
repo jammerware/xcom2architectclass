@@ -35,8 +35,6 @@ function XComGameState_Unit GetLastSpireFromRunner(XComGameState_Unit RunnerUnit
 
 function RegisterSpireToArchitect(XComGameState_Unit SpireState, XComGameState_Unit ArchitectState)
 {
-    `LOG("JSRC: architect" @ ArchitectState.GetFullName());
-    `LOG("JSRC: spire" @ SpireState.GetFullName());
     ArchitectState.SetUnitFloatValue(default.UNIT_VALUE_LASTSPIREID, SpireState.ObjectID, eCleanup_BeginTactical);
 }
 

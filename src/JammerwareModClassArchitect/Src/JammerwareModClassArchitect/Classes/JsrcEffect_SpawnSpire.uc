@@ -118,9 +118,7 @@ simulated function AddX2ActionsForVisualization(XComGameState VisualizeGameState
 
 	if (EffectApplyResult == 'AA_Success')
 	{
-		`LOG("JSRC: spire state is" @ SpireState.GetFullName());
 		SpireState.SyncVisualizer(VisualizeGameState);		
-		`LOG("JSRC: visualizer sync'd");
 	}
 }
 

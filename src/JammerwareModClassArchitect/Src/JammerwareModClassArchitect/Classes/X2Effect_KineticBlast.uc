@@ -163,12 +163,9 @@ private function GetTilesEnteredArray(XComGameStateContext_Ability AbilityContex
 
 	local XComGameState_Unit ShooterUnit;
 	local TTile ShooterTile;
-
-	local TTile KnockbackSourceTile;
 	local Vector KnockbackSourceLocation;
 
 	local XComGameState_Unit TargetUnit;
-	local array<TTile> TargetAdjacentTiles;
 	local TTile TargetTile;
 	local XGUnit TargetVisualizer;
 	local XComUnitPawn TargetUnitPawn;
@@ -190,11 +187,8 @@ private function GetTilesEnteredArray(XComGameStateContext_Ability AbilityContex
 	local int UpdatedKnockbackDistance_Meters;
 	local array<StateObjectReference> TileUnits;
 
-	local Jammerware_JSRC_ProximityService ProximityService;
-
 	WorldData = `XWORLD;
 	History = `XCOMHISTORY;
-	ProximityService = new class'Jammerware_JSRC_ProximityService';
 	
 	StepSize = 8.0;
 
@@ -202,13 +196,10 @@ private function GetTilesEnteredArray(XComGameStateContext_Ability AbilityContex
 	TargetUnit = XComGameState_Unit(kNewTargetState);
 	TargetTile = TargetUnit.TileLocation;
 	TargetLocation = WorldData.GetPositionFromTileCoordinates(TargetTile);
-	TargetAdjacentTiles = ProximityService.GetAdjacentTiles(TargetTile);
-
+	
 	ShooterUnit = XComGameState_Unit(NewGameState.GetGameStateForObjectID(AbilityContext.InputContext.SourceObject.ObjectID));
 	ShooterTile = ShooterUnit.TileLocation;
-
-	KnockbackSourceTile = ProximityService.GetClosestTile(ShooterTile, TargetAdjacentTiles);
-	KnockbackSourceLocation = WorldData.GetPositionFromTileCoordinates(KnockbackSourceTile);
+	KnockbackSourceLocation = WorldData.GetPositionFromTileCoordinates(ShooterTile);
 
 	OutAttackDirection = Normal(TargetLocation - KnockbackSourceLocation);
 	OutAttackDirection.Z = 0.0f;
