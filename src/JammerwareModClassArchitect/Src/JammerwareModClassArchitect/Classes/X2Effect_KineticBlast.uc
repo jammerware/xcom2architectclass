@@ -156,6 +156,7 @@ simulated function ApplyEffectToWorld(const out EffectAppliedData ApplyEffectPar
 // it doesn't handle a lot of random cases that the general effect does, and it calculates the tile adjacent to the target that is closest the shooter and just 
 // lies and says that the knockback came from there instead. it'll be cool if it works.
 // edit: it works and it's cool
+// edit: it stopped working so i changed it to just use the shooter's location
 private function GetTilesEnteredArray(XComGameStateContext_Ability AbilityContext, XComGameState_BaseObject kNewTargetState, out array<TTile> OutTilesEntered, out Vector OutAttackDirection, float DamageAmount, XComGameState NewGameState)
 {
 	local XComGameStateHistory History;
