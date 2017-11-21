@@ -21,7 +21,7 @@ The goal of the Architect class is to encourage a spatially-driven play pattern 
 | **SERGEANT** | **Headstone** - Summon a spire on top of the corpse of an enemy unit. | **Reclaim** - Destroy an adjacent spire. You gain one action point, and the cooldown of Create Spire is reset. |
 | **LIEUTENANT** | **Relayed Shot** - You fire your (primary weapon) at one of your spires. It amplifies the kinetic energy of the shot, increasing its effective range and overpenetrating all targets in the area of effect. | **Targeting Array** - While adjacent to a spire, your (primary weapon) shots gain additional accuracy. This ability is available in the Training Center. |
 | **CAPTAIN** | **Kinetic Rigging** - Your spires each gain one charge of *Kinetic Blast*, an ability that knocks back enemies in a cone-shaped area of effect. | **Quicksilver Rigging** - Your spires gain Quicksilver, an ability that grants an adjacent ally an additional action point for the turn. |
-| **MAJOR** | **Unity** - You can summon spires adjacent to any ally. | **Transmat Link** - Exchange locations with one of your spires. |
+| **MAJOR** | **Unity** - You can summon spires adjacent to any ally. | **The Swapper** - Exchange locations with one of your spires. |
 | **COLONEL** | **Soul of the Architect** - All effects that apply to your spires also apply to you. You gain all abilities your spires have. | **Transmat Network** - Your spires gain *Transmat Network Node*, a passive ability which grants any adjacent squadmate the ability to instantly relocate to any tile adjacent to a spire in the same network. |
 
 ### GTS Perk

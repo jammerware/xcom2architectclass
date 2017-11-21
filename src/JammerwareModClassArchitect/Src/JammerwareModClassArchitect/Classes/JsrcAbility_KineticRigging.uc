@@ -83,7 +83,7 @@ private static function X2DataTemplate CreateKineticBlast()
 	Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);
 	
 	// effects
-	KnockbackEffect = new class'X2Effect_KineticBlast';
+	KnockbackEffect = new class'JsrcEffect_KineticBlast';
 	KnockbackEffect.KnockbackDistance = 8;
 	KnockbackEffect.OnlyOnDeath = false; 
 	KnockbackEffect.bKnockbackDestroysNonFragile = true;

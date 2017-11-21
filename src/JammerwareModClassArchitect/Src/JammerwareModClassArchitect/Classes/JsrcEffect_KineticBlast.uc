@@ -1,4 +1,4 @@
-class X2Effect_KineticBlast extends X2Effect_Knockback;
+class JsrcEffect_KineticBlast extends X2Effect_Knockback;
 
 private function bool CanBeDestroyed(XComInteractiveLevelActor InteractiveActor, float DamageAmount)
 {
