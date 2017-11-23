@@ -53,7 +53,6 @@ private static function X2DataTemplate CreateTransmatLink()
 	
 	// game state and visualization
 	Template.CinescriptCameraType = "Templar_Invert";
-	Template.CustomFireAnim = 'HL_ExchangeStart';
 	Template.BuildNewGameStateFn = TransmatLink_BuildGameState;
 	Template.BuildVisualizationFn = TransmatLink_BuildVisualization;
 	Template.bShowActivation = true;
@@ -110,42 +109,32 @@ simulated function TransmatLink_BuildVisualization(XComGameState VisualizeGameSt
 {
 	local XComGameStateHistory History;
 	local XComGameStateContext_Ability Context;
-	local StateObjectReference InteractingUnitRef;
-	local VisualizationActionMetadata EmptyTrack, SourceTrack, TargetTrack;
+	local VisualizationActionMetadata SourceTrack, TargetTrack;
     local XComGameState_Unit SourceUnit, TargetUnit;
+	local X2Action_Delay DelayAction;
 
 	History = `XCOMHISTORY;
 	Context = XComGameStateContext_Ability(VisualizeGameState.GetContext());
-	InteractingUnitRef = Context.InputContext.SourceObject;
 
     SourceUnit = XComGameState_Unit(VisualizeGameState.GetGameStateForObjectID(Context.InputContext.SourceObject.ObjectID));
     TargetUnit = XComGameState_Unit(VisualizeGameState.GetGameStateForObjectID(Context.InputContext.PrimaryTarget.ObjectID));
 
-	//****************************************************************************************
-	//Configure the visualization track for the source
-	//****************************************************************************************
-	SourceTrack = EmptyTrack;
-	SourceTrack.StateObject_OldState = History.GetGameStateForObjectID(InteractingUnitRef.ObjectID, eReturnType_Reference, VisualizeGameState.HistoryIndex - 1);
-	SourceTrack.StateObject_NewState = VisualizeGameState.GetGameStateForObjectID(InteractingUnitRef.ObjectID);
-	SourceTrack.VisualizeActor = History.GetVisualizer(InteractingUnitRef.ObjectID);
+	// set up the tracks
+	SourceTrack.StateObject_OldState = History.GetGameStateForObjectID(SourceUnit.ObjectID, eReturnType_Reference, VisualizeGameState.HistoryIndex - 1);
+	SourceTrack.StateObject_NewState = SourceUnit;
+	SourceTrack.VisualizeActor = History.GetVisualizer(SourceUnit.ObjectID);
 
-	//****************************************************************************************
-	//Configure the visualization track for the target
-	//****************************************************************************************
-	InteractingUnitRef = Context.InputContext.PrimaryTarget;
-	TargetTrack = EmptyTrack;
-	TargetTrack.StateObject_OldState = History.GetGameStateForObjectID(InteractingUnitRef.ObjectID, eReturnType_Reference, VisualizeGameState.HistoryIndex - 1);
-	TargetTrack.StateObject_NewState = VisualizeGameState.GetGameStateForObjectID(InteractingUnitRef.ObjectID);
-	TargetTrack.VisualizeActor = History.GetVisualizer(InteractingUnitRef.ObjectID);
+	TargetTrack.StateObject_OldState = History.GetGameStateForObjectID(TargetUnit.ObjectID, eReturnType_Reference, VisualizeGameState.HistoryIndex - 1);
+	TargetTrack.StateObject_NewState = TargetUnit;
+	TargetTrack.VisualizeActor = History.GetVisualizer(TargetUnit.ObjectID);
 
     // Build the tracks
-	class'X2Action_AbilityPerkStart'.static.AddToVisualizationTree(SourceTrack, Context, false, SourceTrack.LastActionAdded);
-    class'X2Action_ShowSpawnedUnit'.static.AddToVisualizationTree(TargetTrack, Context);
-	class'X2Action_AbilityPerkEnd'.static.AddToVisualizationTree(SourceTrack, Context, false, SourceTrack.LastActionAdded);
-
-	// sync the visualizers - i think this makes sure the units will appear in the right place on the board
-	SourceUnit.SyncVisualizer();
-	TargetUnit.SyncVisualizer();
+	class'X2Action_SyncVisualizer'.static.AddToVisualizationTree(SourceTrack, Context);
+	class'X2Action_SyncVisualizer'.static.AddToVisualizationTree(TargetTrack, Context, false, SourceTrack.LastActionAdded);
+	class'X2Action_AbilityPerkStart'.static.AddToVisualizationTree(SourceTrack, Context);
+	DelayAction = X2Action_Delay(class'X2Action_Delay'.static.AddToVisualizationTree(SourceTrack, Context));
+	DelayAction.Duration = 5;
+	class'X2Action_AbilityPerkEnd'.static.AddToVisualizationTree(SourceTrack, Context);
 }
 
 DefaultProperties

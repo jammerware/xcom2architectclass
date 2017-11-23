@@ -34,6 +34,7 @@ private static function X2DataTemplate Create_OnUnitBeginPlay_LoadPerks()
     Template.AddPerkToRegister(class'JsrcAbility_ActivateSpire'.default.NAME_ABILITY, 'Jammerware_JSRC_Class_Architect');
     Template.AddPerkToRegister(class'JsrcAbility_SoulOfTheArchitect'.default.NAME_ABILITY, 'Jammerware_JSRC_Class_Architect');
     Template.AddPerkToRegister(class'JsrcAbility_Quicksilver'.default.NAME_SPIRE_QUICKSILVER, 'Jammerware_JSRC_Class_Architect');
+    Template.AddPerkToRegister(class'JsrcAbility_TransmatLink'.default.NAME_ABILITY, 'Jammerware_JSRC_Class_Architect');
 
     // perk registrations (spire)
     Template.AddPerkToRegister(class'JsrcAbility_Shelter'.default.NAME_SPIRE_SHELTER, , class'X2Character_Spire'.default.NAME_CHARACTERGROUP_SPIRE);
@@ -117,7 +118,7 @@ private static function X2EventListenerTemplate_LoadPerks GetLoadPerksTemplate(n
 	TemplateManager = class'X2EventListenerTemplateManager'.static.GetEventListenerTemplateManager();
 	Template = X2EventListenerTemplate_LoadPerks(TemplateManager.FindEventListenerTemplate(TemplateName));
 
-	if(Template == none)
+	if (Template == none)
 	{
 		`Redscreen("GetLoadPerksTemplate(): Could not find template " $ TemplateName);
 	}
