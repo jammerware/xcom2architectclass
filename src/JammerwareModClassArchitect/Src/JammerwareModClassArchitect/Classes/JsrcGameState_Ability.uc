@@ -1,6 +1,6 @@
 class JsrcGameState_Ability extends XComGameState_Ability;
 
-function EventListenerReturn OnAbilityActivated(Object EventData, Object EventSource, XComGameState GameState, Name EventID, Object CallbackData)
+public function EventListenerReturn OnAbilityActivated(Object EventData, Object EventSource, XComGameState GameState, Name EventID, Object CallbackData)
 {
 	local X2AbilityTrigger Trigger;
 	local X2AbilityTemplate Template;
@@ -25,5 +25,21 @@ function EventListenerReturn OnAbilityActivated(Object EventData, Object EventSo
 			}
 		}
 	}
+	return ELR_NoInterrupt;
+}
+
+public function EventListenerReturn TriggerListener_SpireSpawned(Object EventData, Object EventSource, XComGameState GameState, Name EventID, Object CallbackData)
+{
+	local Jammerware_JSRC_AbilityStateService AbilityService;
+	local XComGameState_Unit SpireUnit;
+
+	`LOG("JSRC: self is" @ self.GetMyTemplateName());
+
+	AbilityService = new class'Jammerware_JSRC_AbilityStateService';
+	SpireUnit = XComGameState_Unit(EventData);
+	
+	if (SpireUnit.ObjectID == self.OwnerStateObject.ObjectID)
+		AbilityService.ActivateAbility(self);
+
 	return ELR_NoInterrupt;
 }

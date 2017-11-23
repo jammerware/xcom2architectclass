@@ -21,13 +21,13 @@ private static function X2DataTemplate CreateFieldReloadArray()
 
 private static function X2DataTemplate CreateSpireFieldReloadArray()
 {
-    local X2AbilityTemplate Template;
+    local JsrcAbilityTemplate Template;
     local X2AbilityTrigger_EventListener SpireSpawnTrigger;
 	local X2Condition_SpireAbilityCondition SpireAbilityCondition;
 	local X2Condition_TargetWeapon WeaponCondition;
 	
 	// general properties
-	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_SPIRE_ABILITY);
+	`CREATE_X2TEMPLATE(class'JsrcAbilityTemplate', Template, default.NAME_SPIRE_ABILITY);
 	Template.Hostility = eHostility_Neutral;
 
 	// hud behavior
@@ -47,7 +47,7 @@ private static function X2DataTemplate CreateSpireFieldReloadArray()
 	SpireSpawnTrigger = new class'X2AbilityTrigger_EventListener';
 	SpireSpawnTrigger.ListenerData.Deferral = ELD_OnStateSubmitted;
 	SpireSpawnTrigger.ListenerData.EventID = class'JsrcEffect_SpawnSpire'.default.NAME_SPAWN_SPIRE_TRIGGER;
-	SpireSpawnTrigger.ListenerData.EventFn = class'XComGameState_Ability'.static.AbilityTriggerEventListener_SelfWithAdditionalTargets;
+	SpireSpawnTrigger.ListenerData.EventFn = class'JsrcGameState_Ability'.static.TriggerListener_SpireSpawned;
 	Template.AbilityTriggers.AddItem(SpireSpawnTrigger);
 
 	// conditions

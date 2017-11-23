@@ -102,6 +102,7 @@ function OnSpawnComplete(const out EffectAppliedData ApplyEffectParameters, XCom
 		SpireState.SetIndividualConcealment(true, NewGameState);
 
 	// notify people who care about spires spawning
+	`LOG("JSRC: triggering spire spawn, my name is" @ self.name);
 	`XEVENTMGR.TriggerEvent(default.NAME_SPAWN_SPIRE_TRIGGER, SpireState, ShooterState, NewGameState);
 }
 
