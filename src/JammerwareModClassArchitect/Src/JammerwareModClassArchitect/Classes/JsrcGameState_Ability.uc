@@ -28,7 +28,7 @@ public function EventListenerReturn OnAbilityActivated(Object EventData, Object 
 	return ELR_NoInterrupt;
 }
 
-public function EventListenerReturn TriggerListener_SpireSpawned(Object EventData, Object EventSource, XComGameState GameState, Name EventID, Object CallbackData)
+public function EventListenerReturn OnSpireSpawned(Object EventData, Object EventSource, XComGameState GameState, Name EventID, Object CallbackData)
 {
 	local Jammerware_JSRC_AbilityStateService AbilityService;
 	local XComGameState_Unit SpireUnit;

@@ -47,7 +47,7 @@ private static function X2DataTemplate CreateSpireFieldReloadArray()
 	SpireSpawnTrigger = new class'X2AbilityTrigger_EventListener';
 	SpireSpawnTrigger.ListenerData.Deferral = ELD_OnStateSubmitted;
 	SpireSpawnTrigger.ListenerData.EventID = class'JsrcEffect_SpawnSpire'.default.NAME_SPAWN_SPIRE_TRIGGER;
-	SpireSpawnTrigger.ListenerData.EventFn = class'JsrcGameState_Ability'.static.TriggerListener_SpireSpawned;
+	SpireSpawnTrigger.ListenerData.EventFn = class'JsrcGameState_Ability'.static.OnSpireSpawned;
 	Template.AbilityTriggers.AddItem(SpireSpawnTrigger);
 
 	// conditions
