@@ -33,8 +33,6 @@ public function EventListenerReturn OnSpireSpawned(Object EventData, Object Even
 	local Jammerware_JSRC_AbilityStateService AbilityService;
 	local XComGameState_Unit SpireUnit;
 
-	`LOG("JSRC: self is" @ self.GetMyTemplateName());
-
 	AbilityService = new class'Jammerware_JSRC_AbilityStateService';
 	SpireUnit = XComGameState_Unit(EventData);
 	

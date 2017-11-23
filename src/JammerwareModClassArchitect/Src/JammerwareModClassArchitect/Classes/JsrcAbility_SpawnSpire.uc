@@ -59,6 +59,7 @@ private static function X2DataTemplate CreateSpawnSpire()
 
 	// game state and visualization
 	Template.bSkipFireAction = true;
+	Template.bShowActivation = true;
 	Template.BuildNewGameStateFn = SpawnSpire_BuildGameState;
 	Template.BuildVisualizationFn = TypicalAbility_BuildVisualization;
 		
