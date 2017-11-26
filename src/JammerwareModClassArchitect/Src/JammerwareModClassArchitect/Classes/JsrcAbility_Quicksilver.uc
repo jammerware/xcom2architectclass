@@ -50,6 +50,9 @@ private static function X2AbilityTemplate CreateSpireQuicksilver()
 	Template.bLimitTargetIcons = true;
 	Template.eAbilityIconBehaviorHUD = eAbilityIconBehavior_ShowIfAvailable;	
 	Template.OverrideAbilityAvailabilityFn = class'Jammerware_JSRC_AbilityAvailabilityService'.static.ShowIfValueCheckPasses;
+
+	// sourcing
+	Template.DefaultSourceItemSlot = eInvSlot_SecondaryWeapon;
 	
 	// triggering
 	Template.AbilityTriggers.AddItem(default.PlayerInputTrigger);

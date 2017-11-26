@@ -1,4 +1,4 @@
-class X2AbilityMultiTargetStyle_PBAoE extends X2AbilityMultiTarget_Radius;
+class JsrcAbilityMultiTargetStyle_PBAoE extends X2AbilityMultiTarget_Radius;
 
 DefaultProperties
 {

@@ -38,7 +38,7 @@ private static function X2DataTemplate CreateSpireFieldReloadArray()
 
 	// targeting style (how targets are determined by game rules)
 	Template.AbilityTargetStyle = default.SelfTarget;
-	Template.AbilityMultiTargetStyle = new class'X2AbilityMultiTargetStyle_PBAoE';
+	Template.AbilityMultiTargetStyle = new class'JsrcAbilityMultiTargetStyle_PBAoE';
 
 	// hit chance
 	Template.AbilityToHitCalc = default.DeadEye;

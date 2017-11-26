@@ -49,12 +49,11 @@ private static function X2DataTemplate CreateSpireTargetingArrayTriggered()
 	local X2Condition_SpireAbilityCondition SpireAbilityCondition;
 	local X2Condition_UnitEffects EffectsCondition;
 	local X2Condition_UnitProperty TargetPropertiesCondition;
-	local X2AbilityMultiTarget_Radius MultiTargetStyle;
 	local X2AbilityTrigger_EventListener Trigger;
 	local X2Effect_TargetingArray TargetingArrayEffect;
 
 	// hud behavior
-	`CREATE_X2ABILITY_TEMPLATE(Template, default.NAME_TARGETING_ARRAY_SPIRE_TRIGGERED);
+	`CREATE_X2TEMPLATE(class'JsrcAbilityTemplate', Template, default.NAME_TARGETING_ARRAY_SPIRE_TRIGGERED);
 	Template.IconImage = default.ICON_TARGETING_ARRAY;
 	Template.AbilitySourceName = 'eAbilitySource_Perk';
 	Template.eAbilityIconBehaviorHUD = EAbilityIconBehavior_NeverShow;
@@ -66,12 +65,7 @@ private static function X2DataTemplate CreateSpireTargetingArrayTriggered()
 
 	// targeting
 	Template.AbilityTargetStyle = default.SelfTarget;
-
-	MultiTargetStyle = new class'X2AbilityMultiTarget_Radius';
-	MultiTargetStyle.fTargetRadius = 2.375f;
-	MultiTargetStyle.bExcludeSelfAsTargetIfWithinRadius = true;
-	MultiTargetStyle.bIgnoreBlockingCover = true;
-	Template.AbilityMultiTargetStyle = MultiTargetStyle;
+	Template.AbilityMultiTargetStyle = new class'JsrcAbilityMultiTargetStyle_PBAoE';
 
 	// hit chance
 	Template.AbilityToHitCalc = default.DeadEye;
@@ -97,7 +91,7 @@ private static function X2DataTemplate CreateSpireTargetingArrayTriggered()
 	// triggers
 	Trigger = new class'X2AbilityTrigger_EventListener';
 	Trigger.ListenerData.EventID = 'ObjectMoved';
-	Trigger.ListenerData.Filter = eFilter_Unit;
+	Trigger.ListenerData.Filter = eFilter_None;
 	Trigger.ListenerData.Deferral = ELD_OnStateSubmitted;
 	Trigger.ListenerData.EventFn = class'XComGameState_Ability'.static.AbilityTriggerEventListener_SelfWithAdditionalTargets;
 	Template.AbilityTriggers.AddItem(Trigger);

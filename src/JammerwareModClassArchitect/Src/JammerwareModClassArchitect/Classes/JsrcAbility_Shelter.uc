@@ -45,7 +45,7 @@ private static function X2AbilityTemplate CreateSpireShelter()
 
 	// targeting
 	Template.AbilityTargetStyle = default.SelfTarget;
-	Template.AbilityMultiTargetStyle = new class'X2AbilityMultiTargetStyle_PBAoE';
+	Template.AbilityMultiTargetStyle = new class'JsrcAbilityMultiTargetStyle_PBAoE';
 
 	// hit chance
 	Template.AbilityToHitCalc = default.DeadEye;
