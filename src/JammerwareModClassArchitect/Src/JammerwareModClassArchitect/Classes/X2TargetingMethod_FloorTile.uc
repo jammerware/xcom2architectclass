@@ -3,7 +3,7 @@ class X2TargetingMethod_FloorTile extends X2TargetingMethod;
 // UI thingies
 var protected XCom3DCursor Cursor;
 var protected XComActionIconManager IconManager;
-var protected X2Actor_ValidTile ValidTileActor;
+var protected JsrcActor_ValidTile ValidTileActor;
 
 // internal utility thingies
 const CURSOR_RANGE_UNLIMITED = -1;
@@ -21,7 +21,7 @@ function Init(AvailableAction InAction, int NewTargetIndex)
     Cursor = `CURSOR;
 	IconManager = `PRES.GetActionIconMgr();
 	IconManager.UpdateCursorLocation(true);
-	ValidTileActor = Cursor.Spawn(class'X2Actor_ValidTile', Cursor);
+	ValidTileActor = Cursor.Spawn(class'JsrcActor_ValidTile', Cursor);
 	ValidTileActor.SetHidden(true);
 
 	// store shooter state for validation

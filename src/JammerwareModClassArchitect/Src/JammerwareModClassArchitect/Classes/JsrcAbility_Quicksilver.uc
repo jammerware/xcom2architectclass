@@ -59,7 +59,7 @@ private static function X2AbilityTemplate CreateSpireQuicksilver()
 	Template.AbilityTargetStyle = default.SimpleSingleTarget;
 
 	// charges
-	Template.AbilityCharges =  new class'X2AbilityCharges_Quicksilver';
+	Template.AbilityCharges =  new class'JsrcAbilityCharges_Quicksilver';
 
 	// costs
 	ActionPointCost = new class'X2AbilityCost_ActionPoints';

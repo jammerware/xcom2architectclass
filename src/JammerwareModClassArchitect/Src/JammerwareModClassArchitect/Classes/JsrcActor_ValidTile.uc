@@ -1,4 +1,4 @@
-class X2Actor_ValidTile extends StaticMeshActor;
+class JsrcActor_ValidTile extends StaticMeshActor;
 
 var protected string MeshPath;
 

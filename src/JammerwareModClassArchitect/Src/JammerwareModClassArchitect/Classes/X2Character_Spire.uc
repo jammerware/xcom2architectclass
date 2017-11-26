@@ -55,6 +55,7 @@ private static function X2CharacterTemplate CreateDefaultSpire(name TemplateName
     CharTemplate.strPawnArchetypes.AddItem("GameUnit_LostTowersTurret.ARC_GameUnit_LostTowersTurretM1");
 
 	CharTemplate.ImmuneTypes.AddItem('Acid');
+	CharTemplate.ImmuneTypes.AddItem('Bleeding');
 	CharTemplate.ImmuneTypes.AddItem(class'X2Item_DefaultDamageTypes'.default.DisorientDamageType);
 	CharTemplate.ImmuneTypes.AddItem('Fire');
 	CharTemplate.ImmuneTypes.AddItem(class'X2Item_DefaultDamageTypes'.default.KnockbackDamageType);
