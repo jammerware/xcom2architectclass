@@ -2,31 +2,31 @@ class JsrcGameState_SpireUnit extends XComGameState_Unit;
 
 var localized string LocSpireKilledTitle;
 var localized string LocSpireKilledMessage;
+var localized string LocSpireName;
 
 function string GetName(ENameType eType)
 {
-    local string UnitName;
+	local XGParamTag kTag;
     local XComGameState_Unit ArchitectState;
     local Jammerware_JSRC_SpireRegistrationService SpireRegistrationService;
 
     SpireRegistrationService = new class'Jammerware_JSRC_SpireRegistrationService';
     ArchitectState = SpireRegistrationService.GetRunnerFromSpire(self.ObjectID);
-    UnitName = GetMyTemplate().strCharacterName;
 
-    if (ArchitectState == none)
-		return UnitName;
+	if (ArchitectState == none)
+		return super.GetName(eType);
+
+	kTag = XGParamTag(`XEXPANDCONTEXT.FindTag("XGParam"));
+	kTag.StrValue0 = ResolveArchitectName(ArchitectState);
+	kTag.StrValue1 = GetMyTemplate().strCharacterName;
     
-    UnitName = UnitName @ "(" $ ResolveArchitectName(ArchitectState) $ ")";
-
-    return UnitName;
+    return `XEXPAND.ExpandString(default.LocSpireName);
 }
 
 private function string ResolveArchitectName(XComGameState_Unit ArchitectState)
 {
-    local string ArchitectName;
-
-    ArchitectName = ArchitectState.strNickName;
-    if (ArchitectName != "") return ArchitectName;
+    if (ArchitectState.strNickName != "") 
+		return Repl(ArchitectState.strNickName, "'", "");
 
     return ArchitectState.strLastName;
 }
