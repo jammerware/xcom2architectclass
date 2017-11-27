@@ -186,22 +186,25 @@ static function XComGameState RelayedShot_BuildGameState(XComGameStateContext Co
 			AffectedTargetObject_NewState = GameState.ModifyStateObject(AffectedTargetObject_OriginalState.Class, IterMultiTarget.ObjectID);
 			MultiTargetEffectResults = AbilityContext.ResultContext.MultiTargetEffectResults[i];
 
-			class'X2Ability'.static.ApplyEffectsToTarget
-			(
-				AbilityContext, 
-				AffectedTargetObject_OriginalState, 
-				SourceObject_OriginalState, 
-				AbilityState, 
-				AffectedTargetObject_NewState, 
-				GameState, 
-				AbilityContext.ResultContext.MultiTargetHitResults[i],
-				AbilityContext.ResultContext.MultiTargetArmorMitigation[i],
-				AbilityContext.ResultContext.MultiTargetStatContestResult[i],
-				EffectsToApply,
-				MultiTargetEffectResults,
-				AmmoTemplate.DataName,
-				TELT_AmmoTargetEffects
-			);
+			if (AbilityTemplate.CheckMultiTargetConditions(AbilityState, XComGameState_Unit(SourceObject_OriginalState), AffectedTargetObject_OriginalState) == 'AA_Success')
+			{
+				class'X2Ability'.static.ApplyEffectsToTarget
+				(
+					AbilityContext, 
+					AffectedTargetObject_OriginalState, 
+					SourceObject_OriginalState, 
+					AbilityState, 
+					AffectedTargetObject_NewState, 
+					GameState, 
+					AbilityContext.ResultContext.MultiTargetHitResults[i],
+					AbilityContext.ResultContext.MultiTargetArmorMitigation[i],
+					AbilityContext.ResultContext.MultiTargetStatContestResult[i],
+					EffectsToApply,
+					MultiTargetEffectResults,
+					AmmoTemplate.DataName,
+					TELT_AmmoTargetEffects
+				);
+			}
 		}
 	}
 
