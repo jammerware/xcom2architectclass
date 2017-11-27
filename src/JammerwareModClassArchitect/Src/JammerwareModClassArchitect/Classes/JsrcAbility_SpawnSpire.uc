@@ -52,7 +52,7 @@ private static function X2DataTemplate CreateSpawnSpire()
 	CursorTarget = new class'X2AbilityTarget_Cursor';
 	CursorTarget.FixedAbilityRange = default.TILERANGE_SPAWN_SPIRE * class'XComWorldData'.const.WORLD_StepSize * class'XComWorldData'.const.WORLD_UNITS_TO_METERS_MULTIPLIER;
 	Template.AbilityTargetStyle = CursorTarget;
-	Template.TargetingMethod = class'X2TargetingMethod_SpawnSpire';
+	Template.TargetingMethod = class'JsrcTargetingMethod_SpawnSpire';
 
 	// effects
 	Template.AddShooterEffect(new class'JsrcEffect_SpawnSpire');

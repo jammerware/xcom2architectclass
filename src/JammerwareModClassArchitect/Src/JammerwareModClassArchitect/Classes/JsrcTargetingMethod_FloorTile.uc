@@ -1,4 +1,4 @@
-class X2TargetingMethod_FloorTile extends X2TargetingMethod;
+class JsrcTargetingMethod_FloorTile extends X2TargetingMethod;
 
 // UI thingies
 var protected XCom3DCursor Cursor;
@@ -31,12 +31,14 @@ function Init(AvailableAction InAction, int NewTargetIndex)
     AbilityRangeUnits = `METERSTOUNITS(Ability.GetAbilityCursorRangeMeters());
 
 	// the idea behind this kind of targeting method is that the legal tiles are a subset of visible tiles and are known at init. we cache them here 
-	LegalTiles = GetLegalTiles();
+	LegalTiles = GetLegalTilesInternal();
+	`LOG("JSRC: done getting all the tiles");
 
 	// Draw them so the player can see their options
 	DrawAOETiles(LegalTiles);
+	`LOG("JSRC: drew the tiles");
 
-	// lock the cursor to the range of the ability - subclasses may reimplement this to respond to gameplay conditions
+	// lock the cursor to the range of the ability - subclasses can reimplement GetCursorRange to change the lock range
     LockCursorRange();
 }
 
@@ -57,6 +59,7 @@ private function Cleanup()
 	IconManager.ShowIcons(false);
 	AOEMeshActor.Destroy();
 	ValidTileActor.Destroy();
+	Cursor.m_fMaxChainedDistance = CURSOR_RANGE_UNLIMITED;
 }
 
 function Update(float DeltaTime)
@@ -140,7 +143,6 @@ protected function array<TTile> GetLegalTiles()
 	{
 		World = `XWORLD;
 		ShooterPosition = World.GetPositionFromTileCoordinates(ShooterState.TileLocation);
-		// the ability range is in meters, we need units
 		World.CollectTilesInSphere(TilePosPairs, ShooterPosition, AbilityRangeUnits);
 
 		foreach TilePosPairs(PairIterator)
@@ -150,6 +152,27 @@ protected function array<TTile> GetLegalTiles()
 	}
 
 	return Tiles;
+}
+
+private function array<TTile> GetLegalTilesInternal()
+{
+	local array<TTile> UnvalidatedTiles;
+	local array<TTile> ValidatedTiles;
+	local TTile TileIterator;
+	local XComWorldData World;
+
+	World = `XWORLD;
+	UnvalidatedTiles = GetLegalTiles();
+
+	foreach UnvalidatedTiles(TileIterator)
+	{
+		if (World.CanUnitsEnterTile(TileIterator) && !World.IsTileFullyOccupied(TileIterator))
+		{
+			ValidatedTiles.AddItem(TileIterator);
+		}
+	}
+
+	return ValidatedTiles;
 }
 
 private function DrawValidCursorLocation(TTile Tile)

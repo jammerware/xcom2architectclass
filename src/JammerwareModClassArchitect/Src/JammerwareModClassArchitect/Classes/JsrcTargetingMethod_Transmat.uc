@@ -1,4 +1,4 @@
-class X2TargetingMethod_Transmat extends X2TargetingMethod_FloorTile;
+class JsrcTargetingMethod_Transmat extends JsrcTargetingMethod_FloorTile;
 
 protected function int GetCursorRange()
 {

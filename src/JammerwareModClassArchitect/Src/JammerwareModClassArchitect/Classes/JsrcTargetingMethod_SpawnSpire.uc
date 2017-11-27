@@ -1,4 +1,4 @@
-class X2TargetingMethod_SpawnSpire extends X2TargetingMethod_FloorTile;
+class JsrcTargetingMethod_SpawnSpire extends JsrcTargetingMethod_FloorTile;
 
 protected function int GetCursorRange()
 {

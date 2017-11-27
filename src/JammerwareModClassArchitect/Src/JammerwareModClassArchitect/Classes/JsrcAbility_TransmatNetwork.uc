@@ -75,7 +75,7 @@ private static function X2AbilityTemplate CreateTransmat()
 
 	// targeting style (how targets are determined by game rules)
 	Template.AbilityTargetStyle = new class'X2AbilityTarget_Cursor';
-	Template.TargetingMethod = class'X2TargetingMethod_Transmat';
+	Template.TargetingMethod = class'JsrcTargetingMethod_Transmat';
 
 	// hit chance
 	Template.AbilityToHitCalc = default.DeadEye;
