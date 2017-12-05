@@ -32,11 +32,9 @@ function Init(AvailableAction InAction, int NewTargetIndex)
 
 	// the idea behind this kind of targeting method is that the legal tiles are a subset of visible tiles and are known at init. we cache them here 
 	LegalTiles = GetLegalTilesInternal();
-	`LOG("JSRC: done getting all the tiles");
 
 	// Draw them so the player can see their options
 	DrawAOETiles(LegalTiles);
-	`LOG("JSRC: drew the tiles");
 
 	// lock the cursor to the range of the ability - subclasses can reimplement GetCursorRange to change the lock range
     LockCursorRange();

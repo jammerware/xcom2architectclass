@@ -7,6 +7,7 @@ static event OnPostTemplatesCreated()
 {
     local Jammerware_JSRC_GtsUnlockService GtsUnlockService;
     local Jammerware_JSRC_TransmatNetworkService TransmatNetworkService;
+	local Jammerware_JSRC_PerkContentService PerkContentService;
 
     TransmatNetworkService = new class'Jammerware_JSRC_TransmatNetworkService';
     TransmatNetworkService.RegisterTransmatAbilityToCharacterTemplates();
@@ -15,7 +16,13 @@ static event OnPostTemplatesCreated()
     GtsUnlockService.AddUnlock(class'X2SoldierAbilityUnlockTemplate_Deadbolt'.default.NAME_DEADBOLT);
 
     // this seems like a weird place to do this, but i didn't find anything else that says "do this when the client starts and your mod is on"
-    `CONTENT.BuildPerkPackageCache();
+    PerkContentService = new class'Jammerware_JSRC_PerkContentService';
+    PerkContentService.AbilitiesToRegister.AddItem(class'JsrcAbility_ActivateSpire'.default.NAME_ABILITY);
+    PerkContentService.AbilitiesToRegister.AddItem(class'JsrcAbility_Shelter'.default.NAME_SPIRE_SHELTER);
+    PerkContentService.AbilitiesToRegister.AddItem(class'JsrcAbility_Quicksilver'.default.NAME_SPIRE_QUICKSILVER);
+    PerkContentService.AbilitiesToRegister.AddItem(class'JsrcAbility_SoulOfTheArchitect'.default.NAME_ABILITY);
+    PerkContentService.AbilitiesToRegister.AddItem(class'JsrcAbility_TransmatLink'.default.NAME_ABILITY);
+    PerkContentService.RegisterPerkContent();
 }
 
 /// <summary>
