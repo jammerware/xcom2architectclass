@@ -1,5 +1,5 @@
 # Jammerware's Architect Class
-A mod for XCOM 2: War of the Chosen that adds the Architect class.
+A mod for XCOM 2: War of the Chosen that adds the Architect class. [Play it now](http://steamcommunity.com/sharedfiles/filedetails/?id=1191669118) on Steam!
 
 ## Design
 The goal of the Architect class is to encourage a spatially-driven play pattern and to create a unit with low offensive potential offset by powerful support abilities. It'd be nice if it were fun and balanced, too, but let's not get crazy.
